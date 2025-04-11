@@ -1,103 +1,165 @@
+import Link from "next/link";
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+import eco1 from "@/public/heroes/farwiza-farhan-elephant.jpeg";
+import hero1 from "@/public/heroes/farwiza-farhan.jpg";
+import hero2 from "@/public/heroes/Pablo-Garcia-Borboroglu.jpg";
+import eco2 from "@/public/heroes/Pablo-Borboroglu-and-penguin.jpg";
+import hero3 from "@/public/heroes/augustin-basabose-speaking.jpeg";
+import eco3 from "@/public/heroes/augustin-basabose-gorilla.jpg";
+import eco4 from "@/public/heroes/Patricia-Medici-tapir-and-baby.webp";
+import hero4 from "@/public/heroes/Patricia-Medici.jpg";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+export default function Page() {
+  return (
+    <main className="flex flex-col items-center justify-center pt-8 pb-12 px-12 sm:px-24  xl:px-36 py-4">
+      <div className="bg-red-500 text-white p-4 rounded">
+        If this is red with white text, Tailwind is working.
+      </div>
+      <h1 className="font-josefin text-3xl text-accent-500 hover:text-accent-500 tracking-tight font-normal text-center">
+        English with a Mission
+      </h1>
+      <h3 className="font-josefin text-xl text-accent-50 hover:text-accent-500 tracking-tight font-normal text-center">
+        Choose an environmental hero
+      </h3>
+      <div className="grid grid-cols-3 auto-rows-[180px] md:grid-cols-6 gap-2 mt-3 mb-8 px-12 py-4">
+        <figure className="relative col-span-1">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src={hero1}
+            placeholder="blur"
+            quality={80}
+            className="col-start-1 col-end-2 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
+            alt="Farwiza Farhan"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+          <Link href="/hero/farhan">
+            <figcaption className="relative bottom-6 left-0 text-accent-900  font-josefin text-center h-[24px] pt-[2px] bg-accent-500 hover:bg-accent-600 hover:translate-px hover:-translate-y-[2px] hover:h-[28px] rounded-sm">
+              Farwiza Farhan
+            </figcaption>
+          </Link>
+        </figure>
+        <figure className="relative col-span-2">
           <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+            src={eco1}
+            placeholder="blur"
+            quality={80}
+            className="col-span-2 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
+            alt="Elephants"
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+          <Link href="/hero/farhan">
+            <figcaption className="relative bottom-6 left-0 text-accent-900  font-josefin font-light h-6 text-center pt-[2px] bg-accent-100 hover:bg-accent-200 hover:translate-px rounded-sm">
+              Change is driven from the ground up.
+            </figcaption>
+          </Link>
+        </figure>
+
+        <figure className="relative col-span-2">
           <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+            src={eco2}
+            width="30rem"
+            height="30rem"
+            objectFit="cover"
+            placeholder="blur"
+            quality={80}
+            className="col-span-2 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
+            alt="Mountains and forests with two cabins"
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <Link href="/hero/borboroglu">
+            <figcaption className="relative bottom-6 left-0 text-accent-900  font-josefin font-light h-6 text-center pt-[2px] bg-accent-100 hover:bg-accent-200 hover:translate-px rounded-sm">
+              There is still hope for the planet.
+            </figcaption>
+          </Link>
+        </figure>
+        <figure className="relative col-span-1">
+          <Image
+            src={hero2}
+            width="100%"
+            height="100%"
+            objectFit="cover"
+            placeholder="blur"
+            quality={80}
+            className="col-span-1 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
+            alt="Mountains and forests with two cabins"
+          />
+          <Link href="/hero/borboroglu">
+            <figcaption className="relative bottom-6 left-0 text-accent-900  font-josefin text-center pt-[2px] bg-accent-500 hover:bg-accent-600 hover:translate-px rounded-sm">
+              Pablo Borboroglu
+            </figcaption>
+          </Link>
+        </figure>
+
+        <figure className="relative col-span-1">
+          <Image
+            src={hero3}
+            placeholder="blur"
+            quality={80}
+            className="col-span-1 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
+            alt="Mountains and forests with two cabins"
+          />
+          <Link href="/hero/basabose">
+            <figcaption className="relative bottom-6 left-0 text-accent-900  font-josefin text-center h-[24px] pt-[2px] bg-accent-500 hover:bg-accent-600 hover:translate-px hover:-translate-y-[2px] hover:h-[28px] rounded-sm">
+              Augustin Basabose
+            </figcaption>
+          </Link>
+        </figure>
+
+        <figure className="relative col-span-2">
+          <Image
+            src={eco3}
+            placeholder="blur"
+            quality={80}
+            className="col-span-2 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
+            alt="Mountains and forests with two cabins"
+          />
+          <Link href="/hero/basabose">
+            <figcaption className="relative bottom-6 left-0 text-accent-900  font-josefin font-light h-6 text-center pt-[2px] bg-accent-100 hover:bg-accent-200 hover:translate-px rounded-sm">
+              Involving local inhabitants in conservation work.
+            </figcaption>
+          </Link>
+        </figure>
+        <figure className="relative col-span-2">
+          <Image
+            src={eco4}
+            width="30rem"
+            height="30rem"
+            objectFit="cover"
+            placeholder="blur"
+            quality={80}
+            className="col-span-2 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
+            alt="Mountains and forests with two cabins"
+          />
+          <Link href="/hero/medici">
+            <figcaption className="relative bottom-6 left-0 text-accent-900  font-josefin font-light h-6 text-center pt-[2px] bg-accent-100 hover:bg-accent-200 hover:translate-px rounded-sm">
+              Tapirs play a crucial ecological role.
+            </figcaption>
+          </Link>
+        </figure>
+        <figure className="relative col-span-1">
+          <Image
+            src={hero4}
+            width="100%"
+            height="100%"
+            objectFit="cover"
+            placeholder="blur"
+            quality={80}
+            className="col-span-1 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
+            alt="Mountains and forests with two cabins"
+          />
+          <Link href="/hero/medici">
+            <figcaption className="relative bottom-6 left-0 text-accent-900  font-josefin text-center h-[24px] pt-[2px] bg-accent-500 hover:bg-accent-600 hover:translate-px hover:-translate-y-[2px] hover:h-[28px] rounded-sm">
+              Patricia Medici
+            </figcaption>
+          </Link>
+        </figure>
+      </div>
+
+      <div className="relative z-10 text-center">
+        {/* <Link
+          href="/heroes"
+          className="rounded-md bg-primary-900 px-6 py-3 text-primary-800 text-lg font-semibold hover:bg-accent-600 transition-all mt-8"
+        >
+          Explore our Heroes
+        </Link> */}
+      </div>
+    </main>
   );
 }

@@ -1,0 +1,8 @@
+:root {
+  --font-orbitron: "Orbitron", sans-serif;
+  --font-roboto: "Roboto Slab", sans-serif;
+  --font-josefin: "Josefin Sans", sans-serif;
+}
+
+@import "tailwindcss/preflight";
+@tailwind utilities;
