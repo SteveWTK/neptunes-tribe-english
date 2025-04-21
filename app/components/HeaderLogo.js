@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 // import logo from "@/public/neptunes-tribe-logo-nbg.png";
 import logoL from "@/public/logos/neptunes-tribe-logo-light-nbg-l.png";
-import logoC from "@/public/logos/neptunes-tribe-logo-nbg.png";
+import logoC from "@/public/logos/neptunes-tribe-logo-c.png";
 
 export default function HeaderLogo() {
   return (

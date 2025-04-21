@@ -1,9 +1,13 @@
-import { updateSession } from "@/utils/supabase/middleware";
+/*import { NextResponse } from "next/server";
 
-export async function middleware(request) {
-  return await updateSession(request);
-}
+export function middleware(request) {
+  return NextResponse.redirect(new URL("/about", request.url));
+}*/
+
+import { auth } from "@/app/lib/auth";
+
+export const middleware = auth;
 
 export const config = {
-  matcher: ["/dashboard/:path*"], // You can add more paths like "/profile/:path*", etc.
+  matcher: ["/dashboard"],
 };

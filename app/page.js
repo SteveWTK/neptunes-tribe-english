@@ -13,9 +13,6 @@ import hero4 from "@/public/heroes/Patricia-Medici.jpg";
 export default function Page() {
   return (
     <main className="flex flex-col items-center justify-center pt-8 pb-12 px-12 sm:px-24  xl:px-36 py-4">
-      <div className="bg-red-500 text-white p-4 rounded">
-        If this is red with white text, Tailwind is working.
-      </div>
       <h1 className="font-josefin text-3xl text-accent-500 hover:text-accent-500 tracking-tight font-normal text-center">
         English with a Mission
       </h1>
@@ -57,7 +54,7 @@ export default function Page() {
             src={eco2}
             width="30rem"
             height="30rem"
-            objectFit="cover"
+            // objectFit="cover"
             placeholder="blur"
             quality={80}
             className="col-span-2 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
@@ -74,7 +71,7 @@ export default function Page() {
             src={hero2}
             width="100%"
             height="100%"
-            objectFit="cover"
+            // objectFit="cover"
             placeholder="blur"
             quality={80}
             className="col-span-1 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
@@ -121,7 +118,7 @@ export default function Page() {
             src={eco4}
             width="30rem"
             height="30rem"
-            objectFit="cover"
+            // objectFit="cover"
             placeholder="blur"
             quality={80}
             className="col-span-2 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
@@ -138,7 +135,7 @@ export default function Page() {
             src={hero4}
             width="100%"
             height="100%"
-            objectFit="cover"
+            // objectFit="cover"
             placeholder="blur"
             quality={80}
             className="col-span-1 w-full h-full object-cover grayscale-0 hover:grayscale-0 hover:ring-1 hover:ring-primary-950"
@@ -152,14 +149,7 @@ export default function Page() {
         </figure>
       </div>
 
-      <div className="relative z-10 text-center">
-        {/* <Link
-          href="/heroes"
-          className="rounded-md bg-primary-900 px-6 py-3 text-primary-800 text-lg font-semibold hover:bg-accent-600 transition-all mt-8"
-        >
-          Explore our Heroes
-        </Link> */}
-      </div>
+      <div className="relative z-10 text-center"></div>
     </main>
   );
 }

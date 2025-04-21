@@ -3,7 +3,6 @@ import "@/app/styles/globals.css";
 import { Orbitron } from "next/font/google";
 import { Roboto_Slab } from "next/font/google";
 import { Josefin_Sans } from "next/font/google";
-// import "@/app/styles/globals.css";
 import Header from "@/app/components/Header";
 
 const orbitron = Orbitron({

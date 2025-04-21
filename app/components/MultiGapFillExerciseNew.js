@@ -5,6 +5,7 @@ import { fetchData, fetchUnitDetails } from "@/app/lib/data-service";
 import Image from "next/image";
 import TextExpander from "./TextExpander";
 import PieChartAnswers from "./PieChartAnswers";
+import { useMockProgress } from "../hooks/useMockProgress";
 
 export default function MultiGapFillExerciseNew({ unitId }) {
   const [unitData, setUnitData] = useState(null);
@@ -19,6 +20,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   const [portugueseTranslation, setPortugueseTranslation] = useState("");
   const [spanishTranslation, setSpanishTranslation] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("no"); // Default: English
+  const [progress, updateProgress] = useMockProgress();
 
   const percentage = (score / questions.length) * 100;
   let message;
@@ -27,7 +29,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 
   if (percentage === 100) {
     message = `Perfect score! Fantastic work! You have added ${
-      score * xpPerCorrectAswer + bonusForPerfect
+      score * xpPerCorrectAswer + 20
     } points to your progress!`;
   } else if (percentage >= 80) {
     message = `Great job! You have added You have added ${
@@ -174,9 +176,9 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   };
 
   return (
-    <main className="flex flex-col mx-20 my-12">
+    <main className="flex flex-col mx-20 my-6">
       <div className="flex flex-col">
-        <div className="flex">
+        <div className="flex items-center justify-center align-middle md:mx-4 lg:mx-8 xl:mx-16">
           {/* Render Image Dynamically */}
           {unitData?.image && (
             <Image
@@ -185,7 +187,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
               width={600}
               height={400}
               quality={80}
-              className="col-span-4 w-full h-48 sm:h-96 object-cover border-2 rounded-lg
+              className="col-span-4 w-full h-auto sm:h-96  object-cover border-2 rounded-lg
                  border-accent-100 hover:ring-1 hover:ring-primary-950"
               alt={unitData.title || "Unit Image"}
             />

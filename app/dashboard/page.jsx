@@ -1,32 +1,33 @@
-import { createClient } from "@/utils/supabase/server";
-// import { redirect } from "next/navigation";
+import ProgressDashboard from "@/app/components/ProgressDashboard";
+import Image from "next/image";
+import eco1 from "@/public/heroes/farwiza-farhan-elephant.jpeg";
+import { auth } from "../lib/auth";
+import LoginMessage from "../components/LoginMessage";
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-
-  // const {
-  //   data: { user },
-  // } = await supabase.auth.getUser();
-
-  // if (!user) {
-  //   redirect("/login");
-  // }
-
-  const mockUser = {
-    id: "mock-user-123",
-    name: "Test Explorer",
-    points: 1450,
-    level: 4,
-    streak: 5,
-    achievements: ["First Login", "Completed 10 Challenges", "3-Day Streak"],
-  };
+  const session = await auth();
+  console.log(session);
 
   return (
-    <div className="p-6 text-white">
-      <h1 className="text-2xl font-bold">
-        Welcome to your Dashboard, {mockUser}
-      </h1>
-      <p className="mt-4">You are now logged in.</p>
+    <div className="p-6">
+      {session?.user ? (
+        <ProgressDashboard user={session.user} />
+      ) : (
+        <LoginMessage />
+      )}
+
+      <div className="flex mx-16 my-6">
+        <Image
+          src={eco1}
+          placeholder="blur"
+          width={300}
+          height={200}
+          quality={80}
+          className="col-span-4 w-full h-24 sm:h-72 object-cover border-2 rounded-lg
+        border-accent-100 hover:ring-1 hover:ring-primary-950"
+          alt="Farwiza Farhan"
+        />
+      </div>
     </div>
   );
 }
