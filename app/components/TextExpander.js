@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 function TextExpander({ children }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const displayText = isExpanded
     ? children
     : (typeof children === "string" ? children.split(" ") : [""])

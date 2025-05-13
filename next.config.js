@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compiler: {
+    styledComponents: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -7,11 +10,6 @@ const nextConfig = {
         hostname: "pqlrhabwbajghxjukgea.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
-      // {
-      //   protocol: "https",
-      //   hostname: "pqlrhabwbajghxjukgea.supabase.co",
-      //   pathname: "/storage/v1/object/sign/**",
-      // },
     ],
   },
 };

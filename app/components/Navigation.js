@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { auth } from "../lib/auth";
+import { auth } from "../../lib/auth";
 import SignOutButton from "./signoutButton";
 import SignInButton from "./SigninButton";
 
@@ -8,8 +8,8 @@ export default async function Navigation() {
   console.log(session);
 
   return (
-    <nav className=" z-10 text-base">
-      <ul className=" flex gap-12 items-center">
+    <nav className="flex z-10 text-base items-center">
+      <ul className=" flex gap-12 items-center content-around">
         <li>
           <Link
             href="/about"
@@ -24,6 +24,14 @@ export default async function Navigation() {
             className="py-3 px-5 font-josefin text-center text-accent-50 hover:text-accent-500 transition-colors"
           >
             Units
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/challenges"
+            className="py-3 px-5 font-josefin text-center text-accent-50 hover:text-accent-500 transition-colors"
+          >
+            Challenges
           </Link>
         </li>
         <li>
@@ -49,19 +57,18 @@ export default async function Navigation() {
             </Link>
           )}
         </li>
-        <li>
-          {session ? (
-            <SignOutButton />
-          ) : (
-            <Link
-              href="/login"
-              className="py-0.5 px-5 font-josefin text-center bg-primary-50 rounded-2xl text-primary-900 hover:bg-primary-300 transition-colors"
-            >
-              Sign In
-            </Link>
-          )}
-        </li>
       </ul>
+
+      {session ? (
+        <SignOutButton className="flex justify-end items-center" />
+      ) : (
+        <Link
+          href="/login"
+          className="flex justify-end items-center py-0.5 px-5 font-josefin text-center bg-primary-50 rounded-2xl text-primary-900 hover:bg-primary-300 transition-colors"
+        >
+          Sign In
+        </Link>
+      )}
     </nav>
   );
 }

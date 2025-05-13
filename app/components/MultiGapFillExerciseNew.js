@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { fetchData, fetchUnitDetails } from "@/app/lib/data-service";
+import { fetchData, fetchUnitDetails } from "@/lib/data-service";
 import Image from "next/image";
 import TextExpander from "./TextExpander";
 import PieChartAnswers from "./PieChartAnswers";
-import { useMockProgress } from "../hooks/useMockProgress";
+// import { useMockProgress } from "../hooks/useMockProgress";
 
 export default function MultiGapFillExerciseNew({ unitId }) {
   const [unitData, setUnitData] = useState(null);
@@ -14,13 +14,13 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   const [gapText, setGapText] = useState("");
   const [questions, setQuestions] = useState([]);
   const [userAnswers, setUserAnswers] = useState({});
-  const [showFullText, setShowFullText] = useState(true);
+  const [showFullText, setShowFullText] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [portugueseTranslation, setPortugueseTranslation] = useState("");
   const [spanishTranslation, setSpanishTranslation] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("no"); // Default: English
-  const [progress, updateProgress] = useMockProgress();
+  // const [progress, updateProgress] = useMockProgress();
 
   const percentage = (score / questions.length) * 100;
   let message;
@@ -51,29 +51,30 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 
   useEffect(() => {
     async function loadData() {
-      const unitDetails = await fetchUnitDetails(unitId);
-      const {
-        textId,
-        fullText,
-        gapText,
-        portugueseTranslation,
-        spanishTranslation,
-        questions,
-      } = await fetchData(unitId);
+      try {
+        const unitDetails = await fetchUnitDetails(unitId);
+        const {
+          textId,
+          fullText,
+          gapText,
+          portugueseTranslation,
+          spanishTranslation,
+          questions,
+        } = await fetchData(unitId);
 
-      setUnitData(unitDetails); // Store unit details
-      setTextId(textId); // Store text ID
-      setFullText(fullText);
-      setGapText(gapText);
-      setPortugueseTranslation(portugueseTranslation);
-      setSpanishTranslation(spanishTranslation);
-      setQuestions(questions);
-
-      console.log("Fetched gapText:", gapText);
-      console.log("Fetched questions:", questions);
+        setUnitData(unitDetails);
+        setTextId(textId);
+        setFullText(fullText);
+        setGapText(gapText);
+        setPortugueseTranslation(portugueseTranslation);
+        setSpanishTranslation(spanishTranslation);
+        setQuestions(questions);
+      } catch (err) {
+        console.error("Error loading unit data:", err);
+      }
     }
 
-    loadData();
+    if (unitId) loadData();
   }, [unitId]);
 
   const handleChange = (questionId, selectedAnswer) => {
@@ -176,110 +177,115 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   };
 
   return (
-    <main className="flex flex-col mx-20 my-6">
+    <main className="flex flex-col mx-10 lg:mx-20 my-6">
       <div className="flex flex-col">
-        <div className="flex items-center justify-center align-middle md:mx-4 lg:mx-8 xl:mx-16">
-          {/* Render Image Dynamically */}
-          {unitData?.image && (
-            <Image
-              src={unitData.image}
-              // src={heroImage}
-              width={600}
-              height={400}
-              quality={80}
-              className="col-span-4 w-full h-auto sm:h-96  object-cover border-2 rounded-lg
-                 border-accent-100 hover:ring-1 hover:ring-primary-950"
-              alt={unitData.title || "Unit Image"}
-            />
-          )}
-        </div>
+        <div className="flex flex-col  lg:grid lg:grid-cols-2">
+          <div className="col-span-1 flex items-center justify-center align-middle  md:px-2 lg:align-top lg:justify-items-start lg:px-4 xl:px-8">
+            {/* Render Image Dynamically */}
+            {unitData?.image && (
+              <Image
+                src={unitData.image}
+                // src={heroImage}
+                width={600}
+                height={400}
+                quality={80}
+                className="w-full h-48 min-[440px]:h-72 sm:h-96 object-cover object-[50%_20%] lg:content-start border-2 rounded-xl
+                 border-primary-600 hover:ring-1 hover:ring-primary-950 dark:hover:ring-primary-600"
+                alt={unitData.title || "Unit Image"}
+              />
+            )}
+          </div>
 
-        <div className="col-span-2 flex flex-col gap-3 ml-3 my-1">
-          {/* Render Title & Description Dynamically */}
-          <h1 className="font-orbitron font-bold text-center lg:text-left text-2xl sm:text3xl md:text-4xl lg:text-4xl text-accent-300 mx-3">
-            {unitData?.title || "Loading Title..."}
-          </h1>
-          <h2 className="font-orbitron font-bold text-center lg:text-left text-lg lg:text-xl text-accent-100 mx-3">
-            {unitData?.description || "Loading Description..."}
-          </h2>
-        </div>
+          <div className="col-span-1 flex flex-col gap-3 ml-3 my-1">
+            {/* Render Title & Description Dynamically */}
+            <h1 className="font-orbitron font-bold text-center lg:text-left text-2xl sm:text3xl md:text-4xl lg:text-4xl text-gray-800 dark:text-white mx-3">
+              {unitData?.title || "Loading Title..."}
+            </h1>
+            <h2 className="font-orbitron font-bold text-center lg:text-left text-lg lg:text-xl text-gray-700 dark:text-white mx-3">
+              {unitData?.description || "Loading Description..."}
+            </h2>
 
-        {/* Toggle Button */}
-        <div className="col-span-2 grid grid-cols-2">
-          <div className="mx-3 p-3 col-span-2 flex flex-row flex-wrap gap-4 align-middle justify-center font-orbitron">
+            {/* Toggle Button */}
+
             <button
-              className="bg-accent-400  hover:bg-accent-500 text-primary-900 font-josefin rounded px-2 py-1"
+              className="w-fit text-[16px] rounded-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
               onClick={() => setShowFullText(!showFullText)}
             >
               {showFullText ? "Show Gap Fill" : "Show Full Text"}
             </button>
-          </div>
-        </div>
 
-        {/* Display Full Text or Gap-Fill Exercise */}
-        {showFullText ? (
-          <p className="col-span-6 lg:col-span-4 font-orbitron font-light text-md text-accent-50 bg-primary-900 p-4 border-solid rounded-lg border-accent-50">
-            <TextExpander>{fullText}</TextExpander>
-          </p>
-        ) : (
-          <div className="col-span-6 lg:col-span-4 font-orbitron font-light text-md text-accent-50 bg-primary-900 p-4 border-solid rounded-lg border-accent-50">
-            {questions.length > 0 ? (
-              gapText.split(/\{\{(\d+)\}\}/g).map((part, index) => {
-                if (index % 2 === 0)
-                  return <span key={`${textId}-${index}`}>{part}</span>;
-
-                const question = questions.find(
-                  (q) => q.gap_number === Number(part) && q.text_id === textId
-                );
-
-                if (!question) {
-                  console.warn(
-                    `Question ID ${part} for text ${textId} not found in questions array.`
-                  );
-                  return <span key={`${textId}-gap-${index}`}>[error]</span>; // Ensure unique key
-                }
-
-                return (
-                  <select
-                    key={`${unitId}-gap-${question.gap_number}`} // UNIQUE KEY
-                    className={` font-josefin mx-2 border rounded px-2 py-[2px] transition-colors duration-200 ${
-                      isSubmitted
-                        ? userAnswers[`${unitId}-${question.gap_number}`] ===
-                          question.correct_answer
-                          ? "bg-teal-800"
-                          : "bg-rose-800"
-                        : userAnswers[`${unitId}-${question.gap_number}`]
-                        ? "bg-primary-800  text-accent-50 hover:bg-accent-200  hover:text-accent-900"
-                        : "bg-accent-100  hover:bg-accent-200 text-accent-900"
-                    }`}
-                    value={
-                      userAnswers[`${unitId}-${question.gap_number}`] || ""
-                    }
-                    onChange={(e) =>
-                      handleChange(
-                        `${unitId}-${question.gap_number}`,
-                        e.target.value
-                      )
-                    }
-                    disabled={isSubmitted}
-                  >
-                    <option value="">Select</option>
-                    {question.options.map((option, idx) => (
-                      <option
-                        key={`${unitId}-opt-${question.gap_number}-${idx}`}
-                        value={option}
-                      >
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                );
-              })
+            {/* Display Full Text or Gap-Fill Exercise */}
+            {showFullText ? (
+              <p className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50">
+                <TextExpander>{fullText}</TextExpander>
+              </p>
             ) : (
-              <p className="text-accent-50 text-lg font-josefin">Loading...</p>
+              <div className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800  p-4 border-solid rounded-lg border-accent-50">
+                {questions.length > 0 ? (
+                  gapText.split(/\{\{(\d+)\}\}/g).map((part, index) => {
+                    if (index % 2 === 0)
+                      return <span key={`${textId}-${index}`}>{part}</span>;
+
+                    const question = questions.find(
+                      (q) =>
+                        q.gap_number === Number(part) && q.text_id === textId
+                    );
+
+                    if (!question) {
+                      console.warn(
+                        `Question ID ${part} for text ${textId} not found in questions array.`
+                      );
+                      return (
+                        <span key={`${textId}-gap-${index}`}>[error]</span>
+                      ); // Ensure unique key
+                    }
+
+                    return (
+                      <select
+                        key={`${unitId}-gap-${question.gap_number}`} // UNIQUE KEY
+                        className={` font-josefin mx-2 border rounded px-2 py-0.5 transition-colors duration-200 ${
+                          isSubmitted
+                            ? userAnswers[
+                                `${unitId}-${question.gap_number}`
+                              ] === question.correct_answer
+                              ? "bg-teal-800"
+                              : "bg-rose-800"
+                            : userAnswers[`${unitId}-${question.gap_number}`]
+                            ? "bg-primary-500  text-accent-50 hover:bg-accent-200  hover:text-accent-900"
+                            : "bg-accent-100  hover:bg-accent-200 text-accent-900"
+                        }`}
+                        value={
+                          userAnswers[`${unitId}-${question.gap_number}`] || ""
+                        }
+                        onChange={(e) =>
+                          handleChange(
+                            `${unitId}-${question.gap_number}`,
+                            e.target.value
+                          )
+                        }
+                        disabled={isSubmitted}
+                      >
+                        <option value="">Select</option>
+                        {question.options.map((option, idx) => (
+                          <option
+                            key={`${unitId}-opt-${question.gap_number}-${idx}`}
+                            value={option}
+                          >
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    );
+                  })
+                ) : (
+                  <p className="text-accent-50 text-lg font-josefin">
+                    Loading...
+                  </p>
+                )}
+              </div>
             )}
           </div>
-        )}
+        </div>
 
         <div className="m-4 flex justify-center">
           <label htmlFor="languageSelect" className="mr-2 text-white">
@@ -289,7 +295,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
             id="languageSelect"
             value={selectedLanguage}
             onChange={(e) => setSelectedLanguage(e.target.value)}
-            className="text-primary-900 bg-accent-100 font-josefin border rounded px-2 py-1"
+            className="text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
           >
             <option value="no">None</option>
             <option value="pt">Português</option>
@@ -298,7 +304,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
         </div>
 
         {selectedLanguage !== "no" && (
-          <p className="col-span-6 lg:col-span-4 font-orbitron font-light text-md text-accent-900 bg-accent-50 p-4 border-solid rounded-lg border-accent-50 mt-2">
+          <p className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50">
             <TextExpander>
               {selectedLanguage === "pt"
                 ? portugueseTranslation
@@ -311,7 +317,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
         <div className="mx-3 p-3 col-span-2 flex flex-row flex-wrap gap-4 align-middle justify-center font-orbitron">
           {!showFullText && (
             <button
-              className="bg-accent-400 hover:bg-accent-500 text-accent-900 rounded-md px-3 py-1"
+              className="text-[16px] rounded-b-lg border-b-1 border-primary-600 px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
               onClick={handleSubmit}
               disabled={isSubmitted}
             >

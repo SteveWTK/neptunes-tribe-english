@@ -4,7 +4,7 @@ export function middleware(request) {
   return NextResponse.redirect(new URL("/about", request.url));
 }*/
 
-import { auth } from "@/app/lib/auth";
+import { auth } from "@/lib/auth";
 
 export const middleware = auth;
 

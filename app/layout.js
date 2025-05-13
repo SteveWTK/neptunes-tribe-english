@@ -1,9 +1,16 @@
+"use client";
+
 import "@/app/styles/globals.css";
 
 import { Orbitron } from "next/font/google";
 import { Roboto_Slab } from "next/font/google";
 import { Josefin_Sans } from "next/font/google";
-import Header from "@/app/components/Header";
+// import { useEffect, useState } from "react";
+
+import { StyledComponentsRegistry } from "@/lib/StyledComponentsRegistry";
+import { Toaster } from "sonner";
+import { LanguageProvider } from "@/lib/contexts/LanguageContext";
+import { DarkModeProvider } from "@/lib/contexts/DarkModeContext";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -25,13 +32,14 @@ const josefin = Josefin_Sans({
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      className={`${roboto.variable} ${orbitron.variable} ${josefin.variable}`}
-    >
-      <body className="antialiased bg-primary-950 font-roboto">
-        <Header />
-        {children}
+    <html lang="en">
+      <body className="antialiased bg-white dark:bg-primary-950 font-roboto relative">
+        <StyledComponentsRegistry>
+          <LanguageProvider>
+            <DarkModeProvider>{children}</DarkModeProvider>
+          </LanguageProvider>
+          <Toaster richColors closeButton />
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

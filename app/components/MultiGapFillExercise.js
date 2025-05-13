@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { fetchData, fetchUnitDetails } from "@/app/lib/data-service";
+import { fetchData, fetchUnitDetails } from "@/lib/data-service";
 import Image from "next/image";
 import TextExpander from "./TextExpander";
 import PieChartAnswers from "./PieChartAnswers";

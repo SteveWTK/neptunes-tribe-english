@@ -59,7 +59,7 @@ export default function ProgressDashboard({ user }) {
 
   return (
     <>
-      <h1 className="text-xl text-accent-50 font-light mb-6 ml-2 lg:ml-6 xl:ml-24">
+      <h1 className="text-xl text-gray-800 dark:text-accent-50 font-light mb-6 ml-2 lg:ml-6 xl:ml-24">
         {`Welcome, ${firstName}!`}
       </h1>
       <div className="max-w-xl mx-auto p-6  text-accent-100 bg-primary-950 shadow-md rounded-xl border border-accent-50 space-y-6">
