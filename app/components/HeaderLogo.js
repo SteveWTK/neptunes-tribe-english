@@ -7,7 +7,7 @@ import logoC from "@/public/logos/Neptunes-tribe-logo-white-centre.png";
 export default function HeaderLogo() {
   return (
     <div className="relative">
-      <Link href="#hero" className="flex items-center gap-4 z-10">
+      <Link href="/" className="flex items-center gap-4 z-10">
         <Image
           src={logoC}
           height="auto"
