@@ -288,7 +288,10 @@ export default function MultiGapFillExerciseNew({ unitId }) {
         </div>
 
         <div className="m-4 flex justify-center">
-          <label htmlFor="languageSelect" className="mr-2 text-white">
+          <label
+            htmlFor="languageSelect"
+            className="mr-2 text-primary-900 dark:text-white"
+          >
             Translation:
           </label>
           <select

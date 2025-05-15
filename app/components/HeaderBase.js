@@ -22,16 +22,14 @@ export default function HeaderBase({
       en: [
         { href: "/content", label: "Units" },
         { href: "#about", label: "About" },
-        { href: "#mission", label: "Mission" },
         { href: "#team", label: "Team" },
-        // { href: "#support", label: "Support Us" },
+        { href: "#support", label: "Support" },
       ],
       pt: [
         { href: "/content", label: "Unidades" },
         { href: "#about", label: "Sobre" },
-        { href: "#mission", label: "Missão" },
         { href: "#team", label: "Equipe" },
-        // { href: "#support", label: "Apoie-nos" },
+        { href: "support", label: "Apoie" },
       ],
       // ... add other languages as needed
     },
@@ -40,6 +38,8 @@ export default function HeaderBase({
         { href: "/", label: "Home" },
         { href: "/content", label: "Units" },
         { href: "/challenges", label: "Challenges" },
+        { href: "/support-us", label: "Support" },
+
         // { href: "/dashboard", label: "Dashboard" },
         // { href: "/profile", label: "Profile" },
       ],
@@ -47,6 +47,8 @@ export default function HeaderBase({
         { href: "/", label: "Home" },
         { href: "/content", label: "Unidades" },
         { href: "/challenges", label: "Desafios" },
+        { href: "/support-us", label: "Apoie" },
+
         // { href: "/dashboard", label: "Painel" },
         // { href: "/profile", label: "Perfil" },
       ],

@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
+import { Button } from "@/components/ui/buttonLanding";
+import SupportUsSection from "@/components/SupportUsSection";
+import { StickyFooterSupport } from "@/components/SitckyFooterSupport";
+import Footer from "@/components/Footer";
 
 export default function LandingPage({ darkMode = false }) {
   const { lang } = useLanguage();
@@ -23,8 +26,9 @@ export default function LandingPage({ darkMode = false }) {
       heroTitle: "English with a Mission",
       heroSubtitle:
         "Neptune's Tribe is an English learning journey inspired by environmental action. Learn English. Support the Planet.",
+      heroCall: "Become a premium member and help us build Neptune's Tribe!",
       signUp: "Register with Gmail",
-      support: "Support Us (Bank Transfer)",
+      support: "Support Us",
       aboutTitle: "What is Neptune's Tribe?",
       aboutText:
         "Neptune’s Tribe blends language learning with a mission to protect the environment. By improving your English, you’re also supporting real-world ecological projects.",
@@ -33,12 +37,12 @@ export default function LandingPage({ darkMode = false }) {
         "We believe language is power, and when combined with purpose, it can change the world. Neptune's Tribe empowers learners while supporting environmental change.",
       visionTitle: "Our Vision",
       visionText:
-        "To create a more connected and compassionate world in which looking after each other and our planet becomes the normal thing to do.",
+        "A more connected and compassionate world in which looking after each other and our planet becomes the normal thing to do.",
       valuesTitle: "Our Values",
       valuesText: "",
       teamTitle: "Meet the team",
       teamText:
-        "We have decades of experience running language schools, and we have now combined this with our passion for the environment to create Neptune's Tribe.",
+        "We have decades of experience in language education, and we have now combined this with our passion for the environment to create Neptune's Tribe.",
       supportInfo:
         "To support us directly, please make a transfer to: [Bank Account Details] — Thank you!",
     },
@@ -46,8 +50,10 @@ export default function LandingPage({ darkMode = false }) {
       heroTitle: "Aprenda Inglês. Apoie o Planeta.",
       heroSubtitle:
         "Neptune's Tribe é uma jornada de aprendizado de inglês inspirada pela ação ambiental.",
+      heroCall:
+        "Faça uma assinatura premium e nos ajude a construir a Neptune's Tribe!",
       signUp: "Cadastre-se com o Gmail",
-      support: "Apoie-nos (Transferência Bancária)",
+      support: "Apoie-nos",
       aboutTitle: "O que é a Neptune's Tribe?",
       aboutText:
         "Neptune’s Tribe une o aprendizado de idiomas com a missão de proteger o meio ambiente. Ao melhorar seu inglês, você também apoia projetos ecológicos reais.",
@@ -56,12 +62,12 @@ export default function LandingPage({ darkMode = false }) {
         "Acreditamos que a linguagem é poder — e quando combinada com propósito, pode mudar o mundo. Neptune's Tribe capacita os alunos enquanto apoia a mudança ambiental.",
       visionTitle: "Nossa Visão",
       visionText:
-        "Para criar um mundo mais conectado e compassivo, no qual cuidar uns dos outros e do nosso planeta se torne algo normal a ser feito.",
+        "Um mundo mais conectado e compassivo, no qual cuidar uns dos outros e do nosso planeta se torne algo normal a ser feito.",
       valuesTitle: "Nossos Valores",
       valuesText: "",
       teamTitle: "Conheça a equipe",
       teamText:
-        "Temos décadas de experiência administrando escolas de idiomas e agora combinamos isso com nossa paixão pelo meio ambiente para criar a Neptune's Tribe.",
+        "Temos décadas de experiência em ensino de idiomas e agora combinamos isso com nossa paixão pelo meio ambiente para criar a Neptune's Tribe.",
       supportInfo:
         "Para nos apoiar diretamente, por favor, faça uma transferência para: [Dados Bancários] — Obrigado!",
     },
@@ -127,24 +133,29 @@ export default function LandingPage({ darkMode = false }) {
             {copy.heroTitle}
           </motion.h2>
           <motion.p
-            className="text-lg max-w-xl mb-8"
+            className="text-lg max-w-xl mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             {copy.heroSubtitle}
           </motion.p>
+
+          <motion.h1 className="font-bold text-primary-800 mb-4">
+            {copy.heroCall}
+          </motion.h1>
+
           <motion.div
             className="flex justify-center md:justify-start gap-4 flex-wrap"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            <Button className="rounded-2xl bg-gradient-to-b from-primary-400 to-primary-700 hover:from-primary-700 hover:to-primary-950 dark:from-primary-50 dark:to-primary-200 dark:hover:from-primary-100 dark:hover:to-primary-300 text-white dark:text-primary-950">
-              <Link href="/login">{copy.signUp}</Link>
-            </Button>
-            <Button className="rounded-2xl bg-gradient-to-b from-primary-400 to-primary-700 hover:from-primary-700 hover:to-primary-950 dark:from-primary-50 dark:to-primary-200 dark:hover:from-primary-100 dark:hover:to-primary-300 text-white dark:text-primary-950">
+            <Button className="w-fit rounded-2xl bg-gradient-to-b from-primary-400 to-primary-700 hover:from-primary-700 hover:to-primary-950 dark:from-primary-50 dark:to-primary-200 dark:hover:from-primary-100 dark:hover:to-primary-300 text-white dark:text-primary-950">
               <Link href="#support">{copy.support}</Link>
+            </Button>
+            <Button className="w-fit rounded-2xl bg-gradient-to-b from-primary-400 to-primary-700 hover:from-primary-700 hover:to-primary-950 dark:from-primary-50 dark:to-primary-200 dark:hover:from-primary-100 dark:hover:to-primary-300 text-white dark:text-primary-950">
+              <Link href="/login">{copy.signUp}</Link>
             </Button>
           </motion.div>
         </div>
@@ -155,7 +166,7 @@ export default function LandingPage({ darkMode = false }) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <motion.div className="relative w-80 h-80 md:w-96 md:h-96">
+          <motion.div className="relative w-80 h-80 md:w-104 md:h-104">
             <motion.img
               key={heroImages[currentImageIndex].src}
               src={heroImages[currentImageIndex].src}
@@ -309,7 +320,7 @@ export default function LandingPage({ darkMode = false }) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1 }}
             >
-              <h1 className="text-[16px] font-bold">Michael Watkins</h1>
+              <h1 className="text-[16px] font-bold">Dr Michael Watkins</h1>
               <p className="text-xs">Academic Content Creator</p>
             </motion.div>
           </div>
@@ -334,7 +345,7 @@ export default function LandingPage({ darkMode = false }) {
           </div>
           <div className="relative m-auto w-64 h-64">
             <motion.img
-              src="/team/paul-watkins.jpeg"
+              src="/team/paul-watkins-lake.jpg"
               alt="team"
               className="w-full h-full rounded-full object-cover border-4 border-white dark:border-primary-600 shadow-lg"
               initial={{ opacity: 0, y: 20 }}
@@ -376,20 +387,21 @@ export default function LandingPage({ darkMode = false }) {
       {/* Support Info Section */}
       <motion.section
         id="support"
-        className="py-16 px-4 md:px-24 bg-gray-50 dark:bg-primary-950 text-center"
+        className="pt-4 pb-12 px-4 md:px-12 bg-gray-100 dark:bg-primary-950 text-center"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <h3 className="text-2xl font-bold mb-4">{copy.support}</h3>
-        <p className="px-4 text-lg">{copy.supportInfo}</p>
+        <SupportUsSection />
       </motion.section>
+      {/* <StickyFooterSupport /> */}
 
-      {/* Footer */}
-      <footer className="bg-gray-100 py-6 text-center text-sm">
+      <footer className="bg-gray-50  dark:bg-primary-900 py-6 text-center text-sm">
         © {new Date().getFullYear()} Neptune&apos;s Tribe. All rights reserved.
       </footer>
     </div>
   );
 }
+
+// fixed bottom-0 inset-x-0 z-50
