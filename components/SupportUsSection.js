@@ -135,7 +135,7 @@ export default function SupportUsSection({
                 <p className="mb-4 text-center font-light">
                   {copy.dialogMessage} <br />
                   <span className="font-semibold">
-                    neptunes-tribe@gmail.com
+                    michaelalanwatkins@gmail.com
                   </span>{" "}
                 </p>
 
