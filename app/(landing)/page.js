@@ -39,7 +39,8 @@ export default function LandingPage({ darkMode = false }) {
       visionText:
         "A more connected and compassionate world in which looking after each other and our planet becomes the normal thing to do.",
       valuesTitle: "Our Values",
-      valuesText: "",
+      valuesText:
+        "A commitment to curiosity, creativity, compassion, and the interconnectedness of all beings.",
       teamTitle: "Meet the team",
       teamText:
         "We have decades of experience in language education, and we have now combined this with our passion for the environment to create Neptune's Tribe.",
@@ -64,7 +65,8 @@ export default function LandingPage({ darkMode = false }) {
       visionText:
         "Um mundo mais conectado e compassivo, no qual cuidar uns dos outros e do nosso planeta se torne algo normal a ser feito.",
       valuesTitle: "Nossos Valores",
-      valuesText: "",
+      valuesText:
+        "Um compromisso com a curiosidade, a criatividade, a compaixão e a interconexão de todos os seres.",
       teamTitle: "Conheça a equipe",
       teamText:
         "Temos décadas de experiência em ensino de idiomas e agora combinamos isso com nossa paixão pelo meio ambiente para criar a Neptune's Tribe.",
@@ -141,9 +143,7 @@ export default function LandingPage({ darkMode = false }) {
             {copy.heroSubtitle}
           </motion.p>
 
-          <motion.h1 className="font-bold text-primary-800 mb-4">
-            {copy.heroCall}
-          </motion.h1>
+          <motion.h1 className="text-lg mb-4">{copy.heroCall}</motion.h1>
 
           <motion.div
             className="flex justify-center md:justify-start gap-4 flex-wrap"
@@ -274,7 +274,7 @@ export default function LandingPage({ darkMode = false }) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1 }}
             >
-              <h1 className="text-[18px] font-bold">Our Values</h1>
+              <h1 className="text-[18px] font-bold">{copy.valuesTitle}</h1>
             </motion.div>
             <motion.div
               className="w-full h-full pb-2 rounded-4xl object-cover bg-white border-2 dark:bg-primary-950 border-white dark:border-primary-800 shadow-lg"
@@ -282,7 +282,7 @@ export default function LandingPage({ darkMode = false }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
             >
-              <p className="text-sm pt-12">{copy.visionText}</p>
+              <p className="text-sm pt-12">{copy.valuesText}</p>
             </motion.div>
           </div>
         </motion.div>
