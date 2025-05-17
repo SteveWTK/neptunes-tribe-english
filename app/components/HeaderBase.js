@@ -95,9 +95,7 @@ export default function HeaderBase({
           onClick={() => setDarkMode(!darkMode)}
           className="text-[16px] rounded-full px-2 pt-0.5 pb-1 text-white dark:text-primary-950 font-light bg-primary-700 dark:bg-blue-50 dark:border-gray-600"
         >
-          {/* {darkMode ? "☀️" : "🌙"} */}
-          {darkMode ? "Light Mode" : "Dark Mode"}
-          {/* {darkMode ? "Light Mode ☀️" : "Dark Mode 🌙"} */}
+          {darkMode ? "☀️" : "🌙"}
         </button>
       </div>
     </header>
