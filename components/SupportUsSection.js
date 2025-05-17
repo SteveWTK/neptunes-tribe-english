@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import BankTransferForm from "@/components/BankTransferForm";
+import PixCopyBox from "./ui/PixCopyBox";
 
 console.log("Progress is", Progress);
 console.log("Input is", Input);
@@ -28,11 +29,13 @@ export default function SupportUsSection({
     en: {
       supportHeader: "Support Neptune’s Tribe!",
       supportSub: `Help us reach our goal of ${targetSupporters} supporters and create amazing content and features!`,
-      supportBank: "Support us via bank transfer",
+      supportBank: "Transfer to our PIX key (CPF):",
+      accountName: "Name: Michael Alan Watkins",
+      clickToCopy: "Click to copy",
       supportStripe: "Support via Stripe",
       dialogHeader: "Thank you for supporting Neptune’s Tribe!",
       dialogMessage:
-        "Please fill in the form below and click 'Payment Made' or sent to",
+        "Please fill in the form below and click 'Payment Made' or send receipt to",
       otherButton: "Other",
       enterAmount: "Enter amount (R$)",
       close: "Close",
@@ -41,7 +44,10 @@ export default function SupportUsSection({
     pt: {
       supportHeader: "Apoie a Neptune’s Tribe!",
       supportSub: `Ajude-nos a atingir nossa meta de ${targetSupporters} apoiadores e a criar conteúdo e recursos incríveis!`,
-      supportBank: "Apoie-nos com um PIX",
+      supportBank: "Apoie-nos com um PIX (CPF)",
+      accountName: "Nome: Michael Alan Watkins",
+      clickToCopy: "Clique para copiar",
+
       supportStripe: "Apoie-nos via Stripe",
       dialogHeader: "Obrigado por apoiar a Neptune’s Tribe!",
       dialogMessage:
@@ -111,7 +117,6 @@ export default function SupportUsSection({
           {copy.otherButton}
         </Button>
       </div>
-
       {showCustom && (
         <div className="mb-6 text-center">
           <Input
@@ -123,11 +128,10 @@ export default function SupportUsSection({
           />
         </div>
       )}
-
-      <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
-        {/* <Button className="mt-4" onClick={() => handleSupport("stripe")}>
+      {/* <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
+        <Button className="mt-4" onClick={() => handleSupport("stripe")}>
           {copy.supportStripe}
-        </Button> */}
+        </Button>
         {showBankOption && (
           <Dialog>
             <DialogTrigger onClick={() => setIsDialogOpen(true)}>
@@ -160,11 +164,20 @@ export default function SupportUsSection({
             )}
           </Dialog>
         )}
+      </div> */}
+
+      <div className="flex flex-col mt-2 mb-6 items-center">
+        <p className="mb-6 text-center text-[16px] font-bold text-zinc-600 dark:text-zinc-300">
+          {copy.supportBank}
+        </p>
+
+        <PixCopyBox pixKey="72665904934" />
+        <p className="text-xs text-gray-500 mt-1">{copy.clickToCopy}</p>
+
+        <p className="m-2 text-center text-[16px] font-semibold text-zinc-600 dark:text-zinc-300">
+          {copy.accountName}
+        </p>
       </div>
-      <p className="mb-2 text-center text-[16px] font-bold text-zinc-600 dark:text-zinc-300">
-        PIX: 72665904934 <br />
-        Michael Alan Watkins
-      </p>
       <p className="mb-4 text-center font-light">
         {copy.dialogMessage} <br />
         <span className="font-semibold">michaelalanwatkins@gmail.com</span>{" "}
