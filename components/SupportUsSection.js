@@ -35,7 +35,7 @@ export default function SupportUsSection({
       supportStripe: "Support via Stripe",
       dialogHeader: "Thank you for supporting Neptune’s Tribe!",
       dialogMessage:
-        "Please fill in the form below and click 'Payment Made' or send receipt to",
+        "Please fill in the form below and click 'Payment Made' or send your payment slip to",
       otherButton: "Other",
       enterAmount: "Enter amount (R$)",
       close: "Close",

@@ -117,7 +117,7 @@ export default function BankTransferForm() {
         />
       </div>
 
-      <div>
+      {/* <div>
         <label className="block text-sm font-medium">{copy.receipt}</label>
         <input
           type="file"
@@ -125,10 +125,36 @@ export default function BankTransferForm() {
           onChange={(e) => setFile(e.target.files[0])}
           className="w-full mt-1 p-2 border rounded font-light text-center"
         />
-      </div>
+      </div> */}
 
       <button type="submit" disabled={loading} className={buttonClass}>
-        {loading ? sending : copy.paymentMade}
+        {loading ? (
+          <span className="flex items-center justify-center space-x-2">
+            <svg
+              className="animate-spin h-4 w-4 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+            <span>{copy.sending}</span>
+          </span>
+        ) : (
+          copy.paymentMade
+        )}
       </button>
     </form>
   );

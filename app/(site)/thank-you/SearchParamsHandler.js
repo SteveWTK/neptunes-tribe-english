@@ -4,33 +4,60 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/contexts/LanguageContext";
 
 export default function SearchParamsHandler() {
   const params = useSearchParams();
-  const lang = params.get("lang");
+  // const lang = params.get("lang");
   const name = params.get("name");
   const email = params.get("email");
 
-  useEffect(() => {
-    console.log("LANG received:", lang);
-    // maybe do something useful with lang
-  }, [lang]);
+  // useEffect(() => {
+  //   console.log("LANG received:", lang);
+  //   // maybe do something useful with lang
+  // }, [lang]);
+
+  const { lang } = useLanguage();
+
+  const t = {
+    en: {
+      thankyouHeader: "Thank you",
+      reviewMessage:
+        "We have received your information and will review your donation as soon as possible.",
+      emailMessage:
+        "A confirmation of your Founding Member Status will be sent to",
+      yourSupportMessage: "",
+      supportMessage:
+        "Your support will help us build Neptune's Tribe and make it available to people throughout the world",
+      exploreUnits: "Explore our Units",
+    },
+    pt: {
+      thankyouHeader: "Obrigado",
+      reviewMessage:
+        "Recebemos suas informações e analisaremos sua doação o mais breve possível.",
+      emailMessaage:
+        "Uma confirmação do seu status de Sócio Fundador será enviada a",
+      supportMessage:
+        "Seu apoio nos ajudará a construir a Neptune's Tribe e torná-la disponível para pessoas em todo o mundo",
+
+      exploreUnits: "Explore nosso Material",
+    },
+  };
+
+  const copy = t[lang];
 
   return (
-    <div className="text-center">
-      {/* <h1 className="text-2xl font-bold mb-4">Thank you for your support!</h1>
-      <p className="text-lg">We’ve received your submission.</p> */}
-      {lang && <p className="mt-4 italic">Language: {lang}</p>}
+    <div className="text-center py-6">
+      {/* {lang && <p className="mt-4 italic">Language: {lang}</p>} */}
       <h1 className="text-3xl font-semibold mb-4">
-        Thank you{name ? `, ${name}` : ""}!
+        {copy.thankyouHeader}
+        {name ? `, ${name}` : ""}!
       </h1>
       <p className="text-lg mb-6">
-        We have received your information and will review your donation as soon
-        as possible.
+        {copy.reviewMessage}{" "}
         {email && (
           <>
-            <br />A confirmation of your{" "}
-            <strong>Premium Founding Member</strong> Status will be sent to{" "}
+            {copy.emailMessaage}
             <br /> <strong>{email}</strong>.
           </>
         )}
@@ -40,13 +67,10 @@ export default function SearchParamsHandler() {
         href="/content"
         className="inline-block mt-4 bg-primary-600 text-white px-6 py-2 rounded-full hover:bg-primary-700 transition"
       >
-        Explore Units
+        {copy.exploreUnits}
       </Link>
 
-      <p className="mt-8 text-sm text-gray-500">
-        Your support helps keep Neptune&apos;s Tribe free and accessible to
-        everyone. Thank you for being part of the journey.
-      </p>
+      <p className="mt-8 text-sm text-gray-500">{copy.supportMessage}</p>
     </div>
   );
 }
