@@ -22,10 +22,8 @@ export default function SearchParamsHandler() {
   const t = {
     en: {
       thankyouHeader: "Thank you",
-      reviewMessage:
-        "We have received your information and will review your donation as soon as possible.",
-      emailMessage:
-        "A confirmation of your Founding Member Status will be sent to",
+      reviewMessage: "We have received your information.",
+      emailMessage: "A confirmation will be sent as soon as possible to",
       yourSupportMessage: "",
       supportMessage:
         "Your support will help us build Neptune's Tribe and make it available to people throughout the world",
@@ -33,10 +31,8 @@ export default function SearchParamsHandler() {
     },
     pt: {
       thankyouHeader: "Obrigado",
-      reviewMessage:
-        "Recebemos suas informações e analisaremos sua doação o mais breve possível.",
-      emailMessaage:
-        "Uma confirmação do seu status de Sócio Fundador será enviada a",
+      reviewMessage: "Recebemos suas informações.",
+      emailMessage: "Uma confirmação será enviada o mais breve possível a",
       supportMessage:
         "Seu apoio nos ajudará a construir a Neptune's Tribe e torná-la disponível para pessoas em todo o mundo",
 
@@ -57,7 +53,7 @@ export default function SearchParamsHandler() {
         {copy.reviewMessage}{" "}
         {email && (
           <>
-            {copy.emailMessaage}
+            {copy.emailMessage}
             <br /> <strong>{email}</strong>.
           </>
         )}
