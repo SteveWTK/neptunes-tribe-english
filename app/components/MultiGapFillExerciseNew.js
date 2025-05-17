@@ -5,6 +5,7 @@ import { fetchData, fetchUnitDetails } from "@/lib/data-service";
 import Image from "next/image";
 import TextExpander from "./TextExpander";
 import PieChartAnswers from "./PieChartAnswers";
+import { useLanguage } from "@/lib/contexts/LanguageContext";
 // import { useMockProgress } from "../hooks/useMockProgress";
 
 export default function MultiGapFillExerciseNew({ unitId }) {
@@ -21,6 +22,25 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   const [spanishTranslation, setSpanishTranslation] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("no"); // Default: English
   // const [progress, updateProgress] = useMockProgress();
+
+  const { lang } = useLanguage();
+
+  const t = {
+    en: {
+      showFullTextButton: "Show Full Text",
+      showGapFillButton: "Show Gap Fill",
+      translationButton: "Translation",
+      submitAnswersButton: "Submit Answers",
+    },
+    pt: {
+      showFullTextButton: "Ver Texto Completo",
+      showGapFillButton: "Ver Exercício",
+      translationButton: "Tradução",
+      submitAnswersButton: "Enviar Respostas",
+    },
+  };
+
+  const copy = t[lang];
 
   const percentage = (score / questions.length) * 100;
   let message;
@@ -211,7 +231,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
               className="w-fit text-[16px] rounded-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
               onClick={() => setShowFullText(!showFullText)}
             >
-              {showFullText ? "Show Gap Fill" : "Show Full Text"}
+              {showFullText ? copy.showGapFillButton : copy.showFullTextButton}
             </button>
 
             {/* Display Full Text or Gap-Fill Exercise */}
@@ -292,7 +312,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
             htmlFor="languageSelect"
             className="mr-2 text-primary-900 dark:text-white"
           >
-            Translation:
+            {copy.translationButton}:
           </label>
           <select
             id="languageSelect"

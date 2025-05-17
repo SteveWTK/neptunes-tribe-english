@@ -13,8 +13,8 @@ export default function HeaderBase({
   const languageOptions = {
     en: { label: "English", flag: "🇬🇧" },
     pt: { label: "Português", flag: "🇧🇷" },
-    es: { label: "Español", flag: "ES" },
-    th: { label: "ไทย", flag: "TH" },
+    // es: { label: "Español", flag: "ES" },
+    // th: { label: "ไทย", flag: "TH" },
   };
 
   const localizedLinks = {
@@ -93,9 +93,11 @@ export default function HeaderBase({
 
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className="text-[16px] rounded-full px-1 pt-0.5 pb-1 bg-primary-700 dark:bg-blue-50 dark:border-gray-600"
+          className="text-[16px] rounded-full px-2 pt-0.5 pb-1 text-white dark:text-primary-950 font-light bg-primary-700 dark:bg-blue-50 dark:border-gray-600"
         >
-          {darkMode ? "☀️" : "🌙"}
+          {/* {darkMode ? "☀️" : "🌙"} */}
+          {darkMode ? "Light Mode" : "Dark Mode"}
+          {/* {darkMode ? "Light Mode ☀️" : "Dark Mode 🌙"} */}
         </button>
       </div>
     </header>
