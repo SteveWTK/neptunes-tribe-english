@@ -69,7 +69,7 @@ export default function LandingPage({ darkMode = false }) {
         "Um compromisso com a curiosidade, a criatividade, a compaixão e a interconexão de todos os seres.",
       teamTitle: "Conheça a equipe",
       teamText:
-        "Temos décadas de experiência em ensino de idiomas e agora combinamos isso com nossa paixão pelo meio ambiente para criar a Neptune's Tribe.",
+        "Temos décadas de experiência no ensino de idiomas e agora combinamos isso com nossa paixão pelo meio ambiente para criar a Neptune's Tribe.",
       supportInfo:
         "Para nos apoiar diretamente, por favor, faça uma transferência para: [Dados Bancários] — Obrigado!",
     },
@@ -154,9 +154,9 @@ export default function LandingPage({ darkMode = false }) {
             <Button className="w-fit rounded-2xl bg-gradient-to-b from-primary-400 to-primary-700 hover:from-primary-700 hover:to-primary-950 dark:from-primary-50 dark:to-primary-200 dark:hover:from-primary-100 dark:hover:to-primary-300 text-white dark:text-primary-950">
               <Link href="#support">{copy.support}</Link>
             </Button>
-            <Button className="w-fit rounded-2xl bg-gradient-to-b from-primary-400 to-primary-700 hover:from-primary-700 hover:to-primary-950 dark:from-primary-50 dark:to-primary-200 dark:hover:from-primary-100 dark:hover:to-primary-300 text-white dark:text-primary-950">
+            {/* <Button className="w-fit rounded-2xl bg-gradient-to-b from-primary-400 to-primary-700 hover:from-primary-700 hover:to-primary-950 dark:from-primary-50 dark:to-primary-200 dark:hover:from-primary-100 dark:hover:to-primary-300 text-white dark:text-primary-950">
               <Link href="/login">{copy.signUp}</Link>
-            </Button>
+            </Button> */}
           </motion.div>
         </div>
 

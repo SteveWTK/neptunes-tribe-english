@@ -29,7 +29,7 @@ export default function HeaderBase({
         { href: "/content", label: "Unidades" },
         { href: "#about", label: "Sobre" },
         { href: "#team", label: "Equipe" },
-        { href: "support", label: "Apoie" },
+        { href: "#support", label: "Apoie" },
       ],
       // ... add other languages as needed
     },
