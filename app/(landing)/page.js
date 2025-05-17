@@ -142,7 +142,14 @@ export default function LandingPage({ darkMode = false }) {
             {copy.heroSubtitle}
           </motion.p>
 
-          <motion.h1 className="text-lg mb-4">{copy.heroCall}</motion.h1>
+          <motion.h1
+            className="text-lg mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            {copy.heroCall}
+          </motion.h1>
 
           <motion.div
             className="flex justify-center md:justify-start gap-4 flex-wrap"
