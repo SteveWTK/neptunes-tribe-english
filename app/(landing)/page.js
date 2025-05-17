@@ -26,8 +26,7 @@ export default function LandingPage({ darkMode = false }) {
       heroTitle: "English with a Mission",
       heroSubtitle:
         "Neptune's Tribe is an English learning journey inspired by environmental action. Learn English. Support the Planet.",
-      heroCall:
-        "Become a Premium Founding Supporter and help us build Neptune's Tribe!",
+      heroCall: "Become a Supporter and help us build Neptune's Tribe!",
       signUp: "Register with Gmail",
       support: "Support Us",
       aboutTitle: "What is Neptune's Tribe?",
@@ -52,8 +51,7 @@ export default function LandingPage({ darkMode = false }) {
       heroTitle: "Aprenda Inglês. Apoie o Planeta.",
       heroSubtitle:
         "Neptune's Tribe é uma jornada de aprendizado de inglês inspirada pela ação ambiental.",
-      heroCall:
-        "Faça uma Assinatura Sócio Fundador Premium e nos ajude a construir a Neptune's Tribe!",
+      heroCall: "Nos apoie e ajude a construir a Neptune's Tribe!",
       signUp: "Cadastre-se com o Gmail",
       support: "Apoie-nos",
       aboutTitle: "O que é a Neptune's Tribe?",
