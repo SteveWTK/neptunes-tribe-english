@@ -44,6 +44,10 @@ export default function LandingPage({ darkMode = false }) {
       teamTitle: "Meet the team",
       teamText:
         "We have decades of experience in language education, and we have now combined this with our passion for the environment to create Neptune's Tribe.",
+      roleMichael: "Academic Content Creator",
+      roleStephen: "Technical Director",
+      rolePaul: "Corporate Sales Director",
+      roleDavid: "Communications Director",
       supportInfo:
         "To support us directly, please make a transfer to: [Bank Account Details] — Thank you!",
     },
@@ -69,6 +73,10 @@ export default function LandingPage({ darkMode = false }) {
       teamTitle: "Conheça a equipe",
       teamText:
         "Temos décadas de experiência no ensino de idiomas e agora combinamos isso com nossa paixão pelo meio ambiente para criar a Neptune's Tribe.",
+      roleMichael: "Autor Principal",
+      roleStephen: "Diretor técnico",
+      rolePaul: "Diretor de Vendas",
+      roleDavid: "diretor de Comunicações",
       supportInfo:
         "Para nos apoiar diretamente, por favor, faça uma transferência para: [Dados Bancários] — Obrigado!",
     },
@@ -327,7 +335,7 @@ export default function LandingPage({ darkMode = false }) {
               transition={{ duration: 1 }}
             >
               <h1 className="text-[16px] font-bold">Dr Michael Watkins</h1>
-              <p className="text-xs">Academic Content Creator</p>
+              <p className="text-xs">{copy.roleMichael}</p>
             </motion.div>
           </div>
           <div className="relative m-auto w-64 h-64">
@@ -346,7 +354,7 @@ export default function LandingPage({ darkMode = false }) {
               transition={{ duration: 1 }}
             >
               <h1 className="text-[16px] font-bold">Stephen Watkins</h1>
-              <p className="text-xs">Technical Director</p>
+              <p className="text-xs">{copy.roleStephen}</p>
             </motion.div>
           </div>
           <div className="relative m-auto w-64 h-64">
@@ -365,7 +373,7 @@ export default function LandingPage({ darkMode = false }) {
               transition={{ duration: 1 }}
             >
               <h1 className="text-[16px] font-bold">Paul Watkins</h1>
-              <p className="text-xs">Corporate Sales Director</p>
+              <p className="text-xs">{copy.rolePaul}</p>
             </motion.div>
           </div>
           <div className="relative m-auto w-64 h-64">
@@ -384,7 +392,7 @@ export default function LandingPage({ darkMode = false }) {
               transition={{ duration: 1 }}
             >
               <h1 className="text-[16px] font-bold">David Watkins</h1>
-              <p className="text-xs">Communications Director</p>
+              <p className="text-xs">{copy.roleDavid}</p>
             </motion.div>
           </div>
         </motion.div>
@@ -403,9 +411,9 @@ export default function LandingPage({ darkMode = false }) {
       </motion.section>
       {/* <StickyFooterSupport /> */}
 
-      <footer className="bg-gray-50  dark:bg-primary-900 py-6 text-center text-sm">
+      {/* <footer className="bg-gray-50  dark:bg-primary-900 py-6 text-center text-sm">
         © {new Date().getFullYear()} Neptune&apos;s Tribe. All rights reserved.
-      </footer>
+      </footer> */}
     </div>
   );
 }

@@ -20,13 +20,13 @@ export default function HeaderBase({
   const localizedLinks = {
     landing: {
       en: [
-        { href: "/content", label: "Units" },
+        { href: "/units", label: "Units" },
         { href: "#about", label: "About" },
         { href: "#team", label: "Team" },
         { href: "#support", label: "Support" },
       ],
       pt: [
-        { href: "/content", label: "Unidades" },
+        { href: "/units", label: "Unidades" },
         { href: "#about", label: "Sobre" },
         { href: "#team", label: "Equipe" },
         { href: "#support", label: "Apoie" },
@@ -36,7 +36,7 @@ export default function HeaderBase({
     site: {
       en: [
         { href: "/", label: "Home" },
-        { href: "/content", label: "Units" },
+        { href: "/units", label: "Units" },
         { href: "/challenges", label: "Challenges" },
         { href: "/support-us", label: "Support" },
 
@@ -45,7 +45,7 @@ export default function HeaderBase({
       ],
       pt: [
         { href: "/", label: "Home" },
-        { href: "/content", label: "Unidades" },
+        { href: "/units", label: "Unidades" },
         { href: "/challenges", label: "Desafios" },
         { href: "/support-us", label: "Apoie" },
 

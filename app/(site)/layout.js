@@ -1,6 +1,7 @@
 "use client";
 import { useDarkMode, useLanguage } from "@/lib/hooks";
 import SiteHeader from "@/app/components/SiteHeader";
+import SiteFooter from "@/app/components/SiteFooter";
 
 export default function LandingLayout({ children }) {
   const { darkMode, setDarkMode } = useDarkMode();
@@ -16,6 +17,7 @@ export default function LandingLayout({ children }) {
         languageOptions={languageOptions}
       />
       {children}
+      <SiteFooter />
     </>
   );
 }
