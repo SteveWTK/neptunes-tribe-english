@@ -14,7 +14,7 @@ console.log("Progress is", Progress);
 console.log("Input is", Input);
 
 export default function SupportUsSection({
-  initialSupporters = 87,
+  initialSupporters = 88,
   targetSupporters = 1000,
   showBankOption = true,
 }) {
