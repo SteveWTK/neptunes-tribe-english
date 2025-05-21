@@ -209,7 +209,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
                 width={600}
                 height={400}
                 quality={80}
-                className="w-full h-48 min-[440px]:h-72 sm:h-96 object-cover object-[50%_20%] lg:content-start border-2 rounded-xl
+                className="w-full h-48 min-[440px]:h-72 sm:h-96 object-cover object-[50%_20%] lg:justify-start border-2 rounded-xl
                  border-primary-600 hover:ring-1 hover:ring-primary-950 dark:hover:ring-primary-600"
                 alt={unitData.title || "Unit Image"}
               />

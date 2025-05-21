@@ -63,7 +63,7 @@ export default function LandingPage({ darkMode = false }) {
         "Neptune’s Tribe une o aprendizado de idiomas com a missão de proteger o meio ambiente. Ao melhorar seu inglês, você também apoia projetos ecológicos reais.",
       missionTitle: "Nossa Missão",
       missionText:
-        "Acreditamos que a linguagem é poder — e quando combinada com propósito, pode mudar o mundo. Neptune's Tribe capacita os alunos enquanto apoia a mudança ambiental.",
+        "Acreditamos que a comunicação é poder — e quando combinada com propósito, pode mudar o mundo. Neptune's Tribe capacita os alunos enquanto apoia a mudança ambiental.",
       visionTitle: "Nossa Visão",
       visionText:
         "Um mundo mais conectado e compassivo, no qual cuidar uns dos outros e do nosso planeta se torne algo normal a ser feito.",
