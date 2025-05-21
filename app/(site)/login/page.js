@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useSearchParams } from "next/navigation";
+import { useState, useContext, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
@@ -8,7 +9,7 @@ import { useLanguage } from "@/lib/contexts/LanguageContext";
 export default function LoginPage() {
   const { lang } = useLanguage();
   const router = useRouter();
-
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -55,6 +56,11 @@ export default function LoginPage() {
   };
 
   const copy = t[lang];
+
+  useEffect(() => {
+    const prefillEmail = searchParams.get("email");
+    if (prefillEmail) setEmail(prefillEmail);
+  }, [searchParams]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
