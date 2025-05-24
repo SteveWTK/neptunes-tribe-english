@@ -22,8 +22,10 @@ export default function LoginPage() {
 
   const t = {
     en: {
-      login: "Login",
-      register: "Register",
+      loginChoice: "Or sign in with your email and password",
+      registerChoice: "Or register with an email and password",
+      login: "Sign in",
+      register: "Create an Account",
       toggleToRegister: "Don’t have an account? Register here.",
       toggleToLogin: "Already have an account? Login here.",
       email: "Email",
@@ -39,8 +41,10 @@ export default function LoginPage() {
       ok: "OK",
     },
     pt: {
-      login: "Entrar",
-      register: "Registrar",
+      loginChoice: "Ou entre com seu email e senha",
+      registerChoice: "Ou crie uma conta com seu email e senha",
+      login: "Entre",
+      register: "Crie uma Conta",
       toggleToRegister: "Não tem uma conta? Registre-se aqui.",
       toggleToLogin: "Já tem uma conta? Entre aqui.",
       email: "Email",
@@ -112,13 +116,17 @@ export default function LoginPage() {
   return (
     <div className="h-100svh">
       <div className="max-w-md mx-auto mt-12 mb-24 p-6 bg-white dark:bg-primary-900 rounded-xl shadow-md relative">
-        <h1 className="text-2xl font-bold text-center mb-4">
-          {isRegister ? t.register : t.login}
+        <h1 className="text-2xl font-bold text-center mb-6 dark:text-accent-100">
+          {isRegister ? copy.register : copy.login}
         </h1>
 
         <div className="flex justify-center align-middle mb-6">
           <SignInButton />
         </div>
+
+        <p className="text-center my-2">
+          {isRegister ? copy.registerChoice : copy.loginChoice}
+        </p>
 
         {/* <button
           onClick={() => signIn("google")}

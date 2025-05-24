@@ -1,23 +1,29 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
-  const supabase = createServerComponentClient({ cookies });
+  const cookieStore = cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    { cookies: () => cookieStore }
+  );
 
   const {
-    priceType = "subscription", // "subscription" or "one_time"
-    priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID, // allow override
+    priceType = "subscription",
+    priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
   } = await req.json();
 
   const {
     data: { user },
+    error,
   } = await supabase.auth.getUser();
 
-  if (!user) {
+  if (!user || error) {
     return new NextResponse("Not authenticated", { status: 401 });
   }
 

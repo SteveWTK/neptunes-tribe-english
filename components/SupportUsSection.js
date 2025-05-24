@@ -9,12 +9,13 @@ import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import BankTransferForm from "@/components/BankTransferForm";
 import PixCopyBox from "./ui/PixCopyBox";
+import SupportButtons from "./SupportButtons";
 
 console.log("Progress is", Progress);
 console.log("Input is", Input);
 
 export default function SupportUsSection({
-  initialSupporters = 88,
+  initialSupporters = 90,
   targetSupporters = 1000,
   showBankOption = true,
 }) {
@@ -32,7 +33,7 @@ export default function SupportUsSection({
       supportBank: "Transfer to our PIX key (CPF):",
       accountName: "Name: Michael Alan Watkins",
       clickToCopy: "Click to copy",
-      supportStripe: "Support via Stripe",
+      supportStripe: "Support us via Stripe",
       dialogHeader: "Thank you for supporting Neptune’s Tribe!",
       dialogMessage:
         "Please fill in the form below and click 'Payment Made' or send your payment slip to",
@@ -92,6 +93,10 @@ export default function SupportUsSection({
         </span>{" "}
         of {targetSupporters}
       </p>
+      <p className="mb-6 text-center text-[16px] font-bold text-zinc-600 dark:text-zinc-300">
+        {copy.supportStripe}
+      </p>
+      <SupportButtons />
       <div className="flex gap-4 justify-center mb-6">
         {[50, 100].map((amt) => (
           <Button
@@ -128,7 +133,30 @@ export default function SupportUsSection({
           />
         </div>
       )}
-      {/* <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
+
+      <div className="flex flex-col mt-2 mb-6 items-center">
+        <p className="mb-6 text-center text-[16px] font-bold text-zinc-600 dark:text-zinc-300">
+          {copy.supportBank}
+        </p>
+
+        <PixCopyBox pixKey="72665904934" />
+        <p className="text-xs text-gray-500 mt-1">{copy.clickToCopy}</p>
+
+        <p className="m-2 text-center text-[16px] font-semibold text-zinc-600 dark:text-zinc-300">
+          {copy.accountName}
+        </p>
+      </div>
+      <p className="mb-4 text-center font-light">
+        {copy.dialogMessage} <br />
+        <span className="font-semibold">michaelalanwatkins@gmail.com</span>{" "}
+      </p>
+      <BankTransferForm />
+    </section>
+  );
+}
+
+{
+  /* <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
         <Button className="mt-4" onClick={() => handleSupport("stripe")}>
           {copy.supportStripe}
         </Button>
@@ -164,25 +192,5 @@ export default function SupportUsSection({
             )}
           </Dialog>
         )}
-      </div> */}
-
-      <div className="flex flex-col mt-2 mb-6 items-center">
-        <p className="mb-6 text-center text-[16px] font-bold text-zinc-600 dark:text-zinc-300">
-          {copy.supportBank}
-        </p>
-
-        <PixCopyBox pixKey="72665904934" />
-        <p className="text-xs text-gray-500 mt-1">{copy.clickToCopy}</p>
-
-        <p className="m-2 text-center text-[16px] font-semibold text-zinc-600 dark:text-zinc-300">
-          {copy.accountName}
-        </p>
-      </div>
-      <p className="mb-4 text-center font-light">
-        {copy.dialogMessage} <br />
-        <span className="font-semibold">michaelalanwatkins@gmail.com</span>{" "}
-      </p>
-      <BankTransferForm />
-    </section>
-  );
+      </div> */
 }
