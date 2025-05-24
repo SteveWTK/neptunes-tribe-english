@@ -96,7 +96,7 @@ export default function SupportUsSection({
       <p className="mb-6 text-center text-[16px] font-bold text-zinc-600 dark:text-zinc-300">
         {copy.supportStripe}
       </p>
-      <SupportButtons />
+      {/* <SupportButtons /> */}
       <div className="flex gap-4 justify-center mb-6">
         {[50, 100].map((amt) => (
           <Button
