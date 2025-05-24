@@ -314,7 +314,7 @@ export default function LandingPage({ darkMode = false }) {
         <h3 className="text-2xl font-bold mb-4">{copy.teamTitle}</h3>
         <p className="max-w-4xl mx-auto text-lg">{copy.teamText}</p>
         <motion.div
-          className="flex flex-col gap-10 md:grid md:grid-cols-2 xl:grid-cols-4 mt-8"
+          className="flex flex-col gap-10 lg:grid lg:grid-cols-3 xl:grid-cols-3 mt-8"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
@@ -376,7 +376,7 @@ export default function LandingPage({ darkMode = false }) {
               <p className="text-xs">{copy.rolePaul}</p>
             </motion.div>
           </div>
-          <div className="relative m-auto w-64 h-64">
+          {/* <div className="relative m-auto w-64 h-64">
             <motion.img
               src="/team/David.jpg"
               alt="team"
@@ -394,7 +394,7 @@ export default function LandingPage({ darkMode = false }) {
               <h1 className="text-[16px] font-bold">David Watkins</h1>
               <p className="text-xs">{copy.roleDavid}</p>
             </motion.div>
-          </div>
+          </div> */}
         </motion.div>
       </motion.section>
 

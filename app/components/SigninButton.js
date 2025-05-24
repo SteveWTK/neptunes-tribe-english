@@ -10,7 +10,7 @@ function SignInButton() {
           height="24"
           width="24"
         />
-        <span>Continue with Google</span>
+        <span>Sign in with Google</span>
       </button>
     </form>
   );

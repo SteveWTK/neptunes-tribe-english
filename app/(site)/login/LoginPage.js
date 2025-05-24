@@ -5,6 +5,7 @@ import { useState, useContext, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
+import SignInButton from "@/app/components/SigninButton";
 
 export default function LoginPage() {
   const { lang } = useLanguage();
@@ -12,6 +13,7 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isRegister, setIsRegister] = useState(false);
   const [message, setMessage] = useState("");
@@ -108,18 +110,22 @@ export default function LoginPage() {
   };
 
   return (
-    <container className="h-100svh">
-      <div className="max-w-md mx-auto my-24 p-6 bg-white dark:bg-primary-900 rounded-xl shadow-md relative">
+    <div className="h-100svh">
+      <div className="max-w-md mx-auto mt-12 mb-24 p-6 bg-white dark:bg-primary-900 rounded-xl shadow-md relative">
         <h1 className="text-2xl font-bold text-center mb-4">
           {isRegister ? t.register : t.login}
         </h1>
 
-        <button
+        <div className="flex justify-center align-middle mb-6">
+          <SignInButton />
+        </div>
+
+        {/* <button
           onClick={() => signIn("google")}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mb-4"
         >
           {copy.google}
-        </button>
+        </button> */}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -133,19 +139,26 @@ export default function LoginPage() {
             />
           </div>
 
-          <div>
+          <div className="relative">
             <label className="block text-sm mb-1">{copy.password}</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               required
               className="w-full p-2 border rounded"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-2/3 transform -translate-y-1/2 text-sm text-gray-500"
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
           </div>
 
           {isRegister && (
-            <div>
+            <div className="relative">
               <label className="block text-sm mb-1">
                 {copy.confirmPassword}
               </label>
@@ -156,6 +169,13 @@ export default function LoginPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-2/3 transform -translate-y-1/2 text-sm text-gray-500"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
             </div>
           )}
 
@@ -202,6 +222,6 @@ export default function LoginPage() {
           </div>
         )}
       </div>
-    </container>
+    </div>
   );
 }
