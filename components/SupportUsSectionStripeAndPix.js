@@ -14,7 +14,7 @@ import SupportButtons from "./SupportButtons";
 console.log("Progress is", Progress);
 console.log("Input is", Input);
 
-export default function SupportUsSection({
+export default function SupportUsSectionStripeAndPix({
   initialSupporters = 90,
   targetSupporters = 1000,
   showBankOption = true,
@@ -93,10 +93,10 @@ export default function SupportUsSection({
         </span>{" "}
         of {targetSupporters}
       </p>
-      {/* <p className="mb-6 text-center text-[16px] font-bold text-zinc-600 dark:text-zinc-300">
+      <p className="mb-6 text-center text-[16px] font-bold text-zinc-600 dark:text-zinc-300">
         {copy.supportStripe}
       </p>
-      <SupportButtons /> */}
+      <SupportButtons />
       <div className="flex gap-4 justify-center mb-6">
         {[50, 100].map((amt) => (
           <Button
@@ -153,44 +153,4 @@ export default function SupportUsSection({
       <BankTransferForm />
     </section>
   );
-}
-
-{
-  /* <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
-        <Button className="mt-4" onClick={() => handleSupport("stripe")}>
-          {copy.supportStripe}
-        </Button>
-        {showBankOption && (
-          <Dialog>
-            <DialogTrigger onClick={() => setIsDialogOpen(true)}>
-              <button className={buttonClass}>{copy.supportBank}</button>
-            </DialogTrigger>
-
-            {isDialogOpen && (
-              <DialogContent onClose={() => setIsDialogOpen(false)}>
-                <p className="mb-2 text-center text-[16px] font-bold text-zinc-600 dark:text-zinc-300">
-                  PIX: 72665904934 <br />
-                  Michael Alan Watkins
-                </p>
-                <p className="mb-4 text-center font-light">
-                  {copy.dialogMessage} <br />
-                  <span className="font-semibold">
-                    michaelalanwatkins@gmail.com
-                  </span>{" "}
-                </p>
-                <h3 className="text-[16px] mb-2 text-center">
-                  {copy.dialogHeader}
-                </h3>
-                <Button
-                  onClick={() => setIsDialogOpen(false)}
-                  variant="outline"
-                  className="w-full"
-                >
-                  {copy.close}
-                </Button>
-              </DialogContent>
-            )}
-          </Dialog>
-        )}
-      </div> */
 }
