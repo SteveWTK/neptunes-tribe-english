@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import Stripe from "stripe";
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient } from "@supabase/auth-helpers-nextjs"; // ✅ use the right package
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2024-04-10",
@@ -17,7 +17,7 @@ export async function POST(request) {
   const {
     priceType = "subscription",
     priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
-  } = await req.json();
+  } = await request.json(); // ✅ fix here too
 
   const {
     data: { user },
@@ -28,7 +28,6 @@ export async function POST(request) {
     return new NextResponse("Not authenticated", { status: 401 });
   }
 
-  // Try to find existing Stripe customer
   const existingCustomers = await stripe.customers.list({
     email: user.email,
     limit: 1,
@@ -46,7 +45,7 @@ export async function POST(request) {
     payment_method_types: ["card"],
     customer: customer.id,
     line_items: [{ price: priceId, quantity: 1 }],
-    metadata: { supabase_id: user.id }, // ✅ Add Supabase user ID to metadata
+    metadata: { supabase_id: user.id },
     success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard?success=true`,
     cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard?canceled=true`,
   });
