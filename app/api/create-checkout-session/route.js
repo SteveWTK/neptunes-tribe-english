@@ -9,7 +9,7 @@ export async function POST(req) {
   const cookieStore = cookies();
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     { cookies: () => cookieStore }
   );
 
@@ -27,16 +27,25 @@ export async function POST(req) {
     return new NextResponse("Not authenticated", { status: 401 });
   }
 
-  const customer = await stripe.customers.create({
+  // Try to find existing Stripe customer
+  const existingCustomers = await stripe.customers.list({
     email: user.email,
-    metadata: { supabase_id: user.id },
+    limit: 1,
   });
+
+  const customer =
+    existingCustomers.data[0] ||
+    (await stripe.customers.create({
+      email: user.email,
+      metadata: { supabase_id: user.id },
+    }));
 
   const session = await stripe.checkout.sessions.create({
     mode: priceType === "one_time" ? "payment" : "subscription",
     payment_method_types: ["card"],
     customer: customer.id,
     line_items: [{ price: priceId, quantity: 1 }],
+    metadata: { supabase_id: user.id }, // ✅ Add Supabase user ID to metadata
     success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard?success=true`,
     cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard?canceled=true`,
   });
