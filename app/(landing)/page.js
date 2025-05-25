@@ -12,7 +12,7 @@ import Footer from "@/components/Footer";
 export default function LandingPage({ darkMode = false }) {
   const { lang } = useLanguage();
 
-  console.log("LANG received:", lang);
+  // console.log("LANG received:", lang);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [open, setOpen] = useState(false);
