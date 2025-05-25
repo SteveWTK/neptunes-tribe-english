@@ -5,6 +5,8 @@ import { useState } from "react";
 export default function SupportButtons() {
   const [loading, setLoading] = useState(false);
 
+  const oneTimePriceId = process.env.NEXT_PUBLIC_STRIPE_ONE_TIME_PRICE_ID;
+
   const supportButtonClass =
     "font-semibold rounded-2xl px-3 py-1.5 w-60 bg-gradient-to-b from-primary-200 to-primary-400 hover:from-primary-300 hover:to-primary-500 dark:from-primary-50 dark:to-primary-200 dark:hover:from-primary-100 dark:hover:to-primary-300 text-primary-950 dark:text-primary-950";
 
@@ -16,12 +18,12 @@ export default function SupportButtons() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           priceType,
-          ...(priceId && { priceId }),
+          priceId,
         }),
       });
 
       if (!res.ok) {
-        const errorText = await res.text(); // read raw error
+        const errorText = await res.text();
         throw new Error(`Request failed: ${res.status} - ${errorText}`);
       }
 
@@ -47,12 +49,7 @@ export default function SupportButtons() {
 
       <button
         className={supportButtonClass}
-        onClick={() =>
-          handleStripeCheckout(
-            "one_time",
-            process.env.NEXT_PUBLIC_STRIPE_ONE_TIME_PRICE_ID
-          )
-        }
+        onClick={() => handleStripeCheckout("one_time", oneTimePriceId)}
         disabled={loading}
       >
         {loading ? "Redirecting..." : "One-Time Support"}
