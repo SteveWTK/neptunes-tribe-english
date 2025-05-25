@@ -1,23 +1,25 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import Stripe from "stripe";
-import { createServerClient } from "@supabase/auth-helpers-nextjs"; // ✅ use the right package
+import { createClient } from "@supabase/supabase-js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2024-04-10",
 });
 
 export async function POST(request) {
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  const supabase = createClient(
+    {
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    },
     { cookies }
   );
 
   const {
     priceType = "subscription",
     priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
-  } = await request.json(); // ✅ fix here too
+  } = await request.json();
 
   const {
     data: { user },
