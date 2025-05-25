@@ -1,16 +1,17 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import Stripe from "stripe";
 import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2024-04-10",
+});
 
-export async function POST(req) {
-  const cookieStore = cookies();
+export async function POST(request) {
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    { cookies: () => cookieStore }
+    { cookies }
   );
 
   const {
