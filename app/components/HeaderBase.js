@@ -83,7 +83,7 @@ export default function HeaderBase({
       </nav>
 
       <div className="flex gap-4 md:gap-3 lg:gap-4 items-center">
-        {status === "authenticated" ? (
+        {/* {status === "authenticated" ? (
           <SignOutButton
             onClickonClick={() => signOut()}
             className="flex justify-end items-center"
@@ -95,7 +95,7 @@ export default function HeaderBase({
           >
             Sign In
           </Link>
-        )}
+        )} */}
 
         <select
           value={lang}
