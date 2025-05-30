@@ -70,9 +70,39 @@ export default function LoginPage() {
 
   const copy = t[lang];
 
+  // useEffect(() => {
+  //   const emailParam = searchParams.get("email");
+  //   if (emailParam && typeof emailParam === "string") setEmail(emailParam);
+  // }, [searchParams]);
+
+  // Add this to your existing useEffect in LoginPage.js
   useEffect(() => {
     const emailParam = searchParams.get("email");
-    if (emailParam && typeof emailParam === "string") setEmail(emailParam);
+    const confirmed = searchParams.get("confirmed");
+    const error = searchParams.get("error");
+
+    if (emailParam && typeof emailParam === "string") {
+      setEmail(emailParam);
+    }
+
+    // Handle confirmation success
+    if (confirmed === "true") {
+      setMessage("Email confirmed successfully! You can now sign in.");
+      // Optionally clear the URL parameters
+      const url = new URL(window.location);
+      url.searchParams.delete("confirmed");
+      window.history.replaceState({}, "", url);
+    }
+
+    // Handle confirmation errors
+    if (error === "confirmation_failed") {
+      setError(
+        "Email confirmation failed. Please try again or contact support."
+      );
+      const url = new URL(window.location);
+      url.searchParams.delete("error");
+      window.history.replaceState({}, "", url);
+    }
   }, [searchParams]);
 
   const handleSubmit = async (e) => {
