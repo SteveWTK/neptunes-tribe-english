@@ -1,7 +1,9 @@
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import HeaderLogo from "./HeaderLogo";
 import HeaderLogoDark from "./HeaderLogoDark";
-// import localizedLinks from "@/data/localizedLinks";
+import Link from "next/link";
+import SignOutButton from "./signoutButton";
+import { useSession, signOut } from "next-auth/react";
 
 export default function HeaderBase({
   type = "landing",
@@ -9,6 +11,8 @@ export default function HeaderBase({
   setDarkMode,
 }) {
   const { lang, setLang } = useLanguage();
+
+  const { data: session, status } = useSession();
 
   const languageOptions = {
     en: { label: "English", flag: "🇬🇧" },
@@ -59,7 +63,7 @@ export default function HeaderBase({
   const links = localizedLinks[type]?.[lang] || [];
 
   const buttonClass =
-    "text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600";
+    "text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:hover:text-accent-400 dark:hover:border-accent-400";
 
   // HeaderBase.defaultProps = {
   //   links: [],
@@ -79,6 +83,20 @@ export default function HeaderBase({
       </nav>
 
       <div className="flex gap-4 md:gap-3 lg:gap-4 items-center">
+        {status === "authenticated" ? (
+          <SignOutButton
+            onClickonClick={() => signOut()}
+            className="flex justify-end items-center"
+          />
+        ) : (
+          <Link
+            href="/login"
+            className="flex justify-end items-center py-0.5 px-5 font-josefin text-center bg-primary-50 rounded-2xl text-primary-900 hover:bg-primary-300 transition-colors"
+          >
+            Sign In
+          </Link>
+        )}
+
         <select
           value={lang}
           onChange={(e) => setLang(e.target.value)}
