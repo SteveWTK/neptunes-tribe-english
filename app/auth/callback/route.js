@@ -5,12 +5,13 @@ import { NextResponse } from "next/server";
 export async function GET(request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
+  const email = requestUrl.searchParams.get("email");
   const next = requestUrl.searchParams.get("next") ?? "/login";
 
   console.log("=== AUTH CALLBACK DEBUG ===");
   console.log("Full URL:", requestUrl.href);
   console.log("Code present:", !!code);
-  console.log("Code value:", code);
+  console.log("Email param:", email);
 
   if (code) {
     const cookieStore = cookies();
@@ -63,10 +64,12 @@ export async function GET(request) {
 
       if (data.user) {
         console.log("Email confirmed for user:", data.user.email);
-        // Redirect to login with email pre-filled and a success message
+        // Use email from URL params or fallback to user email
+        const userEmail = email || data.user.email;
+        // Redirect to login with email pre-filled and success message
         return NextResponse.redirect(
           `${requestUrl.origin}/login?email=${encodeURIComponent(
-            data.user.email
+            userEmail
           )}&confirmed=true`
         );
       }
@@ -90,6 +93,11 @@ export async function GET(request) {
 //   const requestUrl = new URL(request.url);
 //   const code = requestUrl.searchParams.get("code");
 //   const next = requestUrl.searchParams.get("next") ?? "/login";
+
+//   console.log("=== AUTH CALLBACK DEBUG ===");
+//   console.log("Full URL:", requestUrl.href);
+//   console.log("Code present:", !!code);
+//   console.log("Code value:", code);
 
 //   if (code) {
 //     const cookieStore = cookies();
@@ -127,6 +135,18 @@ export async function GET(request) {
 //           `${requestUrl.origin}/login?error=confirmation_failed`
 //         );
 //       }
+
+//       console.log("Session exchange successful:", !!data.session);
+//       console.log(
+//         "User data:",
+//         data.user
+//           ? {
+//               id: data.user.id,
+//               email: data.user.email,
+//               email_confirmed_at: data.user.email_confirmed_at,
+//             }
+//           : "No user"
+//       );
 
 //       if (data.user) {
 //         console.log("Email confirmed for user:", data.user.email);
