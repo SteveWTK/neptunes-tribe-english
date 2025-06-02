@@ -64,12 +64,13 @@ export async function GET(request) {
 
       if (data.user) {
         console.log("Email confirmed for user:", data.user.email);
-        // Use email from URL params or fallback to user email
-        const userEmail = email || data.user.email;
+        // Always use the confirmed user's email from Supabase
+        const confirmedEmail = data.user.email;
+        console.log("Redirecting with email:", confirmedEmail);
         // Redirect to login with email pre-filled and success message
         return NextResponse.redirect(
           `${requestUrl.origin}/login?email=${encodeURIComponent(
-            userEmail
+            confirmedEmail
           )}&confirmed=true`
         );
       }
