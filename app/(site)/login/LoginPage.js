@@ -175,32 +175,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex flex-col justify-center py-6 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 className="mt-3 text-center text-3xl font-bold text-primary-900 dark:text-white">
           {isRegister ? copy.register : copy.login}
         </h2>
       </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <div className="max-w-md mx-auto mt-6 mb-24 px-6 sm:px-10 md:px-14 lg:px-18 py-2 bg-white dark:bg-primary-800 rounded-xl shadow-md relative">
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          {/* <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10"> */}
           {/* Google Sign In */}
           <div className="mb-6">
             <SignInButton />
           </div>
 
           <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
-            </div>
+            {/* <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-primary-500" />
+            </div> */}
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">
+              <span className="px-2 text-primary-950 dark:text-primary-50">
                 {isRegister ? copy.registerChoice : copy.loginChoice}
               </span>
             </div>
           </div>
 
-          <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
+          <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
                 {error}
@@ -216,7 +216,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 dark:text-primary-50"
               >
                 {copy.email}
               </label>
@@ -234,7 +234,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 dark:text-primary-50"
               >
                 {copy.password}
               </label>
@@ -246,7 +246,7 @@ export default function LoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
                 <button
                   type="button"
@@ -262,19 +262,28 @@ export default function LoginPage() {
               <div>
                 <label
                   htmlFor="confirmPassword"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-primary-50"
                 >
                   {copy.confirmPassword}
                 </label>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
+                <div className="mt-1 relative">
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
               </div>
             )}
 
@@ -296,41 +305,42 @@ export default function LoginPage() {
                   setError("");
                   setMessage("");
                 }}
-                className="text-indigo-600 hover:text-indigo-500"
+                className="text-gray-800 hover:text-accent-600 dark:text-white dark:hover:text-accent-400"
               >
                 {isRegister ? copy.toggleToLogin : copy.toggleToRegister}
               </button>
             </div>
           </form>
+          {/* </div> */}
         </div>
-      </div>
 
-      {/* Success Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3 text-center">
-              <h3 className="text-lg font-medium text-gray-900">
-                {copy.successTitle}
-              </h3>
-              <div className="mt-2 px-7 py-3">
-                <p className="text-sm text-gray-500">{copy.successMessage}</p>
-              </div>
-              <div className="items-center px-4 py-3">
-                <button
-                  onClick={() => {
-                    setShowModal(false);
-                    setIsRegister(false); // Switch back to login mode
-                  }}
-                  className="px-4 py-2 bg-indigo-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-                >
-                  {copy.ok}
-                </button>
+        {/* Success Modal */}
+        {showModal && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+              <div className="mt-3 text-center">
+                <h3 className="text-lg font-medium text-gray-900">
+                  {copy.successTitle}
+                </h3>
+                <div className="mt-2 px-7 py-3">
+                  <p className="text-sm text-gray-500">{copy.successMessage}</p>
+                </div>
+                <div className="items-center px-4 py-3">
+                  <button
+                    onClick={() => {
+                      setShowModal(false);
+                      setIsRegister(false); // Switch back to login mode
+                    }}
+                    className="px-4 py-2 bg-indigo-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                  >
+                    {copy.ok}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
