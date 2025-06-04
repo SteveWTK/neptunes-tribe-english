@@ -291,7 +291,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-accent-600 hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
               >
                 {loading ? copy.processing : copy.submit}
               </button>
@@ -331,7 +331,7 @@ export default function LoginPage() {
                       setShowModal(false);
                       setIsRegister(false); // Switch back to login mode
                     }}
-                    className="px-4 py-2 bg-indigo-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                    className="px-4 py-2 bg-accent-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                   >
                     {copy.ok}
                   </button>
