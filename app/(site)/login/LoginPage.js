@@ -26,6 +26,9 @@ export default function LoginPage() {
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
 
   const t = {
     en: {
@@ -46,6 +49,14 @@ export default function LoginPage() {
       successTitle: "Account created successfully!",
       successMessage: "Please check your email to continue.",
       ok: "OK",
+      forgotPassword: "Forgot your password?",
+      resetPassword: "Reset Password",
+      sendResetEmail: "Send Reset Email",
+      backToLogin: "Back to Login",
+      resetEmailSent: "Password reset email sent! Check your inbox.",
+      enterEmailForReset:
+        "Enter your email address to receive password reset instructions.",
+      cancel: "Cancel",
     },
     pt: {
       loginChoice: "Ou entre com seu email e senha",
@@ -65,17 +76,20 @@ export default function LoginPage() {
       successTitle: "Conta criada com sucesso!",
       successMessage: "Por favor, verifique seu email para continuar.",
       ok: "OK",
+      forgotPassword: "Esqueceu sua senha?",
+      resetPassword: "Redefinir Senha",
+      sendResetEmail: "Enviar Email de Redefinição",
+      backToLogin: "Voltar ao Login",
+      resetEmailSent:
+        "Email de redefinição enviado! Verifique sua caixa de entrada.",
+      enterEmailForReset:
+        "Digite seu endereço de email para receber instruções de redefinição de senha.",
+      cancel: "Cancelar",
     },
   };
 
   const copy = t[lang];
 
-  // useEffect(() => {
-  //   const emailParam = searchParams.get("email");
-  //   if (emailParam && typeof emailParam === "string") setEmail(emailParam);
-  // }, [searchParams]);
-
-  // Add this to your existing useEffect in LoginPage.js
   useEffect(() => {
     const emailParam = searchParams.get("email");
     const confirmed = searchParams.get("confirmed");
@@ -174,6 +188,31 @@ export default function LoginPage() {
     }
   };
 
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setResetMessage("");
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+
+      if (error) throw error;
+
+      setResetMessage(copy.resetEmailSent);
+      setResetEmail("");
+    } catch (error) {
+      console.error("Password reset error:", error);
+      setError(
+        error.message || "Failed to send reset email. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-center py-6 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -200,118 +239,202 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
-                {error}
-              </div>
-            )}
+          {!showForgotPassword ? (
+            <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
+                  {error}
+                </div>
+              )}
 
-            {message && !showModal && (
-              <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded">
-                {message}
-              </div>
-            )}
+              {message && !showModal && (
+                <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded">
+                  {message}
+                </div>
+              )}
 
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 dark:text-primary-50"
-              >
-                {copy.email}
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-primary-50"
-              >
-                {copy.password}
-              </label>
-              <div className="mt-1 relative">
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </button>
-              </div>
-            </div>
-
-            {isRegister && (
               <div>
                 <label
-                  htmlFor="confirmPassword"
+                  htmlFor="email"
                   className="block text-sm font-medium text-gray-700 dark:text-primary-50"
                 >
-                  {copy.confirmPassword}
+                  {copy.email}
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 dark:text-primary-50"
+                >
+                  {copy.password}
                 </label>
                 <div className="mt-1 relative">
                   <input
-                    id="confirmPassword"
-                    name="confirmPassword"
+                    id="password"
+                    name="password"
                     type={showPassword ? "text" : "password"}
                     required
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   />
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-xs hover:text-accent-500"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
               </div>
-            )}
 
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-accent-600 hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-              >
-                {loading ? copy.processing : copy.submit}
-              </button>
-            </div>
+              {isRegister && (
+                <div>
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-sm font-medium text-gray-700 dark:text-primary-50"
+                  >
+                    {copy.confirmPassword}
+                  </label>
+                  <div className="mt-1 relative">
+                    <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type={showPassword ? "text" : "password"}
+                      required
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-xs hover:text-accent-500"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? "Hide" : "Show"}
+                    </button>
+                  </div>
+                </div>
+              )}
 
-            <div className="text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsRegister(!isRegister);
-                  setError("");
-                  setMessage("");
-                }}
-                className="text-gray-800 hover:text-accent-600 dark:text-white dark:hover:text-accent-400"
-              >
-                {isRegister ? copy.toggleToLogin : copy.toggleToRegister}
-              </button>
-            </div>
-          </form>
-          {/* </div> */}
+              <div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-accent-600 hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                >
+                  {loading ? copy.processing : copy.submit}
+                </button>
+              </div>
+
+              <div className="text-center space-y-2">
+                {!showForgotPassword ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsRegister(!isRegister);
+                        setError("");
+                        setMessage("");
+                      }}
+                      className="text-gray-800 hover:text-accent-600 dark:text-white dark:hover:text-accent-400"
+                    >
+                      {isRegister ? copy.toggleToLogin : copy.toggleToRegister}
+                    </button>
+
+                    {!isRegister && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowForgotPassword(true);
+                          setError("");
+                          setMessage("");
+                          setResetEmail(email); // Pre-fill with current email
+                        }}
+                        className="pb-4 font-light text-sm text-gray-800 hover:text-accent-600 dark:text-white dark:hover:text-accent-400"
+                      >
+                        {copy.forgotPassword}
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowForgotPassword(false);
+                      setError("");
+                      setResetMessage("");
+                    }}
+                    className="text-indigo-600 hover:text-indigo-500"
+                  >
+                    {copy.backToLogin}
+                  </button>
+                )}
+              </div>
+            </form>
+          ) : (
+            // New forgot password form
+            <form className="mt-6 space-y-6" onSubmit={handlePasswordReset}>
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-medium text-gray-700 dark:text-primary-50">
+                  {copy.resetPassword}
+                </h3>
+                <p className="text-sm text-gray-700 dark:text-primary-50 mt-2">
+                  {copy.enterEmailForReset}
+                </p>
+              </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
+                  {error}
+                </div>
+              )}
+
+              {resetMessage && (
+                <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded">
+                  {resetMessage}
+                </div>
+              )}
+
+              <div>
+                <label
+                  htmlFor="resetEmail"
+                  className="block text-sm font-medium text-gray-700 dark:text-primary-50"
+                >
+                  {copy.email}
+                </label>
+                <input
+                  id="resetEmail"
+                  name="resetEmail"
+                  type="email"
+                  required
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-accent-500 focus:border-accent-500"
+                />
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={loading || !resetEmail}
+                  className="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-accent-600 hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                >
+                  {loading ? copy.processing : copy.sendResetEmail}
+                </button>
+              </div>
+            </form>
+          )}
         </div>
 
         {/* Success Modal */}

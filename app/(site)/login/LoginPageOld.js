@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import SignInButton from "@/app/components/SigninButton";
 
-export default function LoginPage() {
+export default function LoginPageOld() {
   const { lang } = useLanguage();
   const router = useRouter();
   const searchParams = useSearchParams();
