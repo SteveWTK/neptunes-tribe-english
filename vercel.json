@@ -1,0 +1,26 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/$1"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "https://neptunes-tribe-english.vercel.app/(.*)",
+      "destination": "https://neptunes-tribe.com/$1",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Forwarded-Host",
+          "value": "neptunes-tribe.com"
+        }
+      ]
+    }
+  ]
+}
