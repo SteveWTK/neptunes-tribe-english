@@ -5,6 +5,7 @@ export default function ResetPasswordWrapper() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <ResetPasswordPage />
+      git
     </Suspense>
   );
 }

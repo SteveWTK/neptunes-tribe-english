@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import EcoMapProgress from "./EcoMapProgress";
 
 const XP_PER_LEVEL = 500;
 const MAX_LEVEL = 8;
@@ -19,7 +18,7 @@ export default function ProgressDashboard({ user }) {
   const [level, setLevel] = useState(1);
   const [streak, setStreak] = useState(1); // mock streak
   const [achievements, setAchievements] = useState(mockAchievements);
-  const firstName = user.name.split(" ").at(0);
+  const firstName = user.name ? user.name.split(" ").at(0) : "Eco-Warrior!";
 
   // Load mock data from localStorage
   useEffect(() => {
@@ -60,10 +59,9 @@ export default function ProgressDashboard({ user }) {
 
   return (
     <>
-      <h1 className="text-xl text-gray-800 dark:text-accent-50 font-light mb-6 ml-2 lg:ml-6 xl:ml-24">
+      <h1 className="text-xl text-gray-800 dark:text-accent-50 font-bold mb-6 ml-2 lg:ml-6 xl:ml-24">
         {`Welcome, ${firstName}!`}
       </h1>
-      <EcoMapProgress />
       <div className="max-w-xl mx-auto p-6  text-accent-100 bg-primary-950 shadow-md rounded-xl border border-accent-50 space-y-6">
         <h2 className="text-2xl font-medium text-center">🏆 Your Progress</h2>
 

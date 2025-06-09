@@ -1,3 +1,4 @@
+// app/auth/callback/route.js
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -10,8 +11,18 @@ export async function GET(request) {
 
   console.log("=== AUTH CALLBACK DEBUG ===");
   console.log("Full URL:", requestUrl.href);
+  console.log("Origin:", requestUrl.origin);
   console.log("Code present:", !!code);
   console.log("Email param:", email);
+
+  // Determine the correct origin based on environment
+  const isLocalhost =
+    requestUrl.hostname === "localhost" || requestUrl.hostname === "127.0.0.1";
+  const redirectOrigin = isLocalhost
+    ? "http://localhost:3000"
+    : requestUrl.origin;
+
+  console.log("Redirect origin:", redirectOrigin);
 
   if (code) {
     const cookieStore = cookies();
@@ -46,7 +57,7 @@ export async function GET(request) {
       if (error) {
         console.error("Error exchanging code for session:", error);
         return NextResponse.redirect(
-          `${requestUrl.origin}/login?error=confirmation_failed`
+          `${redirectOrigin}/login?error=confirmation_failed`
         );
       }
 
@@ -64,12 +75,12 @@ export async function GET(request) {
 
       if (data.user) {
         console.log("Email confirmed for user:", data.user.email);
-        // Always use the confirmed user's email from Supabase
         const confirmedEmail = data.user.email;
         console.log("Redirecting with email:", confirmedEmail);
+
         // Redirect to login with email pre-filled and success message
         return NextResponse.redirect(
-          `${requestUrl.origin}/login?email=${encodeURIComponent(
+          `${redirectOrigin}/login?email=${encodeURIComponent(
             confirmedEmail
           )}&confirmed=true`
         );
@@ -77,13 +88,13 @@ export async function GET(request) {
     } catch (error) {
       console.error("Callback error:", error);
       return NextResponse.redirect(
-        `${requestUrl.origin}/login?error=confirmation_failed`
+        `${redirectOrigin}/login?error=confirmation_failed`
       );
     }
   }
 
   // If no code, redirect to login
-  return NextResponse.redirect(`${requestUrl.origin}/login`);
+  return NextResponse.redirect(`${redirectOrigin}/login`);
 }
 
 // import { createServerClient } from "@supabase/ssr";

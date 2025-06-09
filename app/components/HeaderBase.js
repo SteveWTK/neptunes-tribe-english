@@ -83,7 +83,32 @@ export default function HeaderBase({
       </nav>
 
       <div className="flex gap-4 md:gap-3 lg:gap-4 items-center">
-        {/* {status === "authenticated" ? (
+        {
+          session?.user?.image && (
+            <Link
+              href="/dashboard"
+              className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
+            >
+              <img
+                className="h-8 rounded-full"
+                src={session.user.image}
+                alt={session.user.name}
+                referrerPolicy="no-referrer"
+              />
+              <span>Dashboard</span>
+            </Link>
+          )
+          // : (
+          //   <Link
+          //     href="/dashboard"
+          //     className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400"
+          //   >
+          //     Dashboard
+          //   </Link>
+          // )
+        }
+
+        {status === "authenticated" ? (
           <SignOutButton
             onClickonClick={() => signOut()}
             className="flex justify-end items-center"
@@ -91,11 +116,11 @@ export default function HeaderBase({
         ) : (
           <Link
             href="/login"
-            className="flex justify-end items-center py-0.5 px-5 font-josefin text-center bg-primary-50 rounded-2xl text-primary-900 hover:bg-primary-300 transition-colors"
+            className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 w-full"
           >
             Sign In
           </Link>
-        )} */}
+        )}
 
         <select
           value={lang}

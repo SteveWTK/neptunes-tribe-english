@@ -5,9 +5,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { Button } from "@/components/ui/buttonLanding";
-import SupportUsSection from "@/components/SupportUsSection";
-import { StickyFooterSupport } from "@/components/SitckyFooterSupport";
 import Footer from "@/components/Footer";
+import SupportUsSectionStripeAndPix from "@/components/SupportUsSectionStripeAndPix";
 
 export default function LandingPage({ darkMode = false }) {
   const { lang } = useLanguage();
@@ -407,7 +406,7 @@ export default function LandingPage({ darkMode = false }) {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <SupportUsSection />
+        <SupportUsSectionStripeAndPix />
       </motion.section>
       {/* <StickyFooterSupport /> */}
 
