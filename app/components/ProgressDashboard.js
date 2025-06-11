@@ -66,7 +66,7 @@ export default function ProgressDashboard({ user }) {
         <h2 className="text-2xl font-medium text-center">🏆 Your Progress</h2>
 
         {/* Badge Display */}
-        <div className="flex justify-center">
+        {/* <div className="flex justify-center">
           <Image
             src={`/badges/level${level}.png`}
             width={100}
@@ -74,7 +74,7 @@ export default function ProgressDashboard({ user }) {
             alt={`Level ${level} badge`}
             className="rounded-full shadow-md"
           />
-        </div>
+        </div> */}
 
         {/* Level and XP Progress Bar */}
         <div className="text-center">
