@@ -7,7 +7,7 @@
   ],
   "redirects": [
     {
-      "source": "https://neptunes-tribe-english.vercel.app/(.*)",
+      "source": "/(.*)",
       "destination": "https://neptunes-tribe.com/$1",
       "permanent": true
     }
