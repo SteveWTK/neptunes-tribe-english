@@ -1,5 +1,5 @@
 import { fetchUser } from "@/lib/data-service";
-import supabaseAdmin from "@/lib/supabase-admin";
+import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -38,7 +38,7 @@ export async function POST(request) {
 
     try {
       // Use listUsers with email filter instead of getUserByEmail
-      const { data, error } = await supabaseAdmin.auth.admin.listUsers({
+      const { data, error } = await getSupabaseAdmin.auth.admin.listUsers({
         filter: `email.eq.${email}`,
         limit: 1,
       });

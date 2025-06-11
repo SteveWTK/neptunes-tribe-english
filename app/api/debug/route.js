@@ -1,11 +1,11 @@
 // Create this as app/api/debug/route.js - REMOVE AFTER TESTING
 import { NextResponse } from "next/server";
-import supabaseAdmin from "@/lib/supabase-admin";
+import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
 
 export async function GET() {
   try {
     // Test basic connection
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin
       .from("users")
       .select("*")
       .limit(1);
@@ -19,7 +19,7 @@ export async function GET() {
 
     // Test auth admin connection
     const { data: authData, error: authError } =
-      await supabaseAdmin.auth.admin.listUsers();
+      await getSupabaseAdmin.auth.admin.listUsers();
 
     if (authError) {
       return NextResponse.json({
