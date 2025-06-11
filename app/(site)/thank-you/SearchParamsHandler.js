@@ -48,10 +48,10 @@ export default function SearchParamsHandler() {
             </svg>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Payment Canceled
+            Payment Cancelled
           </h1>
           <p className="text-gray-600 dark:text-gray-300 mb-6">
-            No worries! Your payment was canceled and no charges were made.
+            No worries! Your payment was cancelled and no charges were made.
           </p>
           <div className="space-y-3">
             <Button
