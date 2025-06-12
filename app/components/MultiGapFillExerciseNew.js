@@ -31,12 +31,14 @@ export default function MultiGapFillExerciseNew({ unitId }) {
       showGapFillButton: "Show Gap Fill",
       translationButton: "Translation",
       submitAnswersButton: "Submit Answers",
+      region: "Region",
     },
     pt: {
       showFullTextButton: "Ver Texto Completo",
       showGapFillButton: "Ver Exercício",
       translationButton: "Tradução",
       submitAnswersButton: "Enviar Respostas",
+      region: "Região",
     },
   };
 
@@ -224,6 +226,9 @@ export default function MultiGapFillExerciseNew({ unitId }) {
             <h2 className="font-orbitron font-bold text-center lg:text-left text-lg lg:text-xl text-gray-700 dark:text-white mx-3">
               {unitData?.description || "Loading Description..."}
             </h2>
+            <h2 className="font-orbitron font-bold text-center lg:text-left text-[16px] lg:text-lg text-gray-700 dark:text-white mx-3">
+              {copy.region}: {unitData?.region_name || "Loading region name..."}
+            </h2>
 
             {/* Toggle Button */}
 
@@ -263,7 +268,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
                     return (
                       <select
                         key={`${unitId}-gap-${question.gap_number}`} // UNIQUE KEY
-                        className={` font-josefin mx-2 border rounded px-2 py-0.5 transition-colors duration-200 ${
+                        className={` font-josefin mx-2 my-1 border rounded px-2 transition-colors duration-200 ${
                           isSubmitted
                             ? userAnswers[
                                 `${unitId}-${question.gap_number}`
@@ -352,10 +357,10 @@ export default function MultiGapFillExerciseNew({ unitId }) {
         {/* Score Display */}
         {isSubmitted && (
           <div className="flex flex-col items-center">
-            <h3 className="font-orbitron text-center lg:text-left text-2xl lg:text-xl text-accent-50 mx-3">
+            <h3 className="font-orbitron text-center lg:text-left text-2xl lg:text-xl text-primary-800 dark:text-accent-50 mx-3">
               You got {score} out of {questions.length} correct!
             </h3>
-            <p className="mt-2 font-orbitron text-center lg:text-left text-lg lg:text-xl text-teal-300 mx-3">
+            <p className="mt-2 font-orbitron text-center lg:text-left text-lg lg:text-xl text-teal-800 dark:text-teal-300 mx-3">
               {message}
             </p>
             <PieChartAnswers
