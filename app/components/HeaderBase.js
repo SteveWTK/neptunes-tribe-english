@@ -62,13 +62,23 @@ export default function HeaderBase({
 
   const links = localizedLinks[type]?.[lang] || [];
 
+  const t = {
+    en: {
+      ecoMap: "Eco-map",
+      signIn: "Sign In",
+      signOut: "Sign Out",
+    },
+    pt: {
+      ecoMap: "Eco-map",
+      signIn: "Entrar",
+      signOut: "Sair",
+    },
+  };
+
+  const copy = t[lang];
+
   const buttonClass =
     "text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:hover:text-accent-400 dark:hover:border-accent-400";
-
-  // HeaderBase.defaultProps = {
-  //   links: [],
-  //   languageOptions: {},
-  // };
 
   return (
     <header className="sticky top-0 z-50 bg-white dark:bg-primary-950 shadow-md py-4 px-6 sm:px-12 lg:px-24 flex flex-col gap-3 justify-end items-center md:flex-row md:justify-between md:items-center">
@@ -86,7 +96,7 @@ export default function HeaderBase({
         {
           session?.user?.image && (
             <Link
-              href="/dashboard"
+              href="/eco-map"
               className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
             >
               <img
@@ -95,7 +105,7 @@ export default function HeaderBase({
                 alt={session.user.name}
                 referrerPolicy="no-referrer"
               />
-              <span>Dashboard</span>
+              <span>{copy.ecoMap}</span>
             </Link>
           )
           // : (
@@ -118,7 +128,7 @@ export default function HeaderBase({
             href="/login"
             className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 w-full"
           >
-            Sign In
+            {copy.ecoMap}
           </Link>
         )}
 

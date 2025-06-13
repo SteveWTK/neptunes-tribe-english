@@ -38,7 +38,8 @@ export async function POST(request) {
 
     try {
       // Use listUsers with email filter instead of getUserByEmail
-      const { data, error } = await getSupabaseAdmin.auth.admin.listUsers({
+      const supabase = getSupabaseAdmin();
+      const { data, error } = await supabase.auth.admin.listUsers({
         filter: `email.eq.${email}`,
         limit: 1,
       });
