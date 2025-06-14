@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import { fetchData, fetchUnitDetails } from "@/lib/data-service";
 import supabase from "@/lib/supabase-browser";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
+import { updateUserProgress } from "@/lib/updateUserProgress";
 
 import TextExpander from "./TextExpander";
 import PieChartAnswers from "./PieChartAnswers";
@@ -24,12 +24,10 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   const [score, setScore] = useState(0);
   const [portugueseTranslation, setPortugueseTranslation] = useState("");
   const [spanishTranslation, setSpanishTranslation] = useState("");
-  const [selectedLanguage, setSelectedLanguage] = useState("no");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState("no"); // Default: English
 
   const { data: session } = useSession();
-  const router = useRouter();
+
   const { lang } = useLanguage();
 
   const t = {
@@ -50,30 +48,31 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   };
 
   const copy = t[lang];
-  const percentage = (score / questions.length) * 100;
-  const xpPerCorrectAnswer = 10;
-  const bonusForPerfect = 20;
 
+  const percentage = (score / questions.length) * 100;
   let message;
+
+  const xpPerCorrectAswer = 10;
+
   if (percentage === 100) {
     message = `Perfect score! Fantastic work! You have added ${
-      score * xpPerCorrectAnswer + bonusForPerfect
+      score * xpPerCorrectAswer + 20
     } points to your progress!`;
   } else if (percentage >= 80) {
-    message = `Great job! You have added ${
-      score * xpPerCorrectAnswer
+    message = `Great job! You have added You have added ${
+      score * xpPerCorrectAswer
     } points to your progress!`;
   } else if (percentage >= 60) {
-    message = `Good effort! You have added ${
-      score * xpPerCorrectAnswer
+    message = `Good effort! You have added You have added ${
+      score * xpPerCorrectAswer
     } points to your progress!`;
   } else if (percentage >= 40) {
-    message = `Not bad! You have added ${
-      score * xpPerCorrectAnswer
+    message = `Not bad! You have added You have added ${
+      score * xpPerCorrectAswer
     } points to your progress!`;
   } else {
     message = `Keep going! Practice makes perfect! You have added ${
-      score * xpPerCorrectAnswer
+      score * xpPerCorrectAswer
     } points to your progress!`;
   }
 
@@ -97,224 +96,147 @@ export default function MultiGapFillExerciseNew({ unitId }) {
         setPortugueseTranslation(portugueseTranslation);
         setSpanishTranslation(spanishTranslation);
         setQuestions(questions);
-
-        // Check if user has already completed this unit
-        if (session?.user?.email) {
-          await checkIfUnitCompleted();
-        }
       } catch (err) {
         console.error("Error loading unit data:", err);
       }
     }
 
     if (unitId) loadData();
-  }, [unitId, session?.user?.email]);
-
-  const checkIfUnitCompleted = async () => {
-    if (!session?.user?.email) return;
-
-    try {
-      // Get user ID from users table
-      const { data: userData, error: userError } = await supabase
-        .from("users")
-        .select("id")
-        .eq("email", session.user.email)
-        .single();
-
-      if (userError || !userData) return;
-
-      // Check if unit is already completed
-      const { data: completionData, error: completionError } = await supabase
-        .from("completed_units")
-        .select("id")
-        .eq("user_id", userData.id)
-        .eq("unit_id", unitId)
-        .single();
-
-      if (completionData) {
-        setIsAlreadyCompleted(true);
-      }
-    } catch (error) {
-      console.error("Error checking unit completion:", error);
-    }
-  };
+  }, [unitId]);
 
   const handleChange = (questionId, selectedAnswer) => {
     setUserAnswers({ ...userAnswers, [questionId]: selectedAnswer });
   };
 
   const handleSubmit = async () => {
-    if (!session?.user?.email) {
-      alert("Please log in to save your progress!");
-      return;
+    let correctCount = 0;
+    questions.forEach((q) => {
+      if (userAnswers[`${unitId}-${q.gap_number}`] === q.correct_answer)
+        correctCount++;
+    });
+    setScore(correctCount);
+    setIsSubmitted(true);
+
+    // === XP Calculation and LocalStorage Progress Update ===
+    const xpPerCorrect = 10;
+    const bonusForPerfect = 20;
+
+    const totalQuestions = questions.length;
+    let earnedXP = correctCount * xpPerCorrect;
+
+    if (correctCount === totalQuestions) {
+      earnedXP += bonusForPerfect;
     }
 
-    setIsLoading(true);
+    // Load previous progress or set defaults
+    const stored = localStorage.getItem("mockProgress");
+    let progress = stored
+      ? JSON.parse(stored)
+      : { xp: 0, level: 1, streak: 1, achievements: [] };
 
-    try {
-      // Calculate score
-      let correctCount = 0;
-      questions.forEach((q) => {
-        if (userAnswers[`${unitId}-${q.gap_number}`] === q.correct_answer)
-          correctCount++;
+    // XP leveling logic
+    const XP_PER_LEVEL = 500;
+    const MAX_LEVEL = 8;
+
+    let newXP = progress.xp + earnedXP;
+    let newLevel = progress.level;
+    let newAchievements = [];
+
+    while (newXP >= XP_PER_LEVEL && newLevel < MAX_LEVEL) {
+      newXP -= XP_PER_LEVEL;
+      newLevel++;
+      newAchievements.push({
+        title: `Level ${newLevel}!`,
+        description: `You reached level ${newLevel}`,
+      });
+    }
+
+    if (correctCount === totalQuestions) {
+      newAchievements.push({
+        title: "Perfect Score!",
+        description: "You answered all questions correctly!",
       });
 
-      setScore(correctCount);
-      setIsSubmitted(true);
-
-      const totalQuestions = questions.length;
-      const percentage = (correctCount / totalQuestions) * 100;
-      const passedThreshold = percentage >= 60;
-
-      // Calculate XP
-      let earnedXP = correctCount * xpPerCorrectAnswer;
-      if (correctCount === totalQuestions) {
-        earnedXP += bonusForPerfect;
+      if (correctCount / questions.length >= 0.6) {
+        await markUnitCompleted(unitId, session?.user?.id);
       }
-
-      // Update progress in database
-      const justCompleted = await updateUserProgressInDB(
-        session.user.email,
-        unitId,
-        correctCount,
-        totalQuestions,
-        earnedXP,
-        passedThreshold
-      );
-
-      // Show success message
-      showXPToast(earnedXP, justCompleted && passedThreshold);
-    } catch (error) {
-      console.error("Error submitting answers:", error);
-      alert("There was an error saving your progress. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
-  };
 
-  const updateUserProgressInDB = async (
-    email,
-    unitId,
-    correctCount,
-    totalQuestions,
-    earnedXP,
-    passedThreshold
-  ) => {
-    try {
-      // First, get the user ID from the users table
-      const { data: userData, error: userError } = await supabase
-        .from("users")
-        .select("id")
-        .eq("email", email)
-        .single();
+    // Save updated progress to localStorage
+    const updatedProgress = {
+      xp: newXP,
+      level: newLevel,
+      streak: progress.streak,
+      achievements: [...(progress.achievements || []), ...newAchievements],
+    };
 
-      if (userError || !userData) {
-        throw new Error("User not found in database");
-      }
+    localStorage.setItem("mockProgress", JSON.stringify(updatedProgress));
 
-      const userId = userData.id;
+    alert(`🎯 You earned ${earnedXP} XP!`);
 
-      // Check if unit was already completed
-      const { data: existingCompletion } = await supabase
-        .from("completed_units")
-        .select("id")
-        .eq("user_id", userId)
-        .eq("unit_id", unitId)
-        .single();
-
-      const wasAlreadyCompleted = !!existingCompletion;
-      let justCompleted = false;
-
-      // If user passed and unit wasn't already completed, mark as completed
-      if (passedThreshold && !wasAlreadyCompleted) {
-        const { error: completionError } = await supabase
-          .from("completed_units")
-          .insert({
-            user_id: userId,
-            unit_id: unitId,
-          });
-
-        if (completionError) {
-          console.error("Error marking unit as completed:", completionError);
-        } else {
-          console.log("Unit marked as completed successfully");
-          justCompleted = true;
-          setIsAlreadyCompleted(true);
-        }
-      }
-
-      // Update user progress
-      const { data: existingProgress } = await supabase
-        .from("user_progress")
-        .select("*")
-        .eq("user_id", userId)
-        .single();
-
-      const currentPoints = existingProgress?.total_points || 0;
-      const currentLevel = existingProgress?.current_level || 1;
-      const currentCompleted = existingProgress?.completed_exercises || 0;
-
-      // Calculate new level (every 500 points = 1 level)
-      const newPoints = currentPoints + earnedXP;
-      const newLevel = Math.floor(newPoints / 500) + 1;
-
-      // Only increment completed_exercises if this is a new completion
-      const newCompletedCount = justCompleted
-        ? currentCompleted + 1
-        : currentCompleted;
-
-      const progressData = {
-        user_id: userId,
-        total_points: newPoints,
-        current_level: newLevel,
-        last_active: new Date().toISOString(),
-        completed_exercises: newCompletedCount,
-      };
-
-      const { error: progressError } = await supabase
-        .from("user_progress")
-        .upsert(progressData, { onConflict: "user_id" });
-
-      if (progressError) {
-        console.error("Error updating user progress:", progressError);
-      }
-
-      return justCompleted;
-    } catch (error) {
-      console.error("Error in updateUserProgressInDB:", error);
-      throw error;
-    }
-  };
-
-  const showXPToast = (earnedXP, justCompleted) => {
     const xpToast = document.createElement("div");
-    const message = justCompleted
-      ? `+${earnedXP} XP earned! Unit completed! 🎉`
-      : `+${earnedXP} XP earned!`;
-
-    xpToast.textContent = message;
+    xpToast.textContent = `+${pointsEarned} XP! You’re now level ${newLevel}!`;
     xpToast.className =
-      "fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg font-bold z-50 transition-all duration-300";
+      "fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-accent-400 text-primary-900 px-4 py-2 rounded shadow-lg font-josefin z-50";
     document.body.appendChild(xpToast);
 
     setTimeout(() => {
-      xpToast.style.opacity = "0";
-      setTimeout(() => {
-        if (document.body.contains(xpToast)) {
-          document.body.removeChild(xpToast);
-        }
-      }, 300);
-    }, 4000); // Show a bit longer for completion message
+      xpToast.remove();
+    }, 3000); // Remove after 3 seconds
+
+    // === Optional: Send to backend for syncing ===
+    try {
+      const response = await fetch("/api/update-progress", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          score: correctCount,
+          total: totalQuestions,
+          mockUserId: "demo-user-123",
+        }),
+      });
+
+      const result = await response.json();
+      console.log("Progress updated:", result);
+
+      if (result.achievements?.length > 0) {
+        alert(`🎉 Achievement unlocked: ${result.achievements.join(", ")}`);
+      }
+    } catch (error) {
+      console.error("Error updating progress:", error);
+    }
   };
+
+  async function markUnitCompleted(unitId, userId) {
+    if (!userId) {
+      console.error("No user ID found.");
+      return;
+    }
+
+    const { data, error } = await supabase.from("completed_units").insert([
+      {
+        user_id: userId,
+        unit_id: unitId,
+      },
+    ]);
+
+    if (error) {
+      console.error("Error inserting completed unit:", error);
+    } else {
+      console.log("Unit completion recorded:", data);
+    }
+  }
 
   return (
     <main className="flex flex-col mx-10 lg:mx-20 my-6">
       <div className="flex flex-col">
-        <div className="flex flex-col lg:grid lg:grid-cols-2">
-          <div className="col-span-1 flex items-center justify-center align-middle md:px-2 lg:align-top lg:justify-items-start lg:px-4 xl:px-8">
+        <div className="flex flex-col  lg:grid lg:grid-cols-2">
+          <div className="col-span-1 flex items-center justify-center align-middle  md:px-2 lg:align-top lg:justify-items-start lg:px-4 xl:px-8">
+            {/* Render Image Dynamically */}
             {unitData?.image && (
               <Image
                 src={unitData.image}
+                // src={heroImage}
                 width={600}
                 height={400}
                 quality={80}
@@ -326,6 +248,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
           </div>
 
           <div className="col-span-1 flex flex-col gap-3 ml-3 my-1">
+            {/* Render Title & Description Dynamically */}
             <h1 className="font-orbitron font-bold text-center lg:text-left text-2xl sm:text3xl md:text-4xl lg:text-4xl text-gray-800 dark:text-white mx-3">
               {unitData?.title || "Loading Title..."}
             </h1>
@@ -336,13 +259,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
               {copy.region}: {unitData?.region_name || "Loading region name..."}
             </h2>
 
-            {isAlreadyCompleted && (
-              <div className="mx-3 p-2 bg-green-100 dark:bg-green-800 rounded-lg">
-                <p className="text-green-800 dark:text-green-100 text-sm text-center">
-                  ✅ You have already completed this unit!
-                </p>
-              </div>
-            )}
+            {/* Toggle Button */}
 
             <button
               className="w-fit text-[16px] rounded-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
@@ -351,12 +268,13 @@ export default function MultiGapFillExerciseNew({ unitId }) {
               {showFullText ? copy.showGapFillButton : copy.showFullTextButton}
             </button>
 
+            {/* Display Full Text or Gap-Fill Exercise */}
             {showFullText ? (
               <p className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50">
                 <TextExpander>{fullText}</TextExpander>
               </p>
             ) : (
-              <div className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50">
+              <div className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800  p-4 border-solid rounded-lg border-accent-50">
                 {questions.length > 0 ? (
                   gapText.split(/\{\{(\d+)\}\}/g).map((part, index) => {
                     if (index % 2 === 0)
@@ -373,13 +291,13 @@ export default function MultiGapFillExerciseNew({ unitId }) {
                       );
                       return (
                         <span key={`${textId}-gap-${index}`}>[error]</span>
-                      );
+                      ); // Ensure unique key
                     }
 
                     return (
                       <select
-                        key={`${unitId}-gap-${question.gap_number}`}
-                        className={`font-josefin mx-2 my-1 border rounded px-2 transition-colors duration-200 ${
+                        key={`${unitId}-gap-${question.gap_number}`} // UNIQUE KEY
+                        className={` font-josefin mx-2 my-1 border rounded px-2 transition-colors duration-200 ${
                           isSubmitted
                             ? userAnswers[
                                 `${unitId}-${question.gap_number}`
@@ -387,8 +305,8 @@ export default function MultiGapFillExerciseNew({ unitId }) {
                               ? "bg-teal-800"
                               : "bg-rose-800"
                             : userAnswers[`${unitId}-${question.gap_number}`]
-                            ? "bg-primary-500 text-accent-50 hover:bg-accent-200 hover:text-accent-900"
-                            : "bg-accent-100 hover:bg-accent-200 text-accent-900"
+                            ? "bg-primary-500  text-accent-50 hover:bg-accent-200  hover:text-accent-900"
+                            : "bg-accent-100  hover:bg-accent-200 text-accent-900"
                         }`}
                         value={
                           userAnswers[`${unitId}-${question.gap_number}`] || ""
@@ -452,20 +370,20 @@ export default function MultiGapFillExerciseNew({ unitId }) {
           </p>
         )}
 
+        {/* Submit Button */}
         <div className="mx-3 p-3 col-span-2 flex flex-row flex-wrap gap-4 align-middle justify-center font-orbitron">
           {!showFullText && (
             <button
-              className={`text-[16px] rounded-b-lg border-b-1 border-primary-600 px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 ${
-                isLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className="text-[16px] rounded-b-lg border-b-1 border-primary-600 px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
               onClick={handleSubmit}
-              disabled={isSubmitted || isLoading}
+              disabled={isSubmitted}
             >
-              {isLoading ? "Submitting..." : copy.submitAnswersButton}
+              Submit Answers
             </button>
           )}
         </div>
 
+        {/* Score Display */}
         {isSubmitted && (
           <div className="flex flex-col items-center">
             <h3 className="font-orbitron text-center lg:text-left text-2xl lg:text-xl text-primary-800 dark:text-accent-50 mx-3">
@@ -474,21 +392,6 @@ export default function MultiGapFillExerciseNew({ unitId }) {
             <p className="mt-2 font-orbitron text-center lg:text-left text-lg lg:text-xl text-teal-800 dark:text-teal-300 mx-3">
               {message}
             </p>
-            {percentage >= 60 && (
-              <div className="mt-4 p-4 bg-green-100 dark:bg-green-800 rounded-lg">
-                <p className="text-green-800 dark:text-green-100 font-bold text-center">
-                  {isAlreadyCompleted
-                    ? "🎉 Great job! You've mastered this unit!"
-                    : "🎉 Unit Completed! Check your eco-map to see your progress!"}
-                </p>
-                <button
-                  onClick={() => router.push("/eco-map")}
-                  className="mt-2 mx-auto block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                >
-                  View Eco-Map
-                </button>
-              </div>
-            )}
             <PieChartAnswers
               totalCorrect={score}
               totalQuestions={questions.length}

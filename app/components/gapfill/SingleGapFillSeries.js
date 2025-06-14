@@ -77,11 +77,15 @@ const SingleGapFillSeries = ({ exercises }) => {
           onChange={(e) => setSelectedOption(e.target.value)}
           disabled={isAnswered}
         >
-          <option className="text-primary-900" value="">
+          <option className="text-primary-900 dark:text-primary-50" value="">
             Select...
           </option>
           {currentExercise.options.map((option) => (
-            <option className="text-primary-900" key={option} value={option}>
+            <option
+              className="text-primary-900 dark:text-primary-50"
+              key={option}
+              value={option}
+            >
               {option}
             </option>
           ))}
@@ -99,8 +103,11 @@ const SingleGapFillSeries = ({ exercises }) => {
       </div>
 
       <h1 className="text-2xl text-gray-700 dark:text-primary-50 font-bold mb-4">
-        {currentExercise.title}
+        {currentExercise.challengeTitle}
       </h1>
+      <h2 className="text-xl text-gray-600 dark:text-primary-50 font-normal mb-4">
+        {currentExercise.title}
+      </h2>
       {currentExercise.imageUrl && (
         <motion.img
           key={currentExercise.imageUrl} // re-animate when image changes
@@ -109,7 +116,7 @@ const SingleGapFillSeries = ({ exercises }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="w-full max-w-md h-64 rounded-xl shadow-lg mb-6"
+          className="w-full max-w-md h-72 object-cover object-[50%_20%] rounded-xl shadow-lg mb-2"
         />
       )}
 
