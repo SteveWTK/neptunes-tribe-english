@@ -64,12 +64,12 @@ export default function HeaderBase({
 
   const t = {
     en: {
-      ecoMap: "Eco-map",
+      ecoMap: "Dashboard",
       signIn: "Sign In",
       signOut: "Sign Out",
     },
     pt: {
-      ecoMap: "Eco-map",
+      ecoMap: "Painel",
       signIn: "Entrar",
       signOut: "Sair",
     },
@@ -94,17 +94,19 @@ export default function HeaderBase({
 
       <div className="flex gap-4 md:gap-3 lg:gap-4 items-center">
         {
-          session?.user?.image && (
+          session?.user && (
             <Link
-              href="/eco-map"
-              className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
+              href="/eco-dashboard"
+              className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
             >
-              <img
-                className="h-8 rounded-full"
-                src={session.user.image}
-                alt={session.user.name}
-                referrerPolicy="no-referrer"
-              />
+              {session?.user?.image && (
+                <img
+                  className="h-8 rounded-full"
+                  src={session.user.image}
+                  alt={session.user.name}
+                  referrerPolicy="no-referrer"
+                />
+              )}
               <span>{copy.ecoMap}</span>
             </Link>
           )
