@@ -1,5 +1,6 @@
 import { fetchSingleGapChallenges } from "@/lib/data-service";
 import ChallengePageClient from "./ChallengePageClient";
+import Link from "next/link";
 
 export default async function ChallengePage({ params }) {
   const { challengeId } = params;
@@ -19,12 +20,12 @@ export default async function ChallengePage({ params }) {
               The challenge you&apos;re looking for doesn&apos;t exist or has no
               exercises.
             </p>
-            <a
+            <Link
               href="/challenges"
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 inline-block"
             >
               Back to Challenges
-            </a>
+            </Link>
           </div>
         </div>
       );
