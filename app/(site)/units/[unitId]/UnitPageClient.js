@@ -15,9 +15,9 @@ export default function UnitPageClient({ units, numericUnitId }) {
 
   return (
     <div>
-      <div>
+      {/* <div>
         <h1 className="m-2">Unit {numericUnitId}</h1>
-      </div>
+      </div> */}
 
       {/* Exercise */}
       {numericUnitId && (

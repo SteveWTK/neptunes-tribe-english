@@ -25,13 +25,13 @@ export default function HeaderBase({
     landing: {
       en: [
         { href: "/units", label: "Units" },
-        { href: "#about", label: "About" },
+        { href: "/challenges", label: "Challenges" },
         { href: "#team", label: "Team" },
         { href: "#support", label: "Support" },
       ],
       pt: [
-        { href: "/units", label: "Unidades" },
-        { href: "#about", label: "Sobre" },
+        { href: "/units", label: "Atividades" },
+        { href: "/challenges", label: "Desafios" },
         { href: "#team", label: "Equipe" },
         { href: "#support", label: "Apoie" },
       ],
@@ -49,7 +49,7 @@ export default function HeaderBase({
       ],
       pt: [
         { href: "/", label: "Home" },
-        { href: "/units", label: "Unidades" },
+        { href: "/units", label: "Atividades" },
         { href: "/challenges", label: "Desafios" },
         { href: "/support-us", label: "Apoie" },
 

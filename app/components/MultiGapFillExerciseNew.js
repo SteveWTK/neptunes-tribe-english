@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -27,6 +27,8 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   const [selectedLanguage, setSelectedLanguage] = useState("no");
   const [isLoading, setIsLoading] = useState(false);
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -39,6 +41,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
       translationButton: "Translation",
       submitAnswersButton: "Submit Answers",
       region: "Region",
+      playAudio: "Listen",
     },
     pt: {
       showFullTextButton: "Ver Texto Completo",
@@ -46,6 +49,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
       translationButton: "Tradução",
       submitAnswersButton: "Enviar Respostas",
       region: "Região",
+      playAudio: "Ouça",
     },
   };
 
@@ -307,11 +311,56 @@ export default function MultiGapFillExerciseNew({ unitId }) {
     }, 4000); // Show a bit longer for completion message
   };
 
+  function handleAudioToggle() {
+    if (!unitData?.audio) {
+      console.warn("No audio URL available");
+      // alert("We will be adding audio for this unit shortly");
+      return;
+    }
+
+    if (!audioRef.current) {
+      audioRef.current = new Audio(unitData.audio);
+
+      // Reset playback state when audio ends
+      audioRef.current.addEventListener("ended", () => {
+        setIsPlaying(false);
+      });
+    }
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      setIsLoading(true);
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch((err) => {
+          console.error("Audio playback failed:", err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+        setIsPlaying(false);
+      }
+    };
+  }, [unitId]);
+
   return (
     <main className="flex flex-col mx-10 lg:mx-20 my-6">
       <div className="flex flex-col">
         <div className="flex flex-col lg:grid lg:grid-cols-2">
-          <div className="col-span-1 flex items-center justify-center align-middle md:px-2 lg:align-top lg:justify-items-start lg:px-4 xl:px-8">
+          <div className="col-span-1 flex items-start justify-center align-middle md:px-2 lg:align-top lg:justify-items-start lg:px-4 py-4 xl:px-8">
             {unitData?.image && (
               <Image
                 src={unitData.image}
@@ -344,12 +393,63 @@ export default function MultiGapFillExerciseNew({ unitId }) {
               </div>
             )}
 
-            <button
-              className="w-fit text-[16px] rounded-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
-              onClick={() => setShowFullText(!showFullText)}
-            >
-              {showFullText ? copy.showGapFillButton : copy.showFullTextButton}
-            </button>
+            <div className="flex gap-6 lg:gap-12 justify-around lg:justify-start">
+              <button
+                className="w-fit text-[16px] rounded-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
+                onClick={() => setShowFullText(!showFullText)}
+              >
+                {showFullText
+                  ? copy.showGapFillButton
+                  : copy.showFullTextButton}
+              </button>
+
+              {unitData?.audio && (
+                <button
+                  onClick={handleAudioToggle}
+                  disabled={isLoading}
+                  className={`flex items-center gap-2 text-[16px] rounded-lg px-2 transition-colors ${
+                    isPlaying
+                      ? "text-red-600 hover:text-red-700"
+                      : "hover:text-accent-600"
+                  } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                >
+                  {isPlaying ? (
+                    // Pause icon
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="size-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M10 9v6m4-6v6m-6 9h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 002 2z"
+                      />
+                    </svg>
+                  ) : (
+                    // Play icon
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="size-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 3.75v16.5l13.5-8.25L5 3.75z"
+                      />
+                    </svg>
+                  )}
+                  {isPlaying ? "Pause" : copy.playAudio}
+                </button>
+              )}
+            </div>
 
             {showFullText ? (
               <p className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50">
