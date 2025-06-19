@@ -6,6 +6,7 @@ import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { feature } from "topojson-client";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+const oceanZonesUrl = "/data/ocean-zones.geojson";
 
 export default function EcoMapProgress({
   highlightedRegions = [],
@@ -14,6 +15,7 @@ export default function EcoMapProgress({
   const [geographies, setGeographies] = useState([]);
   const [tooltipContent, setTooltipContent] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [oceanZones, setOceanZones] = useState([]);
 
   // Convert Alpha-2 codes to numeric codes for map rendering
   const highlightedNumericCodes = highlightedRegions
@@ -42,6 +44,15 @@ export default function EcoMapProgress({
     }
 
     fetchMapData();
+  }, []);
+
+  useEffect(() => {
+    const fetchOceanZones = async () => {
+      const res = await fetch(oceanZonesUrl);
+      const geoJson = await res.json();
+      setOceanZones(geoJson.features);
+    };
+    fetchOceanZones();
   }, []);
 
   const handleMouseMove = (event) => {
@@ -125,6 +136,39 @@ export default function EcoMapProgress({
             })
           }
         </Geographies>
+        {/** Ocean Zones */}
+        {Array.isArray(oceanZones) && oceanZones.length > 0 && (
+          <Geographies
+            geography={{ type: "FeatureCollection", features: oceanZones }}
+          >
+            {({ geographies }) =>
+              geographies.map((geo, i) => (
+                <Geography
+                  key={`ocean-${i}`}
+                  geography={geo}
+                  fill="rgba(59, 130, 246, 0.4)" // blue overlay
+                  stroke="#2563eb"
+                  strokeWidth={0.6}
+                  style={{
+                    default: { outline: "none" },
+                    hover: {
+                      fill: "rgba(59, 130, 246, 0.6)",
+                      outline: "none",
+                      cursor: "pointer",
+                    },
+                  }}
+                  onMouseEnter={() => {
+                    setTooltipContent({
+                      name: geo.properties.name || `Ocean Zone ${i}`,
+                      units: geo.properties.units || [],
+                    });
+                  }}
+                  onMouseLeave={() => setTooltipContent(null)}
+                />
+              ))
+            }
+          </Geographies>
+        )}
       </ComposableMap>
     </div>
   );
