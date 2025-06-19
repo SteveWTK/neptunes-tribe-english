@@ -22,8 +22,10 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   const [showFullText, setShowFullText] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
-  const [portugueseTranslation, setPortugueseTranslation] = useState("");
-  const [spanishTranslation, setSpanishTranslation] = useState("");
+  // const [portugueseTranslation, setPortugueseTranslation] = useState("");
+  // const [spanishTranslation, setSpanishTranslation] = useState("");
+  // const [frenchTranslation, setFrenchTranslation] = useState("");
+  const [translations, setTranslations] = useState({});
   const [selectedLanguage, setSelectedLanguage] = useState("no");
   const [isLoading, setIsLoading] = useState(false);
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
@@ -33,6 +35,13 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   const { data: session } = useSession();
   const router = useRouter();
   const { lang } = useLanguage();
+
+  const languageLabels = {
+    pt: "Português",
+    es: "Español",
+    fr: "Français",
+    th: "Thai",
+  };
 
   const t = {
     en: {
@@ -91,6 +100,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
           gapText,
           portugueseTranslation,
           spanishTranslation,
+          frenchTranslation,
           questions,
         } = await fetchData(unitId);
 
@@ -98,9 +108,12 @@ export default function MultiGapFillExerciseNew({ unitId }) {
         setTextId(textId);
         setFullText(fullText);
         setGapText(gapText);
-        setPortugueseTranslation(portugueseTranslation);
-        setSpanishTranslation(spanishTranslation);
         setQuestions(questions);
+        setTranslations({
+          pt: portugueseTranslation,
+          es: spanishTranslation,
+          fr: frenchTranslation,
+        });
 
         // Check if user has already completed this unit
         if (session?.user?.email) {
@@ -537,18 +550,28 @@ export default function MultiGapFillExerciseNew({ unitId }) {
             className="text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
           >
             <option value="no">None</option>
+            {Object.keys(translations).map((langCode) => (
+              <option key={langCode} value={langCode}>
+                {languageLabels[langCode] || langCode}
+              </option>
+            ))}
+          </select>
+          {/* <select
+            id="languageSelect"
+            value={selectedLanguage}
+            onChange={(e) => setSelectedLanguage(e.target.value)}
+            className="text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
+          >
+            <option value="no">None</option>
             <option value="pt">Português</option>
             <option value="es">Español</option>
-          </select>
+            <option value="fr">Français</option>
+          </select> */}
         </div>
 
-        {selectedLanguage !== "no" && (
+        {selectedLanguage !== "no" && translations[selectedLanguage] && (
           <p className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50">
-            <TextExpander>
-              {selectedLanguage === "pt"
-                ? portugueseTranslation
-                : spanishTranslation}
-            </TextExpander>
+            <TextExpander>{translations[selectedLanguage]}</TextExpander>
           </p>
         )}
 

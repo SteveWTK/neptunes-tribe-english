@@ -10,12 +10,12 @@ export default function SiteHomeClient({ featuredUnits, challenges }) {
 
   const t = {
     en: {
-      heroTitle: "Learn English. Explore the Planet",
+      heroTitle: "Practice your English exploring the planet",
       heroSubtitle:
         "Neptune's Tribe is an English learning journey inspired by environmental action. Learn English. Support the Planet.",
     },
     pt: {
-      heroTitle: "Aprenda Inglês. Explore o Planeta.",
+      heroTitle: "Pratique seu Inglês explorando o Planeta.",
       heroSubtitle:
         "Neptune's Tribe é uma jornada de aprendizado de inglês inspirada pela ação ambiental.",
     },

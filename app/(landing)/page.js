@@ -22,10 +22,10 @@ export default function LandingPage({ darkMode = false }) {
 
   const t = {
     en: {
-      heroTitle: "English with a Mission",
+      heroTitle: " Practice your English exploring the planet",
       heroSubtitle:
-        "Neptune's Tribe is an English learning journey inspired by environmental action. Learn English. Support the Planet.",
-      heroCall: "Become a Supporter and help us build Neptune's Tribe!",
+        "Neptune's Tribe is an English learning journey inspired by environmental action.",
+      heroCall: "Become a Premium User and help us build Neptune's Tribe!",
       signUp: "Register with Gmail",
       support: "Support Us",
       aboutTitle: "What is Neptune's Tribe?",
@@ -51,10 +51,11 @@ export default function LandingPage({ darkMode = false }) {
         "To support us directly, please make a transfer to: [Bank Account Details] — Thank you!",
     },
     pt: {
-      heroTitle: "Aprenda Inglês. Apoie o Planeta.",
+      heroTitle: "Pratique seu Inglês explorando o Planeta.",
       heroSubtitle:
         "Neptune's Tribe é uma jornada de aprendizado de inglês inspirada pela ação ambiental.",
-      heroCall: "Nos apoie e ajude a construir a Neptune's Tribe!",
+      heroCall:
+        "Torne-se um Usuário Premium e nos ajude a construir a Neptune's Tribe!",
       signUp: "Cadastre-se com o Gmail",
       support: "Apoie-nos",
       aboutTitle: "O que é a Neptune's Tribe?",
@@ -102,8 +103,8 @@ export default function LandingPage({ darkMode = false }) {
       src: "/eco/vaquitas.jpg",
       caption:
         lang === "en"
-          ? "Learn about endangered species, such as the vaquita, critically endangered due to human activity."
-          : "Aprenda sobre espécies ameaçadas de extinção, como a vaquita, criticamente ameaçada pelas atividades humanas.",
+          ? "Learn about species such as the vaquita, critically endangered because of human activity."
+          : "Aprenda sobre espécies como a vaquita, criticamente ameaçada pelas atividades humanas.",
     },
   ];
 

@@ -35,12 +35,20 @@ export default function UnitCard({ unit }) {
         >
           {unit.theme}
         </span>
-        <Link
-          href={`/units/${unit.id}`}
-          className="block mt-4 text-accent-600 dark:text-accent-400 font-semibold hover:underline"
-        >
-          Start Unit →
-        </Link>
+        <p className="mt-2 text-sm text-gray-600 font- dark:text-gray-300">
+          {unit.region_name}
+        </p>
+        <div className="flex justify-between">
+          <Link
+            href={`/units/${unit.id}`}
+            className="block mt-2 text-accent-600 dark:text-accent-400 font-semibold hover:underline"
+          >
+            Start Unit →
+          </Link>
+          <span className="block mt-2 mr-4 text-accent-600 dark:text-accent-400 font-semibold hover:underline">
+            {unit.length}
+          </span>
+        </div>
       </div>
     </div>
   );

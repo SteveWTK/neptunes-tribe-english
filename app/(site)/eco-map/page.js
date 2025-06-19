@@ -76,20 +76,45 @@ export default async function EcoMapPage() {
     if (completedData && completedData.length > 0) {
       completedData.forEach((entry) => {
         const unitData = entry.units;
-        const regionCode = unitData?.region_code?.toUpperCase();
+        let regionCodes = unitData?.region_code;
 
-        if (!regionCode) {
+        if (!regionCodes) {
           console.warn("Unit missing region_code:", unitData);
           return;
         }
 
-        // Use Alpha-2 codes as keys (will be converted in component)
-        if (!completedUnitsByCountry[regionCode]) {
-          completedUnitsByCountry[regionCode] = [];
+        // 👇 Parse stringified arrays if needed
+        if (typeof regionCodes === "string") {
+          try {
+            const parsed = JSON.parse(regionCodes);
+            regionCodes = Array.isArray(parsed)
+              ? parsed
+              : [regionCodes.toUpperCase()];
+          } catch {
+            regionCodes = [regionCodes.toUpperCase()];
+          }
+        } else if (!Array.isArray(regionCodes)) {
+          regionCodes = [regionCodes.toUpperCase()];
         }
 
-        completedUnitsByCountry[regionCode].push(unitData.title);
-        highlightedRegions.add(regionCode);
+        // Ensure it's always an array
+        if (!Array.isArray(regionCodes)) {
+          regionCodes = [regionCodes];
+        }
+
+        regionCodes.forEach((code) => {
+          const upperCode = code.toUpperCase();
+
+          // Add to completedUnitsByCountry
+          if (!completedUnitsByCountry[upperCode]) {
+            completedUnitsByCountry[upperCode] = [];
+          }
+          completedUnitsByCountry[upperCode].push(unitData.title);
+
+          // Track as a highlighted region
+          highlightedRegions.add(upperCode);
+          console.log(highlightedRegions);
+        });
       });
     }
 
