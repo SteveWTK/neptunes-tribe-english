@@ -6,29 +6,28 @@ import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { feature } from "topojson-client";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
-const oceanZonesUrl = "/data/ocean-zones.geojson";
+const oceanZonesUrl = "/data/lme66.geojson";
 
 export default function EcoMapProgress({
   highlightedRegions = [],
   completedUnitsByCountry = {},
+  highlightedOceanZones = [],
+  completedUnitsByOcean = {}, // e.g. { "North Sea": ["cod", "herring"] }
 }) {
   const [geographies, setGeographies] = useState([]);
+  const [oceanZones, setOceanZones] = useState([]);
   const [tooltipContent, setTooltipContent] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [oceanZones, setOceanZones] = useState([]);
 
-  // Convert Alpha-2 codes to numeric codes for map rendering
+  // Convert Alpha-2 to numeric for country fill
   const highlightedNumericCodes = highlightedRegions
     .map((code) => alpha2ToNumeric[code])
     .filter(Boolean);
 
-  // Convert completedUnitsByCountry keys from Alpha-2 to numeric
   const completedUnitsByNumericCode = {};
   Object.entries(completedUnitsByCountry).forEach(([alpha2Code, units]) => {
     const numericCode = alpha2ToNumeric[alpha2Code];
-    if (numericCode) {
-      completedUnitsByNumericCode[numericCode] = units;
-    }
+    if (numericCode) completedUnitsByNumericCode[numericCode] = units;
   });
 
   useEffect(() => {
@@ -47,11 +46,15 @@ export default function EcoMapProgress({
   }, []);
 
   useEffect(() => {
-    const fetchOceanZones = async () => {
+    async function fetchOceanZones() {
       const res = await fetch(oceanZonesUrl);
-      const geoJson = await res.json();
-      setOceanZones(geoJson.features);
-    };
+      if (res.ok) {
+        const data = await res.json();
+        setOceanZones(data.features);
+      } else {
+        console.error("Failed to load ocean zones");
+      }
+    }
     fetchOceanZones();
   }, []);
 
@@ -60,115 +63,87 @@ export default function EcoMapProgress({
   };
 
   return (
-    <div className="relative max-w-4xl mx-auto pt-4 pb-12 min-h-[500px]">
+    <div
+      className="relative max-w-4xl mx-auto pt-4 pb-12 min-h-[500px]"
+      onMouseMove={handleMouseMove}
+    >
       {tooltipContent && (
         <div
-          className="fixed bg-primary-800 text-white dark:bg-primary-300 dark:text-gray-900 shadow-lg p-3 rounded-lg text-sm border border-gray-200 z-50 max-w-xs pointer-events-none"
+          className="fixed bg-primary-800 text-white text-sm px-2 py-1 rounded shadow"
           style={{
             left: mousePosition.x + 10,
-            top: mousePosition.y - 10,
-            transform: "translateY(-100%)",
+            top: mousePosition.y + 10,
+            zIndex: 10,
           }}
         >
-          <strong className="block mb-1">{tooltipContent.name}</strong>
-          <div className="text-xs">
-            {tooltipContent.units?.length > 0 ? (
-              <div>
-                <p className="mb-1">Completed units:</p>
-                <ul className="list-disc list-inside space-y-0.5">
-                  {tooltipContent.units.map((unit, idx) => (
-                    <li key={idx}>{unit}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : (
-              <p>No completed units yet</p>
-            )}
-          </div>
+          {tooltipContent}
         </div>
       )}
 
       <ComposableMap
-        projection="geoEqualEarth"
-        width={800}
-        height={500}
-        style={{ width: "100%", height: "auto" }}
-        onMouseMove={handleMouseMove}
+        projection="geoNaturalEarth1"
+        projectionConfig={{ scale: 150 }}
+        className="w-full h-auto"
       >
+        {/* Render country shapes */}
         <Geographies geography={geographies}>
           {({ geographies }) =>
             geographies.map((geo) => {
-              const id = geo.id;
-              const isHighlighted = highlightedNumericCodes.includes(id);
-              const name =
-                countryNameLookup[id] ||
-                geo.properties.NAME ||
-                geo.properties.name;
-              const units = completedUnitsByNumericCode[id] || [];
+              const numericCode = geo.id;
+              const isHighlighted =
+                highlightedNumericCodes.includes(numericCode);
+              const completed = completedUnitsByNumericCode[numericCode];
 
               return (
                 <Geography
-                  key={geo.rsmKey || id}
+                  key={geo.rsmKey}
                   geography={geo}
-                  fill={isHighlighted ? "#34d399" : "#e5e7eb"}
-                  stroke="#888"
-                  strokeWidth={0.5}
-                  onMouseEnter={() => {
-                    if (isHighlighted) {
-                      setTooltipContent({
-                        name,
-                        units,
-                      });
-                    }
-                  }}
+                  fill={
+                    completed
+                      ? "#4ade80" // green
+                      : isHighlighted
+                      ? "#22d3ee" // cyan
+                      : "#e5e7eb" // default
+                  }
+                  stroke="#fff"
+                  strokeWidth={0.3}
+                  onMouseEnter={() =>
+                    setTooltipContent(
+                      countryNameLookup[geo.properties.name] ||
+                        geo.properties.name
+                    )
+                  }
                   onMouseLeave={() => setTooltipContent(null)}
-                  style={{
-                    default: { outline: "none" },
-                    hover: {
-                      fill: isHighlighted ? "#10b981" : "#d1d5db",
-                      outline: "none",
-                      cursor: isHighlighted ? "pointer" : "default",
-                    },
-                    pressed: { outline: "none" },
-                  }}
                 />
               );
             })
           }
         </Geographies>
-        {/** Ocean Zones */}
-        {Array.isArray(oceanZones) && oceanZones.length > 0 && (
-          <Geographies
-            geography={{ type: "FeatureCollection", features: oceanZones }}
-          >
-            {({ geographies }) =>
-              geographies.map((geo, i) => (
-                <Geography
-                  key={`ocean-${i}`}
-                  geography={geo}
-                  fill="rgba(59, 130, 246, 0.4)" // blue overlay
-                  stroke="#2563eb"
-                  strokeWidth={0.6}
-                  style={{
-                    default: { outline: "none" },
-                    hover: {
-                      fill: "rgba(59, 130, 246, 0.6)",
-                      outline: "none",
-                      cursor: "pointer",
-                    },
-                  }}
-                  onMouseEnter={() => {
-                    setTooltipContent({
-                      name: geo.properties.name || `Ocean Zone ${i}`,
-                      units: geo.properties.units || [],
-                    });
-                  }}
-                  onMouseLeave={() => setTooltipContent(null)}
-                />
-              ))
-            }
-          </Geographies>
-        )}
+
+        {/* Render ocean zones as polygons */}
+        {oceanZones.map((zone, idx) => {
+          const zoneName = zone.properties?.LME_NAME || `Zone ${idx}`;
+          const isCompleted = completedUnitsByOcean[zoneName];
+          const isHighlighted = highlightedOceanZones.includes(zoneName);
+
+          return (
+            <Geography
+              key={`ocean-${idx}`}
+              geography={zone}
+              fill={
+                isCompleted
+                  ? "rgba(34,197,94,0.5)" // green semi-transparent
+                  : isHighlighted
+                  ? "rgba(14,165,233,0.4)" // blue highlight
+                  : "rgba(59,130,246,0.15)" // default ocean blue
+              }
+              stroke="#3b82f6"
+              strokeWidth={0.5}
+              onMouseEnter={() => setTooltipContent(zoneName)}
+              onMouseLeave={() => setTooltipContent(null)}
+            />
+          );
+        })}
       </ComposableMap>
     </div>
   );

@@ -64,12 +64,12 @@ export default function HeaderBase({
 
   const t = {
     en: {
-      ecoMap: "Dashboard",
+      ecoMap: "Eco Map",
       signIn: "Sign In",
       signOut: "Sign Out",
     },
     pt: {
-      ecoMap: "Painel",
+      ecoMap: "Eco Map",
       signIn: "Entrar",
       signOut: "Sair",
     },
@@ -96,7 +96,7 @@ export default function HeaderBase({
         {
           session?.user && (
             <Link
-              href="/eco-dashboard"
+              href="/eco-map"
               className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
             >
               {session?.user?.image && (
