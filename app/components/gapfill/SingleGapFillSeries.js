@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { Toaster, toast } from "sonner"; // For nice XP/Feedback toasts
+import { Toaster, toast } from "sonner";
 import { motion } from "framer-motion";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";

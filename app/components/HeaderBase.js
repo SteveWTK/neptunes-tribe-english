@@ -4,6 +4,7 @@ import HeaderLogoDark from "./HeaderLogoDark";
 import Link from "next/link";
 import SignOutButton from "./signoutButton";
 import { useSession, signOut } from "next-auth/react";
+import { Moon, Sun } from "lucide-react";
 
 export default function HeaderBase({
   type = "landing",
@@ -27,13 +28,13 @@ export default function HeaderBase({
         { href: "/units", label: "Units" },
         { href: "/challenges", label: "Challenges" },
         { href: "#team", label: "Team" },
-        { href: "#support", label: "Support" },
+        { href: "/pricing", label: "Pricing" },
       ],
       pt: [
         { href: "/units", label: "Atividades" },
         { href: "/challenges", label: "Desafios" },
         { href: "#team", label: "Equipe" },
-        { href: "#support", label: "Apoie" },
+        { href: "pricing", label: "Apoie" },
       ],
       // ... add other languages as needed
     },
@@ -42,7 +43,7 @@ export default function HeaderBase({
         { href: "/", label: "Home" },
         { href: "/units", label: "Units" },
         { href: "/challenges", label: "Challenges" },
-        { href: "/support-us", label: "Support" },
+        { href: "/pricing", label: "Pricing" },
 
         // { href: "/dashboard", label: "Dashboard" },
         // { href: "/profile", label: "Profile" },
@@ -51,7 +52,7 @@ export default function HeaderBase({
         { href: "/", label: "Home" },
         { href: "/units", label: "Atividades" },
         { href: "/challenges", label: "Desafios" },
-        { href: "/support-us", label: "Apoie" },
+        { href: "/pricing", label: "Apoie" },
 
         // { href: "/dashboard", label: "Painel" },
         // { href: "/profile", label: "Perfil" },
@@ -93,32 +94,22 @@ export default function HeaderBase({
       </nav>
 
       <div className="flex gap-4 md:gap-3 lg:gap-4 items-center">
-        {
-          session?.user && (
-            <Link
-              href="/eco-map"
-              className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
-            >
-              {session?.user?.image && (
-                <img
-                  className="h-8 rounded-full"
-                  src={session.user.image}
-                  alt={session.user.name}
-                  referrerPolicy="no-referrer"
-                />
-              )}
-              <span>{copy.ecoMap}</span>
-            </Link>
-          )
-          // : (
-          //   <Link
-          //     href="/dashboard"
-          //     className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400"
-          //   >
-          //     Dashboard
-          //   </Link>
-          // )
-        }
+        {session?.user && (
+          <Link
+            href="/eco-map"
+            className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
+          >
+            {session?.user?.image && (
+              <img
+                className="h-8 rounded-full"
+                src={session.user.image}
+                alt={session.user.name}
+                referrerPolicy="no-referrer"
+              />
+            )}
+            <span>{copy.ecoMap}</span>
+          </Link>
+        )}
 
         {status === "authenticated" ? (
           <SignOutButton
@@ -148,9 +139,13 @@ export default function HeaderBase({
 
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className="text-[16px] rounded-full px-1 pt-0.5 pb-1 bg-primary-700 dark:bg-blue-50 dark:border-gray-600"
+          className="text-[16px] rounded-full px-1 pt-0.5 pb-1 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700"
         >
-          {darkMode ? "☀️" : "🌙"}
+          {darkMode ? (
+            <Sun className="w-5 h-5" />
+          ) : (
+            <Moon className="w-5 h-5" />
+          )}
         </button>
       </div>
     </header>

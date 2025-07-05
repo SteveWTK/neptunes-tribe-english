@@ -3,143 +3,299 @@ import {
   fetchUnitDetails,
   fetchSingleGapChallenges,
 } from "@/lib/data-service";
-import SiteHomeClient from "./SiteHomeClient"; // 👈 new component
+import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
+import { auth } from "@/lib/auth";
+import SiteHomeClient from "./SiteHomeClient";
 
-export default async function SiteHomePage() {
-  const units = await fetchFeaturedUnits();
-  const unitDetails = await Promise.all(
-    units.map((unit) => fetchUnitDetails(unit.id))
-  );
+export default async function SiteHomePage(props) {
+  const session = await auth();
+  const supabase = getSupabaseAdmin();
 
-  const featuredUnits = units.map((unit, index) => ({
-    ...unit,
-    ...unitDetails[index],
-  }));
+  // Extract filter parameters - await searchParams for Next.js 15
+  const searchParams = await props.searchParams;
+  const regionFilter = searchParams?.region;
+  const marineZoneFilter = searchParams?.marine_zone;
 
-  const challenges = await fetchSingleGapChallenges("default");
+  let units;
+  let isFiltered = false;
 
-  return (
-    <SiteHomeClient featuredUnits={featuredUnits} challenges={challenges} />
-  );
+  try {
+    if (regionFilter || marineZoneFilter) {
+      // Fetch filtered units
+      isFiltered = true;
+
+      // Build the query based on filters
+      let query = supabase
+        .from("units")
+        .select("*")
+        .eq("featured", true) // Keep only featured units, or remove this line to show all units
+        .order("rank", { ascending: true });
+
+      // Apply filters
+      if (regionFilter) {
+        // Handle both single region codes and arrays
+        // For arrays like ["BR", "PE"], we need to check if the region_code contains the filter
+        query = query.or(
+          `region_code.eq.${regionFilter},region_code.like.%"${regionFilter}"%`
+        );
+      }
+
+      if (marineZoneFilter) {
+        const decodedMarineZone = decodeURIComponent(marineZoneFilter);
+        // Handle both single marine zones and arrays
+        query = query.or(
+          `marine_zone.eq.${decodedMarineZone},marine_zone.like.%"${decodedMarineZone}"%`
+        );
+      }
+
+      const { data: filteredUnits, error } = await query;
+
+      if (error) {
+        console.error("Error fetching filtered units:", error);
+        // Fallback to featured units if filtering fails
+        units = await fetchFeaturedUnits();
+        isFiltered = false;
+      } else {
+        units = filteredUnits || [];
+      }
+    } else {
+      // Use existing featured units logic
+      units = await fetchFeaturedUnits();
+    }
+
+    // Fetch unit details for all units
+    const unitDetails = await Promise.all(
+      units.map((unit) => fetchUnitDetails(unit.id))
+    );
+
+    const featuredUnits = units.map((unit, index) => ({
+      ...unit,
+      ...unitDetails[index],
+    }));
+
+    // Get user's completed units if logged in
+    let completedUnitIds = [];
+    if (session?.user?.email) {
+      const { data: userData } = await supabase
+        .from("users")
+        .select("id")
+        .eq("email", session.user.email)
+        .single();
+
+      if (userData) {
+        const { data: completedData } = await supabase
+          .from("completed_units")
+          .select("unit_id")
+          .eq("user_id", userData.id);
+
+        completedUnitIds = completedData?.map((item) => item.unit_id) || [];
+      }
+    }
+
+    const challenges = await fetchSingleGapChallenges("default");
+
+    return (
+      <SiteHomeClient
+        featuredUnits={featuredUnits}
+        challenges={challenges}
+        completedUnitIds={completedUnitIds}
+        filterInfo={{
+          isFiltered,
+          regionFilter,
+          marineZoneFilter,
+        }}
+      />
+    );
+  } catch (error) {
+    console.error("Unexpected error in SiteHomePage:", error);
+
+    // Fallback to default behavior
+    const units = await fetchFeaturedUnits();
+    const unitDetails = await Promise.all(
+      units.map((unit) => fetchUnitDetails(unit.id))
+    );
+
+    const featuredUnits = units.map((unit, index) => ({
+      ...unit,
+      ...unitDetails[index],
+    }));
+
+    const challenges = await fetchSingleGapChallenges("default");
+
+    return (
+      <SiteHomeClient
+        featuredUnits={featuredUnits}
+        challenges={challenges}
+        completedUnitIds={[]}
+        filterInfo={{
+          isFiltered: false,
+          regionFilter: null,
+          marineZoneFilter: null,
+        }}
+      />
+    );
+  }
 }
 
-// "use client";
+// import {
+//   fetchFeaturedUnits,
+//   fetchUnitDetails,
+//   fetchSingleGapChallenges,
+// } from "@/lib/data-service";
+// import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
+// import { auth } from "@/lib/auth";
+// import SiteHomeClient from "./SiteHomeClient";
 
-// import { useEffect, useState } from "react";
-// import MultiGapFillExerciseNew from "@/app/components/MultiGapFillExerciseNew";
-// import { fetchAllUnits, fetchUnitThemes } from "@/lib/data-service"; // ✅ this import now
+// export default async function SiteHomePage({ searchParams }) {
+//   const session = await auth();
+//   const supabase = getSupabaseAdmin();
 
-// export default function Page() {
-//   const [unitId, setUnitId] = useState(1);
-//   const [units, setUnits] = useState([]);
-//   const [themes, setThemes] = useState([]);
-//   const [selectedTheme, setSelectedTheme] = useState("All");
+//   // Extract filter parameters
+//   const regionFilter = searchParams?.region;
+//   const marineZoneFilter = searchParams?.marine_zone;
 
-//   const buttonClass =
-//     "text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600";
+//   let units;
+//   let isFiltered = false;
 
-//   useEffect(() => {
-//     const loadData = async () => {
-//       try {
-//         const [unitsData, themeData] = await Promise.all([
-//           fetchAllUnits(),
-//           fetchUnitThemes(),
-//         ]);
-//         setUnits(unitsData);
-//         setThemes(["All", ...themeData]);
-//         if (unitsData.length > 0) {
-//           setUnitId(unitsData[0].id);
-//         }
-//       } catch (err) {
-//         console.error("Failed to load units or themes:", err);
+//   try {
+//     if (regionFilter || marineZoneFilter) {
+//       // Fetch filtered units
+//       isFiltered = true;
+
+//       // Build the query based on filters
+//       let query = supabase
+//         .from("units")
+//         .select("*")
+//         .eq("featured", true) // Keep only featured units, or remove this line to show all units
+//         .order("rank", { ascending: true });
+
+//       // Apply filters
+//       if (regionFilter) {
+//         // Handle both single region codes and arrays
+//         // For arrays like ["BR", "PE"], we need to check if the region_code contains the filter
+//         query = query.or(
+//           `region_code.eq.${regionFilter},region_code.like.%"${regionFilter}"%`
+//         );
 //       }
-//     };
 
-//     loadData();
-//   }, []);
+//       if (marineZoneFilter) {
+//         const decodedMarineZone = decodeURIComponent(marineZoneFilter);
+//         // Handle both single marine zones and arrays
+//         query = query.or(
+//           `marine_zone.eq.${decodedMarineZone},marine_zone.like.%"${decodedMarineZone}"%`
+//         );
+//       }
 
-//   const filteredUnits =
-//     selectedTheme === "All"
-//       ? units
-//       : units.filter((u) => u.theme === selectedTheme);
+//       const { data: filteredUnits, error } = await query;
 
-//   function formatTheme(theme) {
-//     if (!theme) return "";
-//     return theme
-//       .split("_")
-//       .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
-//       .join(" ");
+//       if (error) {
+//         console.error("Error fetching filtered units:", error);
+//         // Fallback to featured units if filtering fails
+//         units = await fetchFeaturedUnits();
+//         isFiltered = false;
+//       } else {
+//         units = filteredUnits || [];
+//       }
+//     } else {
+//       // Use existing featured units logic
+//       units = await fetchFeaturedUnits();
+//     }
+
+//     // Fetch unit details for all units
+//     const unitDetails = await Promise.all(
+//       units.map((unit) => fetchUnitDetails(unit.id))
+//     );
+
+//     const featuredUnits = units.map((unit, index) => ({
+//       ...unit,
+//       ...unitDetails[index],
+//     }));
+
+//     // Get user's completed units if logged in
+//     let completedUnitIds = [];
+//     if (session?.user?.email) {
+//       const { data: userData } = await supabase
+//         .from("users")
+//         .select("id")
+//         .eq("email", session.user.email)
+//         .single();
+
+//       if (userData) {
+//         const { data: completedData } = await supabase
+//           .from("completed_units")
+//           .select("unit_id")
+//           .eq("user_id", userData.id);
+
+//         completedUnitIds = completedData?.map((item) => item.unit_id) || [];
+//       }
+//     }
+
+//     const challenges = await fetchSingleGapChallenges("default");
+
+//     return (
+//       <SiteHomeClient
+//         featuredUnits={featuredUnits}
+//         challenges={challenges}
+//         completedUnitIds={completedUnitIds}
+//         filterInfo={{
+//           isFiltered,
+//           regionFilter,
+//           marineZoneFilter,
+//         }}
+//       />
+//     );
+//   } catch (error) {
+//     console.error("Unexpected error in SiteHomePage:", error);
+
+//     // Fallback to default behavior
+//     const units = await fetchFeaturedUnits();
+//     const unitDetails = await Promise.all(
+//       units.map((unit) => fetchUnitDetails(unit.id))
+//     );
+
+//     const featuredUnits = units.map((unit, index) => ({
+//       ...unit,
+//       ...unitDetails[index],
+//     }));
+
+//     const challenges = await fetchSingleGapChallenges("default");
+
+//     return (
+//       <SiteHomeClient
+//         featuredUnits={featuredUnits}
+//         challenges={challenges}
+//         completedUnitIds={[]}
+//         filterInfo={{
+//           isFiltered: false,
+//           regionFilter: null,
+//           marineZoneFilter: null,
+//         }}
+//       />
+//     );
 //   }
-
-//   return (
-//     <div className="flex flex-col items-center space-y-4 bg-white dark:bg-primary-900">
-//       {/* Theme filter */}
-//       <div className="mt-6 flex flex-col gap-2">
-//         {/* Unit selector */}
-//         <select
-//           className="text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
-//           value={unitId ?? ""}
-//           onChange={(e) => setUnitId(Number(e.target.value))}
-//         >
-//           <option value="">-- Select Unit --</option>
-//           {filteredUnits.map((unit) => (
-//             <option key={unit.id} value={unit.id}>
-//               {unit.unit}: {unit.title}
-//             </option>
-//           ))}
-//         </select>
-//       </div>
-
-//       {/* Exercise */}
-//       {unitId && typeof unitId === "number" && (
-//         <MultiGapFillExerciseNew unitId={unitId} />
-//       )}
-//     </div>
-//   );
 // }
 
-// const handleRandomUnit = () => {
-//   if (filteredUnits.length > 0) {
-//     const randomUnit =
-//       filteredUnits[Math.floor(Math.random() * filteredUnits.length)];
-//     setUnitId(randomUnit.id);
-//   }
-// };
+// import {
+//   fetchFeaturedUnits,
+//   fetchUnitDetails,
+//   fetchSingleGapChallenges,
+// } from "@/lib/data-service";
+// import SiteHomeClient from "./SiteHomeClient"; // 👈 new component
 
-{
-  /* <option value="random">🎲 Random Unit</option> */
-}
+// export default async function SiteHomePage() {
+//   const units = await fetchFeaturedUnits();
+//   const unitDetails = await Promise.all(
+//     units.map((unit) => fetchUnitDetails(unit.id))
+//   );
 
-{
-  /* Handle random manually */
-}
-// {unitId === "random" && handleRandomUnit()}
+//   const featuredUnits = units.map((unit, index) => ({
+//     ...unit,
+//     ...unitDetails[index],
+//   }));
 
-{
-  /* <select
-          className="text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
-          value={selectedTheme}
-          onChange={(e) => setSelectedTheme(e.target.value)}
-        >
-          {themes.map((theme, index) => (
-            <option key={index} value={theme}>
-              {formatTheme(theme)}
-            </option>
-          ))}
-        </select> */
-}
+//   const challenges = await fetchSingleGapChallenges("default");
 
-{
-  /*<select
-        className="bg-accent-50 hover:bg-accent-500 text-accent-900  rounded-md px-2 py-1 mt-4 text-center align-middle min-w-24 max-w-60 ml-8"
-        value={unitId}
-        onChange={(e) => setUnitId(Number(e.target.value))}
-      >
-        {units.map((unit) => (
-          <option key={unit.id} value={unit.id}>
-            Unit {unit.unit}: {unit.title}
-          </option>
-        ))}
-      </select>
-      <MultiGapFillExerciseNew unitId={unitId} />*/
-}
+//   return (
+//     <SiteHomeClient featuredUnits={featuredUnits} challenges={challenges} />
+//   );
+// }

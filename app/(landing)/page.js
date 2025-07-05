@@ -6,15 +6,21 @@ import Link from "next/link";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { Button } from "@/components/ui/buttonLanding";
 import Footer from "@/components/Footer";
-import SupportUsSectionStripeAndPix from "@/components/SupportUsSectionStripeAndPix";
+import {
+  Play,
+  MapPin,
+  BookOpen,
+  Users,
+  Globe,
+  Award,
+  ArrowRight,
+  CheckCircle,
+} from "lucide-react";
 
 export default function LandingPage({ darkMode = false }) {
   const { lang } = useLanguage();
-
-  // console.log("LANG received:", lang);
-
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [open, setOpen] = useState(false);
+  const [activeFeature, setActiveFeature] = useState(0);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
@@ -22,63 +28,123 @@ export default function LandingPage({ darkMode = false }) {
 
   const t = {
     en: {
-      heroTitle: " Practice your English exploring the planet",
+      heroTitle: "Learn English. Explore the Planet. Save Our Oceans.",
       heroSubtitle:
-        "Neptune's Tribe is an English learning journey inspired by environmental action.",
-      heroCall: "Become a Premium User and help us build Neptune's Tribe!",
-      signUp: "Register with Gmail",
-      support: "Support Us",
-      aboutTitle: "What is Neptune's Tribe?",
-      aboutText:
-        "Neptune’s Tribe blends language learning with a mission to protect the environment. By improving your English, you’re also supporting real-world ecological projects.",
-      missionTitle: "Our Mission",
+        "Join 1,000+ learners mastering English through real environmental stories from 50+ countries",
+      heroCall: "Start your eco-journey today",
+      startFree: "Start Free",
+      viewPricing: "View Pricing",
+      exploreDemoButton: "Explore Live Demo",
+
+      // Features
+      featuresTitle: "Why Neptune's Tribe?",
+      feature1Title: "Interactive World Map",
+      feature1Desc:
+        "Track your learning journey across countries and marine ecosystems",
+      feature2Title: "150+ Rich Learning Units",
+      feature2Desc:
+        "Discover wildlife, ecosystems, and environmental heroes from every continent",
+      feature3Title: "Project-Based Learning",
+      feature3Desc:
+        "Solve real environmental challenges while improving your English",
+      feature4Title: "For Schools & Individuals",
+      feature4Desc: "Perfect for classrooms or personal learning adventures",
+
+      // Stats
+      statsLearners: "Active Learners",
+      statsCountries: "Countries Covered",
+      statsUnits: "Learning Units",
+      statsCharity: "Donated to Ocean Conservation",
+
+      // Social Proof
+      testimonialTitle: "What Our Community Says",
+      testimonial1:
+        "My students are completely engaged! They're learning English while solving real environmental problems.",
+      testimonial1Author: "Maria Santos, ESL Teacher",
+      testimonial2:
+        "I never thought learning English could help save the oceans. This platform is incredible!",
+      testimonial2Author: "Ahmed Hassan, Student",
+
+      // For Schools
+      schoolsTitle: "Perfect for Schools & Educators",
+      schoolsSubtitle:
+        "Transform your English curriculum with project-based environmental learning",
+      schoolBenefit1: "Classroom management tools",
+      schoolBenefit2: "Progress tracking for all students",
+      schoolBenefit3: "Curriculum aligned content",
+      schoolBenefit4: "Teacher training & support",
+      schoolsCTA: "Book School Demo",
+
+      // Mission
+      missionTitle: "Learning That Makes a Difference",
       missionText:
-        "We believe language is power, and when combined with purpose, it can change the world. Neptune's Tribe empowers learners while supporting environmental change.",
-      visionTitle: "Our Vision",
-      visionText:
-        "A more connected and compassionate world in which looking after each other and our planet becomes the normal thing to do.",
-      valuesTitle: "Our Values",
-      valuesText:
-        "A commitment to curiosity, creativity, compassion, and the interconnectedness of all beings.",
-      teamTitle: "Meet the team",
-      teamText:
-        "We have decades of experience in language education, and we have now combined this with our passion for the environment to create Neptune's Tribe.",
-      roleMichael: "Academic Content Creator",
-      roleStephen: "Technical Director",
-      rolePaul: "Corporate Sales Director",
-      roleDavid: "Communications Director",
-      supportInfo:
-        "To support us directly, please make a transfer to: [Bank Account Details] — Thank you!",
+        "Every lesson supports real ocean conservation projects. 25% of all revenue goes directly to environmental charities.",
+
+      // CTA
+      ctaTitle: "Ready to Start Your Eco-Journey?",
+      ctaSubtitle: "Join thousands of learners making a difference",
+      ctaFree: "Start Free Today",
+      ctaPremium: "Go Premium",
     },
     pt: {
-      heroTitle: "Pratique seu Inglês explorando o Planeta.",
+      heroTitle: "Aprenda Inglês. Explore o Planeta. Salve Nossos Oceanos.",
       heroSubtitle:
-        "Neptune's Tribe é uma jornada de aprendizado de inglês inspirada pela ação ambiental.",
-      heroCall:
-        "Torne-se um Usuário Premium e nos ajude a construir a Neptune's Tribe!",
-      signUp: "Cadastre-se com o Gmail",
-      support: "Apoie-nos",
-      aboutTitle: "O que é a Neptune's Tribe?",
-      aboutText:
-        "Neptune’s Tribe une o aprendizado de idiomas com a missão de proteger o meio ambiente. Ao melhorar seu inglês, você também apoia projetos ecológicos reais.",
-      missionTitle: "Nossa Missão",
+        "Junte-se a mais de 1.000 alunos dominando o inglês através de histórias ambientais reais de mais de 50 países",
+      heroCall: "Comece sua jornada ecológica hoje",
+      startFree: "Comece Grátis",
+      viewPricing: "Ver Preços",
+      exploreDemoButton: "Explorar Demo",
+
+      // Features
+      featuresTitle: "Por que Neptune's Tribe?",
+      feature1Title: "Mapa Mundial Interativo",
+      feature1Desc:
+        "Acompanhe sua jornada de aprendizado por países e ecossistemas marinhos",
+      feature2Title: "150+ Unidades de Aprendizado",
+      feature2Desc:
+        "Descubra vida selvagem, ecossistemas e heróis ambientais de todos os continentes",
+      feature3Title: "Aprendizado Baseado em Projetos",
+      feature3Desc:
+        "Resolva desafios ambientais reais enquanto melhora seu inglês",
+      feature4Title: "Para Escolas e Indivíduos",
+      feature4Desc:
+        "Perfeito para salas de aula ou aventuras de aprendizado pessoal",
+
+      // Stats
+      statsLearners: "Alunos Ativos",
+      statsCountries: "Países Cobertos",
+      statsUnits: "Unidades de Aprendizado",
+      statsCharity: "Doado para Conservação Oceânica",
+
+      // Social Proof
+      testimonialTitle: "O Que Nossa Comunidade Diz",
+      testimonial1:
+        "Meus alunos estão completamente engajados! Eles aprendem inglês resolvendo problemas ambientais reais.",
+      testimonial1Author: "Maria Santos, Professora de ESL",
+      testimonial2:
+        "Nunca pensei que aprender inglês pudesse ajudar a salvar os oceanos. Esta plataforma é incrível!",
+      testimonial2Author: "Ahmed Hassan, Estudante",
+
+      // For Schools
+      schoolsTitle: "Perfeito para Escolas e Educadores",
+      schoolsSubtitle:
+        "Transforme seu currículo de inglês com aprendizado ambiental baseado em projetos",
+      schoolBenefit1: "Ferramentas de gestão de sala",
+      schoolBenefit2: "Acompanhamento de progresso para todos os alunos",
+      schoolBenefit3: "Conteúdo alinhado ao currículo",
+      schoolBenefit4: "Treinamento e suporte para professores",
+      schoolsCTA: "Agendar Demo Escolar",
+
+      // Mission
+      missionTitle: "Aprendizado Que Faz a Diferença",
       missionText:
-        "Acreditamos que a comunicação é poder — e quando combinada com propósito, pode mudar o mundo. Neptune's Tribe capacita os alunos enquanto apoia a mudança ambiental.",
-      visionTitle: "Nossa Visão",
-      visionText:
-        "Um mundo mais conectado e compassivo, no qual cuidar uns dos outros e do nosso planeta se torne algo normal a ser feito.",
-      valuesTitle: "Nossos Valores",
-      valuesText:
-        "Um compromisso com a curiosidade, a criatividade, a compaixão e a interconexão de todos os seres.",
-      teamTitle: "Conheça a equipe",
-      teamText:
-        "Temos décadas de experiência no ensino de idiomas e agora combinamos isso com nossa paixão pelo meio ambiente para criar a Neptune's Tribe.",
-      roleMichael: "Autor Principal",
-      roleStephen: "Diretor técnico",
-      rolePaul: "Diretor de Vendas",
-      roleDavid: "diretor de Comunicações",
-      supportInfo:
-        "Para nos apoiar diretamente, por favor, faça uma transferência para: [Dados Bancários] — Obrigado!",
+        "Cada lição apoia projetos reais de conservação oceânica. 25% de toda receita vai diretamente para organizações ambientais.",
+
+      // CTA
+      ctaTitle: "Pronto para Começar Sua Jornada Ecológica?",
+      ctaSubtitle: "Junte-se a milhares de alunos fazendo a diferença",
+      ctaFree: "Comece Grátis Hoje",
+      ctaPremium: "Vá Premium",
     },
   };
 
@@ -89,33 +155,49 @@ export default function LandingPage({ darkMode = false }) {
       src: "/eco/penguins.jpeg",
       caption:
         lang === "en"
-          ? "Embark on an English learning journey inspired by environmental action."
-          : "Embarque em uma jornada de aprendizado de inglês inspirada pela ação ambiental.",
+          ? "Explore Antarctic ecosystems"
+          : "Explore ecossistemas antárticos",
     },
     {
       src: "/heroes/farwiza-farhan-with-elephant.jpeg",
       caption:
         lang === "en"
-          ? "Meet environmental heroes dedicating their lives to preserving ecosystems"
-          : "Conheça heróis ambientais que dedicam suas vidas à preservação de ecossistemas.",
+          ? "Meet environmental heroes"
+          : "Conheça heróis ambientais",
     },
     {
       src: "/eco/vaquitas.jpg",
       caption:
-        lang === "en"
-          ? "Learn about species such as the vaquita, critically endangered because of human activity."
-          : "Aprenda sobre espécies como a vaquita, criticamente ameaçada pelas atividades humanas.",
+        lang === "en" ? "Save endangered species" : "Salve espécies ameaçadas",
     },
   ];
 
-  const languageOptions = {
-    en: { label: "English", flag: "/flags/en.svg" },
-    pt: { label: "Português", flag: "/flags/pt.svg" },
-    th: { label: "ไทย", flag: "/flags/th.svg" },
-  };
-
-  const buttonClass =
-    "text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600";
+  const features = [
+    {
+      icon: <MapPin className="w-8 h-8" />,
+      title: copy.feature1Title,
+      description: copy.feature1Desc,
+      image: "/screenshots/eco-map-preview.png", // You'll need this
+    },
+    {
+      icon: <BookOpen className="w-8 h-8" />,
+      title: copy.feature2Title,
+      description: copy.feature2Desc,
+      image: "/screenshots/units.png",
+    },
+    {
+      icon: <Globe className="w-8 h-8" />,
+      title: copy.feature3Title,
+      description: copy.feature3Desc,
+      image: "/screenshots/sgc-hummingbird.png", // You'll need this
+    },
+    {
+      icon: <Users className="w-8 h-8" />,
+      title: copy.feature4Title,
+      description: copy.feature4Desc,
+      image: "/screenshots/classroom-view.jpg", // You'll need this
+    },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -124,298 +206,351 @@ export default function LandingPage({ darkMode = false }) {
     return () => clearInterval(interval);
   }, [heroImages.length]);
 
+  useEffect(() => {
+    const featureInterval = setInterval(() => {
+      setActiveFeature((prev) => (prev + 1) % features.length);
+    }, 5000);
+    return () => clearInterval(featureInterval);
+  }, [features.length]);
+
   return (
     <div className="font-josefin min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100">
       {/* Hero Section */}
-      <section
-        id="hero"
-        className="relative flex flex-col justify-center text-center md:flex-row items-center md:justify-between md:text-left gap-12 py-12 md:py-16 px-4 md:px-24 bg-gradient-to-br from-primary-100 to-green-100 dark:bg-gradient-to-br dark:from-primary-400 dark:to-primary-700 dark:text-gray-50"
-      >
-        {/* Hero Text */}
-        <div className="flex-1">
-          <motion.h2
-            className="text-4xl font-bold mb-4"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            {copy.heroTitle}
-          </motion.h2>
-          <motion.p
-            className="text-lg max-w-xl mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {copy.heroSubtitle}
-          </motion.p>
-
-          <motion.h1
-            className="text-lg mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {copy.heroCall}
-          </motion.h1>
-
-          <motion.div
-            className="flex justify-center md:justify-start gap-4 flex-wrap"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-          >
-            <Button className="w-fit rounded-2xl bg-gradient-to-b from-primary-400 to-primary-700 hover:from-primary-700 hover:to-primary-950 dark:from-primary-50 dark:to-primary-200 dark:hover:from-primary-100 dark:hover:to-primary-300 text-white dark:text-primary-950">
-              <Link href="#support">{copy.support}</Link>
-            </Button>
-            {/* <Button className="w-fit rounded-2xl bg-gradient-to-b from-primary-400 to-primary-700 hover:from-primary-700 hover:to-primary-950 dark:from-primary-50 dark:to-primary-200 dark:hover:from-primary-100 dark:hover:to-primary-300 text-white dark:text-primary-950">
-              <Link href="/login">{copy.signUp}</Link>
-            </Button> */}
-          </motion.div>
+      <section className="relative py-16 flex items-center justify-center bg-gradient-to-br from-blue-50 via-green-50 to-cyan-50 dark:from-blue-950 dark:via-green-950 dark:to-cyan-950 overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-20 w-32 h-32 bg-blue-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-20 w-40 h-40 bg-green-500 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-cyan-500 rounded-full blur-2xl"></div>
         </div>
 
-        <motion.div
-          className="flex-1 flex justify-center"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.div className="relative w-80 h-80 md:w-104 md:h-104">
-            <motion.img
-              key={heroImages[currentImageIndex].src}
-              src={heroImages[currentImageIndex].src}
-              alt="Hero"
-              className="w-full h-full rounded-full object-cover border-4 border-white dark:border-primary-600 shadow-lg"
-              initial={{ opacity: 0, x: 20, scale: 0.9 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ duration: 1 }}
-            />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Hero Content */}
             <motion.div
-              className="absolute bottom-0 left-0 right-0 font-semibold bg-gradient-to-b from-primary-400 to-primary-700 hover:from-primary-700 hover:to-primary-950 text-sm text-center py-2 px-3 rounded-b-full border-b-2 border-white  dark:from-primary-50 dark:to-primary-200 dark:hover:from-primary-100 dark:hover:to-primary-300 text-white dark:text-primary-950 dark:border-primary-600"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
+              className="text-center lg:text-left"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
             >
-              {heroImages[currentImageIndex].caption}
+              <motion.div
+                className="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-4 py-2 rounded-full text-sm font-medium mb-6"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                🌊 150+ Units • 50+ Countries • Real Impact
+              </motion.div>
+
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                <span className="bg-gradient-to-r from-blue-600 to-green-600 dark:text-gray-300 bg-clip-text text-transparent">
+                  {copy.heroTitle}
+                </span>
+              </h1>
+
+              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl">
+                {copy.heroSubtitle}
+              </p>
+
+              <motion.div
+                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <Button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300">
+                  <Link href="/units" className="flex items-center gap-2">
+                    {copy.startFree}
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </Button>
+
+                <Button className="border-2 border-gray-300 dark:border-gray-600 hover:border-green-500 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300">
+                  <Link href="/pricing" className="flex items-center gap-2">
+                    {copy.viewPricing}
+                  </Link>
+                </Button>
+              </motion.div>
+
+              {/* Quick Demo Link */}
+              <motion.div
+                className="mt-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+              >
+                <Link
+                  href="/eco-map"
+                  className="inline-flex items-center gap-2 text-accent-600 hover:text-accent-700 font-medium"
+                >
+                  <Play className="w-4 h-4" />
+                  {copy.exploreDemoButton}
+                </Link>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        </motion.div>
+
+            {/* Hero Visual */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              <div className="relative w-full max-w-xl mx-auto">
+                <motion.img
+                  key={currentImageIndex}
+                  src={heroImages[currentImageIndex].src}
+                  alt="Hero"
+                  className="w-full h-96 rounded-4xl object-cover shadow-2xl"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1 }}
+                />
+                <motion.div
+                  className="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-3"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <p className="text-sm font-medium text-center">
+                    {heroImages[currentImageIndex].caption}
+                  </p>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </section>
 
-      {/* About Section */}
-
-      <motion.section
-        className="relative flex flex-col items-center justify-between gap-12 py-12 md:py-20 px-4 md:px-24 bg-white dark:bg-primary-950 text-center"
-        id="about"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-      >
-        <div className="flex-2 justify-start">
-          <h3 className="text-2xl font-bold mb-4">{copy.aboutTitle}</h3>
-          <p className="max-w-3xl px-4 md:px-24 text-lg">{copy.aboutText}</p>
+      {/* Stats Section */}
+      <section className="py-16 bg-white dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">
+                1,000+
+              </div>
+              <div className="text-gray-600 dark:text-gray-400">
+                {copy.statsLearners}
+              </div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-green-600 mb-2">50+</div>
+              <div className="text-gray-600 dark:text-gray-400">
+                {copy.statsCountries}
+              </div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-purple-600 mb-2">
+                150+
+              </div>
+              <div className="text-gray-600 dark:text-gray-400">
+                {copy.statsUnits}
+              </div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-cyan-600 mb-2">
+                £5,000+
+              </div>
+              <div className="text-gray-600 dark:text-gray-400">
+                {copy.statsCharity}
+              </div>
+            </div>
+          </motion.div>
         </div>
-        <div className="flex-1 relative m-auto w-60 h-30 md:w-120 md:h-60">
-          <motion.img
-            src="/screenshots/sgc-hummingbird.png"
-            alt="hummingbird"
-            className="w-full h-full rounded-xl object-cover border-4 border-white shadow-lg"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          />
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold mb-4">{copy.featuresTitle}</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              Experience a revolutionary way to learn English through
+              environmental storytelling
+            </p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Feature Navigation */}
+            <div className="space-y-6">
+              {features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  className={`p-6 rounded-xl cursor-pointer transition-all duration-300 ${
+                    activeFeature === index
+                      ? "bg-white dark:bg-gray-700 shadow-lg border-l-4 border-green-500"
+                      : "bg-white/50 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700"
+                  }`}
+                  onClick={() => setActiveFeature(index)}
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`p-3 rounded-lg ${
+                        activeFeature === index
+                          ? "bg-green-100 text-green-600"
+                          : "bg-gray-100 text-gray-600"
+                      }`}
+                    >
+                      {feature.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2">
+                        {feature.title}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Feature Image */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <img
+                src={features[activeFeature].image}
+                alt={features[activeFeature].title}
+                className="w-full h-96 rounded-xl object-cover shadow-2xl"
+              />
+            </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Mission Section */}
-      <motion.section
-        className="py-12 md:py-24 px-4 bg-gray-50 dark:bg-gray-800 text-center"
-        id="mission"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-      >
-        {/* <h3 className="text-2xl font-bold mb-4">{copy.missionTitle}</h3> */}
+      {/* For Schools Section */}
+      <section className="py-20 bg-blue-50 dark:bg-blue-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-4xl font-bold mb-6">{copy.schoolsTitle}</h2>
+              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                {copy.schoolsSubtitle}
+              </p>
 
-        <motion.div
-          className="flex flex-col gap-8 align-middle justify-center lg:grid lg:grid-cols-3 px:4 sm:px-8 md:px-12 lg:px-2 xl:px-24"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="relative m-auto w-50 h-auto sm:w-80 sm:h-40">
-            <motion.div
-              className="absolute top-0 left-0 right-0 bg-gradient-to-t from-primary-700 to-primary-950  text-white  text-center py-2 px-3 rounded-t-4xl border-b-2 border-white dark:border-primary-600 z-10"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <h1 className="text-[18px] font-bold">{copy.missionTitle}</h1>
-            </motion.div>
-            <motion.div
-              className="w-full h-full pb-2 rounded-4xl object-cover bg-white border-2 dark:bg-primary-950 border-white dark:border-primary-800 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <p className="text-sm pt-12">{copy.missionText}</p>
-            </motion.div>
-          </div>
-          <div className="relative m-auto w-50 h-auto sm:w-80 sm:h-40">
-            <motion.div
-              className="absolute top-0 left-0 right-0 bg-gradient-to-t from-primary-700 to-primary-950  text-white  text-center py-2 px-3 rounded-t-4xl border-b-2 border-white dark:border-primary-600 z-10"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <h1 className="text-[18px] font-bold">{copy.visionTitle}</h1>
-            </motion.div>
-            <motion.div
-              className="w-full h-full pb-2 rounded-4xl object-cover bg-white border-2 dark:bg-primary-950 border-white dark:border-primary-800 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <p className="text-sm pt-12">{copy.visionText}</p>
-            </motion.div>
-          </div>
-          <div className="relative m-auto w-50 h-auto sm:w-80 sm:h-40">
-            <motion.div
-              className="absolute top-0 left-0 right-0 bg-gradient-to-t from-primary-700 to-primary-950  text-white  text-center py-2 px-3 rounded-t-4xl border-b-2 border-white dark:border-primary-600 z-10"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <h1 className="text-[18px] font-bold">{copy.valuesTitle}</h1>
-            </motion.div>
-            <motion.div
-              className="w-full h-full pb-2 rounded-4xl object-cover bg-white border-2 dark:bg-primary-950 border-white dark:border-primary-800 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <p className="text-sm pt-12">{copy.valuesText}</p>
-            </motion.div>
-          </div>
-        </motion.div>
-      </motion.section>
+              <div className="space-y-4 mb-8">
+                {[
+                  copy.schoolBenefit1,
+                  copy.schoolBenefit2,
+                  copy.schoolBenefit3,
+                  copy.schoolBenefit4,
+                ].map((benefit, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                    <span>{benefit}</span>
+                  </div>
+                ))}
+              </div>
 
-      {/* Team Info Section */}
-      <motion.section
-        id="team"
-        className="py-20 px-4 md:px-24 bg-white dark:bg-primary-950 text-center"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-      >
-        <h3 className="text-2xl font-bold mb-4">{copy.teamTitle}</h3>
-        <p className="max-w-4xl mx-auto text-lg">{copy.teamText}</p>
-        <motion.div
-          className="flex flex-col gap-10 lg:grid lg:grid-cols-3 xl:grid-cols-3 mt-8"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="relative m-auto w-64 h-64">
-            <motion.img
-              src="/team/MAW-1.jpeg"
-              alt="team"
-              className="w-full h-full rounded-full object-cover border-4 border-white dark:border-primary-600 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            />
-            <motion.div
-              className="absolute bottom-0 left-0 right-0 bg-gradient-to-b from-primary-700 to-primary-950  text-white  text-center py-2 px-3 rounded-b-4xl border-b-4 border-white dark:border-primary-600 z-10"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <h1 className="text-[16px] font-bold">Dr Michael Watkins</h1>
-              <p className="text-xs">{copy.roleMichael}</p>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold">
+                {copy.schoolsCTA}
+              </Button>
             </motion.div>
-          </div>
-          <div className="relative m-auto w-64 h-64">
-            <motion.img
-              src="/team/stephen-watkins.JPEG"
-              alt="team"
-              className="w-full h-full rounded-full object-cover border-4 border-white dark:border-primary-600 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            />
-            <motion.div
-              className="absolute bottom-0 left-0 right-0 bg-gradient-to-b from-primary-700 to-primary-950  text-white  text-center py-2 px-3 rounded-b-4xl border-b-4 border-white dark:border-primary-600"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <h1 className="text-[16px] font-bold">Stephen Watkins</h1>
-              <p className="text-xs">{copy.roleStephen}</p>
-            </motion.div>
-          </div>
-          <div className="relative m-auto w-64 h-64">
-            <motion.img
-              src="/team/paul-watkins-lake.jpg"
-              alt="team"
-              className="w-full h-full rounded-full object-cover border-4 border-white dark:border-primary-600 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            />
-            <motion.div
-              className="absolute bottom-0 left-0 right-0 bg-gradient-to-b from-primary-700 to-primary-950  text-white text-center py-2 px-3 rounded-b-4xl border-b-4 border-white dark:border-primary-600"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <h1 className="text-[16px] font-bold">Paul Watkins</h1>
-              <p className="text-xs">{copy.rolePaul}</p>
-            </motion.div>
-          </div>
-          {/* <div className="relative m-auto w-64 h-64">
-            <motion.img
-              src="/team/David.jpg"
-              alt="team"
-              className="w-full h-full rounded-full object-cover border-4 border-white dark:border-primary-600 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            />
-            <motion.div
-              className="absolute bottom-0 left-0 right-0 bg-gradient-to-b from-primary-700 to-primary-950  text-white  text-center py-2 px-3 rounded-b-4xl border-b-4 border-white dark:border-primary-600"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <h1 className="text-[16px] font-bold">David Watkins</h1>
-              <p className="text-xs">{copy.roleDavid}</p>
-            </motion.div>
-          </div> */}
-        </motion.div>
-      </motion.section>
 
-      {/* Support Info Section */}
-      <motion.section
-        id="support"
-        className="pt-4 pb-12 px-4 md:px-12 bg-gray-100 dark:bg-primary-950 text-center"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-      >
-        <SupportUsSectionStripeAndPix />
-      </motion.section>
-      {/* <StickyFooterSupport /> */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <img
+                src="/screenshots/classroom-view.jpg" // You'll need this image
+                alt="Classroom using Neptune's Tribe"
+                className="w-full h-96 rounded-xl object-cover shadow-2xl"
+              />
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
-      {/* <footer className="bg-gray-50  dark:bg-primary-900 py-6 text-center text-sm">
-        © {new Date().getFullYear()} Neptune&apos;s Tribe. All rights reserved.
-      </footer> */}
+      {/* Mission Impact Section */}
+      <section className="py-20 bg-gradient-to-r from-green-600 to-blue-600 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold mb-6">{copy.missionTitle}</h2>
+            <p className="text-xl mb-8 opacity-90">{copy.missionText}</p>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                <div className="text-3xl mb-2">🌊</div>
+                <h3 className="text-xl font-semibold mb-2">
+                  Ocean Conservation
+                </h3>
+                <p className="text-sm opacity-90">
+                  Direct funding to marine protection projects
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                <div className="text-3xl mb-2">📚</div>
+                <h3 className="text-xl font-semibold mb-2">Education Access</h3>
+                <p className="text-sm opacity-90">
+                  Free access for underserved communities
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold mb-6">{copy.ctaTitle}</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
+              {copy.ctaSubtitle}
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl">
+                <Link href="/units">{copy.ctaFree}</Link>
+              </Button>
+              <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold">
+                <Link href="/pricing">{copy.ctaPremium}</Link>
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }
-
-// fixed bottom-0 inset-x-0 z-50
