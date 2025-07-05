@@ -89,11 +89,11 @@ export default function PricingTiers() {
 
   const pricingData = {
     yearly: {
-      premium: { price: "£15", period: "/year", savings: "Save 50%" },
+      premium: { price: "£24", period: "/year", savings: "Save 50%" },
       enterprise: { price: "£150", period: "/year", savings: "Save 50%" },
     },
     monthly: {
-      premium: { price: "£2.50", period: "/month", savings: "" },
+      premium: { price: "£4", period: "/month", savings: "" },
       enterprise: { price: "£25", period: "/month", savings: "" },
     },
   };
