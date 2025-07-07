@@ -380,117 +380,122 @@ export default function EcoMapProgressOceans({
           {tooltipContent}
         </div>
       )}
-      <ComposableMap
-        projection="geoNaturalEarth1"
-        projectionConfig={{ scale: 150 }}
-        className="w-full h-auto"
-        // style={{ background: "#f0f8ff" }} // Light blue background to see ocean zones better
-      >
-        {/* Render ocean zones first (behind countries) */}
-        <Geographies geography={oceanZones}>
-          {({ geographies: oceanGeographies }) =>
-            oceanGeographies.map((geo) => {
-              const zoneName = getOceanZoneName(geo);
-              const isCompleted = isOceanZoneCompleted(zoneName);
-              const isHighlighted = isOceanZoneHighlighted(zoneName);
+      <div className="relative aspect-[16/9] w-full overflow-hidden">
+        <ComposableMap
+          projection="geoNaturalEarth1"
+          projectionConfig={{
+            center: [0, -35],
+            scale: 150,
+          }}
+          className="w-full h-auto"
+        >
+          {/* Render ocean zones first (behind countries) */}
+          <Geographies geography={oceanZones}>
+            {({ geographies: oceanGeographies }) =>
+              oceanGeographies.map((geo) => {
+                const zoneName = getOceanZoneName(geo);
+                const isCompleted = isOceanZoneCompleted(zoneName);
+                const isHighlighted = isOceanZoneHighlighted(zoneName);
 
-              return (
-                <Geography
-                  key={`ocean-${geo.rsmKey || geo.id}`}
-                  geography={geo}
-                  fill={
-                    isCompleted
-                      ? "rgba(168, 85, 247, 0.7)" // Purple for completed ocean zones
-                      : isHighlighted
-                      ? "rgba(14,165,233,0.6)" // Blue for highlighted ocean zones
-                      : "rgba(59,130,246,0.2)" // Light blue for default ocean
-                  }
-                  stroke="#1e40af"
-                  strokeWidth={0.8}
-                  style={{
-                    default: { outline: "none" },
-                    hover: {
-                      outline: "none",
-                      fill: isCompleted
-                        ? "rgba(168, 85, 247, 0.9)"
+                return (
+                  <Geography
+                    key={`ocean-${geo.rsmKey || geo.id}`}
+                    geography={geo}
+                    fill={
+                      isCompleted
+                        ? "rgba(168, 85, 247, 0.7)" // Purple for completed ocean zones
                         : isHighlighted
-                        ? "rgba(14,165,233,0.8)"
-                        : "rgba(59,130,246,0.4)",
-                    },
-                    pressed: { outline: "none" },
-                  }}
-                  onMouseEnter={() => {
-                    const tooltip = isCompleted
-                      ? `${zoneName} ✓ (${
-                          completedUnitsByOcean[zoneName]?.length || 0
-                        } units completed)`
-                      : isHighlighted
-                      ? `${zoneName} (In Progress)`
-                      : zoneName;
-                    setTooltipContent(tooltip);
-                  }}
-                  onMouseLeave={() => setTooltipContent(null)}
-                />
-              );
-            })
-          }
-        </Geographies>
-
-        {/* Render country shapes on top */}
-        <Geographies geography={geographies}>
-          {({ geographies }) =>
-            geographies.map((geo) => {
-              const numericCode = geo.id;
-              const isHighlighted = isCountryHighlighted(numericCode);
-              const completed = isCountryCompleted(numericCode);
-              const countryName =
-                countryNameLookup[geo.properties.name] || geo.properties.name;
-              const completedUnits = completedUnitsByNumericCode[numericCode];
-
-              return (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  fill={
-                    completed
-                      ? "#22c55e" // Green for completed countries
-                      : isHighlighted
-                      ? "#06b6d4" // Cyan for highlighted countries
-                      : "rgba(229,231,235,0.8)" // Semi-transparent light gray for default
-                  }
-                  stroke="#ffffff"
-                  strokeWidth={0.5}
-                  style={{
-                    default: { outline: "none" },
-                    hover: {
-                      outline: "none",
-                      fill: completed
-                        ? "#16a34a"
+                        ? "rgba(14,165,233,0.6)" // Blue for highlighted ocean zones
+                        : "rgba(59,130,246,0.2)" // Light blue for default ocean
+                    }
+                    stroke="#1e40af"
+                    strokeWidth={0.8}
+                    style={{
+                      default: { outline: "none" },
+                      hover: {
+                        outline: "none",
+                        fill: isCompleted
+                          ? "rgba(168, 85, 247, 0.9)"
+                          : isHighlighted
+                          ? "rgba(14,165,233,0.8)"
+                          : "rgba(59,130,246,0.4)",
+                      },
+                      pressed: { outline: "none" },
+                    }}
+                    onMouseEnter={() => {
+                      const tooltip = isCompleted
+                        ? `${zoneName} ✓ (${
+                            completedUnitsByOcean[zoneName]?.length || 0
+                          } units completed)`
                         : isHighlighted
-                        ? "#0891b2"
-                        : "#d1d5db",
-                    },
-                    pressed: { outline: "none" },
-                  }}
-                  onMouseEnter={() => {
-                    const tooltip = completed
-                      ? `${countryName} ✓ (${
-                          completedUnits?.length || 0
-                        } units completed)`
-                      : isHighlighted
-                      ? `${countryName} (In Progress)`
-                      : countryName;
-                    setTooltipContent(tooltip);
-                  }}
-                  onMouseLeave={() => setTooltipContent(null)}
-                />
-              );
-            })
-          }
-        </Geographies>
-      </ComposableMap>
+                        ? `${zoneName} (In Progress)`
+                        : zoneName;
+                      setTooltipContent(tooltip);
+                    }}
+                    onMouseLeave={() => setTooltipContent(null)}
+                  />
+                );
+              })
+            }
+          </Geographies>
+
+          {/* Render country shapes on top */}
+          <Geographies geography={geographies}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const numericCode = geo.id;
+                const isHighlighted = isCountryHighlighted(numericCode);
+                const completed = isCountryCompleted(numericCode);
+                const countryName =
+                  countryNameLookup[geo.properties.name] || geo.properties.name;
+                const completedUnits = completedUnitsByNumericCode[numericCode];
+
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    fill={
+                      completed
+                        ? "#22c55e" // Green for completed countries
+                        : isHighlighted
+                        ? "#06b6d4" // Cyan for highlighted countries
+                        : "rgba(229,231,235,0.8)" // Semi-transparent light gray for default
+                    }
+                    stroke="#ffffff"
+                    strokeWidth={0.5}
+                    style={{
+                      default: { outline: "none" },
+                      hover: {
+                        outline: "none",
+                        fill: completed
+                          ? "#16a34a"
+                          : isHighlighted
+                          ? "#0891b2"
+                          : "#d1d5db",
+                      },
+                      pressed: { outline: "none" },
+                    }}
+                    onMouseEnter={() => {
+                      const tooltip = completed
+                        ? `${countryName} ✓ (${
+                            completedUnits?.length || 0
+                          } units completed)`
+                        : isHighlighted
+                        ? `${countryName} (In Progress)`
+                        : countryName;
+                      setTooltipContent(tooltip);
+                    }}
+                    onMouseLeave={() => setTooltipContent(null)}
+                  />
+                );
+              })
+            }
+          </Geographies>
+        </ComposableMap>
+      </div>
+
       {/* Legend */}
-      <div className="mt-4 flex flex-wrap justify-center gap-4 text-sm">
+      <div className="mt-4 flex flex-wrap justify-center align-middle gap-4 text-sm">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-gray-200 border border-gray-300 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">Not Started</span>

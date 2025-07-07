@@ -2,16 +2,24 @@
 
 import PricingTiers from "@/components/PricingTiers";
 import { Badge } from "@/components/ui/badge";
-import { Users, Award, Globe2, TrendingUp } from "lucide-react";
+import {
+  Users,
+  Award,
+  Globe2,
+  TrendingUp,
+  FishSymbol,
+  LibraryBig,
+  HeartHandshake,
+} from "lucide-react";
 
 export default function PricingPage() {
   return (
     <main className="pt-12 px-4">
       {/* Hero Section */}
       <section className="max-w-4xl mx-auto text-center mb-16">
-        <Badge className="mb-4 bg-accent-900 dark:bg-accent-100">
-          Learn English • Protect Our Planet
-        </Badge>
+        {/* <Badge className="mb-4 bg-primary-900 dark:bg-accent-100 ">
+          Practise English • Protect Our Planet
+        </Badge> */}
         <h1 className="text-5xl font-bold mb-6 bg-primary-900 dark:bg-primary-50 bg-clip-text text-transparent">
           Join Neptune&apos;s Tribe
         </h1>
@@ -21,15 +29,70 @@ export default function PricingPage() {
           features—it directly funds ocean conservation and environmental
           protection projects worldwide.
         </p>
-        <section className="my-2 text-center text-sm text-zinc-500 dark:text-zinc-400 border-t py-2">
+        <section className="my-2 text-center text-lg text-zinc-500 dark:text-zinc-400 border-t py-2">
           <p className="flex items-center justify-center gap-2">
-            <span className="text-lg">🌍</span>
+            <span className="text-lg">
+              <HeartHandshake />
+            </span>
             25% of all subscriptions go to verified eco-charities • Cancel
             anytime • 30-day money-back guarantee
           </p>
         </section>
       </section>
 
+      {/* Pricing Tiers */}
+      <PricingTiers />
+
+      {/* Impact Section */}
+      <section className="mt-20 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 rounded-2xl p-8 max-w-4xl mx-auto">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold mb-4">
+            Your Learning Creates Real Impact
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            Every subscription directly supports both education and
+            environmental conservation
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-8 text-left">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg">
+              <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                <span className="text-2xl">
+                  <FishSymbol />
+                </span>
+                Ocean Conservation
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                25% of all revenue goes directly to verified ocean conservation
+                charities. We partner with organizations protecting marine
+                ecosystems worldwide.
+              </p>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg">
+              <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                <span className="text-2xl">
+                  <LibraryBig />
+                </span>
+                Educational Access
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Premium subscriptions help us provide free access to underserved
+                communities and continuously develop better learning content.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="mt-16 text-center">
+        <h2 className="text-2xl font-bold mb-4">Ready to make a difference?</h2>
+        <p className="text-muted-foreground mb-8">
+          Start your journey today with our free Explorer plan, or go Premium to
+          unlock everything
+        </p>
+      </section>
       {/* Social Proof */}
       <section className="max-w-4xl mx-auto mb-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -68,60 +131,12 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Pricing Tiers */}
-      <PricingTiers />
-
-      {/* Impact Section */}
-      <section className="mt-20 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 rounded-2xl p-8 max-w-4xl mx-auto">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Your Learning Creates Real Impact
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            Every subscription directly supports both education and
-            environmental conservation
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-8 text-left">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg">
-              <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                <span className="text-2xl">🌊</span>
-                Ocean Conservation
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                25% of all revenue goes directly to verified ocean conservation
-                charities. We partner with organizations protecting marine
-                ecosystems worldwide.
-              </p>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg">
-              <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                <span className="text-2xl">📚</span>
-                Educational Access
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Premium subscriptions help us provide free access to underserved
-                communities and continuously develop better learning content.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="mt-16 text-center">
-        <h2 className="text-2xl font-bold mb-4">Ready to make a difference?</h2>
-        <p className="text-muted-foreground mb-8">
-          Start your journey today with our free Explorer plan, or go Premium to
-          unlock everything
-        </p>
-      </section>
-
       {/* Footer Note */}
-      <section className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400 border-t pt-8">
+      <section className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400 border-t py-4">
         <p className="flex items-center justify-center gap-2">
-          <span className="text-lg">🌍</span>
+          <span className="text-lg">
+            <HeartHandshake />
+          </span>
           25% of all subscriptions go to verified eco-charities • Cancel anytime
           • 30-day money-back guarantee
         </p>

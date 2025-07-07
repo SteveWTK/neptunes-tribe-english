@@ -15,6 +15,8 @@ import {
   Award,
   ArrowRight,
   CheckCircle,
+  FishSymbol,
+  LibraryBig,
 } from "lucide-react";
 
 export default function LandingPage({ darkMode = false }) {
@@ -28,7 +30,7 @@ export default function LandingPage({ darkMode = false }) {
 
   const t = {
     en: {
-      heroTitle: "Learn English. Explore the Planet. Save Our Oceans.",
+      heroTitle: "Practise English. Explore the Planet. Save Our Oceans.",
       heroSubtitle:
         "Join 1,000+ learners mastering English through real environmental stories from 50+ countries",
       heroCall: "Start your eco-journey today",
@@ -78,7 +80,11 @@ export default function LandingPage({ darkMode = false }) {
       // Mission
       missionTitle: "Learning That Makes a Difference",
       missionText:
-        "Every lesson supports real ocean conservation projects. 25% of all revenue goes directly to environmental charities.",
+        "Every lesson supports real ocean conservation projects. 25% of all revenue goes directly to environmental NGOs.",
+      missionTextOceanHeader: "Ocean Conservation",
+      missionTextOCean: "Direct funding to marine protection projects",
+      missionTextEducationHeader: "Education Access",
+      missionTextEducation: "Free access for underprivileged communities",
 
       // CTA
       ctaTitle: "Ready to Start Your Eco-Journey?",
@@ -87,7 +93,7 @@ export default function LandingPage({ darkMode = false }) {
       ctaPremium: "Go Premium",
     },
     pt: {
-      heroTitle: "Aprenda Inglês. Explore o Planeta. Salve Nossos Oceanos.",
+      heroTitle: "Pratique Inglês. Explore o Planeta. Salve Nossos Oceanos.",
       heroSubtitle:
         "Junte-se a mais de 1.000 alunos dominando o inglês através de histórias ambientais reais de mais de 50 países",
       heroCall: "Comece sua jornada ecológica hoje",
@@ -139,6 +145,11 @@ export default function LandingPage({ darkMode = false }) {
       missionTitle: "Aprendizado Que Faz a Diferença",
       missionText:
         "Cada lição apoia projetos reais de conservação oceânica. 25% de toda receita vai diretamente para organizações ambientais.",
+      missionTextOceanHeader: "Conservação do Oceano",
+      missionTextOCean:
+        "Financiamento direto para projetos de proteção marinha",
+      missionTextEducationHeader: "Acesso à Educação",
+      missionTextEducation: "Acesso gratuito para comunidades carentes",
 
       // CTA
       ctaTitle: "Pronto para Começar Sua Jornada Ecológica?",
@@ -162,8 +173,8 @@ export default function LandingPage({ darkMode = false }) {
       src: "/heroes/farwiza-farhan-with-elephant.jpeg",
       caption:
         lang === "en"
-          ? "Meet environmental heroes"
-          : "Conheça heróis ambientais",
+          ? "Meet environmental protectors"
+          : "Conheça protetores do meio ambiente",
     },
     {
       src: "/eco/vaquitas.jpg",
@@ -233,17 +244,17 @@ export default function LandingPage({ darkMode = false }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <motion.div
+              {/* <motion.div
                 className="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-4 py-2 rounded-full text-sm font-medium mb-6"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                🌊 150+ Units • 50+ Countries • Real Impact
-              </motion.div>
+                150+ Units • 50+ Countries • Real Impact
+              </motion.div> */}
 
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                <span className="bg-gradient-to-r from-blue-600 to-green-600 dark:text-gray-300 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-600 to-green-600 dark:text-accent-50 bg-clip-text text-transparent">
                   {copy.heroTitle}
                 </span>
               </h1>
@@ -265,7 +276,7 @@ export default function LandingPage({ darkMode = false }) {
                   </Link>
                 </Button>
 
-                <Button className="border-2 border-gray-300 dark:border-gray-600 hover:border-green-500 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300">
+                <Button className="border-2 bg-primary-900 dark:bg-accent-50 border-gray-300 dark:border-gray-600 hover:border-green-500 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300">
                   <Link href="/pricing" className="flex items-center gap-2">
                     {copy.viewPricing}
                   </Link>
@@ -470,7 +481,7 @@ export default function LandingPage({ darkMode = false }) {
                 ))}
               </div>
 
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold">
+              <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold">
                 {copy.schoolsCTA}
               </Button>
             </motion.div>
@@ -506,19 +517,23 @@ export default function LandingPage({ darkMode = false }) {
 
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                <div className="text-3xl mb-2">🌊</div>
+                <div className="text-3xl mb-2 w-full flex justify-center">
+                  <FishSymbol />
+                </div>
                 <h3 className="text-xl font-semibold mb-2">
-                  Ocean Conservation
+                  {copy.missionTextOceanHeader}
                 </h3>
-                <p className="text-sm opacity-90">
-                  Direct funding to marine protection projects
-                </p>
+                <p className="text-sm opacity-90">{copy.missionTextOCean}</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                <div className="text-3xl mb-2">📚</div>
-                <h3 className="text-xl font-semibold mb-2">Education Access</h3>
+                <div className="text-3xl mb-2 w-full flex justify-center">
+                  <LibraryBig />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">
+                  {copy.missionTextEducationHeader}
+                </h3>
                 <p className="text-sm opacity-90">
-                  Free access for underserved communities
+                  {copy.missionTextEducation}
                 </p>
               </div>
             </div>

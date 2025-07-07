@@ -106,7 +106,7 @@ export default function RegionExplorer({
   };
 
   return (
-    <div className="mt-8 max-w-4xl mx-auto">
+    <div className="mt-0 max-w-4xl mx-auto">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
         {/* Header */}
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">

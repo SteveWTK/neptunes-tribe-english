@@ -107,7 +107,7 @@ export default function PricingTiers() {
         <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
           <button
             onClick={() => setBillingCycle("monthly")}
-            className={`px-4 py-2 rounded-md transition-all ${
+            className={`px-4 pb-2 rounded-md transition-all ${
               billingCycle === "monthly"
                 ? "bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white"
                 : "text-gray-600 dark:text-gray-400"
@@ -124,7 +124,7 @@ export default function PricingTiers() {
             }`}
           >
             Yearly
-            <Badge className="absolute -top-2 -right-2 bg-green-500 text-white text-xs">
+            <Badge className="absolute -top-3 -right-2 bg-green-500 text-white dark:bg-green-500 dark:text-white text-xs">
               50% OFF
             </Badge>
           </button>
@@ -173,7 +173,7 @@ export default function PricingTiers() {
         {/* Premium Tier */}
         <Card className="relative border-2 border-green-500 hover:shadow-lg transition-shadow">
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-            <Badge className="bg-green-500 text-white px-3 py-1">
+            <Badge className="bg-green-500 text-white dark:bg-green-500 dark:text-white px-3 py-1">
               <Star className="w-3 h-3 mr-1" />
               Most Popular
             </Badge>
