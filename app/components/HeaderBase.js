@@ -205,32 +205,32 @@ export default function HeaderBase({
 
               {/* Auth Section */}
               <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mb-6">
-                {user ? (
-                  <div className="space-y-4">
-                    <Link
-                      href="/dashboard"
-                      className="flex items-center space-x-3 py-2"
-                      onClick={closeMobileMenu}
-                    >
-                      <User className="w-6 h-6 text-gray-600 dark:text-gray-300" />
-                      <span className="text-lg font-medium text-gray-700 dark:text-gray-300">
-                        {user.user_metadata?.full_name ||
-                          user.email?.split("@")[0] ||
-                          copy.profile}
-                      </span>
-                    </Link>
-                    <button
-                      onClick={handleSignOut}
-                      className="block py-2 text-lg text-red-600 dark:text-red-400 font-medium"
-                    >
-                      {copy.signOut}
-                    </button>
-                  </div>
+                {session?.user && (
+                  <Link
+                    href="/eco-map"
+                    className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
+                  >
+                    {session?.user?.image && (
+                      <img
+                        className="h-8 rounded-full"
+                        src={session.user.image}
+                        alt={session.user.name}
+                        referrerPolicy="no-referrer"
+                      />
+                    )}
+                    <span>{copy.ecoMap}</span>
+                  </Link>
+                )}
+
+                {status === "authenticated" ? (
+                  <SignOutButton
+                    onClickonClick={() => signOut()}
+                    className="flex justify-end items-center"
+                  />
                 ) : (
                   <Link
-                    href="/auth/signin"
-                    className="block py-2 text-lg font-medium text-blue-600 dark:text-blue-400"
-                    onClick={closeMobileMenu}
+                    href="/login"
+                    className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 w-full"
                   >
                     {copy.signIn}
                   </Link>
