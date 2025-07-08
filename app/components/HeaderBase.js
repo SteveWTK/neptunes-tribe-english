@@ -44,6 +44,7 @@ export default function HeaderBase({
         { href: "/", label: "Home" },
         { href: "/units", label: "Units" },
         { href: "/challenges", label: "Challenges" },
+        { href: "/eco-news", label: "Eco News" },
         { href: "/pricing", label: "Pricing" },
 
         // { href: "/dashboard", label: "Dashboard" },
@@ -53,6 +54,7 @@ export default function HeaderBase({
         { href: "/", label: "Home" },
         { href: "/units", label: "Atividades" },
         { href: "/challenges", label: "Desafios" },
+        { href: "/eco-news", label: "Eco News" },
         { href: "/pricing", label: "Apoie" },
 
         // { href: "/dashboard", label: "Painel" },
@@ -97,7 +99,7 @@ export default function HeaderBase({
             {darkMode ? <HeaderLogo /> : <HeaderLogoDark />}
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex gap-3 sm:gap-6 md:gap-3 lg:gap-12 text-sm">
+            <nav className="hidden md:flex gap-3 sm:gap-6 md:gap-3 lg:gap-8 text-sm">
               {links.map(({ href, label }) => (
                 <a key={href} href={href} className={buttonClass}>
                   {label}
