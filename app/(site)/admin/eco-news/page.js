@@ -6,7 +6,10 @@ import EcoNewsAdmin from "@/components/admin/EcoNewsAdmin";
 // List of admin emails - you can move this to env variables later
 const ADMIN_EMAILS = [
   "michaelalanwatkins@gmail.com",
-  "steveinspirewtk@gmail.com", // Add your team emails
+  "steveinspirewtk@gmail.com",
+  "stevecultura@gmail.com",
+  "davidchaveswatkins@gmail.com",
+  "chaveswatkinspaul@gmail.com", // Add your team emails
   // Add more admin emails as needed
 ];
 
