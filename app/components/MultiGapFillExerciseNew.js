@@ -257,10 +257,35 @@ export default function MultiGapFillExerciseNew({ unitId }) {
           console.log("Unit marked as completed successfully");
           justCompleted = true;
           setIsAlreadyCompleted(true);
+
+          // 🌱 UPDATE ECOSYSTEM PROGRESS (only for new completions)
+          try {
+            const ecosystemResponse = await fetch(
+              "/api/user/update-ecosystem-progress",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ unitId: unitId }),
+              }
+            );
+
+            if (ecosystemResponse.ok) {
+              const ecosystemResult = await ecosystemResponse.json();
+              console.log("Ecosystem progress updated:", ecosystemResult);
+            } else {
+              console.warn(
+                "Failed to update ecosystem progress:",
+                ecosystemResponse.status
+              );
+            }
+          } catch (ecosystemError) {
+            console.warn("Error updating ecosystem progress:", ecosystemError);
+            // Don't fail the whole completion if ecosystem update fails
+          }
         }
       }
 
-      // Update user progress
+      // Update user progress (rest of your existing code...)
       const { data: existingProgress } = await supabase
         .from("user_progress")
         .select("*")

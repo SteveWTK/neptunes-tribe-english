@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { alpha2ToNumeric, countryNameLookup } from "@/lib/isoMappings";
+import { FishSymbol, Leaf } from "lucide-react";
 
 export default function RegionExplorer({
   completedUnitsByCountry = {},
@@ -128,7 +129,12 @@ export default function RegionExplorer({
                 : "text-gray-600 dark:text-gray-400 hover:text-[#10b981]"
             }`}
           >
-            🌍 Countries ({countries.length})
+            <h3 className="font-semibold text-[16px] flex justify-center items-center gap-2">
+              <span className="text-2xl">
+                <Leaf size={20} strokeWidth={2} />
+              </span>{" "}
+              Countries ({countries.length})
+            </h3>
           </button>
           <button
             onClick={() => setActiveTab("oceans")}
@@ -138,7 +144,12 @@ export default function RegionExplorer({
                 : "text-gray-600 dark:text-gray-400 hover:text-[#10b981]"
             }`}
           >
-            🌊 Marine Zones ({oceanZones.length})
+            <h3 className="font-semibold text-[16px] flex justify-center items-center gap-2">
+              <span className="text-2xl">
+                <FishSymbol />
+              </span>{" "}
+              Marine Zones ({oceanZones.length})
+            </h3>
           </button>
         </div>
 

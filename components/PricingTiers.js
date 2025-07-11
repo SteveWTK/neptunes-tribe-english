@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +23,19 @@ export default function PricingTiers() {
   const [billingCycle, setBillingCycle] = useState("yearly"); // yearly shows better value
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { lang } = useLanguage();
+  const t = {
+    en: {
+      monthly: "Monthly",
+      yearly: "Yearly",
+    },
+    pt: {
+      monthly: "Mensal",
+      yearly: "Anual",
+    },
+  };
+
+  const copy = t[lang];
 
   const handleSubscribe = async (tier) => {
     if (status === "loading") return;
@@ -113,7 +127,7 @@ export default function PricingTiers() {
                 : "text-gray-600 dark:text-gray-400"
             }`}
           >
-            Monthly
+            {copy.monthly}
           </button>
           <button
             onClick={() => setBillingCycle("yearly")}
@@ -123,7 +137,7 @@ export default function PricingTiers() {
                 : "text-gray-600 dark:text-gray-400"
             }`}
           >
-            Yearly
+            {copy.yearly}
             <Badge className="absolute -top-3 -right-2 bg-green-500 text-white dark:bg-green-500 dark:text-white text-xs">
               50% OFF
             </Badge>
@@ -291,9 +305,9 @@ export default function PricingTiers() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center mb-4">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+              {/* <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                 25% of donations go directly to environmental charities
-              </p>
+              </p> */}
             </div>
 
             <div className="space-y-2">
