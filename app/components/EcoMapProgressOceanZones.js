@@ -716,7 +716,7 @@ export default function EcoMapProgressOceans({
       </div>
 
       {/* Active challenges info panel */}
-      {activeChallenges.length > 0 && (
+      {/* {activeChallenges.length > 0 && (
         <div className="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {activeChallenges.map((challenge) => (
             <ChallengeProgressIndicator
@@ -726,7 +726,7 @@ export default function EcoMapProgressOceans({
             />
           ))}
         </div>
-      )}
+      )} */}
 
       {tooltipContent && (
         <div
