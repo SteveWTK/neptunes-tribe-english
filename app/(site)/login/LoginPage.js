@@ -1,3 +1,4 @@
+// app\(site)\login\LoginPage.js
 "use client";
 
 import { useSearchParams } from "next/navigation";
@@ -5,7 +6,7 @@ import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
-import { registerUser } from "@/lib/actions"; // Import the new registration action
+import { registerUser, resetPassword } from "@/lib/actions"; // Import the new registration action
 import supabase from "@/lib/supabase-browser";
 import SignInButton from "@/app/components/SigninButton";
 

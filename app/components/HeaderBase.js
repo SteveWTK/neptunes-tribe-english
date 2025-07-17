@@ -1,10 +1,11 @@
+// app\components\HeaderBase.js
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import HeaderLogo from "./HeaderLogo";
 import HeaderLogoDark from "./HeaderLogoDark";
 import Link from "next/link";
 import SignOutButton from "./signoutButton";
-import { useSession, signOut } from "next-auth/react";
-import { Moon, Sun, user, Menu, X, User } from "lucide-react";
+import { useSession } from "next-auth/react"; // Remove signOut import since we're not using it here
+import { Moon, Sun, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 export default function HeaderBase({
@@ -86,11 +87,6 @@ export default function HeaderBase({
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  const handleSignOut = async () => {
-    await signOut();
-    closeMobileMenu();
-  };
-
   return (
     <>
       <header className="sticky top-0 z-50 bg-white dark:bg-primary-950 shadow-md">
@@ -98,7 +94,7 @@ export default function HeaderBase({
           <div className="flex justify-between items-center h-16">
             {darkMode ? <HeaderLogo /> : <HeaderLogoDark />}
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation*/}
             <nav className="hidden md:flex gap-3 sm:gap-6 md:gap-3 lg:gap-8 text-sm">
               {links.map(({ href, label }) => (
                 <a key={href} href={href} className={buttonClass}>
@@ -112,7 +108,7 @@ export default function HeaderBase({
               {session?.user && (
                 <Link
                   href="/eco-map"
-                  className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
+                  className="py-0.5 px-5 rounded-2xl transition-colors flex items-center text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
                 >
                   {session?.user?.image && (
                     <img
@@ -128,18 +124,19 @@ export default function HeaderBase({
 
               {status === "authenticated" ? (
                 <SignOutButton
-                  onClickonClick={() => signOut()}
+                  onSignOutComplete={closeMobileMenu}
                   className="flex justify-end items-center"
                 />
               ) : (
                 <Link
                   href="/login"
-                  className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 w-full"
+                  className="py-0.5 px-5 rounded-2xl transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 w-full"
                 >
                   {copy.signIn}
                 </Link>
               )}
 
+              {/* Language and dark mode */}
               <select
                 value={lang}
                 onChange={(e) => setLang(e.target.value)}
@@ -179,19 +176,17 @@ export default function HeaderBase({
         </div>
       </header>
 
-      {/* Mobile Navigation Menu */}
+      {/* FIXED: Mobile Navigation Menu */}
       {isMobileMenuOpen && (
         <>
-          {/* Backdrop */}
           <div
             className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
             onClick={closeMobileMenu}
           />
 
-          {/* Mobile Menu */}
           <div className="fixed top-16 left-0 right-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-lg z-40 md:hidden">
             <div className="max-w-7xl mx-auto px-4 py-6">
-              {/* Navigation Links */}
+              {/* Navigation Links stay the same */}
               <nav className="space-y-4 mb-6">
                 {links.map(({ href, label }) => (
                   <Link
@@ -205,12 +200,13 @@ export default function HeaderBase({
                 ))}
               </nav>
 
-              {/* Auth Section */}
+              {/* FIXED: Mobile Auth Section */}
               <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mb-6">
                 {session?.user && (
                   <Link
                     href="/eco-map"
-                    className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
+                    className="block py-2 mb-4 transition-colors flex items-center text-primary-900 hover:text-accent-600 dark:text-accent-50 dark:hover:text-accent-400 gap-2"
+                    onClick={closeMobileMenu}
                   >
                     {session?.user?.image && (
                       <img
@@ -226,22 +222,23 @@ export default function HeaderBase({
 
                 {status === "authenticated" ? (
                   <SignOutButton
-                    onClickonClick={() => signOut()}
-                    className="flex justify-end items-center"
+                    onSignOutComplete={closeMobileMenu}
+                    className="w-full justify-start"
                   />
                 ) : (
                   <Link
                     href="/login"
-                    className="py-0.5 px-5 rounded-2xl  transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 w-full"
+                    className="block py-2 transition-colors text-primary-900 hover:text-accent-600 dark:text-accent-50 dark:hover:text-accent-400"
+                    onClick={closeMobileMenu}
                   >
                     {copy.signIn}
                   </Link>
                 )}
               </div>
 
-              {/* Controls */}
+              {/* Controls section */}
               <div className="border-t border-gray-200 dark:border-gray-700 pt-6 space-y-4">
-                {/* Language Selector */}
+                {/* Language and dark mode */}
                 {languageOptions && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -263,7 +260,6 @@ export default function HeaderBase({
                   </div>
                 )}
 
-                {/* Dark Mode Toggle */}
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     {darkMode ? "Light Mode" : "Dark Mode"}
@@ -271,6 +267,7 @@ export default function HeaderBase({
                   <button
                     onClick={() => {
                       setDarkMode(!darkMode);
+                      closeMobileMenu();
                     }}
                     className="flex items-center space-x-2 p-1 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                   >
