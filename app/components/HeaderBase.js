@@ -266,11 +266,11 @@ export default function HeaderBase({
                 {/* Dark Mode Toggle */}
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Dark Mode
+                    {darkMode ? "Light Mode" : "Dark Mode"}
                   </span>
                   <button
                     onClick={() => {
-                      setDarkMode();
+                      setDarkMode(!darkMode);
                     }}
                     className="flex items-center space-x-2 p-1 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                   >
