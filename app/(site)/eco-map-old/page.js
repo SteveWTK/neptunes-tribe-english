@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
 import EcoMapProgress from "@/app/components/EcoMapProgress";
 import Link from "next/link";
-import EcoMapProgressOceans from "@/app/components/EcoMapProgressOceans";
+import EcoMapProgressOceans from "@/app/components/EcoMapProgressReactIcons";
 
 export default async function EcoMapPage() {
   const session = await auth();

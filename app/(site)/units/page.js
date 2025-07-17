@@ -1,3 +1,4 @@
+// app/(site)/units/page.js - Updated with Ecosystem Filtering
 import {
   fetchFeaturedUnits,
   fetchUnitDetails,
@@ -15,12 +16,13 @@ export default async function SiteHomePage(props) {
   const searchParams = await props.searchParams;
   const regionFilter = searchParams?.region;
   const marineZoneFilter = searchParams?.marine_zone;
+  const ecosystemFilter = searchParams?.ecosystem; // ✅ NEW: Add ecosystem filter
 
   let units;
   let isFiltered = false;
 
   try {
-    if (regionFilter || marineZoneFilter) {
+    if (regionFilter || marineZoneFilter || ecosystemFilter) {
       // Fetch filtered units
       isFiltered = true;
 
@@ -34,7 +36,6 @@ export default async function SiteHomePage(props) {
       // Apply filters
       if (regionFilter) {
         // Handle both single region codes and arrays
-        // For arrays like ["BR", "PE"], we need to check if the region_code contains the filter
         query = query.or(
           `region_code.eq.${regionFilter},region_code.like.%"${regionFilter}"%`
         );
@@ -48,6 +49,27 @@ export default async function SiteHomePage(props) {
         );
       }
 
+      // ✅ NEW: Add ecosystem filtering
+      if (
+        ecosystemFilter &&
+        ecosystemFilter !== "all" &&
+        ecosystemFilter !== "undefined"
+      ) {
+        console.log("🌍 Filtering by ecosystem:", ecosystemFilter); // Debug log
+
+        // Filter by primary_ecosystem, with fallback to ecosystem_type
+        // Also include marine units if filtering for marine ecosystem
+        if (ecosystemFilter === "marine") {
+          query = query.or(
+            `primary_ecosystem.eq.marine,ecosystem_type.eq.marine,marine_zone.not.is.null`
+          );
+        } else {
+          query = query.or(
+            `primary_ecosystem.eq.${ecosystemFilter},ecosystem_type.eq.${ecosystemFilter}`
+          );
+        }
+      }
+
       const { data: filteredUnits, error } = await query;
 
       if (error) {
@@ -57,6 +79,9 @@ export default async function SiteHomePage(props) {
         isFiltered = false;
       } else {
         units = filteredUnits || [];
+        console.log(
+          `🔍 Found ${units.length} units for ecosystem: ${ecosystemFilter}`
+        ); // Debug log
       }
     } else {
       // Use existing featured units logic
@@ -103,6 +128,7 @@ export default async function SiteHomePage(props) {
           isFiltered,
           regionFilter,
           marineZoneFilter,
+          ecosystemFilter, // ✅ NEW: Pass ecosystem filter to client
         }}
       />
     );
@@ -131,6 +157,7 @@ export default async function SiteHomePage(props) {
           isFiltered: false,
           regionFilter: null,
           marineZoneFilter: null,
+          ecosystemFilter: null, // ✅ NEW: Include in fallback
         }}
       />
     );
