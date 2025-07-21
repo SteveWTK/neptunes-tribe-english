@@ -19,18 +19,17 @@ export default function PricingPage() {
     en: {
       pageTitle: "Join Neptune's Tribe",
       pageSubtitle:
-        "Master English while exploring the world's most amazing ecosystems.",
-      pageMission:
-        "25% of all subscriptions go to verified eco-charities • Cancel anytime",
-      impactTitle: "Your Learning Creates Real Impact",
+        "Enrich your English while exploring the world's most amazing ecosystems.",
+      pageMission: "25% of all subscriptions go to environmental NGO's",
+      impactTitle: "'Your support has a real impact.",
       impactSubtitle:
         "Every subscription directly supports both education and environmental conservation",
-      oceanTitle: "Ocean Conservation",
+      oceanTitle: "Environmental protection",
       oceanSubtitle:
-        "25% of all revenue goes directly to verified ocean conservation charities. We partner with organizations protecting marine ecosystems worldwide.",
+        "25% of all revenue goes directly to verified environmental NGO's.",
       educationTitle: "Education Access",
       educationSubtitle:
-        "Premium subscriptions help us provide free access to underserved communities and continuously develop better learning content.",
+        "Premium subscriptions help us provide free access to underprivileged communities and continuously develop better learning content.",
       actionTitle: "Ready to make a difference?",
       actionSubtitle:
         "Start your journey today with our free Explorer plan, or go Premium to unlock everything",
@@ -43,14 +42,13 @@ export default function PricingPage() {
       pageTitle: "Junte-se à Neptune's Tribe",
       pageSubtitle:
         "Desenvolva seu inglês enquanto explora os ecossistemas mais incríveis do mundo.",
-      pageMission:
-        "25% de todas as assinaturas vão para instituições ecológicas verificadas • Cancele a qualquer momento",
-      impactTitle: "Seu Aprendizado Cria Impacto Real",
+      pageMission: "25% de todas as assinaturas vão para ONGs ambientais",
+      impactTitle: "Seu Apoio Cria Impacto Real",
       impactSubtitle:
         "Cada assinatura apoia diretamente a educação e a preservação ambiental",
-      oceanTitle: "Conservação dos Oceanos",
+      oceanTitle: "Proteção ambiental",
       oceanSubtitle:
-        "25% de toda a receita vai diretamente para instituições de caridade verificadas que se dedicam à conservação dos oceanos. Fazemos parcerias com organizações que protegem ecossistemas marinhos em todo o mundo.",
+        "25% de toda a receita vai diretamente para ONGs ambientais verificadas que se dedicam à conservação dos oceanos.",
       educationTitle: "Acesso à Educação",
       educationSubtitle:
         "Assinaturas premium nos ajudam a fornecer acesso gratuito a comunidades carentes e a desenvolver continuamente melhores conteúdos de aprendizagem.",
@@ -138,7 +136,7 @@ export default function PricingPage() {
         <p className="text-muted-foreground mb-8">{copy.actionSubtitle}</p>
       </section>
       {/* Social Proof */}
-      <section className="max-w-4xl mx-auto mb-16">
+      {/* <section className="max-w-4xl mx-auto mb-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div className="space-y-2">
             <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto">
@@ -177,7 +175,7 @@ export default function PricingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer Note */}
       <section className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400  py-4">

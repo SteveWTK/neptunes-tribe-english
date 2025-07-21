@@ -324,7 +324,7 @@ export default function EcoMapClient({
 
           {/* Challenge summary banner */}
           {challengesSummary && (
-            <div className="p-3 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950 rounded-lg border border-red-200">
+            <div className="p-3 bg-gradient-to-r from-red-50 to-orange-50 dark:from-primary-600 dark:to-primary-600 rounded-lg border border-red-200">
               <div className="flex items-center justify-center gap-6 text-sm">
                 <div className="flex items-center gap-2">
                   <Target className="w-4 h-4 text-red-600" />
@@ -347,7 +347,7 @@ export default function EcoMapClient({
                   </span>
                 </div>
                 {challengesSummary.userContributions > 0 && (
-                  <div className="flex items-center gap-2 text-green-600">
+                  <div className="flex items-center gap-2 text-white">
                     <span>💪</span>
                     <span className="font-medium">
                       You&apos;ve contributed{" "}

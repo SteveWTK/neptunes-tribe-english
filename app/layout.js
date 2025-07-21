@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import "@/app/styles/globals.css";
 
@@ -30,6 +30,8 @@ const josefin = Josefin_Sans({
   display: "swap",
   variable: "--font-josefin-sans",
 });
+
+<meta name="apple-mobile-web-app-title" content="Neptune's Tribe" />;
 
 export default function RootLayout({ children }) {
   return (

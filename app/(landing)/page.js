@@ -30,12 +30,12 @@ export default function LandingPage({ darkMode = false }) {
 
   const t = {
     en: {
-      heroTitle: "Practise English. Explore the Planet. Save Our Oceans.",
+      heroTitle: "Welcome to Neptune's Tribe!",
       heroSubtitle:
-        "Join 1,000+ learners mastering English through real environmental stories from 50+ countries",
+        "Join us on an environmental journey around the world … and practise your English along the way!",
       heroCall: "Start your eco-journey today",
       startFree: "Start Free",
-      viewPricing: "View Pricing",
+      viewPricing: "View Subscription Rates",
       exploreDemoButton: "Explore Live Demo",
 
       // Features
@@ -72,17 +72,17 @@ export default function LandingPage({ darkMode = false }) {
       schoolsSubtitle:
         "Transform your English curriculum with project-based environmental learning",
       schoolBenefit1: "Classroom management tools",
-      schoolBenefit2: "Progress tracking for all students",
-      schoolBenefit3: "Curriculum aligned content",
+      schoolBenefit2: "Progress-tracking for all students",
+      schoolBenefit3: "Curriculum-aligned content",
       schoolBenefit4: "Teacher training & support",
-      schoolsCTA: "Book School Demo",
+      schoolsCTA: "Schedule a demo for your school",
 
       // Mission
       missionTitle: "Learning That Makes a Difference",
       missionText:
-        "Every lesson supports real ocean conservation projects. 25% of all revenue goes directly to environmental NGOs.",
-      missionTextOceanHeader: "Ocean Conservation",
-      missionTextOCean: "Direct funding to marine protection projects",
+        "Every lesson supports real conservation projects. 25% of all revenue goes directly to environmental NGOs.",
+      missionTextOceanHeader: "Environmental Conservation",
+      missionTextOCean: "Direct funding to environmental protection projects",
       missionTextEducationHeader: "Education Access",
       missionTextEducation: "Free access for underprivileged communities",
 
@@ -93,9 +93,9 @@ export default function LandingPage({ darkMode = false }) {
       ctaPremium: "Go Premium",
     },
     pt: {
-      heroTitle: "Pratique Inglês. Explore o Planeta. Salve Nossos Oceanos.",
+      heroTitle: "Bem-vindo à Neptune's Tribe!",
       heroSubtitle:
-        "Junte-se a mais de 1.000 alunos dominando o inglês através de histórias ambientais reais de mais de 50 países",
+        "Junte-se a nós em uma jornada ambiental ao redor do mundo… e pratique seu inglês ao longo do caminho!",
       heroCall: "Comece sua jornada ecológica hoje",
       startFree: "Comece Grátis",
       viewPricing: "Ver Preços",
@@ -139,7 +139,7 @@ export default function LandingPage({ darkMode = false }) {
       schoolBenefit2: "Acompanhamento de progresso para todos os alunos",
       schoolBenefit3: "Conteúdo alinhado ao currículo",
       schoolBenefit4: "Treinamento e suporte para professores",
-      schoolsCTA: "Agendar Demo Escolar",
+      schoolsCTA: "Agende uma demo para sua escola",
 
       // Mission
       missionTitle: "Aprendizado Que Faz a Diferença",
@@ -166,8 +166,8 @@ export default function LandingPage({ darkMode = false }) {
       src: "/eco/penguins.jpeg",
       caption:
         lang === "en"
-          ? "Explore Antarctic ecosystems"
-          : "Explore ecossistemas antárticos",
+          ? "Explore the world's ecosystems"
+          : "Explore os ecossistemas do nosso planeta",
     },
     {
       src: "/heroes/farwiza-farhan-with-elephant.jpeg",
@@ -179,7 +179,9 @@ export default function LandingPage({ darkMode = false }) {
     {
       src: "/eco/vaquitas.jpg",
       caption:
-        lang === "en" ? "Save endangered species" : "Salve espécies ameaçadas",
+        lang === "en"
+          ? "Help to save endangered species"
+          : "Ajude a salvar espécies ameaçadas",
     },
   ];
 
@@ -334,7 +336,7 @@ export default function LandingPage({ darkMode = false }) {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white dark:bg-gray-900">
+      {/* <section className="py-16 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
@@ -375,7 +377,7 @@ export default function LandingPage({ darkMode = false }) {
             </div>
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* Features Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
