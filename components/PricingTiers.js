@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
@@ -17,8 +17,15 @@ import {
   Zap,
   Crown,
 } from "lucide-react";
+import {
+  detectUserCurrency,
+  getCurrencySymbol,
+  formatPrice,
+} from "@/lib/currency-utils";
 
 export default function PricingTiers() {
+  const [currency, setCurrency] = useState("USD");
+  const [currencySymbol, setCurrencySymbol] = useState("USD");
   const [loading, setLoading] = useState(false);
   const [billingCycle, setBillingCycle] = useState("yearly"); // yearly shows better value
   const { data: session, status } = useSession();
@@ -37,9 +44,104 @@ export default function PricingTiers() {
 
   const copy = t[lang];
 
+  useEffect(() => {
+    const detectedCurrency = detectUserCurrency();
+    setCurrency(detectedCurrency);
+  }, []);
+
+  useEffect(() => {
+    const detectedCurrencySymbol = getCurrencySymbol();
+    setCurrencySymbol(detectedCurrencySymbol);
+  }, []);
+
+  const pricingData = {
+    USD: {
+      yearly: {
+        premium: {
+          price: 99,
+          display: "$99",
+          period: "/year",
+          savings: "Save $20",
+        },
+        enterprise: {
+          price: 490,
+          display: "$490",
+          period: "/year",
+          savings: "Save $98",
+        },
+      },
+      monthly: {
+        premium: {
+          price: 9.9,
+          display: "$9.90",
+          period: "/month",
+          savings: "",
+        },
+        enterprise: {
+          price: 49,
+          display: "$49",
+          period: "/month",
+          savings: "",
+        },
+      },
+      support: [
+        { amount: 10, display: "$10" },
+        { amount: 25, display: "$25" },
+        { amount: 50, display: "$50" },
+      ],
+    },
+    BRL: {
+      yearly: {
+        premium: {
+          price: 490,
+          display: "R$490",
+          period: "/ano",
+          savings: "Economize R$100",
+        },
+        enterprise: {
+          price: 2490,
+          display: "R$2.490",
+          period: "/ano",
+          savings: "Economize R$500",
+        },
+      },
+      monthly: {
+        premium: {
+          price: 49,
+          display: "R$49",
+          period: "/mês",
+          savings: "",
+        },
+        enterprise: {
+          price: 249,
+          display: "R$249",
+          period: "/mês",
+          savings: "",
+        },
+      },
+      support: [
+        { amount: 50, display: "R$50" },
+        { amount: 125, display: "R$125" },
+        { amount: 250, display: "R$250" },
+      ],
+    },
+  };
+
+  // const pricingData = {
+  //   yearly: {
+  //     premium: { price: "US$30", period: "/year", savings: "Save 50%" },
+  //     enterprise: { price: "US$180", period: "/year", savings: "Save 50%" },
+  //   },
+  //   monthly: {
+  //     premium: { price: "£5", period: "/month", savings: "" },
+  //     enterprise: { price: "£30", period: "/month", savings: "" },
+  //   },
+  // };
+
+  const currentPricing = pricingData[currency];
+
   const handleSubscribe = async (tier) => {
     if (status === "loading") return;
-
     if (!session) {
       router.push("/auth/signin");
       return;
@@ -53,7 +155,8 @@ export default function PricingTiers() {
         body: JSON.stringify({
           priceType: "subscription",
           subscriptionInterval: billingCycle,
-          tierLevel: tier, // Pass tier info for potential different pricing
+          tierLevel: tier,
+          currency: currency, // Pass detected currency
         }),
       });
 
@@ -72,6 +175,7 @@ export default function PricingTiers() {
     }
   };
 
+  // Update support function
   const handleOneTimeSupport = async (amount) => {
     if (!session) {
       router.push("/auth/signin");
@@ -86,11 +190,11 @@ export default function PricingTiers() {
         body: JSON.stringify({
           priceType: "one_time",
           oneTimeAmount: amount,
+          currency: currency,
         }),
       });
 
       if (!res.ok) throw new Error("Payment failed");
-
       const { url } = await res.json();
       window.location.href = url;
     } catch (err) {
@@ -101,23 +205,25 @@ export default function PricingTiers() {
     }
   };
 
-  const pricingData = {
-    yearly: {
-      premium: { price: "US$30", period: "/year", savings: "Save 50%" },
-      enterprise: { price: "US$180", period: "/year", savings: "Save 50%" },
-    },
-    monthly: {
-      premium: { price: "£5", period: "/month", savings: "" },
-      enterprise: { price: "£30", period: "/month", savings: "" },
-    },
-  };
+  const CurrencySelector = () => (
+    <div className="flex justify-center">
+      <select
+        value={currency}
+        onChange={(e) => setCurrency(e.target.value)}
+        className=" px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg"
+      >
+        <option value="USD">USD ($)</option>
+        <option value="BRL">BRL (R$)</option>
+      </select>
+    </div>
+  );
 
   const isDisabled = loading || status === "loading";
 
   return (
     <div className="max-w-6xl mx-auto px-4">
       {/* Billing Toggle */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center mb-4">
         <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
           <button
             onClick={() => setBillingCycle("monthly")}
@@ -142,6 +248,7 @@ export default function PricingTiers() {
               50% OFF
             </Badge>
           </button>
+          <CurrencySelector />
         </div>
       </div>
 
@@ -202,14 +309,14 @@ export default function PricingTiers() {
             </p>
             <div className="mt-4">
               <span className="text-3xl font-bold">
-                {pricingData[billingCycle].premium.price}
+                {currentPricing[billingCycle].premium.display}
               </span>
               <span className="text-gray-600 dark:text-gray-400">
-                {pricingData[billingCycle].premium.period}
+                {currentPricing[billingCycle].premium.period}
               </span>
-              {pricingData[billingCycle].premium.savings && (
+              {currentPricing[billingCycle].premium.savings && (
                 <div className="text-green-600 text-sm font-medium">
-                  {pricingData[billingCycle].premium.savings}
+                  {currentPricing[billingCycle].premium.savings}
                 </div>
               )}
             </div>
@@ -253,14 +360,14 @@ export default function PricingTiers() {
             </p>
             <div className="mt-4">
               <span className="text-3xl font-bold">
-                {pricingData[billingCycle].enterprise.price}
+                {currentPricing[billingCycle].enterprise.display}
               </span>
               <span className="text-gray-600 dark:text-gray-400">
-                {pricingData[billingCycle].enterprise.period}
+                {currentPricing[billingCycle].enterprise.period}
               </span>
-              {pricingData[billingCycle].enterprise.savings && (
+              {currentPricing[billingCycle].enterprise.savings && (
                 <div className="text-green-600 text-sm font-medium">
-                  {pricingData[billingCycle].enterprise.savings}
+                  {currentPricing[billingCycle].enterprise.savings}
                 </div>
               )}
             </div>
@@ -317,7 +424,7 @@ export default function PricingTiers() {
                 onClick={() => handleOneTimeSupport(25)}
                 disabled={isDisabled}
               >
-                Support £7.50
+                {currentPricing.support[0].display}
               </Button>
               <Button
                 variant="outline"
@@ -325,7 +432,7 @@ export default function PricingTiers() {
                 onClick={() => handleOneTimeSupport(50)}
                 disabled={isDisabled}
               >
-                Support £15
+                {currentPricing.support[1].display}
               </Button>
               <Button
                 variant="outline"
@@ -333,7 +440,7 @@ export default function PricingTiers() {
                 onClick={() => handleOneTimeSupport(100)}
                 disabled={isDisabled}
               >
-                Support £30
+                {currentPricing.support[2].display}
               </Button>
             </div>
 

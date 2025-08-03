@@ -163,21 +163,21 @@ export default function LandingPage({ darkMode = false }) {
 
   const heroImages = [
     {
-      src: "/eco/penguins.jpeg",
+      src: "/eco/Hummingbird.webp",
       caption:
         lang === "en"
           ? "Explore the world's ecosystems"
           : "Explore os ecossistemas do nosso planeta",
     },
     {
-      src: "/heroes/farwiza-farhan-with-elephant.jpeg",
+      src: "/heroes/Pablo-Borboroglu-and-penguin.jpg",
       caption:
         lang === "en"
           ? "Meet environmental protectors"
           : "Conheça protetores do meio ambiente",
     },
     {
-      src: "/eco/vaquitas.jpg",
+      src: "/eco/bg_polar.jpg",
       caption:
         lang === "en"
           ? "Help to save endangered species"
