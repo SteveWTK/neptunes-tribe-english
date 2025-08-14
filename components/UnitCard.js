@@ -46,7 +46,7 @@ export default function UnitCard({ unit }) {
             Start Unit →
           </Link>
           <span className="block mt-2 mr-4 text-accent-600 dark:text-accent-400 font-semibold hover:underline">
-            {unit.length}
+            Gaps: {unit.length}
           </span>
         </div>
       </div>

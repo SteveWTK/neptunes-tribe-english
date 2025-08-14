@@ -61,7 +61,7 @@ export default function SiteHomeClient({
 
   const t = {
     en: {
-      heroTitle: "Practice your English exploring the planet",
+      heroTitle: "Practise your English as you explore the planet ",
       heroSubtitle:
         "Neptune's Tribe is an English learning journey inspired by environmental action. Learn English. Support the Planet.",
       allUnits: "All Learning Units",
@@ -167,9 +167,9 @@ export default function SiteHomeClient({
           {getPageTitle()}
         </h1>
 
-        <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
+        {/* <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
           {getPageSubtitle()}
-        </p>
+        </p> */}
 
         {/* ✅ NEW: Special banner for ecosystem challenges */}
         {filterInfo.ecosystemFilter && (

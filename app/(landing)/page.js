@@ -292,13 +292,13 @@ export default function LandingPage({ darkMode = false }) {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
               >
-                <Link
+                {/* <Link
                   href="/eco-map"
                   className="inline-flex items-center gap-2 text-accent-600 hover:text-accent-700 font-medium"
                 >
                   <Play className="w-4 h-4" />
                   {copy.exploreDemoButton}
-                </Link>
+                </Link> */}
               </motion.div>
             </motion.div>
 

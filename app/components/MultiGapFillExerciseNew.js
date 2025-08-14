@@ -1,4 +1,4 @@
-// components/MultiGapFillExerciseNew.js - Updated with Challenge Integration
+// components/MultiGapFillExerciseNew.js - Enhanced with Individual Gap Feedback
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -29,6 +29,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
   const [challengeResults, setChallengeResults] = useState([]);
   const [speciesUnlocked, setSpeciesUnlocked] = useState([]);
+  const [expandedNotes, setExpandedNotes] = useState(new Set()); // Track which note popups are expanded
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -51,6 +52,10 @@ export default function MultiGapFillExerciseNew({ unitId }) {
       submitAnswersButton: "Submit Answers",
       region: "Region",
       playAudio: "Listen",
+      correctAnswer: "Correct answer:",
+      yourAnswer: "Your answer:",
+      showExplanation: "Show explanation",
+      hideExplanation: "Hide explanation",
     },
     pt: {
       showFullTextButton: "Ver Texto Completo",
@@ -59,6 +64,10 @@ export default function MultiGapFillExerciseNew({ unitId }) {
       submitAnswersButton: "Enviar Respostas",
       region: "Região",
       playAudio: "Ouça",
+      correctAnswer: "Resposta correta:",
+      yourAnswer: "Sua resposta:",
+      showExplanation: "Mostrar explicação",
+      hideExplanation: "Ocultar explicação",
     },
   };
 
@@ -126,6 +135,42 @@ export default function MultiGapFillExerciseNew({ unitId }) {
     if (unitId) loadData();
   }, [unitId, session?.user?.email]);
 
+  // Enhanced data fetching to include notes
+  useEffect(() => {
+    async function loadQuestionsWithNotes() {
+      if (!textId) return;
+
+      try {
+        const { data: gapData, error: gapError } = await supabase
+          .from("gap_fill_questions")
+          .select(
+            "gap_number, correct_answer, options, part_before, part_after, text_id, notes"
+          )
+          .eq("text_id", textId);
+
+        if (gapError) {
+          console.error("Error fetching gaps with notes:", gapError);
+          return;
+        }
+
+        const formattedQuestions =
+          gapData?.map((q) => ({
+            ...q,
+            options:
+              typeof q.options === "string" ? q.options.split(",") : q.options,
+          })) || [];
+
+        setQuestions(formattedQuestions);
+      } catch (error) {
+        console.error("Error loading questions with notes:", error);
+      }
+    }
+
+    if (textId) {
+      loadQuestionsWithNotes();
+    }
+  }, [textId]);
+
   const checkIfUnitCompleted = async () => {
     if (!session?.user?.email) return;
 
@@ -155,6 +200,139 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 
   const handleChange = (questionId, selectedAnswer) => {
     setUserAnswers({ ...userAnswers, [questionId]: selectedAnswer });
+  };
+
+  const toggleNoteExpansion = (gapNumber) => {
+    const newExpanded = new Set(expandedNotes);
+    if (newExpanded.has(gapNumber)) {
+      newExpanded.delete(gapNumber);
+    } else {
+      newExpanded.add(gapNumber);
+    }
+    setExpandedNotes(newExpanded);
+  };
+
+  const renderGapWithFeedback = (question) => {
+    const questionId = `${unitId}-${question.gap_number}`;
+    const userAnswer = userAnswers[questionId];
+    const isCorrect = userAnswer === question.correct_answer;
+    const hasNotes = question.notes && question.notes.trim().length > 0;
+    const isNoteExpanded = expandedNotes.has(question.gap_number);
+
+    return (
+      <span key={questionId} className="inline-block relative">
+        <select
+          className={`font-josefin mx-2 my-1 border rounded px-2 transition-colors duration-200 ${
+            isSubmitted
+              ? isCorrect
+                ? "bg-teal-800 text-white"
+                : "bg-rose-800 text-white"
+              : userAnswer
+              ? "bg-primary-500 text-accent-50 hover:bg-accent-200 hover:text-accent-900"
+              : "bg-accent-100 hover:bg-accent-200 text-accent-900"
+          }`}
+          value={userAnswer || ""}
+          onChange={(e) => handleChange(questionId, e.target.value)}
+          disabled={isSubmitted}
+        >
+          <option value="">Select</option>
+          {question.options.map((option, idx) => (
+            <option key={`${questionId}-opt-${idx}`} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+
+        {/* Individual feedback popup - only shows after submission */}
+        {isSubmitted && (
+          <div className="absolute top-full left-0 mt-1 z-10">
+            <div
+              className={`min-w-max max-w-xs p-3 rounded-lg shadow-lg border-2 ${
+                isCorrect
+                  ? "bg-teal-50 border-teal-200 dark:bg-teal-900 dark:border-teal-700"
+                  : "bg-rose-50 border-rose-200 dark:bg-rose-900 dark:border-rose-700"
+              }`}
+            >
+              {/* Feedback content */}
+              <div className="space-y-2">
+                {!isCorrect && (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <span className="text-rose-600 dark:text-rose-400 text-sm font-medium">
+                        {copy.yourAnswer}
+                      </span>
+                      <span className="text-rose-800 dark:text-rose-200 text-sm font-bold">
+                        {userAnswer || "None"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-teal-600 dark:text-teal-400 text-sm font-medium">
+                        {copy.correctAnswer}
+                      </span>
+                      <span className="text-teal-800 dark:text-teal-200 text-sm font-bold">
+                        {question.correct_answer}
+                      </span>
+                    </div>
+                  </>
+                )}
+
+                {/* {isCorrect && (
+                  <div className="flex items-center gap-2">
+                    <svg
+                      className="w-4 h-4 text-teal-600"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span className="text-teal-800 dark:text-teal-200 text-sm font-medium">
+                      Correct!
+                    </span>
+                  </div>
+                )} */}
+
+                {/* Notes section with expand/collapse */}
+                {hasNotes && !isCorrect && (
+                  <div className="border-t pt-2 mt-2">
+                    <button
+                      onClick={() => toggleNoteExpansion(question.gap_number)}
+                      className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+                    >
+                      <svg
+                        className={`w-3 h-3 transition-transform ${
+                          isNoteExpanded ? "rotate-90" : ""
+                        }`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      {isNoteExpanded
+                        ? copy.hideExplanation
+                        : copy.showExplanation}
+                    </button>
+
+                    {isNoteExpanded && (
+                      <div className="mt-2 p-2 bg-gray-50 dark:bg-gray-800 rounded text-xs text-gray-700 dark:text-gray-300">
+                        {question.notes}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </span>
+    );
   };
 
   const handleSubmit = async () => {
@@ -549,7 +727,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
                 <TextExpander>{fullText}</TextExpander>
               </p>
             ) : (
-              <div className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50">
+              <div className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50 relative">
                 {questions.length > 0 ? (
                   gapText.split(/\{\{(\d+)\}\}/g).map((part, index) => {
                     if (index % 2 === 0)
@@ -569,42 +747,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
                       );
                     }
 
-                    return (
-                      <select
-                        key={`${unitId}-gap-${question.gap_number}`}
-                        className={`font-josefin mx-2 my-1 border rounded px-2 transition-colors duration-200 ${
-                          isSubmitted
-                            ? userAnswers[
-                                `${unitId}-${question.gap_number}`
-                              ] === question.correct_answer
-                              ? "bg-teal-800"
-                              : "bg-rose-800"
-                            : userAnswers[`${unitId}-${question.gap_number}`]
-                            ? "bg-primary-500 text-accent-50 hover:bg-accent-200 hover:text-accent-900"
-                            : "bg-accent-100 hover:bg-accent-200 text-accent-900"
-                        }`}
-                        value={
-                          userAnswers[`${unitId}-${question.gap_number}`] || ""
-                        }
-                        onChange={(e) =>
-                          handleChange(
-                            `${unitId}-${question.gap_number}`,
-                            e.target.value
-                          )
-                        }
-                        disabled={isSubmitted}
-                      >
-                        <option value="">Select</option>
-                        {question.options.map((option, idx) => (
-                          <option
-                            key={`${unitId}-opt-${question.gap_number}-${idx}`}
-                            value={option}
-                          >
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-                    );
+                    return renderGapWithFeedback(question);
                   })
                 ) : (
                   <p className="text-accent-50 text-lg font-josefin">
@@ -746,6 +889,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
   );
 }
 
+// components/MultiGapFillExerciseNew.js - Updated with Challenge Integration
 // "use client";
 
 // import { useState, useEffect, useRef } from "react";
@@ -770,13 +914,12 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //   const [showFullText, setShowFullText] = useState(false);
 //   const [isSubmitted, setIsSubmitted] = useState(false);
 //   const [score, setScore] = useState(0);
-//   // const [portugueseTranslation, setPortugueseTranslation] = useState("");
-//   // const [spanishTranslation, setSpanishTranslation] = useState("");
-//   // const [frenchTranslation, setFrenchTranslation] = useState("");
 //   const [translations, setTranslations] = useState({});
 //   const [selectedLanguage, setSelectedLanguage] = useState("no");
 //   const [isLoading, setIsLoading] = useState(false);
 //   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
+//   const [challengeResults, setChallengeResults] = useState([]);
+//   const [speciesUnlocked, setSpeciesUnlocked] = useState([]);
 //   const audioRef = useRef(null);
 //   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -863,7 +1006,6 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //           fr: frenchTranslation,
 //         });
 
-//         // Check if user has already completed this unit
 //         if (session?.user?.email) {
 //           await checkIfUnitCompleted();
 //         }
@@ -879,7 +1021,6 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //     if (!session?.user?.email) return;
 
 //     try {
-//       // Get user ID from users table
 //       const { data: userData, error: userError } = await supabase
 //         .from("users")
 //         .select("id")
@@ -888,7 +1029,6 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 
 //       if (userError || !userData) return;
 
-//       // Check if unit is already completed
 //       const { data: completionData, error: completionError } = await supabase
 //         .from("completed_units")
 //         .select("id")
@@ -917,7 +1057,6 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //     setIsLoading(true);
 
 //     try {
-//       // Calculate score
 //       let correctCount = 0;
 //       questions.forEach((q) => {
 //         if (userAnswers[`${unitId}-${q.gap_number}`] === q.correct_answer)
@@ -931,13 +1070,11 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //       const percentage = (correctCount / totalQuestions) * 100;
 //       const passedThreshold = percentage >= 60;
 
-//       // Calculate XP
 //       let earnedXP = correctCount * xpPerCorrectAnswer;
 //       if (correctCount === totalQuestions) {
 //         earnedXP += bonusForPerfect;
 //       }
 
-//       // Update progress in database
 //       const justCompleted = await updateUserProgressInDB(
 //         session.user.email,
 //         unitId,
@@ -947,8 +1084,12 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //         passedThreshold
 //       );
 
-//       // Show success message
-//       showXPToast(earnedXP, justCompleted && passedThreshold);
+//       showXPToast(
+//         earnedXP,
+//         justCompleted && passedThreshold,
+//         challengeResults,
+//         speciesUnlocked
+//       );
 //     } catch (error) {
 //       console.error("Error submitting answers:", error);
 //       alert("There was an error saving your progress. Please try again.");
@@ -966,7 +1107,6 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //     passedThreshold
 //   ) => {
 //     try {
-//       // First, get the user ID from the users table
 //       const { data: userData, error: userError } = await supabase
 //         .from("users")
 //         .select("id")
@@ -979,7 +1119,6 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 
 //       const userId = userData.id;
 
-//       // Check if unit was already completed
 //       const { data: existingCompletion } = await supabase
 //         .from("completed_units")
 //         .select("id")
@@ -990,7 +1129,6 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //       const wasAlreadyCompleted = !!existingCompletion;
 //       let justCompleted = false;
 
-//       // If user passed and unit wasn't already completed, mark as completed
 //       if (passedThreshold && !wasAlreadyCompleted) {
 //         const { error: completionError } = await supabase
 //           .from("completed_units")
@@ -1006,7 +1144,7 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //           justCompleted = true;
 //           setIsAlreadyCompleted(true);
 
-//           // 🌱 UPDATE ECOSYSTEM PROGRESS (only for new completions)
+//           // 🌱 UPDATE ECOSYSTEM PROGRESS (enhanced with challenge integration)
 //           try {
 //             const ecosystemResponse = await fetch(
 //               "/api/user/update-ecosystem-progress",
@@ -1019,21 +1157,39 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 
 //             if (ecosystemResponse.ok) {
 //               const ecosystemResult = await ecosystemResponse.json();
-//               console.log("Ecosystem progress updated:", ecosystemResult);
+//               console.log("✅ Ecosystem progress updated:", ecosystemResult);
+
+//               // Store challenge results for display
+//               if (
+//                 ecosystemResult.challengeProgress &&
+//                 ecosystemResult.challengeProgress.length > 0
+//               ) {
+//                 setChallengeResults(ecosystemResult.challengeProgress);
+//               }
+
+//               // Check for species unlocks
+//               if (
+//                 ecosystemResult.speciesUnlocked &&
+//                 ecosystemResult.speciesUnlocked.length > 0
+//               ) {
+//                 setSpeciesUnlocked(ecosystemResult.speciesUnlocked);
+//               }
 //             } else {
 //               console.warn(
-//                 "Failed to update ecosystem progress:",
+//                 "❌ Failed to update ecosystem progress:",
 //                 ecosystemResponse.status
 //               );
 //             }
 //           } catch (ecosystemError) {
-//             console.warn("Error updating ecosystem progress:", ecosystemError);
-//             // Don't fail the whole completion if ecosystem update fails
+//             console.warn(
+//               "🔥 Error updating ecosystem progress:",
+//               ecosystemError
+//             );
 //           }
 //         }
 //       }
 
-//       // Update user progress (rest of your existing code...)
+//       // Update user progress (XP and level tracking)
 //       const { data: existingProgress } = await supabase
 //         .from("user_progress")
 //         .select("*")
@@ -1044,11 +1200,9 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //       const currentLevel = existingProgress?.current_level || 1;
 //       const currentCompleted = existingProgress?.completed_exercises || 0;
 
-//       // Calculate new level (every 500 points = 1 level)
 //       const newPoints = currentPoints + earnedXP;
 //       const newLevel = Math.floor(newPoints / 500) + 1;
 
-//       // Only increment completed_exercises if this is a new completion
 //       const newCompletedCount = justCompleted
 //         ? currentCompleted + 1
 //         : currentCompleted;
@@ -1076,15 +1230,63 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //     }
 //   };
 
-//   const showXPToast = (earnedXP, justCompleted) => {
+//   const showXPToast = (
+//     earnedXP,
+//     justCompleted,
+//     challengeContributions = [],
+//     speciesUnlocked = []
+//   ) => {
 //     const xpToast = document.createElement("div");
-//     const message = justCompleted
-//       ? `+${earnedXP} XP earned! Unit completed! 🎉`
-//       : `+${earnedXP} XP earned!`;
 
-//     xpToast.textContent = message;
+//     let message = `+${earnedXP} XP earned!`;
+
+//     if (justCompleted) {
+//       message += ` Unit completed! 🎉`;
+//     }
+
+//     if (challengeContributions.length > 0) {
+//       message += ` 🚨 Contributing to ${challengeContributions.length} environmental challenge(s)!`;
+//     }
+
+//     if (speciesUnlocked.length > 0) {
+//       message += ` 🐾 ${speciesUnlocked.length} new species adopted!`;
+//     }
+
+//     xpToast.innerHTML = `
+//       <div class="text-center">
+//         <div class="font-bold">${message}</div>
+//         ${
+//           challengeContributions.length > 0
+//             ? `
+//           <div class="mt-2 text-sm">
+//             ${challengeContributions
+//               .map(
+//                 (challenge) =>
+//                   `🌍 ${challenge.challengeName}: ${Math.round(
+//                     (challenge.newContribution / challenge.totalRequired) * 100
+//                   )}%`
+//               )
+//               .join("<br>")}
+//           </div>
+//         `
+//             : ""
+//         }
+//         ${
+//           speciesUnlocked.length > 0
+//             ? `
+//           <div class="mt-2 text-sm">
+//             ${speciesUnlocked
+//               .map((species) => `${species.emoji} ${species.name} adopted!`)
+//               .join(" ")}
+//           </div>
+//         `
+//             : ""
+//         }
+//       </div>
+//     `;
+
 //     xpToast.className =
-//       "fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg font-bold z-50 transition-all duration-300";
+//       "fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg font-bold z-50 transition-all duration-300 max-w-md";
 //     document.body.appendChild(xpToast);
 
 //     setTimeout(() => {
@@ -1094,20 +1296,18 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //           document.body.removeChild(xpToast);
 //         }
 //       }, 300);
-//     }, 4000); // Show a bit longer for completion message
+//     }, 6000); // Show longer for more complex messages
 //   };
 
 //   function handleAudioToggle() {
 //     if (!unitData?.audio) {
 //       console.warn("No audio URL available");
-//       // alert("We will be adding audio for this unit shortly");
 //       return;
 //     }
 
 //     if (!audioRef.current) {
 //       audioRef.current = new Audio(unitData.audio);
 
-//       // Reset playback state when audio ends
 //       audioRef.current.addEventListener("ended", () => {
 //         setIsPlaying(false);
 //       });
@@ -1200,7 +1400,6 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //                   } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
 //                 >
 //                   {isPlaying ? (
-//                     // Pause icon
 //                     <svg
 //                       xmlns="http://www.w3.org/2000/svg"
 //                       className="size-6"
@@ -1216,7 +1415,6 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //                       />
 //                     </svg>
 //                   ) : (
-//                     // Play icon
 //                     <svg
 //                       xmlns="http://www.w3.org/2000/svg"
 //                       className="size-6"
@@ -1329,17 +1527,6 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //               </option>
 //             ))}
 //           </select>
-//           {/* <select
-//             id="languageSelect"
-//             value={selectedLanguage}
-//             onChange={(e) => setSelectedLanguage(e.target.value)}
-//             className="text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
-//           >
-//             <option value="no">None</option>
-//             <option value="pt">Português</option>
-//             <option value="es">Español</option>
-//             <option value="fr">Français</option>
-//           </select> */}
 //         </div>
 
 //         {selectedLanguage !== "no" && translations[selectedLanguage] && (
@@ -1370,6 +1557,50 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //             <p className="mt-2 font-orbitron text-center lg:text-left text-lg lg:text-xl text-teal-800 dark:text-teal-300 mx-3">
 //               {message}
 //             </p>
+
+//             {/* Challenge contributions display */}
+//             {challengeResults.length > 0 && (
+//               <div className="mt-4 p-4 bg-blue-100 dark:bg-blue-800 rounded-lg max-w-md">
+//                 <h4 className="font-bold text-blue-800 dark:text-blue-100 text-center mb-2">
+//                   🚨 Environmental Impact!
+//                 </h4>
+//                 {challengeResults.map((challenge, index) => (
+//                   <div
+//                     key={index}
+//                     className="text-sm text-blue-700 dark:text-blue-200 text-center"
+//                   >
+//                     <p>
+//                       {challenge.challengeName}:{" "}
+//                       {Math.round(
+//                         (challenge.newContribution / challenge.totalRequired) *
+//                           100
+//                       )}
+//                       % complete
+//                     </p>
+//                   </div>
+//                 ))}
+//               </div>
+//             )}
+
+//             {/* Species unlocked display */}
+//             {speciesUnlocked.length > 0 && (
+//               <div className="mt-4 p-4 bg-green-100 dark:bg-green-800 rounded-lg max-w-md">
+//                 <h4 className="font-bold text-green-800 dark:text-green-100 text-center mb-2">
+//                   🐾 Species Adopted!
+//                 </h4>
+//                 <div className="flex justify-center gap-4">
+//                   {speciesUnlocked.map((species, index) => (
+//                     <div key={index} className="text-center">
+//                       <div className="text-2xl">{species.emoji}</div>
+//                       <div className="text-xs text-green-700 dark:text-green-200">
+//                         {species.name}
+//                       </div>
+//                     </div>
+//                   ))}
+//                 </div>
+//               </div>
+//             )}
+
 //             {percentage >= 60 && (
 //               <div className="mt-4 p-4 bg-green-100 dark:bg-green-800 rounded-lg">
 //                 <p className="text-green-800 dark:text-green-100 font-bold text-center">
@@ -1377,12 +1608,22 @@ export default function MultiGapFillExerciseNew({ unitId }) {
 //                     ? "🎉 Great job! You've mastered this unit!"
 //                     : "🎉 Unit Completed! Check your eco-map to see your progress!"}
 //                 </p>
-//                 <button
-//                   onClick={() => router.push("/eco-map")}
-//                   className="mt-2 mx-auto block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-//                 >
-//                   View Eco-Map
-//                 </button>
+//                 <div className="flex gap-2 justify-center mt-2">
+//                   <button
+//                     onClick={() => router.push("/eco-map")}
+//                     className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+//                   >
+//                     View Eco-Map
+//                   </button>
+//                   {challengeResults.length > 0 && (
+//                     <button
+//                       onClick={() => router.push("/eco-map?tab=progress")}
+//                       className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+//                     >
+//                       View Challenges
+//                     </button>
+//                   )}
+//                 </div>
 //               </div>
 //             )}
 //             <PieChartAnswers

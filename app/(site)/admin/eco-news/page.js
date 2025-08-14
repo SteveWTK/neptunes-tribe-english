@@ -7,7 +7,6 @@ import EcoNewsAdmin from "@/components/admin/EcoNewsAdmin";
 const ADMIN_EMAILS = [
   "michaelalanwatkins@gmail.com",
   "michael.alan.watkins@gmail.com",
-
   "steveinspirewtk@gmail.com",
   "stevecultura@gmail.com",
   "davidchaveswatkins@gmail.com",
