@@ -81,21 +81,21 @@ export default function PricingPage() {
           directly funds ocean conservation and environmental protection
           projects worldwide.
         </p> */}
-        <section className="my-2 text-center text-[16px] text-zinc-500 dark:text-zinc-400 border-t py-2">
+        {/* <section className="my-2 text-center text-[16px] text-zinc-500 dark:text-zinc-400 border-t py-2">
           <p className="flex flex-col md:flex-row items-center justify-center gap-2">
             <span className="text-[16px]">
               <HeartHandshake />
             </span>
             {copy.pageMission}
           </p>
-        </section>
+        </section> */}
       </section>
 
       {/* Pricing Tiers */}
       <PricingTiers />
 
       {/* Impact Section */}
-      <section className="mt-20 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 rounded-2xl p-8 max-w-4xl mx-auto">
+      {/* <section className="mt-20 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 rounded-2xl p-8 max-w-4xl mx-auto">
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-4">{copy.impactTitle}</h2>
           <p className="text-lg text-muted-foreground mb-8">
@@ -128,10 +128,10 @@ export default function PricingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Call to Action */}
-      <section className="mt-16 text-center">
+      <section className="my-16 text-center">
         <h2 className="text-2xl font-bold mb-4">{copy.actionTitle}</h2>
         <p className="text-muted-foreground mb-8">{copy.actionSubtitle}</p>
       </section>
@@ -178,70 +178,14 @@ export default function PricingPage() {
       </section> */}
 
       {/* Footer Note */}
-      <section className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400  py-4">
+      {/* <section className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400  py-4">
         <p className="flex items-center justify-center gap-2">
           <span className="text-lg">
             <HeartHandshake />
           </span>
           {copy.pageMission}
         </p>
-      </section>
+      </section> */}
     </main>
   );
 }
-
-// app/(site)/pricing/page.js
-// "use client";
-
-// import PricingTiers from "@/components/PricingTiers";
-
-// export default function PricingPage() {
-//   return (
-//     <main className="pt-12 px-4">
-//       <section className="max-w-3xl mx-auto text-center mb-10">
-//         <h1 className="text-4xl font-bold mb-4">Join Neptune’s Tribe</h1>
-//         <p className="text-lg text-muted-foreground">
-//           Neptune’s Tribe blends language learning with a mission to protect the
-//           environment. Your subscription helps build features and support
-//           real-world ecological projects.
-//         </p>
-//       </section>
-
-//       <PricingTiers />
-
-//       <section className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400">
-//         🌍 25% of all subscriptions go to eco-related charities. Thank you for
-//         supporting the planet.
-//       </section>
-//     </main>
-//   );
-// }
-
-// "use client";
-
-// import PricingClient from "./PricingClient";
-
-// export default function PricingPage() {
-//   return <PricingClient />;
-// }
-
-// import dynamic from "next/dynamic";
-
-// const PricingClient = dynamic(() => import("./PricingClient"), { ssr: false });
-
-// export default function PricingPage() {
-//   return <PricingClient />;
-// }
-
-// "use client";
-
-// import SupportNeptunesTribe from "@/components/SupportNeptunesTribe";
-// import SupportUsSectionStripeAndPix from "@/components/SupportUsSectionStripeAndPix";
-
-// export default function About() {
-//   return (
-//     <div className="relative w-screen h-full pt-4 pb-12 bg-gradient-to-br from-primary-100 to-primary-300 dark:from-primary-700 dark:to-primary-950 dark:bg-primary-200">
-//       <SupportNeptunesTribe />
-//     </div>
-//   );
-// }

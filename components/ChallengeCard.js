@@ -26,11 +26,11 @@ export default function ChallengeCard({ challenge }) {
             {challenge.challenge_title}
           </h3>
 
-          {challenge.description && (
+          {/* {challenge.description && (
             <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm line-clamp-3">
               {challenge.description}
             </p>
-          )}
+          )} */}
 
           {/* Challenge Stats */}
           <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">

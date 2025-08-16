@@ -252,7 +252,7 @@ export default function PricingTiers() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 pt-8 md:px-8">
         {/* Free Tier */}
         <Card className="relative border-2 hover:shadow-lg transition-shadow">
           <CardHeader className="text-center pb-4">
@@ -400,7 +400,7 @@ export default function PricingTiers() {
         </Card>
 
         {/* Support Us */}
-        <Card className="relative border-2 border-orange-300 hover:shadow-lg transition-shadow">
+        {/* <Card className="relative border-2 border-orange-300 hover:shadow-lg transition-shadow">
           <CardHeader className="text-center pb-4">
             <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-3">
               <Crown className="w-6 h-6 text-orange-600 dark:text-orange-400" />
@@ -412,9 +412,9 @@ export default function PricingTiers() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center mb-4">
-              {/* <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                 25% of donations go directly to environmental charities
-              </p> */}
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -451,7 +451,7 @@ export default function PricingTiers() {
               </p>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* FAQ Section */}
@@ -469,10 +469,10 @@ export default function PricingTiers() {
               q: "Is there a free trial?",
               a: "Our Explorer plan is completely free forever. You can upgrade to Premium anytime to unlock additional features.",
             },
-            {
-              q: "How does the environmental impact work?",
-              a: "25% of all subscription revenue goes directly to verified ocean conservation and environmental protection charities.",
-            },
+            // {
+            //   q: "How does the environmental impact work?",
+            //   a: "25% of all subscription revenue goes directly to verified ocean conservation and environmental protection charities.",
+            // },
             {
               q: "What about enterprise discounts?",
               a: "We offer volume discounts for larger organizations. Contact us for custom pricing for 50+ users.",
