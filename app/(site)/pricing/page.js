@@ -20,13 +20,13 @@ export default function PricingPage() {
       pageTitle: "Join Neptune's Tribe",
       pageSubtitle:
         "Enrich your English while exploring the world's most amazing ecosystems.",
-      pageMission: "20% of all subscriptions go to environmental NGO's",
+      pageMission: "20% of all subscriptions go to environmental NGOs",
       impactTitle: "'Your support has a real impact.",
       impactSubtitle:
         "Every subscription directly supports both education and environmental conservation",
       oceanTitle: "Environmental protection",
       oceanSubtitle:
-        "20% of all revenue goes directly to verified environmental NGO's.",
+        "20% of all revenue goes directly to verified environmental NGOs.",
       educationTitle: "Education Access",
       educationSubtitle:
         "Premium subscriptions help us provide free access to underprivileged communities and continuously develop better learning content.",

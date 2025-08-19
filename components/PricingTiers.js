@@ -78,11 +78,11 @@ export default function PricingTiers() {
         },
         {
           q: "How does the environmental impact work?",
-          a: "20% of all subscription revenue goes directly to verified ocean conservation and environmental protection charities.",
+          a: "20% of all subscription revenue goes directly to verified ocean conservation and environmental protection NGOs.",
         },
         {
           q: "What about enterprise discounts?",
-          a: "We offer volume discounts for larger organizations. Contact us for custom pricing for 25+ users.",
+          a: "We offer volume discounts for larger organisations. Contact us for custom pricing for 25+ users.",
         },
       ],
     },
@@ -132,7 +132,7 @@ export default function PricingTiers() {
         },
         {
           q: "Como funciona o impacto ambiental?",
-          a: "20% de toda a receita da assinatura vai diretamente para instituições de caridade verificadas de conservação dos oceanos e proteção ambiental.",
+          a: "20% de toda a receita da assinatura vai diretamente para ONGs verificadas de conservação dos oceanos e proteção ambiental.",
         },
         {
           q: "E os descontos para empresas?",
@@ -158,14 +158,14 @@ export default function PricingTiers() {
     USD: {
       yearly: {
         premium: {
-          price: 59.4,
-          display: "$59.40",
+          price: 59,
+          display: "$59",
           period: "/year",
           savings: "Save 50%",
         },
         enterprise: {
-          price: 594,
-          display: "$594",
+          price: 590,
+          display: "$590",
           period: "/year",
           savings: "Save 50%",
         },
@@ -193,14 +193,14 @@ export default function PricingTiers() {
     BRL: {
       yearly: {
         premium: {
-          price: 294,
-          display: "R$294",
+          price: 290,
+          display: "R$290",
           period: "/ano",
           savings: "Economize 50%",
         },
         enterprise: {
-          price: 2940,
-          display: "R$2.940",
+          price: 2900,
+          display: "R$2.900",
           period: "/ano",
           savings: "Economize 50%",
         },
