@@ -20,13 +20,13 @@ export default function PricingPage() {
       pageTitle: "Join Neptune's Tribe",
       pageSubtitle:
         "Enrich your English while exploring the world's most amazing ecosystems.",
-      pageMission: "25% of all subscriptions go to environmental NGO's",
+      pageMission: "20% of all subscriptions go to environmental NGO's",
       impactTitle: "'Your support has a real impact.",
       impactSubtitle:
         "Every subscription directly supports both education and environmental conservation",
       oceanTitle: "Environmental protection",
       oceanSubtitle:
-        "25% of all revenue goes directly to verified environmental NGO's.",
+        "20% of all revenue goes directly to verified environmental NGO's.",
       educationTitle: "Education Access",
       educationSubtitle:
         "Premium subscriptions help us provide free access to underprivileged communities and continuously develop better learning content.",
@@ -42,13 +42,13 @@ export default function PricingPage() {
       pageTitle: "Junte-se à Neptune's Tribe",
       pageSubtitle:
         "Desenvolva seu inglês enquanto explora os ecossistemas mais incríveis do mundo.",
-      pageMission: "25% de todas as assinaturas vão para ONGs ambientais",
+      pageMission: "20% de todas as assinaturas vão para ONGs ambientais",
       impactTitle: "Seu Apoio Cria Impacto Real",
       impactSubtitle:
         "Cada assinatura apoia diretamente a educação e a preservação ambiental",
       oceanTitle: "Proteção ambiental",
       oceanSubtitle:
-        "25% de toda a receita vai diretamente para ONGs ambientais verificadas que se dedicam à conservação dos oceanos.",
+        "20% de toda a receita vai diretamente para ONGs ambientais verificadas que se dedicam à conservação dos oceanos.",
       educationTitle: "Acesso à Educação",
       educationSubtitle:
         "Assinaturas premium nos ajudam a fornecer acesso gratuito a comunidades carentes e a desenvolver continuamente melhores conteúdos de aprendizagem.",
@@ -81,21 +81,21 @@ export default function PricingPage() {
           directly funds ocean conservation and environmental protection
           projects worldwide.
         </p> */}
-        {/* <section className="my-2 text-center text-[16px] text-zinc-500 dark:text-zinc-400 border-t py-2">
+        <section className="my-2 text-center text-[16px] text-zinc-500 dark:text-zinc-400 border-t py-2">
           <p className="flex flex-col md:flex-row items-center justify-center gap-2">
             <span className="text-[16px]">
               <HeartHandshake />
             </span>
             {copy.pageMission}
           </p>
-        </section> */}
+        </section>
       </section>
 
       {/* Pricing Tiers */}
       <PricingTiers />
 
       {/* Impact Section */}
-      {/* <section className="mt-20 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 rounded-2xl p-8 max-w-4xl mx-auto">
+      <section className="mt-20 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 rounded-2xl p-8 max-w-4xl mx-auto">
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-4">{copy.impactTitle}</h2>
           <p className="text-lg text-muted-foreground mb-8">
@@ -128,10 +128,10 @@ export default function PricingPage() {
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* Call to Action */}
-      <section className="my-16 text-center">
+      <section className="mt-16 text-center">
         <h2 className="text-2xl font-bold mb-4">{copy.actionTitle}</h2>
         <p className="text-muted-foreground mb-8">{copy.actionSubtitle}</p>
       </section>
@@ -178,14 +178,14 @@ export default function PricingPage() {
       </section> */}
 
       {/* Footer Note */}
-      {/* <section className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400  py-4">
+      <section className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400  py-4">
         <p className="flex items-center justify-center gap-2">
           <span className="text-lg">
             <HeartHandshake />
           </span>
           {copy.pageMission}
         </p>
-      </section> */}
+      </section>
     </main>
   );
 }

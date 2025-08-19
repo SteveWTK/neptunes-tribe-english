@@ -48,7 +48,7 @@ export default function HeaderBase({
         { href: "/units", label: "Units" },
         { href: "/challenges", label: "Challenges" },
         { href: "/eco-news", label: "Eco News" },
-        { href: "/pricing", label: "Subscriptions" },
+        { href: "/pricing", label: "Pricing" },
 
         // { href: "/dashboard", label: "Dashboard" },
         // { href: "/profile", label: "Profile" },
@@ -58,7 +58,7 @@ export default function HeaderBase({
         { href: "/units", label: "Atividades" },
         { href: "/challenges", label: "Desafios" },
         { href: "/eco-news", label: "Eco News" },
-        { href: "/pricing", label: "Assinaturas" },
+        { href: "/pricing", label: "Preços" },
 
         // { href: "/dashboard", label: "Painel" },
         // { href: "/profile", label: "Perfil" },

@@ -35,10 +35,110 @@ export default function PricingTiers() {
     en: {
       monthly: "Monthly",
       yearly: "Yearly",
+      discount: "50% OFF",
+      mostPopular: "Most Popular",
+      explorerSub: "Try out our main features",
+      premiumSub: "Enjoy all our content and features",
+      enterpriseSub: "For teams and organisations",
+      cardContentExplorer: [
+        "Access to basic learning units",
+        "Access to eco-news",
+        "Basic Interactive eco-map tracking",
+        "Community access",
+      ],
+      cardContentPremium: [
+        "All Explorer features",
+        "Unlimited learning units",
+        "Advanced progress analytics",
+        "Priority support",
+        "Offline content access",
+        "Certificate generation",
+      ],
+      cardContentEnterprise: [
+        "All Premium features",
+        "Up to 25 accounts (pay for only 10)",
+        "Group management tools",
+        // "Custom curriculum creation",
+        "Detailed analytics dashboard",
+        "API access",
+        "Dedicated support manager",
+      ],
+      getStartedFree: "Get Started Free",
+      choosePremium: "Choose Premium",
+      chooseEnterprise: "Choose Enterprise",
+      FAQHeader: "Frequently Asked Questions",
+      FAQ: [
+        {
+          q: "Can I switch between plans?",
+          a: "Yes! You can upgrade or downgrade your plan at any time. Changes will be prorated.",
+        },
+        {
+          q: "Is there a free trial?",
+          a: "Our Explorer plan is completely free and gives you a sample of our content and features. You can upgrade to Premium anytime to unlock everything.",
+        },
+        {
+          q: "How does the environmental impact work?",
+          a: "20% of all subscription revenue goes directly to verified ocean conservation and environmental protection charities.",
+        },
+        {
+          q: "What about enterprise discounts?",
+          a: "We offer volume discounts for larger organizations. Contact us for custom pricing for 25+ users.",
+        },
+      ],
     },
     pt: {
       monthly: "Mensal",
       yearly: "Anual",
+      discount: "50% OFF",
+      mostPopular: "Mais Popular",
+      explorerSub: "Experimente a Neptune's Tribe",
+      premiumSub: "Aproveite todo o nosso conteúdo",
+      enterpriseSub: "Para equipes e organizações",
+      cardContentExplorer: [
+        "Accesso ao conteúdo basico",
+        "Accesso ao eco-news",
+        "Acompanhamento interativo basico pelo ecomapa",
+        "Acesso à comunidade",
+      ],
+      cardContentPremium: [
+        "Todos os recursos do Explorer",
+        "Unidades de aprendizagem ilimitadas",
+        "Análise avançada de progresso",
+        "Suporte prioritário",
+        "Acesso a conteúdo offline",
+        "Geração de certificados",
+      ],
+      cardContentEnterprise: [
+        "Todos os recursos Premium",
+        "Até 25 contas (pague por apenas 10)",
+        "Ferramentas de gerenciamento de usuários",
+        // "Criação de currículo personalizado",
+        "Painel de análise detalhado",
+        "Acesso à API",
+        "Gerente de suporte dedicado",
+      ],
+      getStartedFree: "Inicie de Graça",
+      choosePremium: "Escolha Premium",
+      chooseEnterprise: "Escolha Enterprise",
+      FAQHeader: "Perguntas frequentes",
+      FAQ: [
+        {
+          q: "Posso alternar entre os planos?",
+          a: "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. As alterações serão calculadas proporcionalmente.",
+        },
+        {
+          q: "Existe um teste gratuito?",
+          a: "Nosso plano Explorer é totalmente gratuito e oferece uma amostra do nosso conteúdo e recursos. Você pode fazer upgrade para o Premium a qualquer momento para desbloquear tudo.",
+        },
+        {
+          q: "Como funciona o impacto ambiental?",
+          a: "20% de toda a receita da assinatura vai diretamente para instituições de caridade verificadas de conservação dos oceanos e proteção ambiental.",
+        },
+        {
+          q: "E os descontos para empresas?",
+          a: "Oferecemos descontos por volume para organizações maiores. Entre em contato conosco para obter preços personalizados para mais de 25 usuários.",
+        },
+      ],
     },
   };
 
@@ -61,13 +161,13 @@ export default function PricingTiers() {
           price: 99,
           display: "$99",
           period: "/year",
-          savings: "Save $20",
+          savings: "Save 50%",
         },
         enterprise: {
-          price: 490,
-          display: "$490",
+          price: 594,
+          display: "$594",
           period: "/year",
-          savings: "Save $98",
+          savings: "Save 50%",
         },
       },
       monthly: {
@@ -78,8 +178,8 @@ export default function PricingTiers() {
           savings: "",
         },
         enterprise: {
-          price: 49,
-          display: "$49",
+          price: 59.4,
+          display: "$59.40",
           period: "/month",
           savings: "",
         },
@@ -93,16 +193,16 @@ export default function PricingTiers() {
     BRL: {
       yearly: {
         premium: {
-          price: 490,
-          display: "R$490",
+          price: 294,
+          display: "R$294",
           period: "/ano",
-          savings: "Economize R$100",
+          savings: "Economize 50%",
         },
         enterprise: {
-          price: 2490,
-          display: "R$2.490",
+          price: 2940,
+          display: "R$2.940",
           period: "/ano",
-          savings: "Economize R$500",
+          savings: "Economize 50%",
         },
       },
       monthly: {
@@ -113,8 +213,8 @@ export default function PricingTiers() {
           savings: "",
         },
         enterprise: {
-          price: 249,
-          display: "R$249",
+          price: 490,
+          display: "R$490",
           period: "/mês",
           savings: "",
         },
@@ -244,8 +344,8 @@ export default function PricingTiers() {
             }`}
           >
             {copy.yearly}
-            <Badge className="absolute -top-3 -right-2 bg-green-500 text-white dark:bg-green-500 dark:text-white text-xs">
-              50% OFF
+            <Badge className="absolute -top-3 -right-2 text-center w-auto bg-green-500 text-white dark:bg-green-500 dark:text-white text-xs">
+              {copy.discount}
             </Badge>
           </button>
           <CurrencySelector />
@@ -261,7 +361,7 @@ export default function PricingTiers() {
             </div>
             <CardTitle className="text-xl">Explorer</CardTitle>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Perfect for getting started
+              {copy.explorerSub}
             </p>
             <div className="mt-4">
               <span className="text-3xl font-bold">Free</span>
@@ -269,12 +369,7 @@ export default function PricingTiers() {
           </CardHeader>
           <CardContent className="space-y-4">
             <ul className="space-y-3">
-              {[
-                "Access to basic learning units",
-                "Interactive eco-map tracking",
-                "Basic progress statistics",
-                "Community access",
-              ].map((feature, i) => (
+              {copy.cardContentExplorer.map((feature, i) => (
                 <li key={i} className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                   <span className="text-sm">{feature}</span>
@@ -286,7 +381,7 @@ export default function PricingTiers() {
               variant="outline"
               onClick={() => router.push("/units")}
             >
-              Get Started Free
+              {copy.getStartedFree}
             </Button>
           </CardContent>
         </Card>
@@ -296,7 +391,7 @@ export default function PricingTiers() {
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
             <Badge className="bg-green-500 text-white dark:bg-green-500 dark:text-white px-3 py-1">
               <Star className="w-3 h-3 mr-1" />
-              Most Popular
+              {copy.mostPopular}
             </Badge>
           </div>
           <CardHeader className="text-center pb-4 pt-6">
@@ -305,7 +400,7 @@ export default function PricingTiers() {
             </div>
             <CardTitle className="text-xl">Premium</CardTitle>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              For serious learners
+              {copy.premiumSub}
             </p>
             <div className="mt-4">
               <span className="text-3xl font-bold">
@@ -323,15 +418,7 @@ export default function PricingTiers() {
           </CardHeader>
           <CardContent className="space-y-4">
             <ul className="space-y-3">
-              {[
-                "All Explorer features",
-                "Unlimited learning units",
-                "Advanced progress analytics",
-                "Priority support",
-                "Offline content access",
-                "Certificate generation",
-                "Mobile app access",
-              ].map((feature, i) => (
+              {copy.cardContentPremium.map((feature, i) => (
                 <li key={i} className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                   <span className="text-sm">{feature}</span>
@@ -343,7 +430,7 @@ export default function PricingTiers() {
               onClick={() => handleSubscribe("premium")}
               disabled={isDisabled}
             >
-              {loading ? "Processing..." : "Choose Premium"}
+              {loading ? "Processing..." : copy.choosePremium}
             </Button>
           </CardContent>
         </Card>
@@ -356,7 +443,7 @@ export default function PricingTiers() {
             </div>
             <CardTitle className="text-xl">Enterprise</CardTitle>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              For schools & organizations
+              {copy.enterpriseSub}
             </p>
             <div className="mt-4">
               <span className="text-3xl font-bold">
@@ -374,15 +461,7 @@ export default function PricingTiers() {
           </CardHeader>
           <CardContent className="space-y-4">
             <ul className="space-y-3">
-              {[
-                "All Premium features",
-                "Up to 50 student accounts",
-                "Classroom management tools",
-                "Custom curriculum creation",
-                "Detailed analytics dashboard",
-                "API access",
-                "Dedicated support manager",
-              ].map((feature, i) => (
+              {copy.cardContentEnterprise.map((feature, i) => (
                 <li key={i} className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-purple-500 flex-shrink-0" />
                   <span className="text-sm">{feature}</span>
@@ -394,7 +473,7 @@ export default function PricingTiers() {
               onClick={() => handleSubscribe("enterprise")}
               disabled={isDisabled}
             >
-              {loading ? "Processing..." : "Choose Enterprise"}
+              {loading ? "Processing..." : copy.chooseEnterprise}
             </Button>
           </CardContent>
         </Card>
@@ -457,27 +536,10 @@ export default function PricingTiers() {
       {/* FAQ Section */}
       <div className="mt-16 max-w-3xl mx-auto">
         <h3 className="text-2xl font-bold text-center mb-8">
-          Frequently Asked Questions
+          {copy.FAQHeader}
         </h3>
         <div className="grid gap-6">
-          {[
-            {
-              q: "Can I switch between plans?",
-              a: "Yes! You can upgrade or downgrade your plan at any time. Changes will be prorated.",
-            },
-            {
-              q: "Is there a free trial?",
-              a: "Our Explorer plan is completely free forever. You can upgrade to Premium anytime to unlock additional features.",
-            },
-            // {
-            //   q: "How does the environmental impact work?",
-            //   a: "25% of all subscription revenue goes directly to verified ocean conservation and environmental protection charities.",
-            // },
-            {
-              q: "What about enterprise discounts?",
-              a: "We offer volume discounts for larger organizations. Contact us for custom pricing for 50+ users.",
-            },
-          ].map((faq, i) => (
+          {copy.FAQ.map((faq, i) => (
             <div key={i} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
               <h4 className="font-semibold mb-2">{faq.q}</h4>
               <p className="text-gray-600 dark:text-gray-400 text-sm">

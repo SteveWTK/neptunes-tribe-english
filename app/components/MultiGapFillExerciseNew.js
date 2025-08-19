@@ -661,7 +661,11 @@ export default function MultiGapFillExerciseNew({ unitId }) {
             {isAlreadyCompleted && (
               <div className="mx-3 p-2 bg-green-100 dark:bg-green-800 rounded-lg">
                 <p className="text-green-800 dark:text-green-100 text-sm text-center">
-                  ✅ You have already completed this unit!
+                  ✅
+                  <span className="hover:hidden">
+                    {" "}
+                    You have already completed this unit!
+                  </span>
                 </p>
               </div>
             )}
