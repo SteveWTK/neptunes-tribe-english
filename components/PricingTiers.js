@@ -24,10 +24,10 @@ import {
 } from "@/lib/currency-utils";
 
 export default function PricingTiers() {
-  const [currency, setCurrency] = useState("USD");
-  const [currencySymbol, setCurrencySymbol] = useState("USD");
+  const [currency, setCurrency] = useState("BRL");
+  const [currencySymbol, setCurrencySymbol] = useState("BRL");
   const [loading, setLoading] = useState(false);
-  const [billingCycle, setBillingCycle] = useState("yearly"); // yearly shows better value
+  const [billingCycle, setBillingCycle] = useState("monthly"); // yearly shows better value
   const { data: session, status } = useSession();
   const router = useRouter();
   const { lang } = useLanguage();
@@ -158,8 +158,8 @@ export default function PricingTiers() {
     USD: {
       yearly: {
         premium: {
-          price: 99,
-          display: "$99",
+          price: 59.4,
+          display: "$59.40",
           period: "/year",
           savings: "Save 50%",
         },
@@ -178,8 +178,8 @@ export default function PricingTiers() {
           savings: "",
         },
         enterprise: {
-          price: 59.4,
-          display: "$59.40",
+          price: 99,
+          display: "$99",
           period: "/month",
           savings: "",
         },

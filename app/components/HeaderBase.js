@@ -31,14 +31,14 @@ export default function HeaderBase({
         { href: "/challenges", label: "Challenges" },
         // { href: "/eco-map", label: "Eco Map" },
         { href: "/eco-news", label: "Eco News" },
-        { href: "/pricing", label: "Subscriptions" },
+        { href: "/pricing", label: "Pricing" },
       ],
       pt: [
         { href: "/units", label: "Atividades" },
         { href: "/challenges", label: "Desafios" },
         // { href: "/eco-map", label: "Eco Map" },
         { href: "/eco-news", label: "Eco News" },
-        { href: "pricing", label: "Assinaturas" },
+        { href: "pricing", label: "Preços" },
       ],
       // ... add other languages as needed
     },
