@@ -10,7 +10,7 @@ const SnakeGame = () => {
   const canvasSize = gridSize * tileSize;
 
   const trashWords = ["can", "plastic", "bag", "wrapper", "bottle"];
-  const natureWords = ["turtle", "shell", "starfish", "seaweed"];
+  const natureWords = ["turtle", "shell", "starfish", "seaweed", "crab"];
 
   const [snake, setSnake] = useState([{ x: 8, y: 8 }]);
   const [direction, setDirection] = useState({ x: 1, y: 0 });
@@ -140,7 +140,7 @@ const SnakeGame = () => {
 
   const drawGame = (ctx) => {
     ctx.clearRect(0, 0, canvasSize, canvasSize);
-    ctx.fillStyle = "#e3e286";
+    ctx.fillStyle = "#e8d6bf";
     ctx.fillRect(0, 0, canvasSize, canvasSize);
 
     ctx.fillStyle = "#007f5f";
@@ -185,7 +185,7 @@ const SnakeGame = () => {
               ${
                 item.type === "trash"
                   ? "bg-red-500 animate-pulse"
-                  : "bg-blue-700 animate-bounce"
+                  : "bg-primary-700 animate-bounce"
               }`}
             style={{
               top: `${item.y * tileSize}px`,
