@@ -1,3 +1,4 @@
+// app\(site)\challenges\[challengeId]\ChallengePageClient.js
 "use client";
 
 import { useState } from "react";

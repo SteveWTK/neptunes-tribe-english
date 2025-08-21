@@ -1,3 +1,4 @@
+// app\(site)\challenges\[challengeId]\page.js
 import { fetchSingleGapChallenges } from "@/lib/data-service";
 import ChallengePageClient from "./ChallengePageClient";
 import Link from "next/link";
