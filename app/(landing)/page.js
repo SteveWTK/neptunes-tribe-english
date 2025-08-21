@@ -80,7 +80,7 @@ export default function LandingPage({ darkMode = false }) {
       // Mission
       missionTitle: "Learning That Makes a Difference",
       missionText:
-        "Every lesson supports real conservation projects. 25% of all revenue goes directly to environmental NGOs.",
+        "Every lesson supports real conservation projects. 20% of all revenue goes directly to environmental NGOs.",
       missionTextOceanHeader: "Environmental Conservation",
       missionTextOCean: "Direct funding to environmental protection projects",
       missionTextEducationHeader: "Education Access",
@@ -144,7 +144,7 @@ export default function LandingPage({ darkMode = false }) {
       // Mission
       missionTitle: "Aprendizado Que Faz a Diferença",
       missionText:
-        "Cada lição apoia projetos reais de conservação oceânica. 25% de toda receita vai diretamente para organizações ambientais.",
+        "Cada lição apoia projetos reais de conservação oceânica. 20% de toda receita vai diretamente para organizações ambientais.",
       missionTextOceanHeader: "Conservação do Oceano",
       missionTextOCean:
         "Financiamento direto para projetos de proteção marinha",
