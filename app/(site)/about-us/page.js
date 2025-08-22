@@ -33,19 +33,19 @@ export default function AboutUsPage() {
         "Content available in English, Portuguese, Spanish, and French to support diverse learners.",
       teamTitle: "Meet Our Team",
       teamSubtitle:
-        "Passionate educators and environmentalists working together to change the world",
+        "Passionate about education and the environment, and working together to help change the world",
       founder1Title: "Co-Founder & Content Director",
       founder1Bio:
-        "An experienced educator and environmental scientist, Michael develops our curriculum content that seamlessly blends language learning with environmental education.",
+        "An experienced educator with a PhD in language acquisition and a passionate environmentalist, Michael develops our curriculum content that seamlessly blends language learning with environmental education.",
       founder2Title: "Co-Founder & Lead Developer",
       founder2Bio:
         "With a background in education technology and sustainable development, Stephen brings together technical expertise and environmental passion to create innovative learning experiences.",
       founder3Title: "Co-Founder & Educational Specialist",
       founder3Bio:
         "Specializing in English as a Foreign Language methodology, Paul ensures our platform meets the highest standards of language pedagogy and learning effectiveness.",
-      founder4Title: "Co-Founder & Environmental Consultant",
+      founder4Title: "Co-Founder & Strategic Director",
       founder4Bio:
-        "A dedicated conservationist and researcher, David provides the environmental expertise that makes our content both accurate and inspiring for learners worldwide.",
+        "With decades of experience as a language school director, David provides the strategic expertise that ensures Neptune's Tribe helps inspire learners worldwide.",
       valuesTitle: "Our Values",
       value1Title: "Environmental Responsibility",
       value1Text:
@@ -92,17 +92,17 @@ export default function AboutUsPage() {
         "Educadores e ambientalistas apaixonados trabalhando juntos para mudar o mundo",
       founder1Title: "Co-Fundador e Diretor de Conteúdo",
       founder1Bio:
-        "Um educador experiente e cientista ambiental, [Nome] desenvolve nosso conteúdo curricular que combina perfeitamente aprendizado de idiomas com educação ambiental.",
-      founder2Title: "Co-Fundador e Desenvolvedor Líder",
+        "Um educador experiente e cientista ambiental, Michael desenvolve nosso conteúdo curricular que combina perfeitamente aprendizado de idiomas com educação ambiental.",
+      founder2Title: "Co-Fundador e Desenvolvedor",
       founder2Bio:
-        "Com experiência em tecnologia educacional e desenvolvimento sustentável, [Nome] une expertise técnica e paixão ambiental para criar experiências de aprendizado inovadoras.",
+        "Com experiência em tecnologia educacional e desenvolvimento sustentável, Stephen une expertise técnica e paixão ambiental para criar experiências de aprendizado inovadoras.",
 
-      founder3Title: "Co-Fundador e Especialista Educacional",
+      founder3Title: "Co-Fundador e Diretor Estratégico",
       founder3Bio:
-        "Especializando-se em metodologia de Inglês como Língua Estrangeira, [Nome] garante que nossa plataforma atenda aos mais altos padrões de pedagogia e eficácia de aprendizado.",
+        "Especializando-se em metodologia de Inglês como Língua Estrangeira, Paul garante que nossa plataforma atenda aos mais altos padrões de pedagogia e eficácia de aprendizado.",
       founder4Title: "Co-Fundador e Consultor Ambiental",
       founder4Bio:
-        "Um conservacionista dedicado e pesquisador, [Nome] fornece a expertise ambiental que torna nosso conteúdo preciso e inspirador para estudantes no mundo todo.",
+        "Com décadas de experiência como diretor de escola de idiomas, David fornece a expertise estratégica que garante que a Neptune's Tribe ajude a inspirar alunos no mundo todo.",
       valuesTitle: "Nossos Valores",
       value1Title: "Responsabilidade Ambiental",
       value1Text:
@@ -130,7 +130,7 @@ export default function AboutUsPage() {
   const teamMembers = [
     {
       id: 1,
-      name: "Michael Alan Watkins",
+      name: "Dr Michael Alan Watkins",
       title: copy.founder1Title,
       bio: copy.founder1Bio,
       image: "team/MAW-1.jpeg", // Replace with actual image path
