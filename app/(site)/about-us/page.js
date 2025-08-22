@@ -42,10 +42,10 @@ export default function AboutUsPage() {
         "With a background in education technology and sustainable development, Stephen brings together technical expertise and environmental passion to create innovative learning experiences.",
       founder3Title: "Co-Founder & Educational Specialist",
       founder3Bio:
-        "Specializing in English as a Foreign Language methodology, Paul ensures our platform meets the highest standards of language pedagogy and learning effectiveness.",
+        "As a specialist in ESL methodology, Paul ensures our platform meets the highest standards of language pedagogy and learning effectiveness.",
       founder4Title: "Co-Founder & Strategic Director",
       founder4Bio:
-        "With decades of experience as a language school director, David provides the strategic expertise that ensures Neptune's Tribe helps inspire learners worldwide.",
+        "With decades of experience as a language school director, David provides the strategic expertise that will allow Neptune's Tribe to inspire learners worldwide.",
       valuesTitle: "Our Values",
       value1Title: "Environmental Responsibility",
       value1Text:
@@ -92,7 +92,7 @@ export default function AboutUsPage() {
         "Educadores e ambientalistas apaixonados trabalhando juntos para mudar o mundo",
       founder1Title: "Co-Fundador e Diretor de Conteúdo",
       founder1Bio:
-        "Um educador experiente e cientista ambiental, Michael desenvolve nosso conteúdo curricular que combina perfeitamente aprendizado de idiomas com educação ambiental.",
+        "Um educador experiente com doutorado em aquisição de linguagem e ambientalista apaixonado, Michael desenvolve nosso conteúdo curricular que combina perfeitamente aprendizado de idiomas com educação ambiental.",
       founder2Title: "Co-Fundador e Desenvolvedor",
       founder2Bio:
         "Com experiência em tecnologia educacional e desenvolvimento sustentável, Stephen une expertise técnica e paixão ambiental para criar experiências de aprendizado inovadoras.",
