@@ -42,7 +42,7 @@ export default function AboutUsPage() {
         "With a background in education technology and sustainable development, Stephen brings together technical expertise and environmental passion to create innovative learning experiences.",
       founder3Title: "Co-Founder & Educational Specialist",
       founder3Bio:
-        "As a specialist in ESL methodology, Paul ensures our platform meets the highest standards of language pedagogy and learning effectiveness.",
+        "As a specialist in ESL methodology and a wildlife enthusiast, Paul ensures our platform meets the highest standards of language pedagogy and learning effectiveness.",
       founder4Title: "Co-Founder & Strategic Director",
       founder4Bio:
         "With decades of experience as a language school director, David provides the strategic expertise that will allow Neptune's Tribe to inspire learners worldwide.",
@@ -97,10 +97,10 @@ export default function AboutUsPage() {
       founder2Bio:
         "Com experiência em tecnologia educacional e desenvolvimento sustentável, Stephen une expertise técnica e paixão ambiental para criar experiências de aprendizado inovadoras.",
 
-      founder3Title: "Co-Fundador e Diretor Estratégico",
+      founder3Title: "Cofundador e Especialista em Educação",
       founder3Bio:
-        "Especializando-se em metodologia de Inglês como Língua Estrangeira, Paul garante que nossa plataforma atenda aos mais altos padrões de pedagogia e eficácia de aprendizado.",
-      founder4Title: "Co-Fundador e Consultor Ambiental",
+        "Especializando-se em metodologia de Inglês como Língua Estrangeira e um entusiasta da natureza, Paul garante que nossa plataforma atenda aos mais altos padrões de pedagogia e eficácia de aprendizado.",
+      founder4Title: "Co-Fundador e Diretor Estratégico",
       founder4Bio:
         "Com décadas de experiência como diretor de escola de idiomas, David fornece a expertise estratégica que garante que a Neptune's Tribe ajude a inspirar alunos no mundo todo.",
       valuesTitle: "Nossos Valores",
