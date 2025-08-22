@@ -32,6 +32,7 @@ export default function HeaderBase({
         // { href: "/eco-map", label: "Eco Map" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/pricing", label: "Pricing" },
+        { href: "/about-us", label: "About Us" },
       ],
       pt: [
         { href: "/units", label: "Atividades" },
@@ -39,6 +40,7 @@ export default function HeaderBase({
         // { href: "/eco-map", label: "Eco Map" },
         { href: "/eco-news", label: "Eco News" },
         { href: "pricing", label: "Preços" },
+        { href: "/about-us", label: "Sobre Nós" },
       ],
       // ... add other languages as needed
     },
@@ -49,6 +51,7 @@ export default function HeaderBase({
         { href: "/challenges", label: "Challenges" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/pricing", label: "Pricing" },
+        { href: "/about-us", label: "About Us" },
 
         // { href: "/dashboard", label: "Dashboard" },
         // { href: "/profile", label: "Profile" },
@@ -59,6 +62,7 @@ export default function HeaderBase({
         { href: "/challenges", label: "Desafios" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/pricing", label: "Preços" },
+        { href: "/about-us", label: "Sobre Nós" },
 
         // { href: "/dashboard", label: "Painel" },
         // { href: "/profile", label: "Perfil" },

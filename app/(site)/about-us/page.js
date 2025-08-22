@@ -2,6 +2,7 @@
 "use client";
 
 import { useLanguage } from "@/lib/contexts/LanguageContext";
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function AboutUsPage() {
@@ -35,16 +36,16 @@ export default function AboutUsPage() {
         "Passionate educators and environmentalists working together to change the world",
       founder1Title: "Co-Founder & Content Director",
       founder1Bio:
-        "An experienced educator and environmental scientist, [Name] develops our curriculum content that seamlessly blends language learning with environmental education.",
+        "An experienced educator and environmental scientist, Michael develops our curriculum content that seamlessly blends language learning with environmental education.",
       founder2Title: "Co-Founder & Lead Developer",
       founder2Bio:
-        "With a background in education technology and sustainable development, [Name] brings together technical expertise and environmental passion to create innovative learning experiences.",
+        "With a background in education technology and sustainable development, Stephen brings together technical expertise and environmental passion to create innovative learning experiences.",
       founder3Title: "Co-Founder & Educational Specialist",
       founder3Bio:
-        "Specializing in English as a Foreign Language methodology, [Name] ensures our platform meets the highest standards of language pedagogy and learning effectiveness.",
+        "Specializing in English as a Foreign Language methodology, Paul ensures our platform meets the highest standards of language pedagogy and learning effectiveness.",
       founder4Title: "Co-Founder & Environmental Consultant",
       founder4Bio:
-        "A dedicated conservationist and researcher, [Name] provides the environmental expertise that makes our content both accurate and inspiring for learners worldwide.",
+        "A dedicated conservationist and researcher, David provides the environmental expertise that makes our content both accurate and inspiring for learners worldwide.",
       valuesTitle: "Our Values",
       value1Title: "Environmental Responsibility",
       value1Text:
@@ -132,48 +133,48 @@ export default function AboutUsPage() {
       name: "Michael Alan Watkins",
       title: copy.founder1Title,
       bio: copy.founder1Bio,
-      image: "/team/MAW-1.jpeg", // Replace with actual image path
+      image: "team/MAW-1.jpeg", // Replace with actual image path
     },
     {
       id: 2,
-      name: "Stephen Chaves Watkins",
+      name: "Stephen Watkins",
       title: copy.founder2Title,
       bio: copy.founder2Bio,
       image: "/team/stephen-watkins.JPEG",
     },
     {
       id: 3,
-      name: "[Team Member 3]",
+      name: "Paul Watkins",
       title: copy.founder3Title,
       bio: copy.founder3Bio,
-      image: "/api/placeholder/300/300",
+      image: "/team/paul-watkins-lake.jpg",
     },
     {
       id: 4,
-      name: "[Team Member 4]",
+      name: "David Watkins",
       title: copy.founder4Title,
       bio: copy.founder4Bio,
-      image: "/api/placeholder/300/300",
+      image: "/team/David.jpg",
     },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-800">
       {/* Hero Section */}
-      <section className="relative py-10 px-6 text-center">
+      {/* <section className="relative py-6 px-6 text-center">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-green-600/10 dark:from-blue-800/20 dark:to-green-800/20"></div>
         <div className="relative max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-orbitron font-bold text-gray-800 dark:text-white mb-6">
-            {copy.title}
+          <h1 className="text-4xl md:text-5xl font-orbitron font-bold text-gray-800 dark:text-white mb-6">
+            {copy.teamTitle}
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 font-light leading-relaxed">
-            {copy.subtitle}
+            {copy.teamSubtitle}
           </p>
         </div>
-      </section>
+      </section> */}
 
       {/* Team Section */}
-      <section className="py-16 px-6">
+      <section className="py-10 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-orbitron font-bold text-gray-800 dark:text-white mb-4">
@@ -191,16 +192,28 @@ export default function AboutUsPage() {
                 className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700"
               >
                 <div className="relative mb-6">
-                  <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-blue-400 to-green-400 p-1">
-                    <div className="w-full h-full rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-4xl">
-                      👤
-                    </div>
+                  <div className="w-32 h-32 md:w-36 md:h-36 mx-auto rounded-full bg-gradient-to-br from-accent-400 to-primary-400 p-1">
+                    {/* <div className="w-full h-full rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-4xl">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="object-cover"
+                      />
+                    </div> */}
+                    <motion.img
+                      src={member.image}
+                      alt="team"
+                      className="w-full h-full rounded-full object-cover  shadow-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 1 }}
+                    />
                   </div>
                 </div>
                 <h3 className="text-xl font-orbitron font-bold text-center text-gray-800 dark:text-white mb-2">
                   {member.name}
                 </h3>
-                <p className="text-sm font-medium text-center text-blue-600 dark:text-blue-400 mb-4">
+                <p className="text-sm font-medium text-center text-accent-600 dark:text-accent-200 mb-4">
                   {member.title}
                 </p>
                 <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed text-center">
