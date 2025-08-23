@@ -208,7 +208,7 @@ export default function LandingPage({ darkMode = false }) {
       icon: <Users className="w-8 h-8" />,
       title: copy.feature4Title,
       description: copy.feature4Desc,
-      image: "/screenshots/classroom-view.jpg", // You'll need this
+      image: "classroom.jpeg", // You'll need this
     },
   ];
 

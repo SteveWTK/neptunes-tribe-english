@@ -14,10 +14,10 @@ export default function AboutUsPage() {
       subtitle: "Protecting Our Planet Through Language Learning",
       missionTitle: "Our Mission",
       missionText:
-        "Neptune's Tribe is revolutionizing English language learning by combining environmental education with cutting-edge language acquisition techniques. We believe that learning English should inspire global citizenship and environmental stewardship, creating a generation of learners who are both linguistically skilled and environmentally conscious.",
+        "We believe that learning English should inspire global citizenship and environmental stewardship, creating a generation of learners who are both linguistically skilled and environmentally responsible.",
       visionTitle: "Our Vision",
       visionText:
-        "We envision a world where language learning serves a greater purpose—where every English lesson contributes to environmental awareness, where every student becomes an ambassador for our planet's incredible biodiversity, and where education bridges the gap between linguistic competency and ecological responsibility.",
+        "A world where language learning serves a greater purpose—where every English lesson contributes to environmental awareness, where every student becomes an ambassador for our planet's incredible biodiversity, and where education bridges the gap between linguistic competency and ecological responsibility.",
       whatMakesUsSpecial: "What Makes Us Special",
       feature1Title: "Environmental Focus",
       feature1Text:
@@ -39,7 +39,7 @@ export default function AboutUsPage() {
         "An experienced educator with a PhD in language acquisition and a passionate environmentalist, Michael develops our curriculum content that seamlessly blends language learning with environmental education.",
       founder2Title: "Lead Developer",
       founder2Bio:
-        "Experienced EFL teacher at all levels, with a PhD in Second Language Acquisition and numerous publications.",
+        "With a background in education technology and sustainable development, Stephen brings together technical expertise and environmental passion to create innovative learning experiences.",
       founder3Title: "Educational Specialist",
       founder3Bio:
         "As a specialist in ESL methodology and a wildlife enthusiast, Paul ensures our platform meets the highest standards of language pedagogy and learning effectiveness.",
@@ -62,18 +62,18 @@ export default function AboutUsPage() {
       joinUsTitle: "Join Our Mission",
       joinUsText:
         "Whether you're a student looking to improve your English while learning about our amazing planet, or an educator wanting to bring environmental themes into your classroom, Neptune's Tribe welcomes you to our growing global community.",
-      getStartedBtn: "Start Learning Today",
-      contactBtn: "Contact Our Team",
+      getStartedBtn: "Join Neptune's Tribe Today",
+      contactBtn: "Contact Us",
     },
     pt: {
       title: "Sobre o Neptune's Tribe",
       subtitle: "Protegendo Nosso Planeta Através do Aprendizado de Idiomas",
       missionTitle: "Nossa Missão",
       missionText:
-        "O Neptune's Tribe está revolucionando o aprendizado de inglês ao combinar educação ambiental com técnicas avançadas de aquisição de idiomas. Acreditamos que aprender inglês deve inspirar cidadania global e responsabilidade ambiental, criando uma geração de estudantes que são tanto linguisticamente habilidosos quanto ambientalmente conscientes.",
+        "Acreditamos que aprender inglês deve inspirar cidadania global e responsabilidade ambiental, criando uma geração de estudantes que são tanto linguisticamente habilidosos quanto ambientalmente responsáveis.",
       visionTitle: "Nossa Visão",
       visionText:
-        "Vislumbramos um mundo onde o aprendizado de idiomas serve a um propósito maior—onde cada aula de inglês contribui para a consciência ambiental, onde cada estudante se torna um embaixador da incrível biodiversidade do nosso planeta, e onde a educação conecta competência linguística e responsabilidade ecológica.",
+        "Um mundo onde o aprendizado de idiomas serve a um propósito maior—onde cada aula de inglês contribui para a consciência ambiental, onde cada estudante se torna um embaixador da incrível biodiversidade do nosso planeta, e onde a educação conecta competência linguística e responsabilidade ecológica.",
       whatMakesUsSpecial: "O Que Nos Torna Especiais",
       feature1Title: "Foco Ambiental",
       feature1Text:
@@ -119,8 +119,8 @@ export default function AboutUsPage() {
       joinUsTitle: "Junte-se à Nossa Missão",
       joinUsText:
         "Seja você um estudante buscando melhorar seu inglês enquanto aprende sobre nosso planeta incrível, ou um educador querendo trazer temas ambientais para sua sala de aula, o Neptune's Tribe te dá as boas-vindas à nossa crescente comunidade global.",
-      getStartedBtn: "Comece a Aprender Hoje",
-      contactBtn: "Contate Nossa Equipe",
+      getStartedBtn: "Junte-se à Neptune's Tribe Hoje",
+      contactBtn: "Contate-nos",
     },
   };
 
