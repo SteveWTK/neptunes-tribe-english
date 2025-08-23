@@ -265,7 +265,7 @@ export default function LandingPage({ darkMode = false }) {
                 {copy.heroSubtitle}
               </p>
 
-              <motion.div
+              {/* <motion.div
                 className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -283,7 +283,7 @@ export default function LandingPage({ darkMode = false }) {
                     {copy.viewPricing}
                   </Link>
                 </Button>
-              </motion.div>
+              </motion.div> */}
 
               {/* Quick Demo Link */}
               <motion.div
@@ -496,7 +496,7 @@ export default function LandingPage({ darkMode = false }) {
               viewport={{ once: true }}
             >
               <img
-                src="/screenshots/classroom-view.jpg" // You'll need this image
+                src="/classroom.jpeg" // You'll need this image
                 alt="Classroom using Neptune's Tribe"
                 className="w-full h-96 rounded-xl object-cover shadow-2xl"
               />
