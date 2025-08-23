@@ -17,7 +17,7 @@ export default function UnitCard({ unit }) {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md hover:shadow-xl transition overflow-hidden">
+    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md hover:shadow-xl hover:scale-[1.01] dark:shadow-accent-50 transition overflow-hidden">
       <img
         src={unit.image || "/images/placeholder.jpg"}
         alt={unit.title}

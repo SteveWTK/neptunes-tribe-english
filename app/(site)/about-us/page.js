@@ -33,17 +33,17 @@ export default function AboutUsPage() {
         "Content available in English, Portuguese, Spanish, and French to support diverse learners.",
       teamTitle: "Meet Our Team",
       teamSubtitle:
-        "Passionate about education and the environment, and working together to help change the world",
-      founder1Title: "Co-Founder & Content Director",
+        "Passionate about education and the environment, and working together to change the world",
+      founder1Title: "Main Content Creator",
       founder1Bio:
         "An experienced educator with a PhD in language acquisition and a passionate environmentalist, Michael develops our curriculum content that seamlessly blends language learning with environmental education.",
-      founder2Title: "Co-Founder & Lead Developer",
+      founder2Title: "Lead Developer",
       founder2Bio:
-        "With a background in education technology and sustainable development, Stephen brings together technical expertise and environmental passion to create innovative learning experiences.",
-      founder3Title: "Co-Founder & Educational Specialist",
+        "Experienced EFL teacher at all levels, with a PhD in Second Language Acquisition and numerous publications.",
+      founder3Title: "Educational Specialist",
       founder3Bio:
         "As a specialist in ESL methodology and a wildlife enthusiast, Paul ensures our platform meets the highest standards of language pedagogy and learning effectiveness.",
-      founder4Title: "Co-Founder & Strategic Director",
+      founder4Title: "Strategic Director",
       founder4Bio:
         "With decades of experience as a language school director, David provides the strategic expertise that will allow Neptune's Tribe to inspire learners worldwide.",
       valuesTitle: "Our Values",
@@ -90,17 +90,17 @@ export default function AboutUsPage() {
       teamTitle: "Conheça Nossa Equipe",
       teamSubtitle:
         "Educadores e ambientalistas apaixonados trabalhando juntos para mudar o mundo",
-      founder1Title: "Co-Fundador e Diretor de Conteúdo",
+      founder1Title: "Diretor de Conteúdo",
       founder1Bio:
         "Um educador experiente com doutorado em aquisição de linguagem e ambientalista apaixonado, Michael desenvolve nosso conteúdo curricular que combina perfeitamente aprendizado de idiomas com educação ambiental.",
-      founder2Title: "Co-Fundador e Desenvolvedor",
+      founder2Title: "Desenvolvedor",
       founder2Bio:
         "Com experiência em tecnologia educacional e desenvolvimento sustentável, Stephen une expertise técnica e paixão ambiental para criar experiências de aprendizado inovadoras.",
 
-      founder3Title: "Cofundador e Especialista em Educação",
+      founder3Title: "Especialista em Educação",
       founder3Bio:
         "Especializando-se em metodologia de Inglês como Língua Estrangeira e um entusiasta da natureza, Paul garante que nossa plataforma atenda aos mais altos padrões de pedagogia e eficácia de aprendizado.",
-      founder4Title: "Co-Fundador e Diretor Estratégico",
+      founder4Title: "Diretor Estratégico",
       founder4Bio:
         "Com décadas de experiência como diretor de escola de idiomas, David fornece a expertise estratégica que garante que a Neptune's Tribe ajude a inspirar alunos no mundo todo.",
       valuesTitle: "Nossos Valores",
