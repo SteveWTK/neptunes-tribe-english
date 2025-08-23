@@ -36,7 +36,7 @@ export default function AboutUsPage() {
         "Passionate about education and the environment, and working together to change the world",
       founder1Title: "Main Content Creator",
       founder1Bio:
-        "An experienced educator with a PhD in language acquisition and a passionate environmentalist, Michael develops our curriculum content that seamlessly blends language learning with environmental education.",
+        "After a long academic career which included over 25 years in Brazilian universities, teaching and supervising research projects in Second Language Acquisition, Michael is now dedicating himself fulltime to defending the environment, especially in Brazil, where he continues to live.",
       founder2Title: "Lead Developer",
       founder2Bio:
         "With a background in education technology and sustainable development, Stephen brings together technical expertise and environmental passion to create innovative learning experiences.",
@@ -92,7 +92,7 @@ export default function AboutUsPage() {
         "Educadores e ambientalistas apaixonados trabalhando juntos para mudar o mundo",
       founder1Title: "Diretor de Conteúdo",
       founder1Bio:
-        "Um educador experiente com doutorado em aquisição de linguagem e ambientalista apaixonado, Michael desenvolve nosso conteúdo curricular que combina perfeitamente aprendizado de idiomas com educação ambiental.",
+        "Após uma longa carreira acadêmica que incluiu mais de 25 anos em universidades brasileiras, ensinando e supervisionando projetos de pesquisa em Aquisição de Segunda Língua, Michael agora se dedica em tempo integral à defesa do meio ambiente, especialmente no Brasil, onde continua morando.",
       founder2Title: "Desenvolvedor",
       founder2Bio:
         "Com experiência em tecnologia educacional e desenvolvimento sustentável, Stephen une expertise técnica e paixão ambiental para criar experiências de aprendizado inovadoras.",
