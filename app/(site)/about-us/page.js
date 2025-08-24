@@ -133,7 +133,7 @@ export default function AboutUsPage() {
       name: "Dr Michael Alan Watkins",
       title: copy.founder1Title,
       bio: copy.founder1Bio,
-      image: "team/MAW-1.jpeg", // Replace with actual image path
+      image: "team/MAW-2.JPG", // Replace with actual image path
     },
     {
       id: 2,
