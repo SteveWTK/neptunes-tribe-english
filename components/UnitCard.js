@@ -27,8 +27,8 @@ export default function UnitCard({ unit, isPremiumUser = false }) {
     >
       {/* Premium Badge */}
       {isPremiumContent && (
-        <div className="absolute top-3 right-3 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-bold z-10 shadow-lg">
-          👑 Premium
+        <div className="absolute top-45 right-3 bg-accent-500 text-white px-2 py-1 rounded-full text-xs font-bold z-10 shadow-lg">
+          Premium
         </div>
       )}
 
@@ -63,9 +63,9 @@ export default function UnitCard({ unit, isPremiumUser = false }) {
           ) : (
             <Link
               href="/pricing"
-              className="block mt-2 text-yellow-600 dark:text-yellow-400 font-semibold hover:underline"
+              className="block mt-2 px-2 text-accent-600 dark:text-accent-400 rounded-lg font-semibold hover:underline z-50"
             >
-              Upgrade to Unlock →
+              🔒Upgrade to Unlock →
             </Link>
           )}
           <span className="block mt-2 mr-4 text-accent-600 dark:text-accent-400 font-semibold">
@@ -75,16 +75,16 @@ export default function UnitCard({ unit, isPremiumUser = false }) {
 
         {/* Premium Lock Overlay for Non-Premium Users */}
         {isPremiumContent && !isPremiumUser && (
-          <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center">
+          <div className="absolute inset-0 rounded-lg flex items-center justify-center">
             <div className="text-center text-white p-4">
-              <div className="text-4xl mb-2">🔒</div>
+              {/* <div className="text-4xl mb-2">🔒</div>
               <p className="text-sm font-semibold">Premium Content</p>
               <Link
                 href="/pricing"
-                className="inline-block mt-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="inline-block mt-2 bg-accent-500 hover:bg-accent-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 Upgrade to Access
-              </Link>
+              </Link> */}
             </div>
           </div>
         )}
