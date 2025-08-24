@@ -120,33 +120,8 @@ export default function SiteHomeClient({
     router.push("/units");
   };
 
-  // Premium content that user doesn't have access to (for demo/conversion)
-  const premiumPreviewUnits = [
-    {
-      id: "premium-preview-1",
-      title: "Advanced Ocean Vocabulary",
-      description: "Master complex marine terminology",
-      theme: "Advanced Vocabulary",
-      difficulty_level: "Advanced",
-      image: "/images/ocean-advanced.jpg",
-      isPremiumPreview: true,
-    },
-    {
-      id: "premium-preview-2",
-      title: "Climate Change Discussions",
-      description: "Debate environmental issues in English",
-      theme: "Advanced Discussion",
-      difficulty_level: "Expert",
-      image: "/images/climate-debate.jpg",
-      isPremiumPreview: true,
-    },
-  ];
-
-  const shouldShowPremiumPreviews = !isPremiumUser && featuredUnits.length < 8;
-
-  const allDisplayUnits = shouldShowPremiumPreviews
-    ? [...featuredUnits, ...premiumPreviewUnits]
-    : featuredUnits;
+  // Remove premium previews logic since we're showing all actual units now
+  const allDisplayUnits = featuredUnits;
 
   const PremiumUpgradeCard = () => (
     <div className="bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900 dark:to-amber-900 border-2 border-yellow-200 dark:border-yellow-700 rounded-xl p-6 text-center">
@@ -303,9 +278,9 @@ export default function SiteHomeClient({
         {/* User Status Bar */}
         {isLoggedIn && (
           <div className="flex justify-center items-center gap-4 mb-4">
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+            {/* <span className="text-sm text-gray-600 dark:text-gray-400">
               Welcome back, {email?.split("@")[0]}
-            </span>
+            </span> */}
             <span
               className={`px-2 py-1 rounded-full text-xs font-medium ${
                 isPremiumUser
@@ -313,7 +288,7 @@ export default function SiteHomeClient({
                   : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
               }`}
             >
-              {isPremiumUser ? "👑 Premium" : "🆓 Free"}
+              {isPremiumUser ? "👑 Premium" : "Free"}
             </span>
             {completedUnitIds.length > 0 && (
               <span className="text-sm text-green-600 dark:text-green-400">
@@ -326,7 +301,7 @@ export default function SiteHomeClient({
         {/* Filter Toggle */}
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          className="mb-4 px-4 py-1 bg-premium-500 text-white rounded-xl hover:bg-premium-600 transition-colors"
         >
           {showFilters ? "Hide Filters" : "Show Filters"}
         </button>
@@ -355,54 +330,24 @@ export default function SiteHomeClient({
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {allDisplayUnits.map((unit) => {
             const isCompleted = completedUnitIds.includes(unit.id);
-            const isPremiumPreview = unit.isPremiumPreview;
 
             return (
               <div key={unit.id} className="relative">
-                {isPremiumPreview ? (
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden opacity-75 border-2 border-yellow-300">
-                    <div className="relative h-48 bg-gradient-to-br from-yellow-200 to-amber-200 flex items-center justify-center">
-                      <span className="text-6xl">👑</span>
-                      <div className="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-bold">
-                        {copy.premiumOnly}
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-lg text-gray-800 dark:text-white mb-2">
-                        {unit.title}
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                        {unit.description}
-                      </p>
-                      <Link
-                        href="/pricing"
-                        className="block text-center bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg font-medium transition-colors"
-                      >
-                        {copy.unlockPremium}
-                      </Link>
-                    </div>
+                <UnitCard unit={unit} isPremiumUser={isPremiumUser} />
+                {isCompleted && (
+                  <div className="absolute top-3 left-3 bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold shadow-lg z-20">
+                    ✓
                   </div>
-                ) : (
-                  <>
-                    <UnitCard unit={unit} />
-                    {isCompleted && (
-                      <div className="absolute top-3 right-3 bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold shadow-lg z-10">
-                        ✓
-                      </div>
-                    )}
-                    {unit.is_premium && (
-                      <div className="absolute top-3 left-3 bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold shadow-lg z-10">
-                        👑
-                      </div>
-                    )}
-                  </>
+                )}
+                {/* Special indicator for ecosystem challenge units */}
+                {filterInfo.ecosystemFilter && (
+                  <div className="absolute top-3 right-14 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold shadow-lg animate-pulse z-10">
+                    🚨
+                  </div>
                 )}
               </div>
             );
           })}
-
-          {/* Premium Upgrade Card */}
-          {shouldShowPremiumPreviews && <PremiumUpgradeCard />}
         </section>
       ) : (
         /* Empty State */

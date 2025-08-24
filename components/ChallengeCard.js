@@ -1,60 +1,158 @@
+// components/ChallengeCard.js - Enhanced with Premium Labels
 "use client";
 
 import Link from "next/link";
 import Image from "next/image";
 
-export default function ChallengeCard({ challenge }) {
-  return (
-    <Link href={`/challenges/${challenge.challenge_id}`}>
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer">
-        {/* Image Section */}
-        {challenge.image_url && (
-          <div className="relative h-48 w-full overflow-hidden">
-            <Image
-              src={challenge.image_url}
-              alt={challenge.challenge_title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            />
-          </div>
-        )}
+export default function ChallengeCard({ challenge, isPremiumUser = false }) {
+  const isPremiumContent = challenge.is_premium;
+  const hasAccess = !isPremiumContent || isPremiumUser;
 
-        {/* Content Section */}
-        <div className="p-6">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-            {challenge.challenge_title}
-          </h3>
+  const CardContent = ({ children, className }) => (
+    <div
+      className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer relative ${
+        !hasAccess ? "opacity-90" : ""
+      } ${className}`}
+    >
+      {children}
+    </div>
+  );
 
-          {/* {challenge.description && (
-            <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm line-clamp-3">
-              {challenge.description}
-            </p>
-          )} */}
+  const cardContent = (
+    <CardContent>
+      {/* Premium Badge */}
+      {isPremiumContent && (
+        <div className="absolute top-3 right-3 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-bold z-10 shadow-lg">
+          👑 Premium
+        </div>
+      )}
 
-          {/* Challenge Stats */}
-          <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-            <span className="flex items-center">
-              <svg
-                className="w-4 h-4 mr-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              {challenge.exerciseCount || 10} exercises
-            </span>
+      {/* Image Section */}
+      {challenge.image_url && (
+        <div className="relative h-48 w-full overflow-hidden">
+          <Image
+            src={challenge.image_url}
+            alt={challenge.challenge_title}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          />
+        </div>
+      )}
 
-            <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full text-xs font-medium">
-              Challenge #{challenge.challenge_id}
-            </span>
-          </div>
+      {/* Content Section */}
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          {challenge.challenge_title}
+        </h3>
+
+        {/* Challenge Stats */}
+        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+          <span className="flex items-center">
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                clipRule="evenodd"
+              />
+            </svg>
+            {challenge.exerciseCount || 10} exercises
+          </span>
+
+          <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full text-xs font-medium">
+            Challenge #{challenge.challenge_id}
+          </span>
         </div>
       </div>
-    </Link>
+
+      {/* Premium Lock Overlay for Non-Premium Users */}
+      {isPremiumContent && !isPremiumUser && (
+        <div className="absolute inset-0 bg-black bg-opacity-40 rounded-xl flex items-center justify-center">
+          <div className="text-center text-white p-4">
+            <div className="text-4xl mb-2">🔒</div>
+            <p className="text-sm font-semibold mb-2">Premium Challenge</p>
+            <Link
+              href="/pricing"
+              className="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              Upgrade to Access
+            </Link>
+          </div>
+        </div>
+      )}
+    </CardContent>
+  );
+
+  // Wrap with Link only if user has access
+  return hasAccess ? (
+    <Link href={`/challenges/${challenge.challenge_id}`}>{cardContent}</Link>
+  ) : (
+    <Link href="/pricing">{cardContent}</Link>
   );
 }
+
+// components\ChallengeCard.js
+// "use client";
+
+// import Link from "next/link";
+// import Image from "next/image";
+
+// export default function ChallengeCard({ challenge }) {
+//   return (
+//     <Link href={`/challenges/${challenge.challenge_id}`}>
+//       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer">
+//         {/* Image Section */}
+//         {challenge.image_url && (
+//           <div className="relative h-48 w-full overflow-hidden">
+//             <Image
+//               src={challenge.image_url}
+//               alt={challenge.challenge_title}
+//               fill
+//               className="object-cover group-hover:scale-105 transition-transform duration-300"
+//               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+//             />
+//           </div>
+//         )}
+
+//         {/* Content Section */}
+//         <div className="p-6">
+//           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+//             {challenge.challenge_title}
+//           </h3>
+
+//           {/* {challenge.description && (
+//             <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm line-clamp-3">
+//               {challenge.description}
+//             </p>
+//           )} */}
+
+//           {/* Challenge Stats */}
+//           <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+//             <span className="flex items-center">
+//               <svg
+//                 className="w-4 h-4 mr-1"
+//                 fill="currentColor"
+//                 viewBox="0 0 20 20"
+//               >
+//                 <path
+//                   fillRule="evenodd"
+//                   d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+//                   clipRule="evenodd"
+//                 />
+//               </svg>
+//               {challenge.exerciseCount || 10} exercises
+//             </span>
+
+//             <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full text-xs font-medium">
+//               Challenge #{challenge.challenge_id}
+//             </span>
+//           </div>
+//         </div>
+//       </div>
+//     </Link>
+//   );
+// }

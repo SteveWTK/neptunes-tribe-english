@@ -1,8 +1,8 @@
-// app/(site)/units/page.js - Enhanced with Premium Filtering and Sorting
+// app/(site)/units/page.js - Show all units with premium labels
 import {
   fetchFeaturedUnits,
   fetchUnitDetails,
-  fetchSingleGapChallenges,
+  fetchFeaturedChallenges,
 } from "@/lib/data-service";
 import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
 import { auth } from "@/lib/auth";
@@ -52,16 +52,11 @@ export default async function SiteHomePage(props) {
     }
 
     if (regionFilter || marineZoneFilter || ecosystemFilter) {
-      // Fetch filtered units with enhanced logic
+      // Fetch filtered units - now showing ALL units regardless of premium status
       isFiltered = true;
 
       // Build the query based on filters
       let query = supabase.from("units").select("*").eq("featured", true);
-
-      // Premium filtering
-      if (!isPremiumUser) {
-        query = query.eq("is_premium", false);
-      }
 
       // Apply region/ecosystem filters
       if (regionFilter) {
@@ -111,7 +106,6 @@ export default async function SiteHomePage(props) {
         console.error("Error fetching filtered units:", error);
         // Fallback to featured units
         units = await fetchFeaturedUnits({
-          isPremiumUser,
           sortBy,
           sortOrder,
           userCompletedIds: completedUnitIds,
@@ -121,9 +115,8 @@ export default async function SiteHomePage(props) {
         units = filteredUnits || [];
       }
     } else {
-      // Use enhanced fetchFeaturedUnits with filtering options
+      // Use enhanced fetchFeaturedUnits - now shows ALL units
       units = await fetchFeaturedUnits({
-        isPremiumUser,
         sortBy,
         sortOrder,
         showCompletedOnly: showCompleted,
@@ -146,8 +139,8 @@ export default async function SiteHomePage(props) {
       ...unitDetails[index],
     }));
 
-    // Get challenges with premium filtering
-    const challenges = await fetchSingleGapChallenges("default", isPremiumUser);
+    // Get challenges - now shows ALL challenges
+    const challenges = await fetchFeaturedChallenges();
 
     return (
       <SiteHomeClient
@@ -175,7 +168,7 @@ export default async function SiteHomePage(props) {
     console.error("Unexpected error in SiteHomePage:", error);
 
     // Fallback to default behavior
-    const units = await fetchFeaturedUnits({ isPremiumUser });
+    const units = await fetchFeaturedUnits({});
     const unitDetails = await Promise.all(
       units.map((unit) => fetchUnitDetails(unit.id))
     );
@@ -185,7 +178,7 @@ export default async function SiteHomePage(props) {
       ...unitDetails[index],
     }));
 
-    const challenges = await fetchSingleGapChallenges("default", isPremiumUser);
+    const challenges = await fetchFeaturedChallenges();
 
     return (
       <SiteHomeClient
