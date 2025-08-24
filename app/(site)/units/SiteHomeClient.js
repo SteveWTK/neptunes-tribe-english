@@ -144,7 +144,7 @@ export default function SiteHomeClient({
   );
 
   const FilterPanel = () => (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg mb-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg mb-2">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-bold text-gray-800 dark:text-white">
           {copy.filters}
@@ -170,7 +170,9 @@ export default function SiteHomeClient({
           >
             <option value="rank">{copy.sortByRank}</option>
             <option value="length">{copy.sortByLength}</option>
-            <option value="newest">{copy.sortByNewest}</option>
+            <option value="newest" sortOrder="desc">
+              {copy.sortByNewest}
+            </option>
           </select>
         </div>
 
@@ -210,7 +212,7 @@ export default function SiteHomeClient({
             Account Type
           </label>
           <div className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-sm">
-            {isPremiumUser ? "👑 Premium" : "🆓 Free"}
+            {isPremiumUser ? "👑 Premium" : "Free"}
           </div>
         </div>
       </div>
@@ -285,7 +287,7 @@ export default function SiteHomeClient({
               className={`px-2 py-1 rounded-full text-xs font-medium ${
                 isPremiumUser
                   ? "bg-accent-100 text-accent-800 dark:bg-accent-900 dark:text-accent-200"
-                  : "bg-premium-100 text-premium-600 dark:bg-premium-700 dark:text-premium-400"
+                  : "bg-gray-100 text-premium-600 dark:bg-gray-700 dark:text-premium-400"
               }`}
             >
               {isPremiumUser ? "👑 Premium" : "Explorer"}
@@ -301,7 +303,7 @@ export default function SiteHomeClient({
         {/* Filter Toggle */}
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="mb-4 px-4 py-1 bg-premium-500 text-white rounded-xl hover:bg-premium-600 transition-colors"
+          className="mb-4 px-4 py-1 bg-premium-500 text-gray-800 dark:text-white rounded-xl hover:bg-premium-600 transition-colors"
         >
           {showFilters ? "Hide Filters" : "Show Filters"}
         </button>

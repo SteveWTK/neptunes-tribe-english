@@ -7,6 +7,7 @@ import {
 import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
 import { auth } from "@/lib/auth";
 import SiteHomeClient from "./SiteHomeClient";
+import { descending } from "d3";
 
 export default async function SiteHomePage(props) {
   const session = await auth();
@@ -94,7 +95,7 @@ export default async function SiteHomePage(props) {
           query = query.order("length", { ascending: sortOrder === "asc" });
           break;
         case "newest":
-          query = query.order("id", { ascending: sortOrder === "asc" });
+          query = query.order("id", { descending: sortOrder === "desc" });
           break;
         default:
           query = query.order("rank", { ascending: sortOrder === "asc" });
