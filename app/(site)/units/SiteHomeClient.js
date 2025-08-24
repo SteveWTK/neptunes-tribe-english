@@ -33,6 +33,7 @@ export default function SiteHomeClient({
       premiumOnly: "Premium Only",
       upgradeToUnlock: "Upgrade to Unlock",
       loginToAccess: "Login to Access",
+      clickHint: "Tip: Visit your eco-map to explore units by region",
 
       // Filtering
       filters: "Filters",
@@ -70,6 +71,8 @@ export default function SiteHomeClient({
       premiumOnly: "Apenas Premium",
       upgradeToUnlock: "Faça Upgrade para Desbloquear",
       loginToAccess: "Entre para Acessar",
+      clickHint:
+        "💡 Dica: Visite seu eco-mapa para explorar unidades por região",
 
       // Filtering
       filters: "Filtros",
@@ -144,20 +147,20 @@ export default function SiteHomeClient({
   );
 
   const FilterPanel = () => (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg mb-2">
-      <div className="flex items-center justify-between mb-4">
+    <div className=" bg-white dark:bg-primary-950 rounded-lg px-4 py-1 shadow-lg sm:w-1/2 self-center mb-2">
+      {/* <div className="flex flex-row-reverse items-center justify-between mb-2">
         <h3 className="font-bold text-gray-800 dark:text-white">
           {copy.filters}
         </h3>
         <button
           onClick={clearAllFilters}
-          className="text-sm text-gray-600 dark:text-gray-400 hover:text-red-500"
+          className="text-sm text-gray-600 dark:text-gray-400 hover:text-accent-500"
         >
           {copy.clearFilters}
         </button>
-      </div>
+      </div> */}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Sort By */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -166,13 +169,11 @@ export default function SiteHomeClient({
           <select
             value={filterInfo.sortBy || "rank"}
             onChange={(e) => updateFilters({ sort: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-full px-2 py-1 border-b hover:border-b-2 border-accent-400 dark:border-accent-400 rounded-md bg-white dark:bg-primary-950 text-gray-900 dark:text-white"
           >
             <option value="rank">{copy.sortByRank}</option>
             <option value="length">{copy.sortByLength}</option>
-            <option value="newest" sortOrder="desc">
-              {copy.sortByNewest}
-            </option>
+            <option value="newest">{copy.sortByNewest}</option>
           </select>
         </div>
 
@@ -197,7 +198,7 @@ export default function SiteHomeClient({
                   incomplete: value === "incomplete" ? "true" : "false",
                 });
               }}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              className="w-full px-2 py-1 border-b hover:border-b-2 border-accent-400 dark:border-accent-400 rounded-md bg-white dark:bg-primary-950 text-gray-900 dark:text-white"
             >
               <option value="all">{copy.showAll}</option>
               <option value="completed">{copy.showCompleted}</option>
@@ -207,14 +208,14 @@ export default function SiteHomeClient({
         )}
 
         {/* Premium Status (info only) */}
-        <div>
+        {/* <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Account Type
           </label>
           <div className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-sm">
             {isPremiumUser ? "👑 Premium" : "Free"}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -277,12 +278,24 @@ export default function SiteHomeClient({
           {getPageTitle()}
         </h1>
 
+        {/* Tip for non-filtered view  */}
+        {!filterInfo.isFiltered && (
+          <div className="mb-3">
+            <Link
+              href="/eco-map"
+              className="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 hover:text-[#10b981] transition-colors"
+            >
+              {copy.clickHint}
+            </Link>
+          </div>
+        )}
+
         {/* User Status Bar */}
-        {isLoggedIn && (
-          <div className="flex justify-center items-center gap-4 mb-4">
-            {/* <span className="text-sm text-gray-600 dark:text-gray-400">
+        {/* {isLoggedIn && (
+          <div className="flex justify-center items-center gap-2 mb-2s">
+            <span className="text-sm text-gray-600 dark:text-gray-400">
               Welcome back, {email?.split("@")[0]}
-            </span> */}
+            </span>
             <span
               className={`px-2 py-1 rounded-full text-xs font-medium ${
                 isPremiumUser
@@ -298,12 +311,11 @@ export default function SiteHomeClient({
               </span>
             )}
           </div>
-        )}
-
+        )} */}
         {/* Filter Toggle */}
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="mb-4 px-4 py-1 bg-premium-500 text-gray-800 dark:text-white rounded-xl hover:bg-premium-600 transition-colors"
+          className="px-4 py-1 bg-premium-500 text-gray-800 dark:text-white rounded-xl hover:bg-premium-600 transition-colors"
         >
           {showFilters ? "Hide Filters" : "Show Filters"}
         </button>
