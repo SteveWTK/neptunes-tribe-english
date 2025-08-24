@@ -284,14 +284,14 @@ export default function SiteHomeClient({
             <span
               className={`px-2 py-1 rounded-full text-xs font-medium ${
                 isPremiumUser
-                  ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                  : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
+                  ? "bg-accent-100 text-accent-800 dark:bg-accent-900 dark:text-accent-200"
+                  : "bg-premium-100 text-premium-600 dark:bg-premium-700 dark:text-premium-400"
               }`}
             >
-              {isPremiumUser ? "👑 Premium" : "Free"}
+              {isPremiumUser ? "👑 Premium" : "Explorer"}
             </span>
             {completedUnitIds.length > 0 && (
-              <span className="text-sm text-green-600 dark:text-green-400">
+              <span className="text-sm text-accent-600 dark:text-accent-400">
                 {completedUnitIds.length} {copy.completed}
               </span>
             )}
@@ -311,7 +311,7 @@ export default function SiteHomeClient({
       {showFilters && <FilterPanel />}
 
       {/* Stats Bar */}
-      <div className="flex justify-center mb-8">
+      {/* <div className="flex justify-center mb-8">
         <div className="bg-white dark:bg-gray-800 rounded-lg px-6 py-3 shadow-sm">
           <span className="text-sm text-gray-600 dark:text-gray-400">
             {allDisplayUnits.length} {copy.unitsFound}
@@ -323,7 +323,7 @@ export default function SiteHomeClient({
             )}
           </span>
         </div>
-      </div>
+      </div> */}
 
       {/* Units Grid */}
       {allDisplayUnits && allDisplayUnits.length > 0 ? (
