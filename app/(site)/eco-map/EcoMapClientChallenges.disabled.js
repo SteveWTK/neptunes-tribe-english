@@ -1,7 +1,8 @@
 // app/eco-map/EcoMapClient.js - Unified Single Page Layout
 "use client";
 
-import EcoMapProgressOceanZones from "@/app/components/EcoMapProgressOceanZones";
+// import EcoMapProgressOceanZones from "@/app/components/EcoMapProgressOceanZones";
+import EcoMapProgressWithChallengeOverlays from "@/app/components/EcoMapProgressWithChallengeOverlays";
 import RegionExplorer from "@/app/components/RegionExplorer";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,7 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export default function EcoMapClient({
+export default function EcoMapClientChallenges({
   firstName,
   completedUnitsCount,
   completedCountriesCount,
@@ -225,6 +226,37 @@ export default function EcoMapClient({
   };
 
   // Get challenge style
+  const getChallengeStyle = (type) => {
+    const styles = {
+      oil_spill: {
+        emoji: "🛢️",
+        color: "bg-gray-800 text-white",
+        urgency: "high",
+      },
+      wildfire: {
+        emoji: "🔥",
+        color: "bg-red-600 text-white",
+        urgency: "critical",
+      },
+      ice_melt: {
+        emoji: "🧊",
+        color: "bg-blue-600 text-white",
+        urgency: "high",
+      },
+      coral_bleaching: {
+        emoji: "🪸",
+        color: "bg-orange-600 text-white",
+        urgency: "high",
+      },
+    };
+    return (
+      styles[type] || {
+        emoji: "🌍",
+        color: "bg-green-600 text-white",
+        urgency: "medium",
+      }
+    );
+  };
 
   // Calculate days remaining
   const getDaysRemaining = (endDate) => {
@@ -255,11 +287,84 @@ export default function EcoMapClient({
         <h1 className="text-xl lg:text-2xl text-[#10b981] dark:text-[#e5e7eb] font-bold mb-4 mx-2">
           Welcome to your virtual eco-journey around the world, {firstName}!
         </h1>
+        {/* Enhanced progress display with challenge info */}
+        <div className="my-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg mx-4 lg:mx-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div>
+              <p className="text-2xl font-bold text-[#10b981] dark:text-green-300">
+                {totalPoints}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                XP points
+              </p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#10b981] dark:text-green-300">
+                {currentLevel}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Level</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
+                {completedCountriesCount}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Countries Explored
+              </p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                {completedOceanZonesCount}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Marine Zones Explored
+              </p>
+            </div>
+          </div>
+
+          {/* Challenge summary banner */}
+          {challengesSummary && (
+            <div className="p-3 bg-gradient-to-r from-red-50 to-orange-50 dark:from-primary-600 dark:to-primary-600 rounded-lg border border-red-200">
+              <div className="flex items-center justify-center gap-6 text-sm">
+                <div className="flex items-center gap-2">
+                  <Target className="w-4 h-4 text-red-600" />
+                  <span className="font-medium">
+                    {activeChallenges.length} Active Challenges
+                  </span>
+                </div>
+                {challengesSummary.urgent > 0 && (
+                  <div className="flex items-center gap-2 text-red-600">
+                    <span className="animate-pulse">🚨</span>
+                    <span className="font-medium">
+                      {challengesSummary.urgent} URGENT
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-blue-600" />
+                  <span>
+                    {challengesSummary.globalProgress}% Global Progress
+                  </span>
+                </div>
+                {challengesSummary.userContributions > 0 && (
+                  <div className="flex items-center gap-2 text-white">
+                    <span>💪</span>
+                    <span className="font-medium">
+                      You&apos;ve contributed{" "}
+                      {challengesSummary.userContributions} actions!
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>{" "}
+        */
       </div>
 
       {/* Main Map Section */}
       <div className="max-w-6xl mx-auto space-y-8">
-        <EcoMapProgressOceanZones
+        <EcoMapProgressWithChallengeOverlays
           highlightedRegions={highlightedRegions}
           completedUnitsByCountry={completedUnitsByCountry}
           highlightedOceanZones={highlightedOceanZones}
@@ -267,6 +372,207 @@ export default function EcoMapClient({
           challenges={activeChallenges}
           userChallengeProgress={userChallengeProgress}
         />
+
+        {/* Active Environmental Challenges Section */}
+        {activeChallenges.length > 0 && (
+          <div className="px-4">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-semibold flex items-center gap-3">
+                <Target className="w-6 h-6 text-red-500" />
+                Active Environmental Challenges
+                <div className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm font-medium animate-pulse">
+                  URGENT
+                </div>
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              {activeChallenges.map((challenge) => {
+                const style = getChallengeStyle(challenge.challenge_type);
+                const userContribution =
+                  userChallengeProgress[challenge.challenge_id]
+                    ?.units_contributed || 0;
+                const progressPercentage =
+                  (challenge.total_contributions / challenge.units_required) *
+                  100;
+                const userPercentage =
+                  (userContribution / challenge.units_required) * 100;
+                const daysRemaining = getDaysRemaining(challenge.end_date);
+
+                return (
+                  <motion.div
+                    key={challenge.challenge_id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-l-4 border-red-500"
+                  >
+                    <div className="flex items-center justify-between mb-4 relative group">
+                      <div className="flex items-center gap-4">
+                        <span className="text-3xl">{style.emoji}</span>
+                        <div>
+                          <h3 className="font-bold text-lg cursor-help">
+                            {challenge.challenge_name}
+                          </h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
+                            {challenge.challenge_type.replace("_", " ")}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Elegant description tooltip */}
+                      {challenge.description && (
+                        <div className="absolute left-0 top-full mt-2 w-80 bg-gray-900 text-white text-sm p-4 rounded-lg shadow-xl z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none">
+                          <div className="absolute -top-2 left-8 w-4 h-4 bg-gray-900 transform rotate-45"></div>
+                          {challenge.description}
+                        </div>
+                      )}
+
+                      {daysRemaining !== null && (
+                        <div
+                          className={`text-center ${
+                            daysRemaining <= 2
+                              ? "text-red-600"
+                              : "text-orange-600"
+                          }`}
+                        >
+                          <Clock className="w-5 h-5 mx-auto" />
+                          <span className="text-sm font-bold">
+                            {daysRemaining > 0
+                              ? `${daysRemaining}d`
+                              : "EXPIRED"}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Global progress */}
+                    <div className="mb-4">
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="font-medium">Global Progress</span>
+                        <span className="font-bold">
+                          {challenge.total_contributions}/
+                          {challenge.units_required}
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-4">
+                        <div
+                          className="bg-blue-600 h-4 rounded-full transition-all duration-500 relative"
+                          style={{
+                            width: `${Math.min(100, progressPercentage)}%`,
+                          }}
+                        >
+                          {progressPercentage >= 100 && (
+                            <span className="absolute right-2 top-0 text-white text-xs leading-4">
+                              ✓
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>{Math.round(progressPercentage)}% complete</span>
+                        <span className="flex items-center gap-1">
+                          <Users className="w-3 h-3" />
+                          {challenge.participants_count || 0} heroes
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* User contribution */}
+                    {userContribution > 0 && (
+                      <div className="mb-4">
+                        <div className="flex justify-between text-sm mb-2">
+                          <span className="text-green-600 font-medium">
+                            Your Contribution
+                          </span>
+                          <span className="text-green-600 font-bold">
+                            {userContribution} units
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-3">
+                          <div
+                            className="bg-green-500 h-3 rounded-full transition-all duration-500"
+                            style={{
+                              width: `${Math.min(100, userPercentage)}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Challenge status and action buttons */}
+                    <div className="flex justify-between items-center">
+                      <div
+                        className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          progressPercentage >= 100
+                            ? "bg-green-100 text-green-800"
+                            : style.color
+                        }`}
+                      >
+                        {progressPercentage >= 100
+                          ? "✅ COMPLETED"
+                          : progressPercentage >= 75
+                          ? "🔥 ALMOST THERE"
+                          : progressPercentage >= 50
+                          ? "⚡ HALFWAY"
+                          : progressPercentage >= 25
+                          ? "💪 PROGRESS"
+                          : "🆘 NEEDS HELP"}
+                      </div>
+
+                      <a
+                        href={`/units?ecosystem=${
+                          challenge.target_ecosystem || "all"
+                        }`}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                      >
+                        {userContribution > 0
+                          ? "🌟 Help More!"
+                          : "🚨 Help Now!"}
+                      </a>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Global impact stats */}
+            {globalStats && (
+              <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 rounded-xl">
+                <h3 className="font-bold text-lg mb-4 text-center">
+                  🌍 Global Environmental Impact
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                  <div>
+                    <div className="text-3xl font-bold text-blue-600">
+                      {globalStats.totalChallenges}
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      Active Challenges
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-bold text-green-600">
+                      {globalStats.completedChallenges}
+                    </div>
+                    <div className="text-sm text-gray-600">Completed</div>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-bold text-purple-600">
+                      {globalStats.totalParticipants}
+                    </div>
+                    <div className="text-sm text-gray-600">Global Heroes</div>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-bold text-orange-600">
+                      {globalStats.totalContributions}
+                    </div>
+                    <div className="text-sm text-gray-600">Total Actions</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Ecosystem Progress Toggle Section */}
         <div className="px-4">

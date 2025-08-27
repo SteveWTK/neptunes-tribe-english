@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { auth } from "@/lib/auth";
 import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
 import EcoMapClient from "./EcoMapClient";
+// import EcoMapClientChallenges from "./EcoMapClientChallenges.disabled";
 
 export default async function EcoMapPage() {
   const session = await auth();
