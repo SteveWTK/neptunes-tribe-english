@@ -17,7 +17,7 @@ export default function AboutUsPage() {
         "We believe that learning English should inspire global citizenship and environmental stewardship, creating a generation of learners who are both linguistically skilled and environmentally responsible.",
       visionTitle: "Our Vision",
       visionText:
-        "A world where language learning serves a greater purpose—where every English lesson contributes to environmental awareness, where every student becomes an ambassador for our planet's incredible biodiversity, and where education bridges the gap between linguistic competency and ecological responsibility.",
+        "A world where language learning serves a greater purpose—where every English lesson contributes to environmental awareness, where every student becomes an ambassador for our planet's incredible biodiversity, and where education bridges the gap between linguistic competence and ecological responsibility.",
       whatMakesUsSpecial: "What Makes Us Special",
       feature1Title: "Environmental Focus",
       feature1Text:
@@ -303,24 +303,28 @@ export default function AboutUsPage() {
                 title: copy.feature1Title,
                 text: copy.feature1Text,
                 icon: "🌱",
+                image: "heroes/augustin-basabose-gorilla.jpg",
                 color: "green",
               },
               {
                 title: copy.feature2Title,
                 text: copy.feature2Text,
                 icon: "🎮",
+                image: "screenshots/eco-map-preview-2.png",
                 color: "blue",
               },
               {
                 title: copy.feature3Title,
                 text: copy.feature3Text,
                 icon: "🌍",
+                image: "heroes/farwiza-farhan-2.jpg",
                 color: "indigo",
               },
               {
                 title: copy.feature4Title,
                 text: copy.feature4Text,
                 icon: "🗣️",
+                image: "eco/vaquitas.jpg",
                 color: "purple",
               },
             ].map((feature, index) => (
@@ -329,10 +333,22 @@ export default function AboutUsPage() {
                 className="text-center group hover:transform hover:scale-105 transition-all duration-300"
               >
                 <div
+                  className={`w-24 h-20 mx-auto mb-3 bg-${feature.color}-100 dark:bg-${feature.color}-900 rounded-xl flex items-center justify-center text-4xl group-hover:shadow-lg transition-shadow`}
+                >
+                  <motion.img
+                    src={feature.image}
+                    alt="team"
+                    className="w-full h-full rounded-xl object-cover  shadow-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1 }}
+                  />
+                </div>
+                {/* <div
                   className={`w-20 h-20 mx-auto mb-6 bg-${feature.color}-100 dark:bg-${feature.color}-900 rounded-full flex items-center justify-center text-4xl group-hover:shadow-lg transition-shadow`}
                 >
                   {feature.icon}
-                </div>
+                </div> */}
                 <h3 className="text-xl font-orbitron font-semibold text-gray-800 dark:text-white mb-4">
                   {feature.title}
                 </h3>
@@ -363,7 +379,7 @@ export default function AboutUsPage() {
                 key={index}
                 className="flex items-start space-x-4 p-6 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
               >
-                <div className="text-3xl flex-shrink-0">{value.icon}</div>
+                {/* <div className="text-3xl flex-shrink-0">{value.icon}</div> */}
                 <div>
                   <h3 className="text-xl font-orbitron font-semibold text-gray-800 dark:text-white mb-2">
                     {value.title}

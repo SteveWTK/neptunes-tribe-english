@@ -4,6 +4,8 @@
 import EcoMapProgressOceanZones from "@/app/components/EcoMapProgressOceanZones";
 import RegionExplorer from "@/app/components/RegionExplorer";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/lib/contexts/LanguageContext";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
 import {
@@ -36,11 +38,34 @@ export default function EcoMapClient({
   lastActivityDate = null,
 }) {
   const { data: session } = useSession();
+  const { lang } = useLanguage();
   const [activeChallenges, setActiveChallenges] = useState([]);
   const [userChallengeProgress, setUserChallengeProgress] = useState({});
   const [globalStats, setGlobalStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showEcosystemProgress, setShowEcosystemProgress] = useState(false);
+
+  const t = {
+    en: {
+      title: "Welcome to your virtual eco-journey around the world,",
+      subTitle: "Click on the map to view units related to that region",
+      impactTitle: "Keep increasing your impact",
+      impactSubtitle:
+        "Explore more ecosystems and complete environmental challenges to expand your impact!",
+      continueLearning: "View all Units",
+    },
+    pt: {
+      title: "Bem-vindo à sua jornada ecológica virtual ao redor do mundo,",
+      subTitle:
+        "Clique no mapa para visualizar as unidades relacionadas àquela região",
+      impactTitle: "Continue aumentando seu impacto",
+      impactSubtitle:
+        "Explore mais ecossistemas e conclua desafios ambientais para expandir seu impacto!",
+      continueLearning: "Veja todas as unidades",
+    },
+  };
+
+  const copy = t[lang];
 
   // Process ecosystem data
   const completedUnitsByEcosystem = {
@@ -251,10 +276,13 @@ export default function EcoMapClient({
   return (
     <div className="pt-4">
       {/* Header Section */}
-      <div className="text-center mb-6">
-        <h1 className="text-xl lg:text-2xl text-[#10b981] dark:text-[#e5e7eb] font-bold mb-4 mx-2">
-          Welcome to your virtual eco-journey around the world, {firstName}!
+      <div className="text-center mb-4">
+        <h1 className="text-xl lg:text-2xl text-[#10b981] dark:text-[#e5e7eb] font-bold mb-2 mx-2">
+          {copy.title} {firstName}!
         </h1>
+        <p className="text-md text-gray-600 dark:text-gray-400">
+          {copy.subTitle}
+        </p>
       </div>
 
       {/* Main Map Section */}
@@ -380,9 +408,7 @@ export default function EcoMapClient({
           <div className="text-center mt-6 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg mx-4">
             <div className="flex items-center justify-center gap-2 mb-3">
               <TrendingUp className="w-5 h-5 text-green-600" />
-              <h3 className="text-lg font-semibold">
-                Keep Growing Your Impact!
-              </h3>
+              <h3 className="text-lg font-semibold">{copy.impactTitle}</h3>
             </div>
 
             {challengesSummary && challengesSummary.urgent > 0 ? (
@@ -403,7 +429,7 @@ export default function EcoMapClient({
                 href="/units"
                 className="inline-block bg-[#10b981] text-white px-6 py-3 rounded-lg hover:bg-[#059669] transition-colors font-medium"
               >
-                Continue Learning
+                {copy.continueLearning}
               </Link>
               <Link
                 href="/eco-news"

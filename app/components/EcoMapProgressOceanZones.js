@@ -16,23 +16,23 @@ import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 
 // ✨ FIXED: React Icons imports with verified icons
-import {
-  GiOilDrum,
-  GiFire, // Changed from GiForestFire
-  GiIcebergs,
-  GiCoral,
-  GiFactory,
-  GiWaterDrop,
-} from "react-icons/gi";
+// import {
+//   GiOilDrum,
+//   GiFire,
+//   GiIcebergs,
+//   GiCoral,
+//   GiFactory,
+//   GiWaterDrop,
+// } from "react-icons/gi";
 
-console.log("Icon check:", {
-  GiOilDrum: typeof GiOilDrum,
-  GiFire: typeof GiFire,
-  GiIcebergs: typeof GiIcebergs,
-  GiCoral: typeof GiCoral,
-  GiFactory: typeof GiFactory,
-  GiWaterDrop: typeof GiWaterDrop,
-});
+// console.log("Icon check:", {
+//   GiOilDrum: typeof GiOilDrum,
+//   GiFire: typeof GiFire,
+//   GiIcebergs: typeof GiIcebergs,
+//   GiCoral: typeof GiCoral,
+//   GiFactory: typeof GiFactory,
+//   GiWaterDrop: typeof GiWaterDrop,
+// });
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 export default function EcoMapProgressOceans({
@@ -47,14 +47,14 @@ export default function EcoMapProgressOceans({
   const { data: session } = useSession();
   const [geographies, setGeographies] = useState([]);
   const [oceanZones, setOceanZones] = useState([]);
-  const [activeChallenges, setActiveChallenges] = useState([]);
   const [tooltipContent, setTooltipContent] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [debugInfo, setDebugInfo] = useState("");
-  const [selectedChallenge, setSelectedChallenge] = useState(null);
-  const [showChallengeOverlays, setShowChallengeOverlays] = useState(true);
+  // const [activeChallenges, setActiveChallenges] = useState([]);
+  // const [selectedChallenge, setSelectedChallenge] = useState(null);
+  // const [showChallengeOverlays, setShowChallengeOverlays] = useState(true);
 
   // Convert Alpha-2 to numeric for country fill
   const highlightedNumericCodes = highlightedRegions
@@ -75,21 +75,21 @@ export default function EcoMapProgressOceans({
   };
 
   // Fetch active environmental challenges
-  useEffect(() => {
-    const fetchChallenges = async () => {
-      try {
-        const response = await fetch("/api/challenges/active");
-        if (response.ok) {
-          const challengesData = await response.json();
-          setActiveChallenges(challengesData);
-        }
-      } catch (error) {
-        console.error("Error fetching challenges:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchChallenges = async () => {
+  //     try {
+  //       const response = await fetch("/api/challenges/active");
+  //       if (response.ok) {
+  //         const challengesData = await response.json();
+  //         setActiveChallenges(challengesData);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching challenges:", error);
+  //     }
+  //   };
 
-    fetchChallenges();
-  }, []);
+  //   fetchChallenges();
+  // }, []);
 
   // Simple approach: use onMouseDown event directly on Geography components
   const handleCountryMouseDown = (geo) => {

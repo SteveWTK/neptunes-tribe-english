@@ -43,7 +43,7 @@ export default function LandingPage({ darkMode = false }) {
       feature1Title: "Interactive World Map",
       feature1Desc:
         "Track your learning journey across countries and marine ecosystems",
-      feature2Title: "150+ Rich Learning Units",
+      feature2Title: "170+ Rich Learning Units",
       feature2Desc:
         "Discover wildlife, ecosystems, and environmental heroes from every continent",
       feature3Title: "Project-Based Learning",
@@ -106,7 +106,7 @@ export default function LandingPage({ darkMode = false }) {
       feature1Title: "Mapa Mundial Interativo",
       feature1Desc:
         "Acompanhe sua jornada de aprendizado por países e ecossistemas marinhos",
-      feature2Title: "150+ Unidades de Aprendizado",
+      feature2Title: "170+ Unidades de Aprendizado",
       feature2Desc:
         "Descubra vida selvagem, ecossistemas e heróis ambientais de todos os continentes",
       feature3Title: "Aprendizado Baseado em Projetos",
