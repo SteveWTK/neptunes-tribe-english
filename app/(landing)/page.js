@@ -38,7 +38,7 @@ export default function LandingPage() {
       exploreDemoButton: "Explore Our Interactive Map",
 
       // Community Focus
-      communityTitle: "Learn Together, Impact Together",
+      communityTitle: "Learn Together, Make an Impact Together",
       communitySubtitle:
         "Join hundreds of learners on a synchronised global journey",
       weeklyTheme: "New ecosystem every week",
