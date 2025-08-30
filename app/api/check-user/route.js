@@ -1,3 +1,5 @@
+// app\api\check-user\route.js
+
 import { fetchUser } from "@/lib/data-service";
 import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
 import { NextResponse } from "next/server";

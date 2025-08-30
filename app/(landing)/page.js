@@ -298,6 +298,18 @@ export default function LandingPage() {
 
   const heroImages = [
     {
+      src: "/landing-top/marcus-woodbridge-campfire.jpg",
+      // src: "/landing-top/nik-shuliahin-campfire.jpg",
+      caption: lang === "en" ? "Join the tribe!" : "Junte-se à tribo",
+    },
+    {
+      src: "/heroes/Pablo-Borboroglu-and-penguin.jpg",
+      caption:
+        lang === "en"
+          ? "Meet conservation heroes"
+          : "Conheça heróis da conservação",
+    },
+    {
       src: "/eco/Hummingbird.webp",
       caption:
         lang === "en"
@@ -310,18 +322,6 @@ export default function LandingPage() {
         lang === "en"
           ? "Next Week: Antarctic Waters"
           : "Próxima Semana: Águas Antárticas",
-    },
-    {
-      src: "/heroes/Pablo-Borboroglu-and-penguin.jpg",
-      caption:
-        lang === "en"
-          ? "Meet conservation heroes"
-          : "Conheça heróis da conservação",
-    },
-    {
-      src: "/landing-top/marcus-woodbridge-campfire.jpg",
-      // src: "/landing-top/nik-shuliahin-campfire.jpg",
-      caption: lang === "en" ? "Join the tribe!" : "Junte-se à tribo",
     },
   ];
 
