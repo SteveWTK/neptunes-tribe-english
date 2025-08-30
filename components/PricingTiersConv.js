@@ -23,7 +23,7 @@ import {
   formatPrice,
 } from "@/lib/currency-utils";
 
-export default function PricingTiers() {
+export default function PricingTiersConv() {
   const [currency, setCurrency] = useState("BRL");
   const [currencySymbol, setCurrencySymbol] = useState("BRL");
   const [loading, setLoading] = useState(false);
@@ -31,39 +31,43 @@ export default function PricingTiers() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { lang } = useLanguage();
+
   const t = {
     en: {
       monthly: "Monthly",
       yearly: "Yearly",
       discount: "50% OFF",
       mostPopular: "Most Popular",
-      explorerSub: "Try out our main features",
-      premiumSub: "Enjoy all our content and features",
+      explorerSub: "Access to our units &",
+      proSub: "Exclusive weekly conversation classes ",
+      premiumSub: "Choose conversation class topics",
       enterpriseSub: "For teams and organisations",
+      enterprisePricing: "Special pricing",
       cardContentExplorer: [
-        "Access to basic learning units",
-        "Access to eco-news",
+        "Access to weekly converstation lessons as a listener",
+        "Access to all weekly learning units and challenges",
         "Basic Interactive eco-map tracking",
-        // "Community access",
+        "Access to eco-news",
       ],
-      cardContentPremium: [
-        "All Explorer features",
-        "Unlimited learning units",
+      cardContentPro: [
+        "Full Access to weekly converstation lessons as a participant",
+        "Access to all weekly learning units and challenges",
         "Advanced progress analytics",
         "Priority support",
-        // "Offline content access",
         "Certificate generation",
+      ],
+      cardContentPremium: [
+        "All Pro features",
+        "Voting rights on weekly topics",
+        "Participation in podcasts with special guests",
       ],
       cardContentEnterprise: [
         "All Premium features",
-        "Up to 25 accounts (pay for only 10)",
+        "Up to 50% discount for multiple accounts",
         "Group management tools",
-        // "Custom curriculum creation",
-        // "Detailed analytics dashboard",
-        // "API access",
-        // "Dedicated support manager",
       ],
-      getStartedFree: "Get Started Free",
+      chooseExplorer: "Choose Explorer",
+      choosePro: "Choose Pro",
       choosePremium: "Choose Premium",
       chooseEnterprise: "Choose Enterprise",
       FAQHeader: "Frequently Asked Questions",
@@ -91,14 +95,24 @@ export default function PricingTiers() {
       yearly: "Anual",
       discount: "50% OFF",
       mostPopular: "Mais Popular",
-      explorerSub: "Experimente a Neptune's Tribe",
-      premiumSub: "Aproveite todo o nosso conteúdo",
+      explorerSub: "Acesso às nossas unidades e",
+      proSub: "Aulas de conversação semanais exclusivas",
+      premiumSub: "Escolha os temas das aulas de conversação",
       enterpriseSub: "Para equipes e organizações",
+      enterprisePricing: "Preços especiais",
       cardContentExplorer: [
         "Accesso ao conteúdo basico",
         "Accesso ao eco-news",
         "Acompanhamento interativo basico pelo ecomapa",
         "Acesso à comunidade",
+      ],
+      cardContentPro: [
+        "Todos os recursos do Explorer",
+        "Unidades de aprendizagem ilimitadas",
+        "Análise avançada de progresso",
+        "Suporte prioritário",
+        "Acesso a conteúdo offline",
+        "Geração de certificados",
       ],
       cardContentPremium: [
         "Todos os recursos do Explorer",
@@ -110,14 +124,12 @@ export default function PricingTiers() {
       ],
       cardContentEnterprise: [
         "Todos os recursos Premium",
-        "Até 25 contas (pague por apenas 10)",
+        "Descontos de até 50% para contas multiplas",
         "Ferramentas de gerenciamento de usuários",
-        // "Criação de currículo personalizado",
         "Painel de análise detalhado",
-        "Acesso à API",
-        "Gerente de suporte dedicado",
       ],
-      getStartedFree: "Inicie de Graça",
+      chooseExplorer: "Escolha Explorer",
+      choosePro: "Escolha Pro",
       choosePremium: "Escolha Premium",
       chooseEnterprise: "Escolha Enterprise",
       FAQHeader: "Perguntas frequentes",
@@ -155,74 +167,124 @@ export default function PricingTiers() {
   }, []);
 
   const pricingData = {
-    USD: {
-      yearly: {
-        premium: {
-          price: 59,
-          display: "$59",
-          period: "/year",
-          savings: "Save 50%",
-        },
-        enterprise: {
-          price: 590,
-          display: "$590",
-          period: "/year",
-          savings: "Save 50%",
-        },
-      },
-      monthly: {
-        premium: {
-          price: 9.9,
-          display: "$9.90",
-          period: "/month",
-          savings: "",
-        },
-        enterprise: {
-          price: 99,
-          display: "$99",
-          period: "/month",
-          savings: "",
-        },
-      },
-      support: [
-        { amount: 10, display: "$10" },
-        { amount: 25, display: "$25" },
-        { amount: 50, display: "$50" },
-      ],
-    },
     BRL: {
-      yearly: {
-        premium: {
-          price: 290,
-          display: "R$290",
-          period: "/ano",
-          savings: "Economize 50%",
-        },
-        enterprise: {
-          price: 2900,
-          display: "R$2.900",
-          period: "/ano",
-          savings: "Economize 50%",
-        },
-      },
       monthly: {
-        premium: {
+        explorer: {
           price: 49,
           display: "R$49",
           period: "/mês",
           savings: "",
         },
-        enterprise: {
-          price: 490,
-          display: "R$490",
+        pro: {
+          price: 200,
+          display: "R$200",
           period: "/mês",
           savings: "",
         },
+        premium: {
+          price: 250,
+          display: "R$250",
+          period: "/mês",
+          savings: "",
+        },
+        // enterprise: {
+        //   price: 2500,
+        //   display: "R$2500",
+        //   period: "/mês",
+        //   savings: "",
+        // },
       },
+      yearly: {
+        explorer: {
+          price: 290,
+          display: "R$290",
+          period: "/ano",
+          savings: "Economize 50%",
+        },
+        pro: {
+          price: 1200,
+          display: "R$1200",
+          period: "/ano",
+          savings: "Economize 50%",
+        },
+        premium: {
+          price: 1500,
+          display: "R$1500",
+          period: "/ano",
+          savings: "Economize 50%",
+        },
+        // enterprise: {
+        //   price: 15000,
+        //   display: "R$15.000",
+        //   period: "/ano",
+        //   savings: "Economize 50%",
+        // },
+      },
+
       support: [
         { amount: 50, display: "R$50" },
         { amount: 125, display: "R$125" },
         { amount: 250, display: "R$250" },
+      ],
+    },
+    USD: {
+      monthly: {
+        explorer: {
+          price: 9.9,
+          display: "$9.90",
+          period: "/month",
+          savings: "",
+        },
+        pro: {
+          price: 40,
+          display: "$40",
+          period: "/month",
+          savings: "",
+        },
+        premium: {
+          price: 50,
+          display: "$50",
+          period: "/month",
+          savings: "",
+        },
+        // enterprise: {
+        //   price: 500,
+        //   display: "$500",
+        //   period: "/month",
+        //   savings: "",
+        // },
+      },
+      yearly: {
+        explorer: {
+          price: 59,
+          display: "$59",
+          period: "/year",
+          savings: "Save 50%",
+        },
+        pro: {
+          price: 240,
+          display: "$240",
+          period: "/year",
+          savings: "Save 50%",
+        },
+        premium: {
+          price: 300,
+          display: "$300",
+          period: "/year",
+          savings: "Save 50%",
+        },
+        // enterprise: {
+        //   price: 3000,
+        //   display: "$3000",
+        //   period: "/year",
+        //   savings: "Save 50%",
+        // },
+      },
+
+      support: [
+        { amount: 10, display: "$10" },
+        { amount: 25, display: "$25" },
+        { amount: 50, display: "$50" },
       ],
     },
   };
@@ -352,10 +414,10 @@ export default function PricingTiers() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 pt-8 md:px-8">
-        {/* Free Tier */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-8 md:px-2">
+        {/* Explorer Tier */}
         <Card className="relative border-2 hover:shadow-lg transition-shadow">
-          <CardHeader className="text-center pb-4">
+          <CardHeader className="text-center pb-4 pt-6">
             <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-3">
               <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
@@ -364,7 +426,17 @@ export default function PricingTiers() {
               {copy.explorerSub}
             </p>
             <div className="mt-4">
-              <span className="text-3xl font-bold">Free</span>
+              <span className="text-3xl font-bold">
+                {currentPricing[billingCycle].explorer.display}
+              </span>
+              <span className="text-gray-600 dark:text-gray-400">
+                {currentPricing[billingCycle].explorer.period}
+              </span>
+              {currentPricing[billingCycle].explorer.savings && (
+                <div className="text-green-600 text-sm font-medium">
+                  {currentPricing[billingCycle].explorer.savings}
+                </div>
+              )}
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -377,11 +449,54 @@ export default function PricingTiers() {
               ))}
             </ul>
             <Button
-              className="w-full mt-6"
-              variant="outline"
-              onClick={() => router.push("/units")}
+              className="w-full mt-6 bg-green-600 hover:bg-green-700"
+              onClick={() => handleSubscribe("premium")}
+              disabled={isDisabled}
             >
-              {copy.getStartedFree}
+              {loading ? "Processing..." : copy.chooseExplorer}
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Pro Tier */}
+        <Card className="relative border-2 hover:shadow-lg transition-shadow">
+          <CardHeader className="text-center pb-4 pt-6">
+            <div className="w-12 h-12 bg-accent-100 dark:bg-accent-900 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Globe className="w-6 h-6 text-accent-600 dark:text-accent-400" />
+            </div>
+            <CardTitle className="text-xl">Pro</CardTitle>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              {copy.proSub}
+            </p>
+            <div className="mt-4">
+              <span className="text-3xl font-bold">
+                {currentPricing[billingCycle].pro.display}
+              </span>
+              <span className="text-gray-600 dark:text-gray-400">
+                {currentPricing[billingCycle].pro.period}
+              </span>
+              {currentPricing[billingCycle].pro.savings && (
+                <div className="text-green-600 text-sm font-medium">
+                  {currentPricing[billingCycle].pro.savings}
+                </div>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <ul className="space-y-3">
+              {copy.cardContentPro.map((feature, i) => (
+                <li key={i} className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                  <span className="text-sm">{feature}</span>
+                </li>
+              ))}
+            </ul>
+            <Button
+              className="w-full mt-6 bg-green-600 hover:bg-green-700"
+              onClick={() => handleSubscribe("premium")}
+              disabled={isDisabled}
+            >
+              {loading ? "Processing..." : copy.choosePro}
             </Button>
           </CardContent>
         </Card>
@@ -446,17 +561,17 @@ export default function PricingTiers() {
               {copy.enterpriseSub}
             </p>
             <div className="mt-4">
-              <span className="text-3xl font-bold">
-                {currentPricing[billingCycle].enterprise.display}
+              <span className="text-xl font-bold">
+                {copy.enterprisePricing}
               </span>
               {/* <span className="text-gray-600 dark:text-gray-400">
-                {currentPricing[billingCycle].enterprise.period}
+                {copy.enterprisePricing}
               </span> */}
-              {currentPricing[billingCycle].enterprise.savings && (
+              {/* {currentPricing[billingCycle].enterprise.savings && (
                 <div className="text-green-600 text-sm font-medium">
                   {currentPricing[billingCycle].enterprise.savings}
                 </div>
-              )}
+              )} */}
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -477,60 +592,6 @@ export default function PricingTiers() {
             </Button>
           </CardContent>
         </Card>
-
-        {/* Support Us */}
-        {/* <Card className="relative border-2 border-orange-300 hover:shadow-lg transition-shadow">
-          <CardHeader className="text-center pb-4">
-            <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Crown className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-            </div>
-            <CardTitle className="text-xl">Support Us</CardTitle>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Help us grow & protect the planet
-            </p>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="text-center mb-4">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                25% of donations go directly to environmental charities
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => handleOneTimeSupport(25)}
-                disabled={isDisabled}
-              >
-                {currentPricing.support[0].display}
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => handleOneTimeSupport(50)}
-                disabled={isDisabled}
-              >
-                {currentPricing.support[1].display}
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => handleOneTimeSupport(100)}
-                disabled={isDisabled}
-              >
-                {currentPricing.support[2].display}
-              </Button>
-            </div>
-
-            <div className="mt-4 pt-4 border-t">
-              <p className="text-xs text-center text-gray-500">
-                🌱 Every contribution helps create better content and supports
-                ocean conservation
-              </p>
-            </div>
-          </CardContent>
-        </Card> */}
       </div>
 
       {/* FAQ Section */}
@@ -552,119 +613,3 @@ export default function PricingTiers() {
     </div>
   );
 }
-
-// "use client";
-
-// import { Button } from "@/components/ui/button";
-// import { useSession } from "next-auth/react";
-// import { useRouter } from "next/navigation";
-// import { cn } from "@/lib/utils";
-
-// const tiers = [
-//   {
-//     name: "Free",
-//     price: "R$0",
-//     description: "Get started with basic features.",
-//     features: [
-//       "Access to free language units",
-//       "Track your XP & streaks",
-//       "Progress map included",
-//     ],
-//     cta: "Start Learning",
-//     onClick: () => (window.location.href = "/dashboard"),
-//   },
-//   {
-//     name: "Premium",
-//     price: "R$19/month",
-//     description: "For passionate learners.",
-//     features: [
-//       "All Free features",
-//       "Access to all language units",
-//       "Bonus content every month",
-//       "Support ecological projects (25%)",
-//     ],
-//     cta: "Subscribe",
-//     stripePriceId: "price_premium_individual", // replace with actual Stripe ID
-//   },
-//   {
-//     name: "Premium Family",
-//     price: "R$39/month",
-//     description: "Up to 5 family members.",
-//     features: [
-//       "All Premium features",
-//       "Family dashboard & shared streaks",
-//       "Early access to new features",
-//       "Support ecological projects (25%)",
-//     ],
-//     cta: "Subscribe",
-//     stripePriceId: "price_premium_family", // replace with actual Stripe ID
-//   },
-// ];
-
-// export default function PricingTiers() {
-//   const { data: session, status } = useSession();
-//   const router = useRouter();
-
-//   const handleSubscribe = async (priceId) => {
-//     if (status === "loading") return;
-//     if (!session) return router.push("/login");
-
-//     const res = await fetch("/api/create-checkout-session", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({
-//         priceType: "subscription",
-//         priceId,
-//       }),
-//     });
-
-//     const { url } = await res.json();
-//     window.location.href = url;
-//   };
-
-//   return (
-//     <section className="py-12 px-4 max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
-//       {tiers.map((tier, idx) => (
-//         <div
-//           key={idx}
-//           className={cn(
-//             "rounded-2xl border shadow-md p-6 flex flex-col justify-between",
-//             tier.name === "Premium" &&
-//               "border-accent-500 dark:border-accent-400"
-//           )}
-//         >
-//           <div>
-//             <h3 className="text-xl font-semibold">{tier.name}</h3>
-//             <p className="text-3xl font-bold my-2">{tier.price}</p>
-//             <p className="mb-4 text-muted-foreground">{tier.description}</p>
-//             <ul className="space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
-//               {tier.features.map((feature, i) => (
-//                 <li key={i} className="flex items-start gap-2">
-//                   ✅ {feature}
-//                 </li>
-//               ))}
-//             </ul>
-//           </div>
-//           <div className="mt-6">
-//             {tier.stripePriceId ? (
-//               <Button
-//                 onClick={() => handleSubscribe(tier.stripePriceId)}
-//                 className="w-full"
-//               >
-//                 {tier.cta}
-//               </Button>
-//             ) : (
-//               <Button
-//                 variant="outline"
-//                 onClick={tier.onClick}
-//                 className="w-full"
-//               >
-//                 {tier.cta}
-//               </Button>
-//             )}
-//           </div>
-//         </div>
-//       ))}
-//     </section>
-//   );
-// }

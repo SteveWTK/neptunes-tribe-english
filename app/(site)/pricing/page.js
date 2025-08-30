@@ -12,6 +12,7 @@ import {
   LibraryBig,
   HeartHandshake,
 } from "lucide-react";
+import PricingTiersConv from "@/components/PricingTiersConv";
 
 export default function PricingPage() {
   const { lang } = useLanguage();
@@ -92,7 +93,7 @@ export default function PricingPage() {
       </section>
 
       {/* Pricing Tiers */}
-      <PricingTiers />
+      <PricingTiersConv />
 
       {/* Impact Section */}
       <section className="mt-20 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 rounded-2xl p-8 max-w-4xl mx-auto">
