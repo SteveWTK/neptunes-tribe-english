@@ -50,7 +50,7 @@ export default function LandingPage() {
       featuresTitle: "Your Weekly Eco-Adventure Includes",
       feature1Title: "Live Conversation Classes",
       feature1Desc:
-        "Join weekly English conversation sessions focused on that week's ecosystem with max 8 participants",
+        "Join weekly English conversation sessions focussed on that week's ecosystem with max 8 participants",
 
       feature2Title: "Interactive Learning Journey",
       feature2Desc:
@@ -95,6 +95,7 @@ export default function LandingPage() {
         "Join special guest podcasts",
         "Exclusive premium content",
       ],
+      viewAllTiers: "View all tiers and pricing",
 
       // How It Works
       howItWorksTitle: "How Neptune's Tribe Works",
@@ -106,8 +107,8 @@ export default function LandingPage() {
         "Every Monday, discover a new ecosystem with fresh content and live classes",
       step3Title: "Learn & Connect",
       step3Desc:
-        "Practice English while learning about conservation with fellow tribe members",
-      step4Title: "Make Impact",
+        "Practise English while learning about conservation with fellow tribe members",
+      step4Title: "Make an Impact",
       step4Desc:
         "20% of revenue supports real environmental protection projects",
 
@@ -137,6 +138,9 @@ export default function LandingPage() {
       missionTitle: "Learning That Changes the World",
       missionText:
         "Every conversation class helps fund real conservation. Join a community where learning English means protecting our planet.",
+      oceanTitle: "Environmental conservation",
+      oceanSubtitle:
+        "20% of all revenue goes directly to verified environmental NGOs.",
 
       // CTA
       ctaTitle: "Ready to Join the Tribe?",
@@ -145,6 +149,7 @@ export default function LandingPage() {
       ctaPremium: "Join Pro Classes",
 
       // FAQ
+      faq: "Frequently Asked Questions",
       faq1: "How do the live classes work?",
       faq1Answer:
         "Every week we focus on a new ecosystem. Pro and Premium members join live conversation classes (max 8 people) while Explorer members can listen in.",
@@ -222,6 +227,7 @@ export default function LandingPage() {
         "Participe de podcasts com convidados especiais",
         "Conteúdo premium exclusivo",
       ],
+      viewAllTiers: "Ver todos os níveis e preços",
 
       // How It Works
       howItWorksTitle: "Como Funciona a Neptune's Tribe",
@@ -234,7 +240,7 @@ export default function LandingPage() {
       step3Title: "Aprenda e Conecte",
       step3Desc:
         "Pratique inglês enquanto aprende sobre conservação com outros membros da tribo",
-      step4Title: "Cause Impacto",
+      step4Title: "Cause um Impacto",
       step4Desc: "20% da receita apoia projetos reais de proteção ambiental",
 
       // Social Proof
@@ -263,6 +269,9 @@ export default function LandingPage() {
       missionTitle: "Aprendizado Que Muda o Mundo",
       missionText:
         "Cada aula de conversação ajuda a financiar conservação real. Junte-se a uma comunidade onde aprender inglês significa proteger nosso planeta.",
+      oceanTitle: "Proteção ambiental",
+      oceanSubtitle:
+        "20% de toda a receita vai diretamente para ONGs ambientais verificadas que se dedicam à conservação dos oceanos.",
 
       // CTA
       ctaTitle: "Pronto para Se Juntar à Tribo?",
@@ -272,6 +281,7 @@ export default function LandingPage() {
       ctaPremium: "Participe das Aulas Pro",
 
       // FAQ
+      faq: "Perguntas Frequentes",
       faq1: "Como funcionam as aulas ao vivo?",
       faq1Answer:
         "Toda semana focamos num novo ecossistema. Membros Pro e Premium participam de aulas de conversação ao vivo (máx. 8 pessoas) enquanto membros Explorer podem ouvir.",
@@ -310,6 +320,7 @@ export default function LandingPage() {
     },
     {
       src: "/landing-top/marcus-woodbridge-campfire.jpg",
+      // src: "/landing-top/nik-shuliahin-campfire.jpg",
       caption: lang === "en" ? "Join the tribe!" : "Junte-se à tribo",
     },
   ];
@@ -671,7 +682,7 @@ export default function LandingPage() {
           {/* CTA Button */}
           <div className="text-center mt-12">
             <button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl flex items-center gap-2 mx-auto">
-              View All Tiers & Pricing
+              {copy.viewAllTiers}
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
@@ -763,23 +774,21 @@ export default function LandingPage() {
             <h2 className="text-4xl font-bold mb-6">{copy.missionTitle}</h2>
             <p className="text-xl mb-12 opacity-90">{copy.missionText}</p>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-1 gap-8">
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
                 <Fish className="w-12 h-12 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold mb-2">
-                  Environmental Conservation
+                  {copy.oceanTitle}
                 </h3>
-                <p className="text-sm opacity-90">
-                  Direct funding to environmental protection projects
-                </p>
+                <p className="text-sm opacity-90">{copy.oceanSubtitle}</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+              {/* <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
                 <Library className="w-12 h-12 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold mb-2">Education Access</h3>
                 <p className="text-sm opacity-90">
                   Free Explorer access for underprivileged communities
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -789,9 +798,7 @@ export default function LandingPage() {
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">
-              Frequently Asked Questions
-            </h2>
+            <h2 className="text-4xl font-bold mb-4">{copy.faq}</h2>
           </div>
 
           <div className="space-y-6">

@@ -22,10 +22,10 @@ export default function PricingPage() {
       pageSubtitle:
         "Enrich your English while exploring the world's most amazing ecosystems.",
       pageMission: "20% of all subscriptions go to environmental NGOs",
-      impactTitle: "'Your support has a real impact.",
+      impactTitle: "Your support has a real impact.",
       impactSubtitle:
         "Every subscription directly supports both education and environmental conservation",
-      oceanTitle: "Environmental protection",
+      oceanTitle: "Environmental conservation",
       oceanSubtitle:
         "20% of all revenue goes directly to verified environmental NGOs.",
       educationTitle: "Education Access",
@@ -103,12 +103,10 @@ export default function PricingPage() {
             {copy.impactSubtitle}
           </p>
 
-          <div className="grid md:grid-cols-2 gap-8 text-left">
+          <div className="grid md:grid-cols-1 gap-8">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg">
-              <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                <span className="text-2xl">
-                  <FishSymbol />
-                </span>
+              <FishSymbol className="w-8 h-8 mx-auto mb-2" />
+              <h3 className="font-semibold text-lg mb-3 gap-2">
                 {copy.oceanTitle}
               </h3>
               <p className="text-sm text-muted-foreground">
@@ -116,7 +114,7 @@ export default function PricingPage() {
               </p>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg">
+            {/* <div className="bg-white dark:bg-gray-800 p-6 rounded-lg">
               <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                 <span className="text-2xl">
                   <LibraryBig />
@@ -126,7 +124,7 @@ export default function PricingPage() {
               <p className="text-sm text-muted-foreground">
                 {copy.educationSubtitle}
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
