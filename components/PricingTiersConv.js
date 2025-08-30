@@ -38,9 +38,9 @@ export default function PricingTiersConv() {
       yearly: "Yearly",
       discount: "50% OFF",
       mostPopular: "Most Popular",
-      explorerSub: "Access to our units &",
-      proSub: "Exclusive weekly conversation classes ",
-      premiumSub: "Choose conversation class topics",
+      explorerSub: "General access to content",
+      proSub: "Full access to weekly conversation classes",
+      premiumSub: "Help shape the journey",
       enterpriseSub: "For teams and organisations",
       enterprisePricing: "Special pricing",
       cardContentExplorer: [
@@ -71,7 +71,7 @@ export default function PricingTiersConv() {
       chooseExplorer: "Choose Explorer",
       choosePro: "Choose Pro",
       choosePremium: "Choose Premium",
-      chooseEnterprise: "Choose Enterprise",
+      chooseEnterprise: "Contact us for pricing",
       FAQHeader: "Frequently Asked Questions",
       FAQ: [
         {
@@ -130,7 +130,7 @@ export default function PricingTiersConv() {
       chooseExplorer: "Escolha Explorer",
       choosePro: "Escolha Pro",
       choosePremium: "Escolha Premium",
-      chooseEnterprise: "Escolha Enterprise",
+      chooseEnterprise: "Entre em contato",
       FAQHeader: "Perguntas frequentes",
       FAQ: [
         {
@@ -421,9 +421,9 @@ export default function PricingTiersConv() {
               <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <CardTitle className="text-xl">Explorer</CardTitle>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
+            {/* <p className="text-gray-600 dark:text-gray-400 text-sm">
               {copy.explorerSub}
-            </p>
+            </p> */}
             <div className="mt-4">
               <span className="text-3xl font-bold">
                 {currentPricing[billingCycle].explorer.display}
@@ -464,9 +464,9 @@ export default function PricingTiersConv() {
               <Globe className="w-6 h-6 text-accent-600 dark:text-accent-400" />
             </div>
             <CardTitle className="text-xl">Pro</CardTitle>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
+            {/* <p className="text-gray-600 dark:text-gray-400 text-sm">
               {copy.proSub}
-            </p>
+            </p> */}
             <div className="mt-4">
               <span className="text-3xl font-bold">
                 {currentPricing[billingCycle].pro.display}
@@ -513,9 +513,9 @@ export default function PricingTiersConv() {
               <Globe className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <CardTitle className="text-xl">Premium</CardTitle>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
+            {/* <p className="text-gray-600 dark:text-gray-400 text-sm">
               {copy.premiumSub}
-            </p>
+            </p> */}
             <div className="mt-4">
               <span className="text-3xl font-bold">
                 {currentPricing[billingCycle].premium.display}
@@ -560,9 +560,9 @@ export default function PricingTiersConv() {
               {copy.enterpriseSub}
             </p>
             <div className="mt-4">
-              <span className="text-xl font-bold">
+              {/* <span className="text-xl font-bold">
                 {copy.enterprisePricing}
-              </span>
+              </span> */}
               {/* <span className="text-gray-600 dark:text-gray-400">
                 {copy.enterprisePricing}
               </span> */}
