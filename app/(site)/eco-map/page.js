@@ -41,6 +41,33 @@ export default async function EcoMapPage() {
       );
     }
 
+    // Helper functions (your existing code)
+    const parseRegionCodes = (regionCode) => {
+      if (!regionCode) return [];
+      if (regionCode.startsWith("[") && regionCode.endsWith("]")) {
+        try {
+          return JSON.parse(regionCode);
+        } catch (e) {
+          console.warn("Failed to parse region code array:", regionCode);
+          return [];
+        }
+      }
+      return [regionCode];
+    };
+
+    const parseMarineZones = (marineZone) => {
+      if (!marineZone) return [];
+      if (marineZone.startsWith("[") && marineZone.endsWith("]")) {
+        try {
+          return JSON.parse(marineZone);
+        } catch (e) {
+          console.warn("Failed to parse marine zone array:", marineZone);
+          return [];
+        }
+      }
+      return [marineZone];
+    };
+
     // Fetch current weekly theme
     const { data: weeklyThemeData, error: themeError } = await supabase.rpc(
       "get_current_weekly_theme"
@@ -53,62 +80,137 @@ export default async function EcoMapPage() {
     }
 
     // Fetch images for the current theme
+
     let themeImages = [];
     if (currentWeeklyTheme) {
       try {
-        // Build complex query to get units matching theme regions/zones
-        let unitsQuery = supabase
-          .from("units")
-          .select("id, title, description, image, region_code, marine_zone");
-
-        const regionFilters = [];
-        const marineFilters = [];
-
-        // Handle featured regions
-        if (
-          currentWeeklyTheme.featured_regions &&
-          currentWeeklyTheme.featured_regions.length > 0
-        ) {
-          currentWeeklyTheme.featured_regions.forEach((region) => {
-            regionFilters.push(`region_code.cs.{${region}}`);
-            regionFilters.push(`region_code.eq.${region}`);
-          });
-        }
-
-        // Handle featured marine zones
-        if (
-          currentWeeklyTheme.featured_marine_zones &&
-          currentWeeklyTheme.featured_marine_zones.length > 0
-        ) {
-          currentWeeklyTheme.featured_marine_zones.forEach((zone) => {
-            marineFilters.push(`marine_zone.cs.{${zone}}`);
-            marineFilters.push(`marine_zone.eq.${zone}`);
-          });
-        }
-
-        if (regionFilters.length > 0 || marineFilters.length > 0) {
-          const allFilters = [...regionFilters, ...marineFilters];
-          unitsQuery = unitsQuery.or(allFilters.join(","));
-        }
-
-        const { data: themeUnits, error: unitsError } = await unitsQuery.limit(
-          20
+        console.log(
+          "Fetching theme images for:",
+          currentWeeklyTheme.theme_title
+        );
+        console.log("Featured regions:", currentWeeklyTheme.featured_regions);
+        console.log(
+          "Featured marine zones:",
+          currentWeeklyTheme.featured_marine_zones
         );
 
-        if (!unitsError && themeUnits) {
-          themeImages = themeUnits
+        // Fetch all units first, then filter in JavaScript
+        const { data: allUnits, error: unitsError } = await supabase
+          .from("units")
+          .select("id, title, description, image, region_code, marine_zone")
+          .not("image", "is", null); // Only units with images
+
+        if (!unitsError && allUnits) {
+          console.log("All units with images:", allUnits.length);
+
+          // Filter units that match theme regions or marine zones
+          const matchingUnits = allUnits.filter((unit) => {
+            let matches = false;
+
+            // Check region codes
+            if (unit.region_code && currentWeeklyTheme.featured_regions) {
+              const unitRegions = parseRegionCodes(unit.region_code);
+              matches = unitRegions.some((region) =>
+                currentWeeklyTheme.featured_regions.includes(
+                  region.toUpperCase()
+                )
+              );
+            }
+
+            // Check marine zones
+            if (
+              !matches &&
+              unit.marine_zone &&
+              currentWeeklyTheme.featured_marine_zones
+            ) {
+              const unitMarineZones = parseMarineZones(unit.marine_zone);
+              matches = unitMarineZones.some((zone) =>
+                currentWeeklyTheme.featured_marine_zones.includes(zone)
+              );
+            }
+
+            return matches;
+          });
+
+          console.log("Matching units found:", matchingUnits.length);
+
+          themeImages = matchingUnits
             .map((unit) => ({
               url: unit.image,
               title: unit.title,
               description: unit.description,
             }))
-            .filter((img) => img.url)
-            .slice(0, 8); // Limit to 8 images for popup
+            .filter((img) => img.url && img.url.trim() !== "")
+            .slice(0, 8);
+
+          console.log("Final theme images:", themeImages);
+        } else {
+          console.error("Error fetching units for theme images:", unitsError);
         }
       } catch (imageError) {
-        console.error("Error fetching theme images:", imageError);
+        console.error("Error processing theme images:", imageError);
       }
     }
+    // let themeImages = [];
+    // if (currentWeeklyTheme) {
+    //   try {
+    //     // Build complex query to get units matching theme regions/zones
+    //     let unitsQuery = supabase
+    //       .from("units")
+    //       .select("id, title, description, image, region_code, marine_zone");
+
+    //     const regionFilters = [];
+    //     const marineFilters = [];
+
+    //     // Handle featured regions
+    //     if (
+    //       currentWeeklyTheme.featured_regions &&
+    //       currentWeeklyTheme.featured_regions.length > 0
+    //     ) {
+    //       currentWeeklyTheme.featured_regions.forEach((region) => {
+    //         regionFilters.push(`region_code.cs.{${region}}`);
+    //         regionFilters.push(`region_code.eq.${region}`);
+    //       });
+    //     }
+
+    //     // Handle featured marine zones
+    //     if (
+    //       currentWeeklyTheme.featured_marine_zones &&
+    //       currentWeeklyTheme.featured_marine_zones.length > 0
+    //     ) {
+    //       currentWeeklyTheme.featured_marine_zones.forEach((zone) => {
+    //         marineFilters.push(`marine_zone.cs.{${zone}}`);
+    //         marineFilters.push(`marine_zone.eq.${zone}`);
+    //       });
+    //     }
+
+    //     if (regionFilters.length > 0 || marineFilters.length > 0) {
+    //       const allFilters = [...regionFilters, ...marineFilters];
+    //       unitsQuery = unitsQuery.or(allFilters.join(","));
+    //     }
+
+    //     // In your page.js, after fetching themeImages, add:
+    //     console.log("Theme images fetched:", themeImages);
+    //     console.log("Current weekly theme:", currentWeeklyTheme);
+
+    //     const { data: themeUnits, error: unitsError } = await unitsQuery.limit(
+    //       20
+    //     );
+
+    //     if (!unitsError && themeUnits) {
+    //       themeImages = themeUnits
+    //         .map((unit) => ({
+    //           url: unit.image,
+    //           title: unit.title,
+    //           description: unit.description,
+    //         }))
+    //         .filter((img) => img.url)
+    //         .slice(0, 8); // Limit to 8 images for popup
+    //     }
+    //   } catch (imageError) {
+    //     console.error("Error fetching theme images:", imageError);
+    //   }
+    // }
 
     // Fetch completed units (your existing code)
     const { data: completedData, error: completedError } = await supabase
@@ -138,33 +240,6 @@ export default async function EcoMapPage() {
         </div>
       );
     }
-
-    // Helper functions (your existing code)
-    const parseRegionCodes = (regionCode) => {
-      if (!regionCode) return [];
-      if (regionCode.startsWith("[") && regionCode.endsWith("]")) {
-        try {
-          return JSON.parse(regionCode);
-        } catch (e) {
-          console.warn("Failed to parse region code array:", regionCode);
-          return [];
-        }
-      }
-      return [regionCode];
-    };
-
-    const parseMarineZones = (marineZone) => {
-      if (!marineZone) return [];
-      if (marineZone.startsWith("[") && marineZone.endsWith("]")) {
-        try {
-          return JSON.parse(marineZone);
-        } catch (e) {
-          console.warn("Failed to parse marine zone array:", marineZone);
-          return [];
-        }
-      }
-      return [marineZone];
-    };
 
     // Process completed units data (your existing code)
     const completedUnitsByCountry = {};

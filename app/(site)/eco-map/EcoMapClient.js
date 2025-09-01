@@ -268,7 +268,7 @@ export default function EcoMapClient({
       </div>
 
       {/* Weekly Theme Banner */}
-      {currentWeeklyTheme && (
+      {/* {currentWeeklyTheme && (
         <div className="max-w-6xl mx-auto mb-6 px-4">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -297,7 +297,7 @@ export default function EcoMapClient({
             </div>
           </motion.div>
         </div>
-      )}
+      )} */}
 
       {/* Main Map Section */}
       <div className="max-w-6xl mx-auto space-y-8">

@@ -130,10 +130,11 @@ export default function PricingPage() {
       </section>
 
       {/* Call to Action */}
-      <section className="mt-16 text-center">
+      {/* <section className="mt-16 text-center">
         <h2 className="text-2xl font-bold mb-4">{copy.actionTitle}</h2>
         <p className="text-muted-foreground mb-8">{copy.actionSubtitle}</p>
-      </section>
+      </section> */}
+
       {/* Social Proof */}
       {/* <section className="max-w-4xl mx-auto mb-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">

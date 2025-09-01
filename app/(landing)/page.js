@@ -72,28 +72,29 @@ export default function LandingPage() {
       explorerTitle: "Explorer",
       explorerSub: "Follow the journey",
       explorerFeatures: [
-        "Access all weekly learning units",
-        "Listen to live conversation classes",
-        "Track progress on eco-map",
-        "Join the global community",
+        "Access to all weekly learning units and challenges",
+        "Access to weekly conversation lessons as a listener",
+        "Eco Map access",
+        // "Progress tracking",
+        "Access to eco-news",
       ],
 
       proTitle: "Pro",
       proSub: "Speak in the classes",
       proFeatures: [
-        "Everything in Explorer, plus:",
-        "Participate in live conversation classes",
-        "Advanced progress analytics",
-        "Priority support",
+        "All Explorer features, plus:",
+        "Full Access to weekly converstation lessons as a participant",
+        // "Advanced progress analytics",
+        // "Priority support",
+        "Certificate generation",
       ],
 
       premiumTitle: "Premium",
       premiumSub: "Shape the journey",
       premiumFeatures: [
-        "Everything in Pro, plus:",
-        "Vote on weekly destinations",
-        "Join special guest podcasts",
-        "Exclusive premium content",
+        "All Pro features, plus:",
+        "Voting rights on weekly topics",
+        "Participation in podcasts with special guests",
       ],
       viewAllTiers: "View all tiers and pricing",
 
@@ -204,28 +205,29 @@ export default function LandingPage() {
       explorerTitle: "Explorer",
       explorerSub: "Siga a jornada",
       explorerFeatures: [
-        "Acesso a todas as unidades semanais",
-        "Ouça as aulas de conversação ao vivo",
-        "Acompanhe progresso no eco-mapa",
-        "Participe da comunidade global",
+        "Acesso a todas as unidades de aprendizagem e desafios semanais",
+        "Acesso às aulas semanais de conversação como ouvinte",
+        "Acesso ao Mapa Ecológico",
+        // "Acompanhamento de progresso",
+        "Acesso ao Eco News",
       ],
 
       proTitle: "Pro",
       proSub: "Fale nas aulas",
       proFeatures: [
-        "Tudo do Explorer, mais:",
-        "Participe das aulas de conversação ao vivo",
-        "Análises avançadas de progresso",
-        "Suporte prioritário",
+        "Todos os recursos do Explorer, mais:",
+        "Acesso total às aulas semanais de conversação como participante",
+        // "Análise avançada de progresso",
+        // "Suporte prioritário",
+        "Geração de certificados",
       ],
 
       premiumTitle: "Premium",
       premiumSub: "Molde a jornada",
       premiumFeatures: [
-        "Tudo do Pro, mais:",
-        "Vote nos destinos semanais",
-        "Participe de podcasts com convidados especiais",
-        "Conteúdo premium exclusivo",
+        "Todos os recursos do Pro, mais:",
+        "Direito de voto em tópicos semanais",
+        "Participação em podcasts com convidados especiais",
       ],
       viewAllTiers: "Ver todos os níveis e preços",
 
@@ -303,21 +305,21 @@ export default function LandingPage() {
       caption: lang === "en" ? "Join the tribe!" : "Junte-se à tribo",
     },
     {
-      src: "/heroes/Pablo-Borboroglu-and-penguin.jpg",
+      src: "/landing-top/augustin-basabose.avif",
       caption:
         lang === "en"
           ? "Meet conservation heroes"
           : "Conheça heróis da conservação",
     },
     {
-      src: "/eco/Hummingbird.webp",
+      src: "/landing-top/manu-national-park-peru.jpg",
       caption:
         lang === "en"
           ? "This Week: Amazon Rainforest"
           : "Esta Semana: Floresta Amazônica",
     },
     {
-      src: "/eco/bg_polar.jpg",
+      src: "/landing-top/king-penguin.jpg",
       caption:
         lang === "en"
           ? "Next Week: Antarctic Waters"
@@ -411,7 +413,8 @@ export default function LandingPage() {
             {/* Hero Content */}
             <div className="text-center lg:text-left">
               {/* Community Badge */}
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-blue-100 dark:from-green-900 dark:to-blue-900 text-green-800 dark:text-green-200 px-4 py-2 rounded-full text-sm font-medium mb-6 shadow-lg">
+              {/* bg-gradient-to-r from-green-100 to-blue-100 dark:from-green-900 dark:to-blue-900 */}
+              <div className="inline-flex items-center gap-2 text-green-800 dark:text-green-200 px-4 py-2 rounded-full text-sm font-medium mb-6 shadow-lg">
                 <Users className="w-4 h-4" />
                 {copy.weeklyTheme} • {copy.liveClasses}
               </div>
@@ -443,12 +446,12 @@ export default function LandingPage() {
               </div>
 
               {/* Demo Link */}
-              <div className="mt-6">
+              {/* <div className="mt-6">
                 <button className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium">
                   <Play className="w-4 h-4" />
                   {copy.exploreDemoButton}
                 </button>
-              </div>
+              </div> */}
             </div>
 
             {/* Hero Visual */}
@@ -528,9 +531,9 @@ export default function LandingPage() {
               <div key={i} className="text-center">
                 <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white relative">
                   {step.icon}
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center text-sm font-bold text-gray-800 dark:text-white">
+                  {/* <div className="absolute -top-2 -right-2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center text-sm font-bold text-gray-800 dark:text-white">
                     {i + 1}
-                  </div>
+                  </div> */}
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
                 <p className="text-gray-600 dark:text-gray-300">

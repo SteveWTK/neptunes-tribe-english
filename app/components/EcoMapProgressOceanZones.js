@@ -656,24 +656,24 @@ export default function EcoMapProgressOceans({
           <div className="w-4 h-4 bg-gray-200 border border-gray-300 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">Not Started</span>
         </div>
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-cyan-400 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
             Countries In Progress
           </span>
-        </div>
+        </div> */}
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-green-500 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
             Countries Completed
           </span>
         </div>
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-blue-400 bg-opacity-60 border border-blue-600 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
             Marine Zones In Progress
           </span>
-        </div>
+        </div> */}
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-purple-500 bg-opacity-70 border border-purple-600 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
