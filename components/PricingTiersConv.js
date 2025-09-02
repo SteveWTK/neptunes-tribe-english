@@ -414,7 +414,7 @@ export default function PricingTiersConv() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-8 md:px-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8 md:px-2">
         {/* Explorer Tier */}
         <Card className="relative border-2 hover:shadow-lg transition-shadow">
           <CardHeader className="text-center pb-4 pt-6">
@@ -460,6 +460,12 @@ export default function PricingTiersConv() {
 
         {/* Pro Tier */}
         <Card className="relative border-2 hover:shadow-lg transition-shadow">
+          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+            <Badge className="bg-green-500 text-white dark:bg-green-500 dark:text-white px-3 py-1">
+              <Star className="w-3 h-3 mr-1" />
+              {copy.mostPopular}
+            </Badge>
+          </div>
           <CardHeader className="text-center pb-4 pt-6">
             <div className="w-12 h-12 bg-accent-100 dark:bg-accent-900 rounded-full flex items-center justify-center mx-auto mb-3">
               <Globe className="w-6 h-6 text-accent-600 dark:text-accent-400" />
@@ -503,12 +509,12 @@ export default function PricingTiersConv() {
 
         {/* Premium Tier */}
         <Card className="relative border-2 border-green-500 hover:shadow-lg transition-shadow">
-          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+          {/* <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
             <Badge className="bg-green-500 text-white dark:bg-green-500 dark:text-white px-3 py-1">
               <Star className="w-3 h-3 mr-1" />
               {copy.mostPopular}
             </Badge>
-          </div>
+          </div> */}
           <CardHeader className="text-center pb-4 pt-6">
             <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-3">
               <Globe className="w-6 h-6 text-green-600 dark:text-green-400" />
@@ -551,7 +557,7 @@ export default function PricingTiersConv() {
         </Card>
 
         {/* Enterprise Tier */}
-        <Card className="relative border-2 hover:shadow-lg transition-shadow">
+        {/* <Card className="relative border-2 hover:shadow-lg transition-shadow">
           <CardHeader className="text-center pb-4">
             <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-3">
               <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
@@ -561,17 +567,17 @@ export default function PricingTiersConv() {
               {copy.enterpriseSub}
             </p>
             <div className="mt-4">
-              {/* <span className="text-xl font-bold">
+              <span className="text-xl font-bold">
                 {copy.enterprisePricing}
-              </span> */}
-              {/* <span className="text-gray-600 dark:text-gray-400">
+              </span>
+              <span className="text-gray-600 dark:text-gray-400">
                 {copy.enterprisePricing}
-              </span> */}
-              {/* {currentPricing[billingCycle].enterprise.savings && (
+              </span>
+              {currentPricing[billingCycle].enterprise.savings && (
                 <div className="text-green-600 text-sm font-medium">
                   {currentPricing[billingCycle].enterprise.savings}
                 </div>
-              )} */}
+              )}
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -591,7 +597,7 @@ export default function PricingTiersConv() {
               {loading ? "Processing..." : copy.chooseEnterprise}
             </Button>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* FAQ Section */}

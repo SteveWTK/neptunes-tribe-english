@@ -33,8 +33,8 @@ export default function LandingPage() {
       heroSubtitle: "Learn English through global environmental adventures",
       heroDescription:
         "Every week, our tribe explores a new ecosystem together. Join live conversation classes, discover amazing species, and help save the planet while mastering English.",
-      startFree: "Join as Explorer",
-      upgradePro: "Go Pro for Live Classes",
+      startFree: "Start now",
+      upgradePro: "Start now",
       exploreDemoButton: "Explore Our Interactive Map",
 
       // Community Focus
@@ -166,8 +166,8 @@ export default function LandingPage() {
       heroSubtitle: "Aprenda inglês através de aventuras ambientais globais",
       heroDescription:
         "Toda semana, nossa tribo explora um novo ecossistema juntos. Participe de aulas de conversação ao vivo, descubra espécies incríveis e ajude a salvar o planeta enquanto domina o inglês.",
-      startFree: "Participe como Explorer",
-      upgradePro: "Vá Pro para Aulas ao Vivo",
+      startFree: "Comece agora",
+      upgradePro: "Comece agora",
       exploreDemoButton: "Explore Nosso Mapa Interativo",
 
       // Community Focus
@@ -300,8 +300,8 @@ export default function LandingPage() {
 
   const heroImages = [
     {
+      // src: "/landing-top/new-guinea-people-paddling.jpg",
       src: "/landing-top/marcus-woodbridge-campfire.jpg",
-      // src: "/landing-top/nik-shuliahin-campfire.jpg",
       caption: lang === "en" ? "Join the tribe!" : "Junte-se à tribo",
     },
     {
@@ -439,10 +439,10 @@ export default function LandingPage() {
                   <ArrowRight className="w-5 h-5" />
                 </button>
 
-                <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 flex items-center gap-2 justify-center">
+                {/* <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 flex items-center gap-2 justify-center">
                   <Mic className="w-5 h-5" />
                   {copy.upgradePro}
-                </button>
+                </button> */}
               </div>
 
               {/* Demo Link */}
