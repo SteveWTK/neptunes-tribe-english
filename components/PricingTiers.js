@@ -78,7 +78,7 @@ export default function PricingTiers() {
         },
         {
           q: "How does the environmental impact work?",
-          a: "20% of all subscription revenue goes directly to verified ocean conservation and environmental protection NGOs.",
+          a: "10% of all subscription revenue goes directly to verified ocean conservation and environmental protection NGOs.",
         },
         {
           q: "What about enterprise discounts?",
@@ -132,7 +132,7 @@ export default function PricingTiers() {
         },
         {
           q: "Como funciona o impacto ambiental?",
-          a: "20% de toda a receita da assinatura vai diretamente para ONGs verificadas de conservação dos oceanos e proteção ambiental.",
+          a: "10% de toda a receita da assinatura vai diretamente para ONGs verificadas de conservação dos oceanos e proteção ambiental.",
         },
         {
           q: "E os descontos para empresas?",

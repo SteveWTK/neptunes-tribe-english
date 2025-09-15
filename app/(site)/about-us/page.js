@@ -24,7 +24,7 @@ export default function AboutUsPage() {
         "Every lesson teaches English through fascinating stories about Earth's species, ecosystems, and environmental heroes.",
       feature2Title: "Interactive Learning",
       feature2Text:
-        "Gamified experiences with our eco-map, species adoption system, and environmental crisis challenges.",
+        "Gamified experiences with our eco-map and environmental crisis challenges.",
       feature3Title: "Real-World Impact",
       feature3Text:
         "Learning that connects students to actual conservation efforts and environmental solutions.",
@@ -80,7 +80,7 @@ export default function AboutUsPage() {
         "Cada lição ensina inglês através de histórias fascinantes sobre espécies, ecossistemas e heróis ambientais da Terra.",
       feature2Title: "Aprendizado Interativo",
       feature2Text:
-        "Experiências gamificadas com nosso eco-mapa, sistema de adoção de espécies e desafios de crises ambientais.",
+        "Experiências gamificadas com nosso eco-mapa e desafios de crises ambientais.",
       feature3Title: "Impacto Real",
       feature3Text:
         "Aprendizado que conecta estudantes a esforços reais de conservação e soluções ambientais.",
@@ -93,11 +93,10 @@ export default function AboutUsPage() {
       founder1Title: "Diretor de Conteúdo",
       founder1Bio:
         "Após uma longa carreira acadêmica que incluiu mais de 25 anos em universidades brasileiras, ensinando e supervisionando projetos de pesquisa em Aquisição de Segunda Língua, Michael agora se dedica em tempo integral à defesa do meio ambiente, especialmente no Brasil, onde continua morando.",
-      founder2Title: "Desenvolvedor",
+      founder2Title: "Diretor Técnico",
       founder2Bio:
-        "Com experiência em tecnologia educacional e desenvolvimento sustentável, Stephen une expertise técnica e paixão ambiental para criar experiências de aprendizado inovadoras.",
-
-      founder3Title: "Especialista em Educação",
+        "Com experiência em tecnologia educacional e desenvolvimento sustentável, Stephen une expertise técnica e paixão ambiental para criar experiências de aprendizado inovadoras. Stephen possui graduação com Honra em Estudos do Sudeste Asiático, SOAS (Universidade de Londres)",
+      founder3Title: "Diretor Acadêmico",
       founder3Bio:
         "Especializando-se em metodologia de Inglês como Língua Estrangeira e um entusiasta da natureza, Paul garante que nossa plataforma atenda aos mais altos padrões de pedagogia e eficácia de aprendizado.",
       founder4Title: "Diretor Estratégico",

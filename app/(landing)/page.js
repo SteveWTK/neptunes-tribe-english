@@ -111,7 +111,7 @@ export default function LandingPage() {
         "Practise English while learning about conservation with fellow tribe members",
       step4Title: "Make an Impact",
       step4Desc:
-        "20% of revenue supports real environmental protection projects",
+        "10% of revenue supports real environmental protection projects",
 
       // Social Proof
       testimonialTitle: "What Our Tribe Says",
@@ -141,7 +141,7 @@ export default function LandingPage() {
         "Every conversation class helps fund real conservation. Join a community where learning English means protecting our planet.",
       oceanTitle: "Environmental conservation",
       oceanSubtitle:
-        "20% of all revenue goes directly to verified environmental NGOs.",
+        "10% of all revenue goes directly to verified environmental NGOs.",
 
       // CTA
       ctaTitle: "Ready to Join the Tribe?",
@@ -238,12 +238,12 @@ export default function LandingPage() {
         "Cadastre-se e faça uma avaliação rápida de inglês para encontrar seu nível perfeito",
       step2Title: "Aventuras Semanais",
       step2Desc:
-        "Toda segunda-feira, descubra um novo ecossistema com conteúdo fresco e aulas ao vivo",
+        "Toda segunda-feira, descubra um novo ecossistema com conteúdo inédito e aulas ao vivo",
       step3Title: "Aprenda e Conecte",
       step3Desc:
         "Pratique inglês enquanto aprende sobre conservação com outros membros da tribo",
       step4Title: "Cause um Impacto",
-      step4Desc: "20% da receita apoia projetos reais de proteção ambiental",
+      step4Desc: "10% da receita apoia projetos reais de proteção ambiental",
 
       // Social Proof
       testimonialTitle: "O Que Nossa Tribo Diz",
@@ -273,7 +273,7 @@ export default function LandingPage() {
         "Cada aula de conversação ajuda a financiar conservação real. Junte-se a uma comunidade onde aprender inglês significa proteger nosso planeta.",
       oceanTitle: "Proteção ambiental",
       oceanSubtitle:
-        "20% de toda a receita vai diretamente para ONGs ambientais verificadas que se dedicam à conservação dos oceanos.",
+        "10% de toda a receita vai diretamente para ONGs ambientais verificadas que se dedicam à conservação dos oceanos.",
 
       // CTA
       ctaTitle: "Pronto para Se Juntar à Tribo?",
@@ -301,7 +301,8 @@ export default function LandingPage() {
   const heroImages = [
     {
       // src: "/landing-top/new-guinea-people-paddling.jpg",
-      src: "/landing-top/marcus-woodbridge-campfire.jpg",
+      // src: "/landing-top/marcus-woodbridge-campfire.jpg",
+      src: "/eco/penguins.jpeg",
       caption: lang === "en" ? "Join the tribe!" : "Junte-se à tribo",
     },
     {
@@ -315,15 +316,15 @@ export default function LandingPage() {
       src: "/landing-top/manu-national-park-peru.jpg",
       caption:
         lang === "en"
-          ? "This Week: Amazon Rainforest"
-          : "Esta Semana: Floresta Amazônica",
+          ? "This Month: Amazon Rainforest"
+          : "Este mês: Floresta Amazônica",
     },
     {
       src: "/landing-top/king-penguin.jpg",
       caption:
         lang === "en"
-          ? "Next Week: Antarctic Waters"
-          : "Próxima Semana: Águas Antárticas",
+          ? "Next month: Antarctic Waters"
+          : "Próximo mês: Águas Antárticas",
     },
   ];
 
@@ -434,10 +435,10 @@ export default function LandingPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center gap-2 justify-center">
+                {/* <button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center gap-2 justify-center">
                   {copy.startFree}
                   <ArrowRight className="w-5 h-5" />
-                </button>
+                </button> */}
 
                 {/* <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 flex items-center gap-2 justify-center">
                   <Mic className="w-5 h-5" />
@@ -760,8 +761,8 @@ export default function LandingPage() {
 
             <div className="relative">
               <img
-                src="/classroom.jpeg"
-                alt="Classroom using Neptune's Tribe"
+                src="/online-student.jpg"
+                alt="Student using Neptune's Tribe online"
                 className="w-full h-96 rounded-xl object-cover shadow-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl"></div>

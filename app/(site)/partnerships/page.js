@@ -49,7 +49,7 @@ export default function NGOPresentation() {
       slide2Point1:
         "Online English learning platform focused on environmental themes",
       slide2Point2:
-        "170+ learning units about species, ecosystems, and conservation heroes",
+        "Weekly activities to improve your vocabulary focusing on an environmental theme.",
       slide2Point3:
         "Weekly live conversation classes with synchronized global curriculum",
       slide2Point4:
@@ -75,12 +75,16 @@ export default function NGOPresentation() {
       slide4Title: "Partnership Opportunity",
       slide4Event: "Partnership Events",
       slide4EventDesc:
-        "Sea Shepherd promotes 1-hour conversation events (R$50 per participant, max 8)",
+        "Sea Shepherd promotes 1-hour conversation events (R$50 per participant, maximum of 8 participants)",
       slide4Revenue1: "Event Revenue Split",
       slide4Revenue1Desc: "50% of event revenue goes directly to Sea Shepherd",
-      slide4Revenue2: "Ongoing Partnership",
+      slide4Event2: "Ongoing Partnership",
+      slide4Event2Desc:
+        "By subscribing monthly, our tribe contributes to impactful conservation actions.",
+      slide4Revenue2: "Partnership Revenue Split",
       slide4Revenue2Desc:
         "20% of all subscriptions from partnership referrals go to Sea Shepherd",
+      slide4PartnershipGoal: "Partnership Goal",
       slide4Experience:
         "Participants get authentic platform experience and pathway to full membership",
 
@@ -152,10 +156,10 @@ export default function NGOPresentation() {
         "Aprenda Inglês • Proteja Nosso Planeta • Construa Comunidade",
 
       // Slide 2: What is Neptune's Tribe
-      slide2Title: "O Que É a Neptune's Tribe?",
+      slide2Title: "O Que é a Neptune's Tribe?",
       slide2Point1: "Plataforma online de inglês focada em temas ambientais",
       slide2Point2:
-        "170+ unidades sobre espécies, ecossistemas e heróis da conservação",
+        "Atividades semanais para aprimorar seu vocabulário focando em um tema ambiental",
       slide2Point3:
         "Aulas semanais de conversação ao vivo com currículo global sincronizado",
       slide2Point4:
@@ -181,13 +185,17 @@ export default function NGOPresentation() {
       slide4Title: "Oportunidade de Parceria",
       slide4Event: "Eventos de Parceria",
       slide4EventDesc:
-        "Sea Shepherd promove eventos de conversação de 1 hora (R$50 por participante, máx 8)",
+        "Sea Shepherd promove eventos de conversação de 1 hora (R$50 por participante, máximo de 8 participantes)",
+      slide4Event2: "Parceria Contínua",
+      slide4Event2Desc:
+        "Ao fazer a assinatura mensal nossa tribo contribui para ações de conservação impactantes",
       slide4Revenue1: "Divisão da Receita do Evento",
       slide4Revenue1Desc:
-        "50% da receita do evento vai diretamente para a Sea Shepherd",
-      slide4Revenue2: "Parceria Contínua",
+        "da receita do evento vai diretamente para a Sea Shepherd",
+      slide4Revenue2: "Divisão da Receita da Parceria Contínua",
       slide4Revenue2Desc:
-        "20% das assinaturas de indicações da parceria vão para a Sea Shepherd",
+        "das assinaturas de indicações da parceria vão para a Sea Shepherd",
+      slide4PartnershipGoal: "Meta da Parceria",
       slide4Experience:
         "Participantes recebem experiência autêntica da plataforma e caminho para adesão completa",
 
@@ -413,7 +421,7 @@ export default function NGOPresentation() {
       component: (
         <div className="space-y-8">
           <div className="text-center">
-            <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-8">
               {copy.slide4Title}
             </h2>
           </div>
@@ -430,16 +438,20 @@ export default function NGOPresentation() {
               <p className="text-blue-700 dark:text-blue-300 mb-6">
                 {copy.slide4EventDesc}
               </p>
+              <p className="text-2xl font-bold text-blue-300">50%</p>
+              <p className=" text-blue-800 dark:text-blue-300 mt-2">
+                {copy.slide4Revenue1Desc}
+              </p>
 
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
+              {/* <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold">Event Revenue</span>
+                  <span className="font-semibold">{copy.slide4Revenue1}</span>
                   <span className="text-2xl font-bold text-green-600">50%</span>
                 </div>
-                <p className="text-sm text-gray-600 mt-2">
-                  R$25 per participant to NGO
+                <p className="text-sm text-gray-600 dark:text-white mt-2">
+                  {copy.slide4Revenue1Desc}
                 </p>
-              </div>
+              </div> */}
             </div>
 
             {/* Ongoing Partnership */}
@@ -447,33 +459,37 @@ export default function NGOPresentation() {
               <div className="flex items-center gap-3 mb-4">
                 <TrendingUp className="w-8 h-8 text-green-600" />
                 <h3 className="text-2xl font-bold text-green-800 dark:text-green-200">
-                  {copy.slide4Revenue2}
+                  {copy.slide4Event2}
                 </h3>
               </div>
+              <p className="text-green-700 dark:text-green-300 mb-6">
+                {copy.slide4Event2Desc}
+              </p>
+              <p className="text-2xl font-bold text-green-600">20%</p>
               <p className="text-green-700 dark:text-green-300 mb-6">
                 {copy.slide4Revenue2Desc}
               </p>
 
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
+              {/* <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold">Subscription Revenue</span>
+                  <span className="font-semibold">{copy.slide4Revenue2}</span>
                   <span className="text-2xl font-bold text-green-600">20%</span>
                 </div>
-                <p className="text-sm text-gray-600 mt-2">
-                  Ongoing monthly support
+                <p className="text-sm text-gray-600 dark:text-white mt-2">
+                  {copy.slide4Revenue2Desc}
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
 
-          <div className="text-center bg-yellow-50 dark:bg-yellow-900 rounded-xl p-6">
+          <div className=" text-white text-center rounded-xl p-3">
             <div className="flex items-center justify-center gap-2 mb-3">
-              <Target className="w-6 h-6 text-yellow-600" />
-              <h3 className="text-xl font-bold text-yellow-800 dark:text-yellow-200">
-                Partnership Goal
+              <Target className="w-6 h-6 text-accent-600" />
+              <h3 className="text-xl font-bold text-accent-800 dark:text-white">
+                {copy.slide4PartnershipGoal}
               </h3>
             </div>
-            <p className="text-yellow-700 dark:text-yellow-300">
+            <p className="text-accent-700 dark:text-white">
               {copy.slide4Experience}
             </p>
           </div>
@@ -498,7 +514,7 @@ export default function NGOPresentation() {
                 title: copy.slide5Aligned,
                 desc: copy.slide5AlignedDesc,
                 icon: <Heart className="w-8 h-8" />,
-                color: "red",
+                color: "rose",
               },
               {
                 title: copy.slide5Global,
@@ -510,7 +526,7 @@ export default function NGOPresentation() {
                 title: copy.slide5Impact,
                 desc: copy.slide5ImpactDesc,
                 icon: <TrendingUp className="w-8 h-8" />,
-                color: "green",
+                color: "teal",
               },
               {
                 title: copy.slide5Quality,
@@ -521,7 +537,7 @@ export default function NGOPresentation() {
             ].map((benefit, i) => (
               <div
                 key={i}
-                className={`bg-${benefit.color}-50 dark:bg-${benefit.color}-950 rounded-xl p-6`}
+                className={`bg-${benefit.color}-50 dark:bg-${benefit.color}-900 rounded-xl p-6`}
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div

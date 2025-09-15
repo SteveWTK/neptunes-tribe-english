@@ -1,4 +1,4 @@
-// app/(site)/units/page.js - Show all units with premium labels
+// app/(site)/units/page.js
 import {
   fetchFeaturedUnits,
   fetchUnitDetails,

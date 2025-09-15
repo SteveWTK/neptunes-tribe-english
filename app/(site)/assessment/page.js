@@ -57,9 +57,9 @@ export default function AssessmentPage() {
       emailLabel: "Your email address",
       emailPlaceholder: "Enter your email to get started",
       startAssessment: "Start Assessment",
-      recordingTitle: "Record Yourself Reading This Text",
+      recordingTitle: "Record Yourself",
       recordingDesc:
-        "Read this text naturally at your own pace. Take your time!",
+        "Introduce yourself and talk about your interest in the environment, or read this text naturally at your own pace. Take your time!",
       readingText:
         "Marine protected areas are essential for ocean conservation. These underwater sanctuaries provide safe spaces where fish populations can recover and coral reefs can flourish. Scientists have discovered that well-managed marine reserves not only protect biodiversity but also benefit local fishing communities through improved fish stocks in surrounding waters.",
       recordingInstructions: "Tips for best results:",
@@ -119,9 +119,9 @@ export default function AssessmentPage() {
       emailLabel: "Seu endereço de email",
       emailPlaceholder: "Digite seu email para começar",
       startAssessment: "Iniciar Avaliação",
-      recordingTitle: "Grave-se Lendo Este Texto",
+      recordingTitle: "Grave-se",
       recordingDesc:
-        "Leia este texto naturalmente no seu próprio ritmo. Não tenha pressa!",
+        "Se apresente e fale um pouco sobre você - ou leia este texto naturalmente no seu próprio ritmo. Não tenha pressa!",
       readingText:
         "Marine protected areas are essential for ocean conservation. These underwater sanctuaries provide safe spaces where fish populations can recover and coral reefs can flourish. Scientists have discovered that well-managed marine reserves not only protect biodiversity but also benefit local fishing communities through improved fish stocks in surrounding waters.",
       recordingInstructions: "Dicas para melhores resultados:",

@@ -300,7 +300,7 @@ export default function EcoMapClient({
       )} */}
 
       {/* Main Map Section */}
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div data-tour="eco-map" className="max-w-6xl mx-auto space-y-8">
         <EcoMapProgressOceanZones
           highlightedRegions={highlightedRegions}
           completedUnitsByCountry={completedUnitsByCountry}

@@ -372,7 +372,7 @@ export default function EcoMapProgressOceans({
     >
       {/* Weekly Theme Header */}
       {currentWeeklyTheme && (
-        <div className="mb-6 mx-4">
+        <div data-tour="weekly-theme" className="mb-6 mx-4">
           <div className="bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-xl p-6 shadow-lg">
             <div className="flex items-center gap-3 mb-3">
               <Calendar className="w-6 h-6" />

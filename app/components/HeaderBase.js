@@ -32,7 +32,7 @@ export default function HeaderBase({
         // { href: "/eco-map", label: "Eco Map" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "About Us" },
-        { href: "/pricing", label: "Pricing" },
+        { href: "/subscriptions", label: "Subscriptions" },
       ],
       pt: [
         { href: "/units", label: "Atividades" },
@@ -40,7 +40,7 @@ export default function HeaderBase({
         // { href: "/eco-map", label: "Eco Map" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
-        { href: "pricing", label: "Preços" },
+        { href: "subscriptions", label: "Assinaturas" },
       ],
       // ... add other languages as needed
     },
@@ -51,7 +51,7 @@ export default function HeaderBase({
         { href: "/challenges", label: "Challenges" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "About Us" },
-        { href: "/pricing", label: "Pricing" },
+        { href: "/subscriptions", label: "Subscriptions" },
 
         // { href: "/dashboard", label: "Dashboard" },
         // { href: "/profile", label: "Profile" },
@@ -62,7 +62,7 @@ export default function HeaderBase({
         { href: "/challenges", label: "Desafios" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
-        { href: "/pricing", label: "Preços" },
+        { href: "/subscriptions", label: "Assinaturas" },
 
         // { href: "/dashboard", label: "Painel" },
         // { href: "/profile", label: "Perfil" },
@@ -114,6 +114,7 @@ export default function HeaderBase({
               {session?.user && (
                 <Link
                   href="/eco-map"
+                  data-tour="eco-map-link"
                   className="py-0.5 px-5 rounded-2xl transition-colors flex items-center text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
                 >
                   {session?.user?.image && (

@@ -1,4 +1,5 @@
 // "use client";
+// app\layout.js
 
 import "@/app/styles/globals.css";
 
@@ -12,6 +13,7 @@ import { Toaster } from "sonner";
 import { LanguageProvider } from "@/lib/contexts/LanguageContext";
 import { DarkModeProvider } from "@/lib/contexts/DarkModeContext";
 import { SessionProvider } from "next-auth/react";
+import { OnboardingProvider } from "@/lib/contexts/OnboardingContext";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -40,7 +42,9 @@ export default function RootLayout({ children }) {
         <StyledComponentsRegistry>
           <SessionProvider>
             <LanguageProvider>
-              <DarkModeProvider>{children}</DarkModeProvider>
+              <DarkModeProvider>
+                <OnboardingProvider>{children}</OnboardingProvider>
+              </DarkModeProvider>
             </LanguageProvider>
           </SessionProvider>
           <Toaster richColors closeButton />

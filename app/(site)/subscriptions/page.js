@@ -12,7 +12,7 @@ import {
   LibraryBig,
   HeartHandshake,
 } from "lucide-react";
-import PricingTiersConv from "@/components/PricingTiersConv";
+// import PricingTiersConv from "@/components/PricingTiersConv";
 
 export default function PricingPage() {
   const { lang } = useLanguage();
@@ -21,13 +21,13 @@ export default function PricingPage() {
       pageTitle: "Join Neptune's Tribe",
       pageSubtitle:
         "Enrich your English while exploring the world's most amazing ecosystems.",
-      pageMission: "20% of all subscriptions go to environmental NGOs",
+      pageMission: "10% of all subscriptions go to environmental NGOs",
       impactTitle: "Your support has a real impact.",
       impactSubtitle:
         "Every subscription directly supports both education and environmental conservation",
       oceanTitle: "Environmental conservation",
       oceanSubtitle:
-        "20% of all revenue goes directly to verified environmental NGOs.",
+        "10% of all revenue goes directly to verified environmental NGOs.",
       educationTitle: "Education Access",
       educationSubtitle:
         "Premium subscriptions help us provide free access to underprivileged communities and continuously develop better learning content.",
@@ -43,13 +43,13 @@ export default function PricingPage() {
       pageTitle: "Junte-se à Neptune's Tribe",
       pageSubtitle:
         "Desenvolva seu inglês enquanto explora os ecossistemas mais incríveis do mundo.",
-      pageMission: "20% de todas as assinaturas vão para ONGs ambientais",
+      pageMission: "10% de todas as assinaturas vão para ONGs ambientais",
       impactTitle: "Seu Apoio Cria Impacto Real",
       impactSubtitle:
         "Cada assinatura apoia diretamente a educação e a preservação ambiental",
       oceanTitle: "Proteção ambiental",
       oceanSubtitle:
-        "20% de toda a receita vai diretamente para ONGs ambientais verificadas que se dedicam à conservação dos oceanos.",
+        "10% de toda a receita vai diretamente para ONGs ambientais verificadas que se dedicam à conservação dos oceanos.",
       educationTitle: "Acesso à Educação",
       educationSubtitle:
         "Assinaturas premium nos ajudam a fornecer acesso gratuito a comunidades carentes e a desenvolver continuamente melhores conteúdos de aprendizagem.",
@@ -93,7 +93,7 @@ export default function PricingPage() {
       </section>
 
       {/* Pricing Tiers */}
-      <PricingTiersConv />
+      <PricingTiers />
 
       {/* Impact Section */}
       <section className="mt-20 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 rounded-2xl p-8 max-w-4xl mx-auto">
