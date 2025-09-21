@@ -15,7 +15,7 @@ export default function ChallengesHomeClient({
     en: {
       heroTitle: "Single-Gap Challenges",
       heroSubtitle:
-        "Test your English skills with our interactive gap-fill challenges. Each series contains 10 targeted exercises to improve your vocabulary and grammar.",
+        "Test your English skills with our interactive gap-fill challenges. Each series contains 10 targeted items to improve your vocabulary and grammar.",
       premiumChallenges: "Premium challenges available",
       upgradeForMore: "Upgrade to access all challenges",
     },
