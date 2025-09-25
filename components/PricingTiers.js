@@ -43,7 +43,7 @@ export default function PricingTiers() {
       cardContentExplorer: [
         "Access to basic learning units",
         "Access to eco-news",
-        "Basic Interactive eco-map tracking",
+        // "Basic Interactive eco-map tracking",
         // "Community access",
       ],
       cardContentPremium: [
@@ -158,16 +158,16 @@ export default function PricingTiers() {
     USD: {
       yearly: {
         premium: {
-          price: 59,
-          display: "$59",
+          price: 70,
+          display: "$70",
           period: "/year",
-          savings: "Save 50%",
+          savings: "Save 40%",
         },
         enterprise: {
-          price: 590,
-          display: "$590",
+          price: 700,
+          display: "$700",
           period: "/year",
-          savings: "Save 50%",
+          savings: "Save 40%",
         },
       },
       monthly: {
@@ -193,16 +193,16 @@ export default function PricingTiers() {
     BRL: {
       yearly: {
         premium: {
-          price: 290,
-          display: "R$290",
+          price: 350,
+          display: "R$350",
           period: "/ano",
-          savings: "Economize 50%",
+          savings: "Economize 40%",
         },
         enterprise: {
-          price: 2900,
-          display: "R$2.900",
+          price: 3500,
+          display: "R$3.500",
           period: "/ano",
-          savings: "Economize 50%",
+          savings: "Economize 40%",
         },
       },
       monthly: {
@@ -321,7 +321,7 @@ export default function PricingTiers() {
   const isDisabled = loading || status === "loading";
 
   return (
-    <div className="max-w-6xl mx-auto px-4">
+    <div className="max-w-6xl mx-auto px-4 pb-16">
       {/* Billing Toggle */}
       <div className="flex justify-center mb-4">
         <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
@@ -534,7 +534,7 @@ export default function PricingTiers() {
       </div>
 
       {/* FAQ Section */}
-      <div className="mt-16 max-w-3xl mx-auto">
+      {/* <div className="mt-16 max-w-3xl mx-auto">
         <h3 className="text-2xl font-bold text-center mb-8">
           {copy.FAQHeader}
         </h3>
@@ -548,7 +548,7 @@ export default function PricingTiers() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

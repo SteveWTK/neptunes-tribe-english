@@ -14,10 +14,10 @@ export default function AboutUsPage() {
       subtitle: "Protecting Our Planet Through Language Learning",
       missionTitle: "Our Mission",
       missionText:
-        "We believe that learning English should inspire global citizenship and environmental stewardship, creating a generation of learners who are both linguistically skilled and environmentally responsible.",
+        "To inspire global citizenship and environmental stewardship, creating a generation of learners who are both linguistically skilled and environmentally responsible.",
       visionTitle: "Our Vision",
       visionText:
-        "A world where language learning serves a greater purpose—where every English lesson contributes to environmental awareness, where every student becomes an ambassador for our planet's incredible biodiversity, and where education bridges the gap between linguistic competence and ecological responsibility.",
+        "A world where language learning serves a greater purpose; where every English lesson contributes to environmental awareness, where every student becomes an ambassador for our planet's incredible biodiversity, and where education bridges the gap between linguistic competence and ecological responsibility.",
       whatMakesUsSpecial: "What Makes Us Special",
       feature1Title: "Environmental Focus",
       feature1Text:
@@ -70,10 +70,10 @@ export default function AboutUsPage() {
       subtitle: "Protegendo Nosso Planeta Através do Aprendizado de Idiomas",
       missionTitle: "Nossa Missão",
       missionText:
-        "Acreditamos que aprender inglês deve inspirar cidadania global e responsabilidade ambiental, criando uma geração de estudantes que são tanto linguisticamente habilidosos quanto ambientalmente responsáveis.",
+        "Inspirar cidadania global e responsabilidade ambiental, criando uma geração de estudantes que são tanto linguisticamente habilidosos quanto ambientalmente responsáveis.",
       visionTitle: "Nossa Visão",
       visionText:
-        "Um mundo onde o aprendizado de idiomas serve a um propósito maior—onde cada aula de inglês contribui para a consciência ambiental, onde cada estudante se torna um embaixador da incrível biodiversidade do nosso planeta, e onde a educação conecta competência linguística e responsabilidade ecológica.",
+        "Um mundo onde o aprendizado de idiomas serve a um propósito maior; onde cada aula de inglês contribui para a consciência ambiental, onde cada estudante se torna um embaixador da incrível biodiversidade do nosso planeta, e onde a educação conecta competência linguística e responsabilidade ecológica.",
       whatMakesUsSpecial: "O Que Nos Torna Especiais",
       feature1Title: "Foco Ambiental",
       feature1Text:

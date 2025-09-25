@@ -114,7 +114,7 @@ export async function POST(req) {
         ...(oneTimeAmount && { one_time_amount: oneTimeAmount.toString() }),
       },
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/thank-you?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pricing?canceled=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/subscriptions?canceled=true`,
       allow_promotion_codes: true,
     });
 
@@ -172,7 +172,7 @@ function getOneTimePriceId(amount, currency) {
 
 function getPaymentMethods(currency) {
   if (currency === "BRL") {
-    return ["card", "boleto"]; // PIX is enabled via payment method configuration
+    return ["card"]; // PIX is enabled via payment method configuration
   }
   return ["card"];
 }

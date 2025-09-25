@@ -1,281 +1,3 @@
-// Enhanced SiteHomeClient.js with corrected tier logic
-// "use client";
-
-// import React, { useState, useEffect } from "react";
-// import { useRouter, useSearchParams } from "next/navigation";
-// import UnitCard from "@/components/UnitCard";
-// import { useLanguage } from "@/lib/contexts/LanguageContext";
-// import Link from "next/link";
-// import { countryNameLookup } from "@/lib/isoMappings";
-// import { useOnboarding } from "@/lib/contexts/OnboardingContext";
-
-// export default function SiteHomeClientEnhanced({
-//   featuredUnits,
-//   challenges,
-//   completedUnitIds = [],
-//   filterInfo = {},
-//   userInfo = {},
-//   currentWeeklyTheme = null,
-// }) {
-//   const { lang } = useLanguage();
-//   const router = useRouter();
-//   const searchParams = useSearchParams();
-//   const [showFilters, setShowFilters] = useState(false);
-//   const { completeStep } = useOnboarding();
-
-//   const { isLoggedIn, userTier, email } = userInfo; // userTier: 'explorer', 'pro', 'premium', or null
-
-//   // Helper function to determine if user has access to units
-//   const hasAccessToUnit = (unit) => {
-//     // All logged-in users (Explorer, Pro, Premium) have access to weekly theme units
-//     if (currentWeeklyTheme && isWeeklyThemeUnit(unit)) {
-//       return isLoggedIn;
-//     }
-
-//     // For non-theme units, apply premium restrictions
-//     if (unit.is_premium) {
-//       return userTier === "pro" || userTier === "premium";
-//     }
-
-//     // Free units available to everyone
-//     return true;
-//   };
-
-//   // Helper function to check if unit is part of weekly theme
-//   const isWeeklyThemeUnit = (unit) => {
-//     if (!currentWeeklyTheme) return false;
-
-//     const unitRegions = parseRegionCodes(unit.region_code);
-//     const unitMarineZones = parseMarineZones(unit.marine_zone);
-
-//     const matchesRegion = unitRegions.some((region) =>
-//       currentWeeklyTheme.featured_regions?.includes(region.toUpperCase())
-//     );
-
-//     const matchesMarineZone = unitMarineZones.some((zone) =>
-//       currentWeeklyTheme.featured_marine_zones?.includes(zone)
-//     );
-
-//     return matchesRegion || matchesMarineZone;
-//   };
-
-//   // Helper function to get upgrade message based on unit type
-//   const getUpgradeMessage = (unit) => {
-//     if (isWeeklyThemeUnit(unit) && !isLoggedIn) {
-//       return {
-//         message: "Sign in to join this week's adventure",
-//         action: "Sign In",
-//         href: "/login",
-//       };
-//     }
-
-//     if (unit.is_premium && (!userTier || userTier === "explorer")) {
-//       return {
-//         message: "Upgrade to Pro for premium content",
-//         action: "Upgrade to Pro",
-//         href: "/pricing",
-//       };
-//     }
-
-//     return null;
-//   };
-
-//   // Filter units based on access and preferences
-//   const getDisplayUnits = () => {
-//     let unitsToShow = featuredUnits;
-
-//     // If there's a weekly theme, prioritize theme units for logged-in users
-//     if (currentWeeklyTheme && isLoggedIn) {
-//       const themeUnits = unitsToShow.filter(isWeeklyThemeUnit);
-//       const otherUnits = unitsToShow.filter((unit) => !isWeeklyThemeUnit(unit));
-
-//       // Show theme units first, then others
-//       unitsToShow = [...themeUnits, ...otherUnits];
-//     }
-
-//     return unitsToShow;
-//   };
-
-//   // Onboarding: Track when user views units page
-//   React.useEffect(() => {
-//     completeStep("hasViewedUnits");
-//   }, [completeStep]);
-
-//   const displayUnits = getDisplayUnits();
-
-//   const t = {
-//     en: {
-//       heroTitle: "Practice your English as you explore the planet",
-//       weeklyAdventure: "This Week's Tribal Adventure",
-//       joinWeeklyTheme: "Join This Week's Adventure",
-//       allUnits: "All Learning Units",
-//       signInToJoin: "Sign in to join the weekly adventure",
-//       upgradeForPremium: "Upgrade for premium content access",
-//       conversationClasses: "Live Conversation Classes",
-//       explorerAccess: "Listen to classes",
-//       proAccess: "Participate in classes",
-//       premiumAccess: "Participate + Vote on themes",
-//     },
-//     pt: {
-//       heroTitle: "Pratique seu inglês explorando o planeta",
-//       weeklyAdventure: "Aventura Tribal desta Semana",
-//       joinWeeklyTheme: "Participe da Aventura desta Semana",
-//       allUnits: "Todas as Unidades",
-//       signInToJoin: "Entre para participar da aventura semanal",
-//       upgradeForPremium: "Faça upgrade para acesso a conteúdo premium",
-//       conversationClasses: "Aulas de Conversação ao Vivo",
-//       explorerAccess: "Ouvir as aulas",
-//       proAccess: "Participar das aulas",
-//       premiumAccess: "Participar + Votar nos temas",
-//     },
-//   };
-
-//   const copy = t[lang];
-
-//   return (
-//     <div className="min-h-screen bg-gray-100 dark:bg-gray-950 px-4 sm:px-8 py-8">
-//       {/* Header Section */}
-//       <div className="text-center mb-8">
-//         <h1
-//           className="units-header text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4"
-//           data-tour="units-header"
-//         >
-//           {currentWeeklyTheme ? copy.weeklyAdventure : copy.heroTitle}
-//         </h1>
-
-//         {/* Weekly Theme Banner */}
-//         {currentWeeklyTheme && (
-//           <div className="mb-6 mx-auto max-w-4xl" data-tour="weekly-theme">
-//             <div className="bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-xl p-6 shadow-lg">
-//               <h2 className="text-2xl font-bold mb-2">
-//                 {lang === "pt"
-//                   ? currentWeeklyTheme.theme_title_pt
-//                   : currentWeeklyTheme.theme_title}
-//               </h2>
-//               <p className="text-blue-100 mb-4">
-//                 {lang === "pt"
-//                   ? currentWeeklyTheme.theme_description_pt
-//                   : currentWeeklyTheme.theme_description}
-//               </p>
-
-//               {/* Tier Access Information */}
-//               <div className="bg-white/10 rounded-lg p-4 mb-4">
-//                 <h3 className="font-semibold mb-2">
-//                   {copy.conversationClasses}
-//                 </h3>
-//                 <div className="grid md:grid-cols-3 gap-4 text-sm">
-//                   <div
-//                     className={`p-3 rounded-lg ${
-//                       userTier === "explorer" ? "bg-white/20" : "bg-white/10"
-//                     }`}
-//                   >
-//                     <div className="font-medium">Explorer</div>
-//                     <div>{copy.explorerAccess}</div>
-//                   </div>
-//                   <div
-//                     className={`p-3 rounded-lg ${
-//                       userTier === "pro" ? "bg-white/20" : "bg-white/10"
-//                     }`}
-//                   >
-//                     <div className="font-medium">Pro</div>
-//                     <div>{copy.proAccess}</div>
-//                   </div>
-//                   <div
-//                     className={`p-3 rounded-lg ${
-//                       userTier === "premium" ? "bg-white/20" : "bg-white/10"
-//                     }`}
-//                   >
-//                     <div className="font-medium">Premium</div>
-//                     <div>{copy.premiumAccess}</div>
-//                   </div>
-//                 </div>
-//               </div>
-
-//               {!isLoggedIn && (
-//                 <Link
-//                   href="/login"
-//                   className="inline-block bg-white/20 hover:bg-white/30 px-6 py-2 rounded-lg font-medium transition-all duration-200"
-//                 >
-//                   {copy.signInToJoin}
-//                 </Link>
-//               )}
-//             </div>
-//           </div>
-//         )}
-//       </div>
-
-//       {/* Units Grid */}
-//       {displayUnits && displayUnits.length > 0 ? (
-//         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-//           {displayUnits.map((unit, index) => {
-//             const isCompleted = completedUnitIds.includes(unit.id);
-//             const hasAccess = hasAccessToUnit(unit);
-//             const upgradeInfo = hasAccess ? null : getUpgradeMessage(unit);
-//             const isThemeUnit = isWeeklyThemeUnit(unit);
-
-//             return (
-//               <div key={unit.id} className="relative">
-//                 <UnitCard
-//                   unit={unit}
-//                   hasAccess={hasAccess}
-//                   upgradeInfo={upgradeInfo}
-//                   isWeeklyTheme={isThemeUnit}
-//                   index={index}
-//                 />
-//                 {isCompleted && (
-//                   <div className="absolute top-3 left-3 bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold shadow-lg z-20">
-//                     ✓
-//                   </div>
-//                 )}
-//               </div>
-//             );
-//           })}
-//         </section>
-//       ) : (
-//         /* Empty State */
-//         <div className="text-center py-16">
-//           <div className="max-w-md mx-auto">
-//             <div className="text-6xl mb-6">🌍</div>
-//             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-//               No units available
-//             </h3>
-//             <p className="text-gray-600 dark:text-gray-400 mb-6">
-//               Check back soon for new learning adventures!
-//             </p>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// // Helper functions (add these to your utils or keep in component)
-// const parseRegionCodes = (regionCode) => {
-//   if (!regionCode) return [];
-//   if (regionCode.startsWith("[") && regionCode.endsWith("]")) {
-//     try {
-//       return JSON.parse(regionCode);
-//     } catch (e) {
-//       console.warn("Failed to parse region code array:", regionCode);
-//       return [];
-//     }
-//   }
-//   return [regionCode];
-// };
-
-// const parseMarineZones = (marineZone) => {
-//   if (!marineZone) return [];
-//   if (marineZone.startsWith("[") && marineZone.endsWith("]")) {
-//     try {
-//       return JSON.parse(marineZone);
-//     } catch (e) {
-//       console.warn("Failed to parse marine zone array:", marineZone);
-//       return [];
-//     }
-//   }
-//   return [marineZone];
-// };
-
 // app/(site)/units/SiteHomeClient.js - Enhanced with Premium UI and Filtering
 "use client";
 
@@ -302,7 +24,7 @@ export default function SiteHomeClient({
 
   const t = {
     en: {
-      heroTitle: "Practice your English as you explore the planet",
+      heroTitle: "Practise your English as you explore the planet",
       heroSubtitle:
         "Neptune's Tribe is an English learning journey inspired by environmental action. Learn English. Support the Planet.",
       allUnits: "All Learning Units",
@@ -664,3 +386,281 @@ export default function SiteHomeClient({
     </div>
   );
 }
+
+// Enhanced SiteHomeClient.js with corrected tier logic
+// "use client";
+
+// import React, { useState, useEffect } from "react";
+// import { useRouter, useSearchParams } from "next/navigation";
+// import UnitCard from "@/components/UnitCard";
+// import { useLanguage } from "@/lib/contexts/LanguageContext";
+// import Link from "next/link";
+// import { countryNameLookup } from "@/lib/isoMappings";
+// import { useOnboarding } from "@/lib/contexts/OnboardingContext";
+
+// export default function SiteHomeClientEnhanced({
+//   featuredUnits,
+//   challenges,
+//   completedUnitIds = [],
+//   filterInfo = {},
+//   userInfo = {},
+//   currentWeeklyTheme = null,
+// }) {
+//   const { lang } = useLanguage();
+//   const router = useRouter();
+//   const searchParams = useSearchParams();
+//   const [showFilters, setShowFilters] = useState(false);
+//   const { completeStep } = useOnboarding();
+
+//   const { isLoggedIn, userTier, email } = userInfo; // userTier: 'explorer', 'pro', 'premium', or null
+
+//   // Helper function to determine if user has access to units
+//   const hasAccessToUnit = (unit) => {
+//     // All logged-in users (Explorer, Pro, Premium) have access to weekly theme units
+//     if (currentWeeklyTheme && isWeeklyThemeUnit(unit)) {
+//       return isLoggedIn;
+//     }
+
+//     // For non-theme units, apply premium restrictions
+//     if (unit.is_premium) {
+//       return userTier === "pro" || userTier === "premium";
+//     }
+
+//     // Free units available to everyone
+//     return true;
+//   };
+
+//   // Helper function to check if unit is part of weekly theme
+//   const isWeeklyThemeUnit = (unit) => {
+//     if (!currentWeeklyTheme) return false;
+
+//     const unitRegions = parseRegionCodes(unit.region_code);
+//     const unitMarineZones = parseMarineZones(unit.marine_zone);
+
+//     const matchesRegion = unitRegions.some((region) =>
+//       currentWeeklyTheme.featured_regions?.includes(region.toUpperCase())
+//     );
+
+//     const matchesMarineZone = unitMarineZones.some((zone) =>
+//       currentWeeklyTheme.featured_marine_zones?.includes(zone)
+//     );
+
+//     return matchesRegion || matchesMarineZone;
+//   };
+
+//   // Helper function to get upgrade message based on unit type
+//   const getUpgradeMessage = (unit) => {
+//     if (isWeeklyThemeUnit(unit) && !isLoggedIn) {
+//       return {
+//         message: "Sign in to join this week's adventure",
+//         action: "Sign In",
+//         href: "/login",
+//       };
+//     }
+
+//     if (unit.is_premium && (!userTier || userTier === "explorer")) {
+//       return {
+//         message: "Upgrade to Pro for premium content",
+//         action: "Upgrade to Pro",
+//         href: "/pricing",
+//       };
+//     }
+
+//     return null;
+//   };
+
+//   // Filter units based on access and preferences
+//   const getDisplayUnits = () => {
+//     let unitsToShow = featuredUnits;
+
+//     // If there's a weekly theme, prioritize theme units for logged-in users
+//     if (currentWeeklyTheme && isLoggedIn) {
+//       const themeUnits = unitsToShow.filter(isWeeklyThemeUnit);
+//       const otherUnits = unitsToShow.filter((unit) => !isWeeklyThemeUnit(unit));
+
+//       // Show theme units first, then others
+//       unitsToShow = [...themeUnits, ...otherUnits];
+//     }
+
+//     return unitsToShow;
+//   };
+
+//   // Onboarding: Track when user views units page
+//   React.useEffect(() => {
+//     completeStep("hasViewedUnits");
+//   }, [completeStep]);
+
+//   const displayUnits = getDisplayUnits();
+
+//   const t = {
+//     en: {
+//       heroTitle: "Practice your English as you explore the planet",
+//       weeklyAdventure: "This Week's Tribal Adventure",
+//       joinWeeklyTheme: "Join This Week's Adventure",
+//       allUnits: "All Learning Units",
+//       signInToJoin: "Sign in to join the weekly adventure",
+//       upgradeForPremium: "Upgrade for premium content access",
+//       conversationClasses: "Live Conversation Classes",
+//       explorerAccess: "Listen to classes",
+//       proAccess: "Participate in classes",
+//       premiumAccess: "Participate + Vote on themes",
+//     },
+//     pt: {
+//       heroTitle: "Pratique seu inglês explorando o planeta",
+//       weeklyAdventure: "Aventura Tribal desta Semana",
+//       joinWeeklyTheme: "Participe da Aventura desta Semana",
+//       allUnits: "Todas as Unidades",
+//       signInToJoin: "Entre para participar da aventura semanal",
+//       upgradeForPremium: "Faça upgrade para acesso a conteúdo premium",
+//       conversationClasses: "Aulas de Conversação ao Vivo",
+//       explorerAccess: "Ouvir as aulas",
+//       proAccess: "Participar das aulas",
+//       premiumAccess: "Participar + Votar nos temas",
+//     },
+//   };
+
+//   const copy = t[lang];
+
+//   return (
+//     <div className="min-h-screen bg-gray-100 dark:bg-gray-950 px-4 sm:px-8 py-8">
+//       {/* Header Section */}
+//       <div className="text-center mb-8">
+//         <h1
+//           className="units-header text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4"
+//           data-tour="units-header"
+//         >
+//           {currentWeeklyTheme ? copy.weeklyAdventure : copy.heroTitle}
+//         </h1>
+
+//         {/* Weekly Theme Banner */}
+//         {currentWeeklyTheme && (
+//           <div className="mb-6 mx-auto max-w-4xl" data-tour="weekly-theme">
+//             <div className="bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-xl p-6 shadow-lg">
+//               <h2 className="text-2xl font-bold mb-2">
+//                 {lang === "pt"
+//                   ? currentWeeklyTheme.theme_title_pt
+//                   : currentWeeklyTheme.theme_title}
+//               </h2>
+//               <p className="text-blue-100 mb-4">
+//                 {lang === "pt"
+//                   ? currentWeeklyTheme.theme_description_pt
+//                   : currentWeeklyTheme.theme_description}
+//               </p>
+
+//               {/* Tier Access Information */}
+//               <div className="bg-white/10 rounded-lg p-4 mb-4">
+//                 <h3 className="font-semibold mb-2">
+//                   {copy.conversationClasses}
+//                 </h3>
+//                 <div className="grid md:grid-cols-3 gap-4 text-sm">
+//                   <div
+//                     className={`p-3 rounded-lg ${
+//                       userTier === "explorer" ? "bg-white/20" : "bg-white/10"
+//                     }`}
+//                   >
+//                     <div className="font-medium">Explorer</div>
+//                     <div>{copy.explorerAccess}</div>
+//                   </div>
+//                   <div
+//                     className={`p-3 rounded-lg ${
+//                       userTier === "pro" ? "bg-white/20" : "bg-white/10"
+//                     }`}
+//                   >
+//                     <div className="font-medium">Pro</div>
+//                     <div>{copy.proAccess}</div>
+//                   </div>
+//                   <div
+//                     className={`p-3 rounded-lg ${
+//                       userTier === "premium" ? "bg-white/20" : "bg-white/10"
+//                     }`}
+//                   >
+//                     <div className="font-medium">Premium</div>
+//                     <div>{copy.premiumAccess}</div>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               {!isLoggedIn && (
+//                 <Link
+//                   href="/login"
+//                   className="inline-block bg-white/20 hover:bg-white/30 px-6 py-2 rounded-lg font-medium transition-all duration-200"
+//                 >
+//                   {copy.signInToJoin}
+//                 </Link>
+//               )}
+//             </div>
+//           </div>
+//         )}
+//       </div>
+
+//       {/* Units Grid */}
+//       {displayUnits && displayUnits.length > 0 ? (
+//         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+//           {displayUnits.map((unit, index) => {
+//             const isCompleted = completedUnitIds.includes(unit.id);
+//             const hasAccess = hasAccessToUnit(unit);
+//             const upgradeInfo = hasAccess ? null : getUpgradeMessage(unit);
+//             const isThemeUnit = isWeeklyThemeUnit(unit);
+
+//             return (
+//               <div key={unit.id} className="relative">
+//                 <UnitCard
+//                   unit={unit}
+//                   hasAccess={hasAccess}
+//                   upgradeInfo={upgradeInfo}
+//                   isWeeklyTheme={isThemeUnit}
+//                   index={index}
+//                 />
+//                 {isCompleted && (
+//                   <div className="absolute top-3 left-3 bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold shadow-lg z-20">
+//                     ✓
+//                   </div>
+//                 )}
+//               </div>
+//             );
+//           })}
+//         </section>
+//       ) : (
+//         /* Empty State */
+//         <div className="text-center py-16">
+//           <div className="max-w-md mx-auto">
+//             <div className="text-6xl mb-6">🌍</div>
+//             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+//               No units available
+//             </h3>
+//             <p className="text-gray-600 dark:text-gray-400 mb-6">
+//               Check back soon for new learning adventures!
+//             </p>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+// // Helper functions (add these to your utils or keep in component)
+// const parseRegionCodes = (regionCode) => {
+//   if (!regionCode) return [];
+//   if (regionCode.startsWith("[") && regionCode.endsWith("]")) {
+//     try {
+//       return JSON.parse(regionCode);
+//     } catch (e) {
+//       console.warn("Failed to parse region code array:", regionCode);
+//       return [];
+//     }
+//   }
+//   return [regionCode];
+// };
+
+// const parseMarineZones = (marineZone) => {
+//   if (!marineZone) return [];
+//   if (marineZone.startsWith("[") && marineZone.endsWith("]")) {
+//     try {
+//       return JSON.parse(marineZone);
+//     } catch (e) {
+//       console.warn("Failed to parse marine zone array:", marineZone);
+//       return [];
+//     }
+//   }
+//   return [marineZone];
+// };

@@ -96,14 +96,14 @@ export default function PricingPage() {
       <PricingTiers />
 
       {/* Impact Section */}
-      <section className="mt-20 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 rounded-2xl p-8 max-w-4xl mx-auto">
+      {/* <section className="mt-20 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 rounded-2xl p-8 max-w-4xl mx-auto">
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-4">{copy.impactTitle}</h2>
           <p className="text-lg text-muted-foreground mb-8">
             {copy.impactSubtitle}
           </p>
 
-          <div className="grid md:grid-cols-1 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg">
               <FishSymbol className="w-8 h-8 mx-auto mb-2" />
               <h3 className="font-semibold text-lg mb-3 gap-2">
@@ -114,20 +114,18 @@ export default function PricingPage() {
               </p>
             </div>
 
-            {/* <div className="bg-white dark:bg-gray-800 p-6 rounded-lg">
-              <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                <span className="text-2xl">
-                  <LibraryBig />
-                </span>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg">
+              <LibraryBig className="w-8 h-8 mx-auto mb-2" />
+              <h3 className="font-semibold text-lg mb-3 gap-2">
                 {copy.educationTitle}
               </h3>
               <p className="text-sm text-muted-foreground">
                 {copy.educationSubtitle}
               </p>
-            </div> */}
+            </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Call to Action */}
       {/* <section className="mt-16 text-center">
@@ -178,14 +176,14 @@ export default function PricingPage() {
       </section> */}
 
       {/* Footer Note */}
-      <section className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400  py-4">
+      {/* <section className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400  py-4">
         <p className="flex items-center justify-center gap-2">
           <span className="text-lg">
             <HeartHandshake />
           </span>
           {copy.pageMission}
         </p>
-      </section>
+      </section> */}
     </main>
   );
 }
