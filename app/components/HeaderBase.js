@@ -136,7 +136,7 @@ export default function HeaderBase({
                 />
               ) : (
                 <Link
-                  href="/login"
+                  href="/auth/signin"
                   className="py-0.5 px-5 rounded-2xl transition-colors flex items-center gap-3 text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 w-full"
                 >
                   {copy.signIn}

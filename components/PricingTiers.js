@@ -37,25 +37,27 @@ export default function PricingTiers() {
       yearly: "Yearly",
       discount: "50% OFF",
       mostPopular: "Most Popular",
-      explorerSub: "Try out our main features",
-      premiumSub: "Enjoy all our content and features",
+      basicSub: "Try out our main features",
+      explorerSub: "Enjoy all our content and features",
       enterpriseSub: "For teams and organisations",
-      cardContentExplorer: [
-        "Access to basic learning units",
+      cardContentBasic: [
+        "Access to one trial learning unit",
+        "Access to one challenge",
         "Access to eco-news",
         // "Basic Interactive eco-map tracking",
         // "Community access",
       ],
-      cardContentPremium: [
-        "All Explorer features",
-        "Unlimited learning units",
-        "Advanced progress analytics",
+      cardContentExplorer: [
+        "Access to all features",
+        "Accecss to all the weekly theme units, challenges and revision exercises",
+        "Access to your eco map",
+        "Progress tracking and analytics",
         "Priority support",
         // "Offline content access",
-        "Certificate generation",
+        // "Certificate generation",
       ],
       cardContentEnterprise: [
-        "All Premium features",
+        "All Explorer features",
         "Up to 25 accounts (pay for only 10)",
         "Group management tools",
         // "Custom curriculum creation",
@@ -64,7 +66,7 @@ export default function PricingTiers() {
         // "Dedicated support manager",
       ],
       getStartedFree: "Get Started Free",
-      choosePremium: "Choose Premium",
+      chooseExplorer: "Choose Explorer",
       chooseEnterprise: "Choose Enterprise",
       FAQHeader: "Frequently Asked Questions",
       FAQ: [
@@ -74,7 +76,7 @@ export default function PricingTiers() {
         },
         {
           q: "Is there a free trial?",
-          a: "Our Explorer plan is completely free and gives you a sample of our content and features. You can upgrade to Premium anytime to unlock everything.",
+          a: "Our Basic plan is completely free and gives you a sample of our content and features. You can upgrade to Explorer anytime to unlock everything.",
         },
         {
           q: "How does the environmental impact work?",
@@ -91,34 +93,35 @@ export default function PricingTiers() {
       yearly: "Anual",
       discount: "50% OFF",
       mostPopular: "Mais Popular",
-      explorerSub: "Experimente a Neptune's Tribe",
-      premiumSub: "Aproveite todo o nosso conteúdo",
+      basicSub: "Experimente a Neptune's Tribe",
+      explorerSub: "Aproveite todo o nosso conteúdo",
       enterpriseSub: "Para equipes e organizações",
-      cardContentExplorer: [
-        "Accesso ao conteúdo basico",
+      cardContentBasic: [
+        "Accesso a uma atividade",
         "Accesso ao eco-news",
-        "Acompanhamento interativo basico pelo ecomapa",
-        "Acesso à comunidade",
+        // "Acompanhamento interativo basico pelo ecomapa",
+        // "Acesso à comunidade",
       ],
-      cardContentPremium: [
-        "Todos os recursos do Explorer",
-        "Unidades de aprendizagem ilimitadas",
-        "Análise avançada de progresso",
+      cardContentExplorer: [
+        "Accesso a todos os recursos",
+        "Acesso a todas as unidades temáticas semanais, desafios e exercícios de revisão",
+        "Acesso ao seu mapa ecológico",
+        "Acompanhamento e análise de progresso",
         "Suporte prioritário",
-        "Acesso a conteúdo offline",
-        "Geração de certificados",
+        // "Acesso a conteúdo offline",
+        // "Geração de certificados",
       ],
       cardContentEnterprise: [
-        "Todos os recursos Premium",
+        "Todos os recursos Explorer",
         "Até 25 contas (pague por apenas 10)",
         "Ferramentas de gerenciamento de usuários",
         // "Criação de currículo personalizado",
-        "Painel de análise detalhado",
-        "Acesso à API",
-        "Gerente de suporte dedicado",
+        // "Painel de análise detalhado",
+        // "Acesso à API",
+        // "Gerente de suporte dedicado",
       ],
       getStartedFree: "Inicie de Graça",
-      choosePremium: "Escolha Premium",
+      chooseExplorer: "Escolha Explorer",
       chooseEnterprise: "Escolha Enterprise",
       FAQHeader: "Perguntas frequentes",
       FAQ: [
@@ -128,7 +131,7 @@ export default function PricingTiers() {
         },
         {
           q: "Existe um teste gratuito?",
-          a: "Nosso plano Explorer é totalmente gratuito e oferece uma amostra do nosso conteúdo e recursos. Você pode fazer upgrade para o Premium a qualquer momento para desbloquear tudo.",
+          a: "Nosso plano Basico é totalmente gratuito e oferece uma amostra do nosso conteúdo e recursos. Você pode fazer upgrade para o Explorer a qualquer momento para desbloquear tudo.",
         },
         {
           q: "Como funciona o impacto ambiental?",
@@ -157,7 +160,7 @@ export default function PricingTiers() {
   const pricingData = {
     USD: {
       yearly: {
-        premium: {
+        explorer: {
           price: 70,
           display: "$70",
           period: "/year",
@@ -171,7 +174,7 @@ export default function PricingTiers() {
         },
       },
       monthly: {
-        premium: {
+        explorer: {
           price: 9.9,
           display: "$9.90",
           period: "/month",
@@ -192,7 +195,7 @@ export default function PricingTiers() {
     },
     BRL: {
       yearly: {
-        premium: {
+        explorer: {
           price: 350,
           display: "R$350",
           period: "/ano",
@@ -206,7 +209,7 @@ export default function PricingTiers() {
         },
       },
       monthly: {
-        premium: {
+        explorer: {
           price: 49,
           display: "R$49",
           period: "/mês",
@@ -226,17 +229,6 @@ export default function PricingTiers() {
       ],
     },
   };
-
-  // const pricingData = {
-  //   yearly: {
-  //     premium: { price: "US$30", period: "/year", savings: "Save 50%" },
-  //     enterprise: { price: "US$180", period: "/year", savings: "Save 50%" },
-  //   },
-  //   monthly: {
-  //     premium: { price: "£5", period: "/month", savings: "" },
-  //     enterprise: { price: "£30", period: "/month", savings: "" },
-  //   },
-  // };
 
   const currentPricing = pricingData[currency];
 
@@ -359,9 +351,9 @@ export default function PricingTiers() {
             <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-3">
               <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
-            <CardTitle className="text-xl">Explorer</CardTitle>
+            <CardTitle className="text-xl">Basic</CardTitle>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              {copy.explorerSub}
+              {copy.basicSub}
             </p>
             <div className="mt-4">
               <span className="text-3xl font-bold">Free</span>
@@ -369,7 +361,7 @@ export default function PricingTiers() {
           </CardHeader>
           <CardContent className="space-y-4">
             <ul className="space-y-3">
-              {copy.cardContentExplorer.map((feature, i) => (
+              {copy.cardContentBasic.map((feature, i) => (
                 <li key={i} className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                   <span className="text-sm">{feature}</span>
@@ -386,7 +378,7 @@ export default function PricingTiers() {
           </CardContent>
         </Card>
 
-        {/* Premium Tier */}
+        {/* Explorer Tier */}
         <Card className="relative border-2 border-green-500 hover:shadow-lg transition-shadow">
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
             <Badge className="bg-green-500 text-white dark:bg-green-500 dark:text-white px-3 py-1">
@@ -398,27 +390,27 @@ export default function PricingTiers() {
             <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-3">
               <Globe className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
-            <CardTitle className="text-xl">Premium</CardTitle>
+            <CardTitle className="text-xl">Explorer</CardTitle>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              {copy.premiumSub}
+              {copy.explorerSub}
             </p>
             <div className="mt-4">
               <span className="text-3xl font-bold">
-                {currentPricing[billingCycle].premium.display}
+                {currentPricing[billingCycle].explorer.display}
               </span>
               <span className="text-gray-600 dark:text-gray-400">
-                {currentPricing[billingCycle].premium.period}
+                {currentPricing[billingCycle].explorer.period}
               </span>
-              {currentPricing[billingCycle].premium.savings && (
+              {currentPricing[billingCycle].explorer.savings && (
                 <div className="text-green-600 text-sm font-medium">
-                  {currentPricing[billingCycle].premium.savings}
+                  {currentPricing[billingCycle].explorer.savings}
                 </div>
               )}
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <ul className="space-y-3">
-              {copy.cardContentPremium.map((feature, i) => (
+              {copy.cardContentExplorer.map((feature, i) => (
                 <li key={i} className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                   <span className="text-sm">{feature}</span>
@@ -430,7 +422,7 @@ export default function PricingTiers() {
               onClick={() => handleSubscribe("premium")}
               disabled={isDisabled}
             >
-              {loading ? "Processing..." : copy.choosePremium}
+              {loading ? "Processing..." : copy.chooseExplorer}
             </Button>
           </CardContent>
         </Card>

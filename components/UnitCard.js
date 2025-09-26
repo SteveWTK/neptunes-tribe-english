@@ -62,7 +62,7 @@ export default function UnitCard({ unit, isPremiumUser = false }) {
             </Link>
           ) : (
             <Link
-              href="/pricing"
+              href="/subscriptions"
               className="block mt-2 px-2 text-accent-600 dark:text-accent-400 rounded-lg font-semibold hover:underline z-50"
             >
               🔒Upgrade to Unlock →
