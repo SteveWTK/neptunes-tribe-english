@@ -30,10 +30,10 @@ export default function PricingPage() {
         "10% of all revenue goes directly to verified environmental NGOs.",
       educationTitle: "Education Access",
       educationSubtitle:
-        "Premium subscriptions help us provide free access to underprivileged communities and continuously develop better learning content.",
+        "Explorer subscriptions help us provide free access to underprivileged communities and continuously develop better learning content.",
       actionTitle: "Ready to make a difference?",
       actionSubtitle:
-        "Start your journey today with our free Explorer plan, or go Premium to unlock everything",
+        "Start your journey today with our free Explorer plan, or go Explorer to unlock everything",
       statsLearners: "Active Learners",
       statsCountries: "Countries Covered",
       statsSuccess: "Success Rate",
@@ -52,10 +52,10 @@ export default function PricingPage() {
         "10% de toda a receita vai diretamente para ONGs ambientais verificadas que se dedicam à conservação dos oceanos.",
       educationTitle: "Acesso à Educação",
       educationSubtitle:
-        "Assinaturas premium nos ajudam a fornecer acesso gratuito a comunidades carentes e a desenvolver continuamente melhores conteúdos de aprendizagem.",
+        "Assinaturas Explorer nos ajudam a fornecer acesso gratuito a comunidades carentes e a desenvolver continuamente melhores conteúdos de aprendizagem.",
       actionTitle: "Pronto para fazer a diferença?",
       actionSubtitle:
-        "Comece sua jornada hoje mesmo com nosso plano Explorer gratuito ou assine o Premium para desbloquear tudo",
+        "Comece sua jornada hoje mesmo com nosso plano Explorer gratuito ou assine o Explorer para desbloquear tudo",
       statsLearners: "Alunos Ativos",
       statsCountries: "Países Abrangidos",
       statsSuccess: "Taxa de Sucesso",
@@ -78,7 +78,7 @@ export default function PricingPage() {
           {copy.pageSubtitle}
         </p>
         {/* <p className="text-md text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-          Your subscription doesn&apos;t just unlock premium features - it
+          Your subscription doesn&apos;t just unlock Explorer features - it
           directly funds ocean conservation and environmental protection
           projects worldwide.
         </p> */}
