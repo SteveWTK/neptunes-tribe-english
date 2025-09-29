@@ -286,16 +286,16 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
                   isMatched
                     ? "scale-95 opacity-90"
                     : isFlipped
-                      ? "preserve-3d rotate-y-180"
-                      : "preserve-3d hover:scale-105"
+                    ? "preserve-3d rotate-y-180"
+                    : "preserve-3d hover:scale-105"
                 }`}
                 style={{
                   transformStyle: isMatched ? "flat" : "preserve-3d",
                   transform: isMatched
                     ? "none"
                     : isFlipped
-                      ? "rotateY(180deg)"
-                      : "rotateY(0deg)",
+                    ? "rotateY(180deg)"
+                    : "rotateY(0deg)",
                 }}
               >
                 {/* For matched cards, show the vocabulary directly without transform */}
@@ -321,8 +321,8 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
                     <div
                       className={`absolute inset-0 flex items-center justify-center rounded-xl p-2 rotate-y-180 backface-hidden ${
                         card.lang === "en"
-                          ? "bg-fieldtalk-400 text-primary-900"
-                          : "bg-attention-400 text-primary-900"
+                          ? "bg-primary-800 text-primary-100"
+                          : "bg-emerald-800 text-primary-100"
                       }`}
                       style={{
                         backfaceVisibility: "hidden",
