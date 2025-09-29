@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // src/app/(site)/lesson/[id]/page.js - Updated with all step types
 "use client";
 
@@ -1251,7 +1250,9 @@ function DynamicLessonContent() {
               ).map((line, index) => (
                 <div
                   key={index}
-                  className={`mb-4 ${line.speaker === "João" ? "text-right" : "text-left"}`}
+                  className={`mb-4 ${
+                    line.speaker === "João" ? "text-right" : "text-left"
+                  }`}
                 >
                   <div
                     className={`inline-block max-w-xs lg:max-w-md p-3 rounded-lg ${
@@ -1569,7 +1570,11 @@ function DynamicLessonContent() {
             {showFeedback && (
               <div className="mt-4">
                 <div
-                  className={`p-4 rounded-lg ${isCorrect ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}
+                  className={`p-4 rounded-lg ${
+                    isCorrect
+                      ? "bg-green-100 text-green-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  }`}
                 >
                   <div className="flex items-center space-x-2">
                     {isCorrect ? (
@@ -1579,7 +1584,15 @@ function DynamicLessonContent() {
                     )}
                     <span className="font-semibold">
                       {isCorrect
-                        ? `Perfect! All answers correct. +${20 * (currentStepData.scenarios?.reduce((total, scenario) => total + scenario.gaps.length, 0) || currentStepData.gaps?.length || 1)} XP`
+                        ? `Perfect! All answers correct. +${
+                            20 *
+                            (currentStepData.scenarios?.reduce(
+                              (total, scenario) => total + scenario.gaps.length,
+                              0
+                            ) ||
+                              currentStepData.gaps?.length ||
+                              1)
+                          } XP`
                         : "Some answers need work. Review the feedback above and try to remember the correct answers!"}
                     </span>
                   </div>
@@ -1700,7 +1713,9 @@ function DynamicLessonContent() {
                             <ul className="text-sm text-primary-700 dark:text-primary-300 space-y-1">
                               {challenge.follow_up_tips.map((tip, tipIndex) => (
                                 <li key={tipIndex} className="flex items-start">
-                                  <span className="text-primary-600 mr-2">•</span>
+                                  <span className="text-primary-600 mr-2">
+                                    •
+                                  </span>
                                   {tip}
                                 </li>
                               ))}
@@ -1756,7 +1771,11 @@ function DynamicLessonContent() {
                 )}
                 {showFeedback && (
                   <div
-                    className={`p-4 rounded-lg mb-4 ${isCorrect ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+                    className={`p-4 rounded-lg mb-4 ${
+                      isCorrect
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
                   >
                     <div className="flex items-center space-x-2 mb-2">
                       {isCorrect ? (
@@ -1801,7 +1820,11 @@ function DynamicLessonContent() {
             {currentStepData.challenges && showFeedback && (
               <div className="mt-6">
                 <div
-                  className={`p-4 rounded-lg ${isCorrect ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}
+                  className={`p-4 rounded-lg ${
+                    isCorrect
+                      ? "bg-green-100 text-green-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  }`}
                 >
                   <div className="flex items-center space-x-2">
                     {isCorrect ? (
@@ -1811,14 +1834,18 @@ function DynamicLessonContent() {
                     )}
                     <span className="font-semibold">
                       {isCorrect
-                        ? `Perfect! All situations handled correctly. +${20 * currentStepData.challenges.length} XP`
+                        ? `Perfect! All situations handled correctly. +${
+                            20 * currentStepData.challenges.length
+                          } XP`
                         : `You got ${
                             currentStepData.challenges.filter(
                               (challenge, index) =>
                                 selectedAnswers[`challenge-${index}`] ===
                                 challenge.correct_answer
                             ).length
-                          } out of ${currentStepData.challenges.length} correct. Keep practicing!`}
+                          } out of ${
+                            currentStepData.challenges.length
+                          } correct. Keep practicing!`}
                     </span>
                   </div>
                 </div>
@@ -1895,8 +1922,8 @@ function DynamicLessonContent() {
                         insight.importance === "Critical"
                           ? "bg-red-500"
                           : insight.importance === "Very Important"
-                            ? "bg-orange-500"
-                            : "bg-yellow-500"
+                          ? "bg-orange-500"
+                          : "bg-yellow-500"
                       }`}
                     ></div>
                     <div className="flex-grow">
@@ -1908,8 +1935,8 @@ function DynamicLessonContent() {
                           insight.importance === "Critical"
                             ? "bg-red-100 text-red-800"
                             : insight.importance === "Very Important"
-                              ? "bg-orange-100 text-orange-800"
-                              : "bg-yellow-100 text-yellow-800"
+                            ? "bg-orange-100 text-orange-800"
+                            : "bg-yellow-100 text-yellow-800"
                         }`}
                       >
                         {insight.importance}
@@ -2197,8 +2224,8 @@ function DynamicLessonContent() {
                         problem.urgency === "High"
                           ? "bg-red-500"
                           : problem.urgency === "Medium"
-                            ? "bg-yellow-500"
-                            : "bg-green-500"
+                          ? "bg-yellow-500"
+                          : "bg-green-500"
                       }`}
                     >
                       <AlertCircle className="w-4 h-4 text-white" />
@@ -2213,8 +2240,8 @@ function DynamicLessonContent() {
                             problem.urgency === "High"
                               ? "bg-red-100 text-red-800"
                               : problem.urgency === "Medium"
-                                ? "bg-yellow-100 text-yellow-800"
-                                : "bg-green-100 text-green-800"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-green-100 text-green-800"
                           }`}
                         >
                           {problem.urgency} Priority
@@ -2637,13 +2664,12 @@ function DynamicLessonContent() {
                 </p>
               </div>
             )}
-            <MultiGapFillExerciseNew 
-              unitId={currentStepData.unit_id} 
-              units={[]} 
+            <MultiGapFillExerciseNew
+              unitId={currentStepData.unit_id}
+              units={[]}
             />
           </div>
         );
-
 
       case "video":
         return (

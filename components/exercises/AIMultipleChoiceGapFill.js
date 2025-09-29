@@ -14,7 +14,7 @@ import {
   Play,
   Pause,
 } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
+// import { useTranslation } from "@/hooks/useTranslation";
 import { useAuth } from "@/components/AuthProvider";
 
 export default function AIMultipleChoiceGapFill({
@@ -441,10 +441,14 @@ export default function AIMultipleChoiceGapFill({
           {usedHints > 0 && (
             <div className="flex items-center space-x-1">
               <Lightbulb
-                className={`w-4 h-4 ${hasUsedAllHints ? "text-attention-500" : "text-accent-500"}`}
+                className={`w-4 h-4 ${
+                  hasUsedAllHints ? "text-attention-500" : "text-accent-500"
+                }`}
               />
               <span
-                className={`text-xs font-medium ${hasUsedAllHints ? "text-attention-600" : "text-accent-600"}`}
+                className={`text-xs font-medium ${
+                  hasUsedAllHints ? "text-attention-600" : "text-accent-600"
+                }`}
               >
                 {usedHints}/{MAX_HINTS_PER_GAP} {t("hints_used")}
               </span>
@@ -461,10 +465,10 @@ export default function AIMultipleChoiceGapFill({
               feedback?.isCorrect
                 ? "border-accent-400 bg-accent-100 dark:border-accent-600 dark:bg-accent-200 text-accent-900"
                 : feedback?.isCorrect === false
-                  ? "border-red-500 bg-red-100 text-red-700"
-                  : selectedOption
-                    ? "border-primary-500 bg-primary-50 text-primary-800"
-                    : "border-gray-300 bg-gray-50 text-gray-50"
+                ? "border-red-500 bg-red-100 text-red-700"
+                : selectedOption
+                ? "border-primary-500 bg-primary-50 text-primary-800"
+                : "border-gray-300 bg-gray-50 text-gray-50"
             }`}
           >
             {selectedOption || "....."}
