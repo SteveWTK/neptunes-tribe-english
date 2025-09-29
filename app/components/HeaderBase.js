@@ -27,6 +27,7 @@ export default function HeaderBase({
   const localizedLinks = {
     landing: {
       en: [
+        // { href: "/theme", label: "Theme" },
         { href: "/units", label: "Units" },
         { href: "/challenges", label: "Challenges" },
         // { href: "/eco-map", label: "Eco Map" },
@@ -35,6 +36,7 @@ export default function HeaderBase({
         { href: "/subscriptions", label: "Subscriptions" },
       ],
       pt: [
+        // { href: "/theme", label: "Tema" },
         { href: "/units", label: "Atividades" },
         { href: "/challenges", label: "Desafios" },
         // { href: "/eco-map", label: "Eco Map" },
@@ -46,26 +48,20 @@ export default function HeaderBase({
     },
     site: {
       en: [
-        // { href: "/", label: "Home" },
+        // { href: "/theme", label: "Theme" },
         { href: "/units", label: "Units" },
         { href: "/challenges", label: "Challenges" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "About Us" },
         { href: "/subscriptions", label: "Subscriptions" },
-
-        // { href: "/dashboard", label: "Dashboard" },
-        // { href: "/profile", label: "Profile" },
       ],
       pt: [
-        // { href: "/", label: "Home" },
+        // { href: "/theme", label: "Tema" },
         { href: "/units", label: "Atividades" },
         { href: "/challenges", label: "Desafios" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
         { href: "/subscriptions", label: "Assinaturas" },
-
-        // { href: "/dashboard", label: "Painel" },
-        // { href: "/profile", label: "Perfil" },
       ],
       // ... add other languages as needed
     },

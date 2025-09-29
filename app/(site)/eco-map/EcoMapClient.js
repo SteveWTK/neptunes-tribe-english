@@ -260,7 +260,7 @@ export default function EcoMapClient({
       {/* Header Section */}
       <div className="text-center mb-4">
         <h1 className="text-xl lg:text-2xl text-[#10b981] dark:text-[#e5e7eb] font-bold mb-2 mx-2">
-          {copy.title} {firstName}!
+          {copy.title}!
         </h1>
         <p className="text-md text-gray-600 dark:text-gray-400">
           {copy.subTitle}
