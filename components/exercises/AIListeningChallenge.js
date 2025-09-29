@@ -12,7 +12,7 @@ import {
   Award,
   RotateCcw,
 } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
+// import { useTranslation } from "@/hooks/useTranslation";
 import { useAuth } from "@/components/AuthProvider";
 
 export default function AIListeningChallenge({
@@ -340,10 +340,10 @@ export default function AIListeningChallenge({
                   {audioLoading
                     ? t("loading")
                     : isPlaying
-                      ? t("Pausar Áudio")
-                      : hasPlayedCurrentClip
-                        ? t("Ouça novamente")
-                        : t("Tocar Áudio")}
+                    ? t("Pausar Áudio")
+                    : hasPlayedCurrentClip
+                    ? t("Ouça novamente")
+                    : t("Tocar Áudio")}
                 </span>
               </button>
             </div>
@@ -366,10 +366,10 @@ export default function AIListeningChallenge({
                             ? isCorrect && option === currentClip.correct_answer
                               ? "border-green-500 bg-green-50 dark:bg-green-900/20"
                               : !isCorrect && option === selectedAnswer
-                                ? "border-red-500 bg-red-50 dark:bg-red-900/20"
-                                : option === currentClip.correct_answer
-                                  ? "border-green-500 bg-green-50 dark:bg-green-900/20"
-                                  : "border-gray-300 dark:border-gray-600"
+                              ? "border-red-500 bg-red-50 dark:bg-red-900/20"
+                              : option === currentClip.correct_answer
+                              ? "border-green-500 bg-green-50 dark:bg-green-900/20"
+                              : "border-gray-300 dark:border-gray-600"
                             : "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
                           : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
                       }
@@ -383,10 +383,10 @@ export default function AIListeningChallenge({
                           showFeedback && option === currentClip.correct_answer
                             ? "text-green-700 dark:text-green-300 font-medium"
                             : showFeedback &&
-                                option === selectedAnswer &&
-                                !isCorrect
-                              ? "text-red-700 dark:text-red-300"
-                              : "text-gray-900 dark:text-white"
+                              option === selectedAnswer &&
+                              !isCorrect
+                            ? "text-red-700 dark:text-red-300"
+                            : "text-gray-900 dark:text-white"
                         }
                       `}
                       >

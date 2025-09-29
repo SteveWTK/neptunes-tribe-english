@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // src/components/exercises/AIWritingExercise.js
 "use client";
 
@@ -415,7 +414,9 @@ export default function AIWritingExercise({
               </h4>
               {feedback.score && (
                 <div
-                  className={`text-3xl font-bold ${getScoreColor(feedback.score)}`}
+                  className={`text-3xl font-bold ${getScoreColor(
+                    feedback.score
+                  )}`}
                 >
                   {feedback.score}/10
                 </div>

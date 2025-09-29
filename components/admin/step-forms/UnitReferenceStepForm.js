@@ -102,8 +102,9 @@ export default function UnitReferenceStepForm({ step, onChange }) {
 
       <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          <strong>Note:</strong> This step will display the selected unit's multi-gap-fill
-          exercise. Students will complete the exercise as they normally would in the Units section.
+          <strong>Note:</strong> This step will display the selected unit&apos;s
+          multi-gap-fill exercise. Students will complete the exercise as they
+          normally would in the Units section.
         </p>
       </div>
     </div>

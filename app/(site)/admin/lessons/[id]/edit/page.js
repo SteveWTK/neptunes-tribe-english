@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -406,7 +405,9 @@ function LessonEditorContent() {
                   </label>
                   <select
                     value={lesson.target_audience || "players"}
-                    onChange={(e) => updateLessonField("target_audience", e.target.value)}
+                    onChange={(e) =>
+                      updateLessonField("target_audience", e.target.value)
+                    }
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="players">Players (Academies/Clubs)</option>
