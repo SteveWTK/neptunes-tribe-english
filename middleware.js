@@ -7,7 +7,7 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
 
   // Define protected routes
-  const protectedRoutes = ["/units", "/profile", "/dashboard", "/payment"];
+  const protectedRoutes = ["/units", "/profile", "/dashboard", "/payment", "/lesson", "/admin"];
   const isProtectedRoute = protectedRoutes.some((route) =>
     nextUrl.pathname.startsWith(route)
   );
@@ -18,7 +18,12 @@ export default auth((req) => {
 
   // Redirect logged-in users away from auth pages
   if (isLoggedIn && isAuthRoute) {
-    return NextResponse.redirect(new URL("/units", nextUrl));
+    return NextResponse.redirect(new URL("/eco-map", nextUrl));
+  }
+
+  // Redirect logged-in users from homepage to eco-map
+  if (isLoggedIn && nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL("/eco-map", nextUrl));
   }
 
   // Redirect non-logged-in users to login for protected routes

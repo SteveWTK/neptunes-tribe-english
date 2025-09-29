@@ -14,6 +14,7 @@ import { LanguageProvider } from "@/lib/contexts/LanguageContext";
 import { DarkModeProvider } from "@/lib/contexts/DarkModeContext";
 import { SessionProvider } from "next-auth/react";
 import { OnboardingProvider } from "@/lib/contexts/OnboardingContext";
+import { AuthProvider } from "@/components/AuthProvider";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -41,11 +42,13 @@ export default function RootLayout({ children }) {
       <body className="antialiased bg-white dark:bg-primary-950 font-roboto relative">
         <StyledComponentsRegistry>
           <SessionProvider>
-            <LanguageProvider>
-              <DarkModeProvider>
-                <OnboardingProvider>{children}</OnboardingProvider>
-              </DarkModeProvider>
-            </LanguageProvider>
+            <AuthProvider>
+              <LanguageProvider>
+                <DarkModeProvider>
+                  <OnboardingProvider>{children}</OnboardingProvider>
+                </DarkModeProvider>
+              </LanguageProvider>
+            </AuthProvider>
           </SessionProvider>
           <Toaster richColors closeButton />
         </StyledComponentsRegistry>

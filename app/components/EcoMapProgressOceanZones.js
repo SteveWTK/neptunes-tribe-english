@@ -15,6 +15,7 @@ import { useSession } from "next-auth/react";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, MapPin, Users, Eye } from "lucide-react";
+import Link from "next/link";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -373,18 +374,20 @@ export default function EcoMapProgressOceans({
       {/* Weekly Theme Header */}
       {currentWeeklyTheme && (
         <div data-tour="weekly-theme" className="mb-6 mx-4">
-          <div className="bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-xl p-6 shadow-lg">
+          <div className="bg-gradient-to-r  from-blue-800 via-blue-900 to-green-700 dark:from-blue-800 dark:via-blue-900 dark:to-green-700 text-white rounded-xl p-6 shadow-lg">
             <div className="flex items-center gap-3 mb-3">
               <Calendar className="w-6 h-6" />
               <h2 className="text-2xl font-bold">
                 {lang === "pt" ? "Tema desta Semana" : "This Week's Theme"}
               </h2>
             </div>
-            <h3 className="text-xl font-semibold mb-2">
-              {lang === "pt"
-                ? currentWeeklyTheme.theme_title_pt
-                : currentWeeklyTheme.theme_title}
-            </h3>
+            <Link href="/theme">
+              <h3 className="text-xl font-semibold mb-4 hover:text-accent-200">
+                {lang === "pt"
+                  ? currentWeeklyTheme.theme_title_pt
+                  : currentWeeklyTheme.theme_title}
+              </h3>
+            </Link>
             <p className="text-blue-100 mb-4">
               {lang === "pt"
                 ? currentWeeklyTheme.theme_description_pt
@@ -492,10 +495,13 @@ export default function EcoMapProgressOceans({
 
               {/* Action Button */}
               <div className="text-center">
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                <Link
+                  href="/theme"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium"
+                >
                   <Eye className="w-4 h-4" />
                   {lang === "pt" ? "Clique para explorar" : "Click to explore"}
-                </div>
+                </Link>
               </div>
             </div>
           </motion.div>
