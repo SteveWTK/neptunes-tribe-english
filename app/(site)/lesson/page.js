@@ -140,7 +140,7 @@ function LessonListContent() {
             <div className="flex items-center gap-2 mb-2">
               <Calendar className="w-5 h-5 text-primary-600 dark:text-primary-400" />
               <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
-                This Week's Theme
+                This Week&apos;s Theme
               </span>
             </div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -217,7 +217,8 @@ function LessonListContent() {
                       {lesson.title}
                     </h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-                      {lesson.description || "Complete this lesson to earn XP and unlock achievements!"}
+                      {lesson.description ||
+                        "Complete this lesson to earn XP and unlock achievements!"}
                     </p>
 
                     {/* Lesson Info */}

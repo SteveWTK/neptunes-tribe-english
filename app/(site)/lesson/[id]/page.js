@@ -42,7 +42,7 @@ import {
 import { useAuth } from "@/components/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { useTranslation } from "@/hooks/useTranslation";
+// import { useTranslation } from "@/hooks/useTranslation";
 import AIWritingExercise from "@/components/exercises/AIWritingExercise";
 import AIConversationPractice from "@/components/exercises/AIConversationPractice";
 import AIGapFillExercise from "@/components/exercises/AIGapFillExercise";
