@@ -46,7 +46,7 @@ export default function EcoMapClient({
 
   const t = {
     en: {
-      title: "Welcome to your virtual eco-journey around the world,",
+      title: "Welcome to your virtual eco-journey around the world",
       subTitle: "Click on the map to view units related to that region",
       weeklyThemeTitle: "This Week's Eco-Adventure",
       exploreTheme: "Explore Theme Units",
@@ -56,7 +56,7 @@ export default function EcoMapClient({
       continueLearning: "View all Units",
     },
     pt: {
-      title: "Bem-vindo à sua jornada ecológica virtual ao redor do mundo,",
+      title: "Bem-vindo à sua jornada ecológica virtual ao redor do mundo",
       subTitle:
         "Clique no mapa para visualizar as unidades relacionadas àquela região",
       weeklyThemeTitle: "Aventura Ecológica desta Semana",
