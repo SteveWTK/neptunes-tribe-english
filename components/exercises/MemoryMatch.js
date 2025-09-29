@@ -355,7 +355,7 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
                 {matchedPairs.map((pair, idx) => (
                   <div
                     key={`en-${idx}`}
-                    className="bg-fieldtalk-400 text-primary-900 px-3 py-2 rounded-lg text-center text-xs sm:text-sm font-semibold animate-slideIn shadow-md"
+                    className="bg-fieldtalk-400 text-primary-900 dark:text-primary-50 px-3 py-2 rounded-lg text-center text-xs sm:text-sm font-semibold animate-slideIn shadow-md"
                     style={{
                       animationDelay: `${idx * 0.1}s`,
                     }}
@@ -372,7 +372,7 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
                 {matchedPairs.map((pair, idx) => (
                   <div
                     key={`pt-${idx}`}
-                    className="bg-attention-400 text-primary-900 px-3 py-2 rounded-lg text-center text-xs sm:text-sm font-semibold animate-slideIn shadow-md"
+                    className="bg-attention-400 text-primary-900 dark:text-primary-50 px-3 py-2 rounded-lg text-center text-xs sm:text-sm font-semibold animate-slideIn shadow-md"
                     style={{
                       animationDelay: `${idx * 0.1}s`,
                     }}
