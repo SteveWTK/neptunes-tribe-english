@@ -118,7 +118,7 @@ function LessonsListContent() {
               Lesson Management
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Create and manage lesson content for Neptune&apos;s Tribe
+              Create and manage lesson content for Habitat English
             </p>
           </div>
           <button

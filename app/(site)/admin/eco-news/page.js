@@ -40,9 +40,7 @@ export default async function AdminEcoNewsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <h1 className="text-xl font-semibold">
-                Neptune&apos;s Tribe Admin
-              </h1>
+              <h1 className="text-xl font-semibold">Habitat Admin</h1>
               <span className="text-sm text-gray-500">•</span>
               <span className="text-sm text-gray-600 dark:text-gray-300">
                 Eco-News Management

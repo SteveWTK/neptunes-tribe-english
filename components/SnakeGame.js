@@ -38,16 +38,25 @@ const THEMES = {
   },
   forest: {
     label: "Forest",
-    bg: "#cde3c1", // forest light
+    bg: "#70a056", // forest light
     trashWords: ["can", "bottle", "plastic", "bag", "foil"],
     natureWords: ["mushroom", "moss", "fern", "owl", "deer"],
     trashClass: "bg-rose-500",
     natureClass: "bg-green-800",
     blindClass: "bg-purple-700",
   },
+  ocean: {
+    label: "Ocean",
+    bg: "#189ef1", // Ocean
+    trashWords: ["plastic", "net", "wrapper", "oil", "straw"],
+    natureWords: ["stingray", "whale", "octopus", "vaquita", "turtle"],
+    trashClass: "bg-slate-500",
+    natureClass: "bg-indigo-800",
+    blindClass: "bg-purple-700",
+  },
 };
 
-const THEME_KEYS = ["beach", "field", "forest"];
+const THEME_KEYS = ["beach", "field", "forest", "ocean"];
 const themeKeyForLevel = (level) => THEME_KEYS[(level - 1) % THEME_KEYS.length];
 
 // Speed modes (ms per tick before level scaling)
@@ -484,17 +493,23 @@ export default function SnakeGame() {
       <h1 className="text-2xl mb-3">🐍 Eco Cleanup Snake</h1>
 
       {/* Controls (available before start) */}
-      <div className="flex flex-wrap items-center gap-4 mb-4">
+      <div className="flex flex-wrap items-center justify-center gap-5 mb-1">
         <div className="flex items-center gap-2">
           <label className="text-sm">Speed:</label>
           <select
-            className="border rounded px-2 py-1"
+            className="border-b-2 rounded-b-lg hover:border-accent-400 px-2 py-1"
             value={speedMode}
             onChange={(e) => setSpeedMode(e.target.value)}
           >
-            <option value="calm">Calm</option>
-            <option value="fast">Fast</option>
-            <option value="urgent">Urgent</option>
+            <option value="calm" className="text-primary-700">
+              Calm
+            </option>
+            <option value="fast" className="text-accent-700">
+              Fast
+            </option>
+            <option value="urgent" className="text-rose-700">
+              Urgent
+            </option>
           </select>
         </div>
 
@@ -524,11 +539,10 @@ export default function SnakeGame() {
           />
           Mute
         </label>
-
-        <div className="text-sm opacity-80">
-          Level <span className="font-semibold">{level}</span> · Theme:{" "}
-          <span className="font-semibold">{THEMES[themeKey].label}</span>
-        </div>
+      </div>
+      <div className="text-sm opacity-80 mb-4">
+        Level <span className="font-bold">{level}</span> · Theme:{" "}
+        <span className="font-bold">{THEMES[themeKey].label}</span>
       </div>
 
       {/* Stage with animated background color */}
