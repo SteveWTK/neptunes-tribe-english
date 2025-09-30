@@ -5,7 +5,7 @@ import React from "react";
 import { useDarkMode, useLanguage } from "@/lib/hooks";
 import LandingHeader from "@/app/components/LandingHeader";
 import SiteFooter from "@/app/components/SiteFooter";
-import HomeHeader from "../components/homeHeader";
+import HomeHeader from "@/app/components/homeHeader";
 
 export default function HomeLayout({ children }) {
   const { darkMode, setDarkMode } = useDarkMode();
