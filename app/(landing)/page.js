@@ -16,7 +16,7 @@ export default function landingPageHome() {
           href="/schools"
         />
         <img
-          src="/landing/Habitat-landing-mobile.png"
+          src="/landing/Habitat-landing-mobile-3.png"
           alt="Hero"
           className="sm:hidden"
           href="/schools"
