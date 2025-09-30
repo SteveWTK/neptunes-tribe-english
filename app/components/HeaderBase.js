@@ -31,7 +31,7 @@ export default function HeaderBase({
         // { href: "/challenges", label: "Challenges" },
         // { href: "/eco-map", label: "Eco Map" },
         // { href: "/eco-news", label: "Eco News" },
-        { href: "/explorers", label: "For Explorers" },
+        { href: "/explorers", label: "For Solo Explorers" },
         { href: "/schools", label: "For schools" },
         { href: "/about-us", label: "About Us" },
         // { href: "/subscriptions", label: "Subscriptions" },
@@ -39,7 +39,7 @@ export default function HeaderBase({
       pt: [
         // { href: "/theme", label: "Tema" },
         // { href: "/eco-map", label: "Eco Map" },
-        { href: "/explorers", label: "Para Exploradores" },
+        { href: "/explorers", label: "Para Exploradores Solo" },
         { href: "/schools", label: "Para Escolas" },
         { href: "/about-us", label: "Sobre Nós" },
         // { href: "subscriptions", label: "Assinaturas" },

@@ -118,7 +118,7 @@ export default function AboutUsPage() {
       joinUsTitle: "Junte-se à Nossa Missão",
       joinUsText:
         "Seja você um estudante buscando melhorar seu inglês enquanto aprende sobre nosso planeta incrível, ou um educador querendo trazer temas ambientais para sua sala de aula, o Habitat English te dá as boas-vindas à nossa crescente comunidade global.",
-      getStartedBtn: "Junte-se ao Habitat English Hoje",
+      getStartedBtn: "Junte-se à Habitat English Hoje",
       contactBtn: "Contate-nos",
     },
   };
