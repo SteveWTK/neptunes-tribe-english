@@ -166,7 +166,7 @@ export default function EcoNewsClient() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Neptune&apos;s News
+              Habitat Eco News
             </h1>
             <p className="text-sm lg:text-[16px] font-semibold opacity-90 max-w-4xl mx-auto">
               Stay updated with the latest environmental news, expert insights,

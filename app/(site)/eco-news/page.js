@@ -2,7 +2,7 @@
 import EcoNewsClient from "./EcoNewsClient";
 
 export const metadata = {
-  title: "Eco-News & Insights - Neptune's Tribe",
+  title: "Eco-News & Insights - Habitat English",
   description:
     "Stay updated with the latest environmental news, expert insights, and inspiring student solutions from around the globe.",
 };

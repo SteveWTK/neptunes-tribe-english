@@ -18,7 +18,7 @@ export default function PricingPage() {
   const { lang } = useLanguage();
   const t = {
     en: {
-      pageTitle: "Join Neptune's Tribe",
+      pageTitle: "Join Habitat English",
       pageSubtitle:
         "Enrich your English while exploring the world's most amazing ecosystems.",
       pageMission: "10% of all subscriptions go to environmental NGOs",
@@ -40,7 +40,7 @@ export default function PricingPage() {
       statsDonated: "Donated to NGOs",
     },
     pt: {
-      pageTitle: "Junte-se à Neptune's Tribe",
+      pageTitle: "Junte-se à Habitat English",
       pageSubtitle:
         "Desenvolva seu inglês enquanto explora os ecossistemas mais incríveis do mundo.",
       pageMission: "10% de todas as assinaturas vão para ONGs ambientais",

@@ -48,8 +48,8 @@ export default function EcoMapClient({
     en: {
       title: "Welcome to your virtual eco-journey around the world",
       subTitle: "Click on the map to view units related to that region",
-      weeklyThemeTitle: "This Week's Eco-Adventure",
-      exploreTheme: "Explore Theme Units",
+      weeklyThemeTitle: "This Week's Theme",
+      exploreTheme: "Begin the Adventure",
       impactTitle: "Keep increasing your impact",
       impactSubtitle:
         "Explore more ecosystems and complete environmental challenges to expand your impact!",
@@ -59,8 +59,8 @@ export default function EcoMapClient({
       title: "Bem-vindo à sua jornada ecológica virtual ao redor do mundo",
       subTitle:
         "Clique no mapa para visualizar as unidades relacionadas àquela região",
-      weeklyThemeTitle: "Aventura Ecológica desta Semana",
-      exploreTheme: "Explorar Unidades do Tema",
+      weeklyThemeTitle: "Tema desta Semana",
+      exploreTheme: "Inicie a Aventura",
       impactTitle: "Continue aumentando seu impacto",
       impactSubtitle:
         "Explore mais ecossistemas e conclua desafios ambientais para expandir seu impacto!",
@@ -259,36 +259,40 @@ export default function EcoMapClient({
     <div className="pt-4">
       {/* Header Section */}
       <div className="text-center mb-4">
-        <h1 className="text-xl lg:text-2xl text-[#10b981] dark:text-[#e5e7eb] font-bold mb-2 mx-2">
+        <h1 className="text-xl lg:text-2xl text-primary-800 dark:text-[#e5e7eb] font-bold mb-2 mx-2">
           {copy.title}!
         </h1>
-        <p className="text-md text-gray-600 dark:text-gray-400">
+        {/* <p className="text-md text-gray-600 dark:text-gray-400">
           {copy.subTitle}
-        </p>
+        </p> */}
       </div>
 
       {/* Weekly Theme Banner */}
-      {/* {currentWeeklyTheme && (
+      {currentWeeklyTheme && (
         <div className="max-w-6xl mx-auto mb-6 px-4">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-r from-emerald-500 to-blue-500 text-white rounded-xl p-4 shadow-lg"
+            className="bg-gradient-to-br from-primary-600 via-primary-700 to-green-600 dark:from-primary-800 dark:via-primary-900 dark:to-accent-700 text-white rounded-xl p-4 shadow-lg"
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Calendar className="w-6 h-6" />
+            <div className="flex flex-col sm:flex-row items-center justify-between">
+              <div className="flex items-center gap-3 mb-4 sm:mb-0">
                 <div>
-                  <h3 className="text-lg font-bold">{copy.weeklyThemeTitle}</h3>
-                  <p className="text-emerald-100 text-sm">
+                  <div className="flex justify-center sm:justify-start items-center gap-3">
+                    <Calendar className="w-4 h-4" />
+                    <span className="text-center sm:text-start">
+                      {copy.weeklyThemeTitle}
+                    </span>
+                  </div>
+                  <h3 className="text-center sm:text-start text-2xl font-bold">
                     {lang === "pt"
                       ? currentWeeklyTheme.theme_title_pt
                       : currentWeeklyTheme.theme_title}
-                  </p>
+                  </h3>
                 </div>
               </div>
               <Link
-                href={`/units?theme=${currentWeeklyTheme.id}`}
+                href={`/theme`}
                 className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2"
               >
                 {copy.exploreTheme}
@@ -297,7 +301,7 @@ export default function EcoMapClient({
             </div>
           </motion.div>
         </div>
-      )} */}
+      )}
 
       {/* Main Map Section */}
       <div data-tour="eco-map" className="max-w-6xl mx-auto space-y-8">

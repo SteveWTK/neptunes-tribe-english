@@ -3,6 +3,7 @@ import Link from "next/link";
 // import logo from "@/public/neptunes-tribe-logo-nbg.png";
 import logoL from "@/public/logos/neptunes-tribe-logo-nbg-l.png";
 import logoC from "@/public/logos/neptunes-tribe-logo-wbc.png";
+import logoH from "@/public/logos/Habitat-wide-lm.png";
 
 export default function HeaderLogoDark() {
   return (
@@ -16,13 +17,21 @@ export default function HeaderLogoDark() {
           alt="Neptune's Tribe logo"
           className="lg:hidden"
         /> */}
-        <Image
+        {/* <Image
           src={logoL}
           height="auto"
           width="140"
           quality={100}
           alt="Neptune's Tribe logo"
           // className="hidden lg:block"
+        /> */}
+        <Image
+          src={logoH}
+          height="auto"
+          width="130"
+          quality={100}
+          alt="Neptune's Tribe logo"
+          className="block rounded-tr-3xl rounded-bl-3xl"
         />
       </Link>
     </div>

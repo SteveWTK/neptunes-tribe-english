@@ -372,7 +372,7 @@ export default function EcoMapProgressOceans({
       onMouseMove={handleMouseMove}
     >
       {/* Weekly Theme Header */}
-      {currentWeeklyTheme && (
+      {/* {currentWeeklyTheme && (
         <div data-tour="weekly-theme" className="mb-6 mx-4">
           <div className="bg-gradient-to-r  from-blue-800 via-blue-900 to-green-700 dark:from-blue-800 dark:via-blue-900 dark:to-green-700 text-white rounded-xl p-6 shadow-lg">
             <div className="flex items-center gap-3 mb-3">
@@ -406,7 +406,7 @@ export default function EcoMapProgressOceans({
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Tooltip for regular regions */}
       {tooltipContent && !showThemePopup && (

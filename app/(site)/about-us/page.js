@@ -10,7 +10,7 @@ export default function AboutUsPage() {
 
   const t = {
     en: {
-      title: "About Neptune's Tribe",
+      title: "About Habitat English",
       subtitle: "Protecting Our Planet Through Language Learning",
       missionTitle: "Our Mission",
       missionText:
@@ -61,12 +61,12 @@ export default function AboutUsPage() {
         "We continuously evolve our platform using the latest in educational technology and pedagogical research.",
       joinUsTitle: "Join Our Mission",
       joinUsText:
-        "Whether you're a student looking to improve your English while learning about our amazing planet, or an educator wanting to bring environmental themes into your classroom, Neptune's Tribe welcomes you to our growing global community.",
-      getStartedBtn: "Join Neptune's Tribe Today",
+        "Whether you're a student looking to improve your English while learning about our amazing planet, or an educator wanting to bring environmental themes into your classroom, Habitat English welcomes you to our growing global community.",
+      getStartedBtn: "Join Habitat Today",
       contactBtn: "Contact Us",
     },
     pt: {
-      title: "Sobre o Neptune's Tribe",
+      title: "Sobre o Habitat English",
       subtitle: "Protegendo Nosso Planeta Através do Aprendizado de Idiomas",
       missionTitle: "Nossa Missão",
       missionText:
@@ -117,8 +117,8 @@ export default function AboutUsPage() {
         "Evoluímos continuamente nossa plataforma usando o mais recente em tecnologia educacional e pesquisa pedagógica.",
       joinUsTitle: "Junte-se à Nossa Missão",
       joinUsText:
-        "Seja você um estudante buscando melhorar seu inglês enquanto aprende sobre nosso planeta incrível, ou um educador querendo trazer temas ambientais para sua sala de aula, o Neptune's Tribe te dá as boas-vindas à nossa crescente comunidade global.",
-      getStartedBtn: "Junte-se à Neptune's Tribe Hoje",
+        "Seja você um estudante buscando melhorar seu inglês enquanto aprende sobre nosso planeta incrível, ou um educador querendo trazer temas ambientais para sua sala de aula, o Habitat English te dá as boas-vindas à nossa crescente comunidade global.",
+      getStartedBtn: "Junte-se ao Habitat English Hoje",
       contactBtn: "Contate-nos",
     },
   };
