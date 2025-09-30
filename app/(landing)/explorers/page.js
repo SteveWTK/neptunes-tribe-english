@@ -22,14 +22,14 @@ import {
   Crown,
 } from "lucide-react";
 
-export default function LandingPage() {
+export default function LandingPageExplorers() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeFeature, setActiveFeature] = useState(0);
   const { lang } = useLanguage();
 
   const t = {
     en: {
-      heroTitle: "Join Neptune's Tribe",
+      heroTitle: "Join Habitat English",
       heroSubtitle:
         "Enrich your English as you go on environmental adventures around our planet",
       heroDescription:
@@ -100,7 +100,7 @@ export default function LandingPage() {
       viewAllTiers: "View all tiers and pricing",
 
       // How It Works
-      howItWorksTitle: "How Neptune's Tribe Works",
+      howItWorksTitle: "How Habitat English Works",
       step1Title: "Join the Tribe",
       step1Desc:
         "Sign up and take a quick English assessment to find your perfect tier",
@@ -163,7 +163,7 @@ export default function LandingPage() {
         "Premium members vote each Thursday on the following week's ecosystem destination. Democracy in action!",
     },
     pt: {
-      heroTitle: "Junte-se à Neptune's Tribe",
+      heroTitle: "Junte-se à Habitat English",
       heroSubtitle:
         "Enriqueça seu inglês enquanto você embarca em aventuras ambientais ao redor do nosso planeta",
       heroDescription:
@@ -234,7 +234,7 @@ export default function LandingPage() {
       viewAllTiers: "Ver todos os níveis e preços",
 
       // How It Works
-      howItWorksTitle: "Como Funciona a Neptune's Tribe",
+      howItWorksTitle: "Como Funciona a Habitat English",
       step1Title: "Entre na Tribo",
       step1Desc:
         "Cadastre-se e faça uma avaliação rápida de inglês para encontrar seu nível perfeito",

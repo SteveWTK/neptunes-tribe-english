@@ -25,7 +25,7 @@ export default function HeaderBase({
   };
 
   const localizedLinks = {
-    home: {
+    landing: {
       en: [
         // { href: "/units", label: "Units" },
         // { href: "/challenges", label: "Challenges" },
@@ -43,25 +43,6 @@ export default function HeaderBase({
         { href: "/schools", label: "Para Escolas" },
         { href: "/about-us", label: "Sobre Nós" },
         // { href: "subscriptions", label: "Assinaturas" },
-      ],
-      // ... add other languages as needed
-    },
-    landing: {
-      en: [
-        // { href: "/theme", label: "Theme" },
-        { href: "/units", label: "Units" },
-        { href: "/challenges", label: "Challenges" },
-        { href: "/eco-news", label: "Eco News" },
-        { href: "/about-us", label: "About Us" },
-        { href: "/subscriptions", label: "Subscriptions" },
-      ],
-      pt: [
-        // { href: "/theme", label: "Tema" },
-        { href: "/units", label: "Atividades" },
-        { href: "/challenges", label: "Desafios" },
-        { href: "/eco-news", label: "Eco News" },
-        { href: "/about-us", label: "Sobre Nós" },
-        { href: "/subscriptions", label: "Assinaturas" },
       ],
       // ... add other languages as needed
     },
