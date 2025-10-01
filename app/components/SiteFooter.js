@@ -20,7 +20,7 @@ export default function SiteFooter() {
   const copy = t[lang];
 
   return (
-    <footer className="bg-gray-50  dark:bg-primary-900 py-5 text-center text-sm">
+    <footer className="bg-white sm:bg-gray-50  dark:bg-primary-950 py-3 md:py-4 lg:py-5 text-center text-primary-800 dark:text-white text-sm">
       © {new Date().getFullYear()} Habitat English. {copy.copyright}
     </footer>
   );
