@@ -68,8 +68,8 @@ export async function POST(req) {
             price_data: {
               currency: currency.toLowerCase(),
               product_data: {
-                name: "One-time Support - Neptune's Tribe",
-                description: "Thank you for supporting Neptune's Tribe!",
+                name: "One-time Support - Habitat English",
+                description: "Thank you for supporting Habitat English!",
               },
               unit_amount: Math.round(oneTimeAmount * 100),
             },

@@ -367,7 +367,7 @@ function ThemeHubContent() {
                           unit.difficulty_level
                         )}`}
                       >
-                        {unit.difficulty_level}
+                        {unit.length_text} gaps
                       </span>
                     </div>
                   </div>
@@ -440,7 +440,7 @@ function ThemeHubContent() {
                                 unit.difficulty_level
                               )}`}
                             >
-                              {unit.difficulty_level}
+                              {unit.length_text} gaps
                             </span>
                             {isPremium && !user?.is_premium && (
                               <Lock className="w-4 h-4 text-gray-400" />
@@ -537,13 +537,13 @@ function ThemeHubContent() {
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
-                              <span
+                              {/* <span
                                 className={`px-2 py-0.5 text-xs font-medium rounded-full ${getDifficultyBadge(
                                   lesson.difficulty
                                 )}`}
                               >
                                 {lesson.difficulty || "All Levels"}
-                              </span>
+                              </span> */}
                               {isLocked && (
                                 <Lock className="w-4 h-4 text-gray-400" />
                               )}
