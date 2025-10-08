@@ -495,7 +495,7 @@ function ThemeHubContent() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Complete Lessons
+                  Practice and Revision
                 </h2>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Multi-step journeys that build on what you learnt in the units

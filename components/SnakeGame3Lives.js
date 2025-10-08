@@ -2,6 +2,16 @@
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+/**
+ * Neptune's Tribe — Eco Snake (v4)
+ * Fixes & features:
+ *  - Start button (game doesn't run until started)
+ *  - Countdown loop bug fixed using a score threshold (nextThreshold)
+ *  - 3-2-1 circular countdown animation
+ *  - Pixel-crisp borders on snake segments (retro vibe)
+ *  - Keeps all v3 goodies: themes, practice/challenge, particles, toasts, audio
+ */
+
 const GRID_SIZE = 20;
 const TILE = 25; // px per tile
 const CANVAS = GRID_SIZE * TILE;
@@ -28,7 +38,7 @@ const THEMES = {
   },
   forest: {
     label: "Forest",
-    bg: "#70a056", // forest light
+    bg: "#cde3c1", // forest light
     trashWords: ["can", "bottle", "plastic", "bag", "foil"],
     natureWords: ["mushroom", "moss", "fern", "owl", "deer"],
     trashClass: "bg-rose-500",
@@ -89,16 +99,19 @@ const trashProbabilityForLevel = (level) => {
 
 const MAX_ITEMS = 14;
 
-export default function SnakeGame() {
+export default function SnakeGame3Lives() {
   const canvasRef = useRef(null); // main canvas (snake)
   const particlesRef = useRef(null); // particles canvas
+
+  // ===== Lives config =====
+  const LIVES_MAX = 3;
 
   // Core game state
   const [snake, setSnake] = useState([{ x: 8, y: 8 }]);
   const [direction, setDirection] = useState({ x: 1, y: 0 });
   const [items, setItems] = useState([]); // {x,y,type,word}
   const [score, setScore] = useState(0);
-  const [mistakes, setMistakes] = useState(0); // practice mode only
+  const [mistakes, setMistakes] = useState(0); // counts 'nature' hits (lives used)
   const [gameOver, setGameOver] = useState(false);
 
   // Meta / UX state
@@ -191,15 +204,12 @@ export default function SnakeGame() {
     setSpeed(computeSpeed(speedMode, level));
   }, [speedMode, level]);
 
-  /**
-   * Level-up detector using score threshold to avoid repeated triggers.
-   * When score >= nextThreshold → increase level, bump nextThreshold, pause and show countdown.
-   */
+  /** Level-up detector using score threshold */
   useEffect(() => {
     if (!isStarted || gameOver) return;
     if (score >= nextThreshold && !showLevelUp && !isPaused) {
       setLevel((prev) => prev + 1);
-      setNextThreshold((prev) => prev + 10); // next multiple of 10
+      setNextThreshold((prev) => prev + 10);
       setItems([]); // clear screen
       setIsPaused(true);
       setShowLevelUp(true);
@@ -226,7 +236,7 @@ export default function SnakeGame() {
     const head = snake[0];
     const newHead = { x: head.x + direction.x, y: head.y + direction.y };
 
-    // Wall or self collision → game over
+    // Wall or self collision → still instant game over (keeps stakes high)
     const hitWall =
       newHead.x < 0 ||
       newHead.y < 0 ||
@@ -262,15 +272,28 @@ export default function SnakeGame() {
 
         beep("collect");
       } else {
+        // Nature hit → use a life (unless in practice mode)
         if (practiceMode) {
-          setMistakes((m) => m + 1); // no game over
-          // Light penalty: shrink by one if long enough
+          setMistakes((m) => m + 1);
           if (nextSnake.length > 3) nextSnake.pop();
           beep("miss");
+          // Remove the nature item so it doesn't instantly re-hit
+          setItems((prev) => prev.filter((i) => i !== collided));
         } else {
-          setGameOver(true);
-          beep("gameover");
-          return;
+          setMistakes((m) => {
+            const used = m + 1;
+            // Remove the nature item to avoid double collisions
+            setItems((prev) => prev.filter((i) => i !== collided));
+            if (used >= LIVES_MAX) {
+              setGameOver(true);
+              beep("gameover");
+            } else {
+              // small penalty: shrink one segment if possible
+              if (nextSnake.length > 3) nextSnake.pop();
+              beep("miss");
+            }
+            return used;
+          });
         }
       }
     } else {
@@ -278,11 +301,10 @@ export default function SnakeGame() {
       nextSnake.pop();
     }
 
-    setSnake(nextSnake);
+    if (!gameOver) setSnake(nextSnake);
   };
 
   const spawnItem = () => {
-    // Cap to avoid overcrowding
     if (items.length >= MAX_ITEMS) return;
 
     const trashProb = trashProbabilityForLevel(level);
@@ -311,8 +333,6 @@ export default function SnakeGame() {
   /** Background textures & snake render (items are DOM overlays) */
   const draw = (ctx) => {
     ctx.clearRect(0, 0, CANVAS, CANVAS);
-
-    // Theme base bg via parent motion div; here we render overlays/textures only.
 
     // Subtle noise overlay (pattern cached)
     if (!noisePatternRef.current) {
@@ -344,7 +364,6 @@ export default function SnakeGame() {
       const x = seg.x * TILE;
       const y = seg.y * TILE;
       ctx.fillRect(x, y, TILE, TILE);
-      // crisp 1px border: offset by 0.5 to align to pixel grid
       ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
     });
   };
@@ -358,24 +377,24 @@ export default function SnakeGame() {
     const g = c.getContext("2d");
     const img = g.createImageData(s, s);
     for (let i = 0; i < img.data.length; i += 4) {
-      const v = 220 + Math.random() * 35; // bright noise to blend with bg
+      const v = 220 + Math.random() * 35;
       img.data[i] = v;
       img.data[i + 1] = v;
       img.data[i + 2] = v;
-      img.data[i + 3] = Math.random() * 55; // alpha
+      img.data[i + 3] = Math.random() * 55;
     }
     g.putImageData(img, 0, 0);
     return ctx.createPattern(c, "repeat");
   };
 
-  /** Particles: confetti burst on level-up */
+  /** Particles + audio helpers (unchanged from v4) ... */
   const confettiState = useRef({ running: false, particles: [], raf: 0 });
   const spawnConfetti = () => {
     const canvas = particlesRef.current;
     if (!canvas) return;
     const cx = CANVAS / 2,
       cy = CANVAS / 2;
-    const colors = ["#22c55e", "#ef4444", "#3b82f6", "#f59e0b", "#a855f7"]; // green, red, blue, amber, violet
+    const colors = ["#22c55e", "#ef4444", "#3b82f6", "#f59e0b", "#a855f7"];
     const parts = [];
     for (let i = 0; i < 90; i++) {
       const a = Math.random() * Math.PI * 2;
@@ -401,7 +420,6 @@ export default function SnakeGame() {
     const canvas = particlesRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-
     const step = () => {
       const state = confettiState.current;
       if (!state.running) return;
@@ -409,7 +427,7 @@ export default function SnakeGame() {
       state.particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.05; // gravity
+        p.vy += 0.05;
         p.life -= 1;
         ctx.fillStyle = p.color;
         ctx.fillRect(p.x, p.y, p.size, p.size);
@@ -434,7 +452,6 @@ export default function SnakeGame() {
     };
   }, []);
 
-  /** Simple beeps */
   const beep = (type) => {
     if (muted) return;
     const ctx = getAudio();
@@ -472,6 +489,7 @@ export default function SnakeGame() {
   const itemAnimClass = (item) =>
     item.type === "trash" ? "animate-pulse" : "animate-bounce";
 
+  // ===== RENDER =====
   // Derived percentage for circular countdown ring (3 → 2 → 1)
   const countdownPct = countdown > 0 ? countdown / 3 : 0;
   const CIRC_R = 40;
@@ -485,37 +503,34 @@ export default function SnakeGame() {
     setMistakes(0);
     setLevel(1);
     setNextThreshold(10);
-    setSpeedMode(speedMode); // preserve selection
+    setSpeedMode(speedMode);
     setSpeed(computeSpeed(speedMode, 1));
     setIsPaused(false);
     setShowLevelUp(false);
     setCountdown(0);
     setGameOver(false);
-    setIsStarted(false); // return to start screen
+    setIsStarted(false);
   };
+
+  // Lives display helper
+  const livesLeft = Math.max(0, LIVES_MAX - mistakes);
 
   return (
     <div className="flex flex-col items-center pt-8 font-sans">
       <h1 className="text-2xl mb-3">🐍 Eco Cleanup Snake</h1>
 
       {/* Controls (available before start) */}
-      <div className="flex flex-wrap items-center justify-center gap-5 mb-1">
+      <div className="flex flex-wrap items-center gap-4 mb-4">
         <div className="flex items-center gap-2">
           <label className="text-sm">Speed:</label>
           <select
-            className="border-b-2 rounded-b-lg hover:border-accent-400 px-2 py-1"
+            className="border rounded px-2 py-1"
             value={speedMode}
             onChange={(e) => setSpeedMode(e.target.value)}
           >
-            <option value="calm" className="text-primary-700">
-              Calm
-            </option>
-            <option value="fast" className="text-accent-700">
-              Fast
-            </option>
-            <option value="urgent" className="text-rose-700">
-              Urgent
-            </option>
+            <option value="calm">Calm</option>
+            <option value="fast">Fast</option>
+            <option value="urgent">Urgent</option>
           </select>
         </div>
 
@@ -545,10 +560,11 @@ export default function SnakeGame() {
           />
           Mute
         </label>
-      </div>
-      <div className="text-sm opacity-80 mb-4">
-        Level <span className="font-bold">{level}</span> · Theme:{" "}
-        <span className="font-bold">{THEMES[themeKey].label}</span>
+
+        <div className="text-sm opacity-80">
+          Level <span className="font-semibold">{level}</span> · Theme:{" "}
+          <span className="font-semibold">{THEMES[themeKey].label}</span>
+        </div>
       </div>
 
       {/* Stage with animated background color */}
@@ -701,11 +717,9 @@ export default function SnakeGame() {
           <div className="absolute inset-0 z-[10] bg-black/60 flex flex-col items-center justify-center text-white">
             <h2 className="text-3xl font-extrabold mb-2">Game Over</h2>
             <p className="mb-1">Final score: {score}</p>
-            {practiceMode && (
-              <p className="mb-3 opacity-80">
-                Mistakes (nature hits): {mistakes}
-              </p>
-            )}
+            <p className="mb-3 opacity-80">
+              Lives left: {livesLeft} / {LIVES_MAX}
+            </p>
             <button
               onClick={handleRestart}
               className="px-4 py-2 bg-green-600 rounded hover:bg-green-700"
@@ -724,6 +738,21 @@ export default function SnakeGame() {
           }`}
         >
           Score: <span className="font-bold">{score}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm opacity-80">Lives:</span>
+          <div className="flex gap-1">
+            {[...Array(LIVES_MAX)].map((_, i) => (
+              <span
+                key={i}
+                className={`inline-block w-5 text-center ${
+                  i < livesLeft ? "text-red-600" : "text-gray-400"
+                }`}
+              >
+                ❤
+              </span>
+            ))}
+          </div>
         </div>
         {practiceMode && (
           <div>
