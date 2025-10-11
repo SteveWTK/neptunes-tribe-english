@@ -18,6 +18,15 @@ const CANVAS = GRID_SIZE * TILE;
 
 // Theme presets (rotate with levels)
 const THEMES = {
+  multiples_of_seven: {
+    label: "multiples_of_seven",
+    bg: "#e386d0", // sand
+    trashWords: ["14", "35", "63", "84", "42", "56", "49"],
+    natureWords: ["13", "24", "32", "55", "73", "64", "48"],
+    trashClass: "bg-red-500",
+    natureClass: "bg-blue-700",
+    blindClass: "bg-indigo-900",
+  },
   beach: {
     label: "Beach",
     bg: "#e3e286", // sand

@@ -22,7 +22,7 @@ export default function HeaderLogo() {
           height="auto"
           width="130"
           quality={100}
-          alt="Neptune's Tribe logo"
+          alt="Habitat logo"
           className="block rounded-tr-3xl rounded-bl-3xl"
         />
       </Link>

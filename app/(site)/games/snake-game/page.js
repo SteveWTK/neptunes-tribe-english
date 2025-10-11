@@ -1,6 +1,6 @@
 "use client";
 
-import SnakeGame from "@/components/SnakeGame";
+// import SnakeGame from "@/components/SnakeGame";
 import SnakeGame3Lives from "@/components/SnakeGame3Lives";
 
 export default function EcoSnakeGame() {
