@@ -315,15 +315,16 @@ export default function EcoMapClient({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-4 pb-2 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+            className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+            // className="bg-primary-600 dark:bg-primary-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
           >
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <h2 className="text-3xl font-bold mb-2 flex items-center gap-3">
+                <h2 className="text-2xl font-bold flex items-center gap-3">
                   {/* <span>🌍</span> */}
                   {copy.exploreWorlds}
                 </h2>
-                <p className="text-white/90 text-lg mb-4">
+                <p className="text-white/90 text-lg mb-2">
                   {copy.worldsSubtitle}
                 </p>
                 {/* <div className="flex gap-3 flex-wrap">
@@ -339,8 +340,8 @@ export default function EcoMapClient({
                 </div> */}
               </div>
               <div className="hidden md:block ml-6">
-                <div className="bg-white/10 rounded-full p-4 group-hover:bg-white/20 transition-all">
-                  <ChevronRight className="w-12 h-12 group-hover:translate-x-1 transition-transform" />
+                <div className="bg-white/10 rounded-full p-3 group-hover:bg-white/20 transition-all">
+                  <ChevronRight className="w-8 h-8 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             </div>

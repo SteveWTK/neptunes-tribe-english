@@ -26,6 +26,7 @@ import { getWorldBySlug } from "@/data/worldsConfig";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import Image from "next/image";
+import Link from "next/link";
 
 // Icon mapping
 const ICON_MAP = {
@@ -191,10 +192,10 @@ function WorldDetailContent() {
       {/* Hero Section */}
       <div className="text-white relative overflow-hidden min-h-[400px]">
         {/* Background Image Layer */}
-        {world.imageUrl ? (
+        {world.heroUrl ? (
           <div className="absolute inset-0">
             <Image
-              src={world.imageUrl}
+              src={world.heroUrl}
               alt={world.name}
               fill
               className="object-cover"
@@ -223,14 +224,14 @@ function WorldDetailContent() {
           <div className="flex items-start gap-6">
             <div
               className="hidden md:block w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-xl backdrop-blur-sm"
-              style={{ backgroundColor: `${world.color.secondary}CC` }}
+              style={{ backgroundColor: `${world.color.primary}CC` }}
             >
               {world.mapUrl ? (
                 <Image
                   src={world.mapUrl}
                   alt={world.name}
                   fill
-                  className="object-cover rounded-lg"
+                  className="object-cover rounded-2xl p-[3px]"
                   priority
                 />
               ) : (
@@ -298,232 +299,238 @@ function WorldDetailContent() {
         </div>
 
         {/* Adventure Cards - Timeline Style */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {world.adventures.map((adventure, index) => {
-            const EcoIcon = getEcosystemIcon(adventure.ecosystemType);
-            const isSelected =
-              selectedAdventure && selectedAdventure.id === adventure.id;
-            const totalContent =
-              (currentData.units?.length || 0) +
-              (currentData.lessons?.length || 0);
+        <Link href="#content">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {world.adventures.map((adventure, index) => {
+              const EcoIcon = getEcosystemIcon(adventure.ecosystemType);
+              const isSelected =
+                selectedAdventure && selectedAdventure.id === adventure.id;
+              const totalContent =
+                (currentData.units?.length || 0) +
+                (currentData.lessons?.length || 0);
 
-            return (
-              <motion.div
-                key={adventure.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                onClick={() => setSelectedAdventure(adventure)}
-                className={`cursor-pointer transition-all duration-300 ${
-                  isSelected ? "scale-105" : "hover:scale-102"
-                }`}
-              >
-                <div
-                  className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border-2 transition-all ${
-                    isSelected
-                      ? "border-primary-500 shadow-xl"
-                      : "border-transparent hover:border-gray-300 dark:hover:border-gray-600"
+              return (
+                <motion.div
+                  key={adventure.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  onClick={() => setSelectedAdventure(adventure)}
+                  className={`cursor-pointer transition-all duration-300 ${
+                    isSelected ? "scale-105" : "hover:scale-102"
                   }`}
                 >
-                  {/* Week Badge */}
                   <div
-                    className="h-1"
-                    style={{ backgroundColor: world.color.primary }}
-                  />
-                  <div className="p-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <div
-                        className="px-3 py-1 rounded-full text-xs font-bold text-white"
-                        style={{ backgroundColor: world.color.primary }}
-                      >
-                        Week {adventure.week}
+                    className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border-2 transition-all ${
+                      isSelected
+                        ? "border-primary-500 shadow-xl"
+                        : "border-transparent hover:border-gray-300 dark:hover:border-gray-600"
+                    }`}
+                  >
+                    {/* Week Badge */}
+                    <div
+                      className="h-1"
+                      style={{ backgroundColor: world.color.primary }}
+                    />
+                    <div className="p-5">
+                      <div className="flex items-center justify-between mb-3">
+                        <div
+                          className="px-3 py-1 rounded-full text-xs font-bold text-white"
+                          style={{ backgroundColor: world.color.primary }}
+                        >
+                          Week {adventure.week}
+                        </div>
+                        <EcoIcon
+                          className="w-6 h-6"
+                          style={{ color: world.color.primary }}
+                        />
                       </div>
-                      <EcoIcon
-                        className="w-6 h-6"
-                        style={{ color: world.color.primary }}
-                      />
-                    </div>
 
-                    <h3 className="font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 min-h-[3rem]">
-                      {adventure.name}
-                    </h3>
+                      <h3 className="font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 min-h-[3rem]">
+                        {adventure.name}
+                      </h3>
 
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                      {adventure.description}
-                    </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+                        {adventure.description}
+                      </p>
 
-                    <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                      <div className="flex items-center gap-1">
-                        <BookOpen className="w-3 h-3" />
-                        <span>
-                          {isSelected && totalContent > 0
-                            ? `${totalContent} activities`
-                            : "View content"}
-                        </span>
+                      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center gap-1">
+                          <BookOpen className="w-3 h-3" />
+                          <span>
+                            {isSelected && totalContent > 0
+                              ? `${totalContent} activities`
+                              : "View content"}
+                          </span>
+                        </div>
+                        <ChevronRight
+                          className={`w-4 h-4 transition-transform ${
+                            isSelected ? "rotate-90" : ""
+                          }`}
+                        />
                       </div>
-                      <ChevronRight
-                        className={`w-4 h-4 transition-transform ${
-                          isSelected ? "rotate-90" : ""
-                        }`}
-                      />
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </Link>
 
         {/* Selected Adventure Content */}
-        <AnimatePresence mode="wait">
-          {selectedAdventure && (
-            <motion.div
-              key={selectedAdventure.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700"
-            >
-              <div className="mb-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <div
-                    className="px-4 py-2 rounded-lg text-white font-bold"
-                    style={{ backgroundColor: world.color.primary }}
-                  >
-                    Week {selectedAdventure.week}
+        <div id="content">
+          <AnimatePresence mode="wait">
+            {selectedAdventure && (
+              <motion.div
+                key={selectedAdventure.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700"
+              >
+                <div className="mb-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
+                      className="px-4 py-2 rounded-lg text-white font-bold"
+                      style={{ backgroundColor: world.color.primary }}
+                    >
+                      Week {selectedAdventure.week}
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {selectedAdventure.name}
+                    </h2>
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {selectedAdventure.name}
-                  </h2>
-                </div>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {selectedAdventure.description}
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* Units */}
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                    <BookOpen
-                      className="w-5 h-5"
-                      style={{ color: world.color.primary }}
-                    />
-                    Foundation Units
-                  </h3>
-                  {currentData.units && currentData.units.length > 0 ? (
-                    <div className="space-y-3">
-                      {currentData.units.map((unit) => (
-                        <div
-                          key={unit.id}
-                          onClick={() => router.push(`/units/${unit.id}`)}
-                          className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition-all cursor-pointer border border-gray-200 dark:border-gray-600"
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="font-semibold text-gray-900 dark:text-white mb-1">
-                                {unit.title}
-                              </div>
-                              <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
-                                <Clock className="w-3 h-3" />
-                                {unit.length || 5} min
-                              </div>
-                            </div>
-                            <ChevronRight className="w-5 h-5 text-gray-400" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg text-center text-gray-500 dark:text-gray-400">
-                      No units available yet
-                    </div>
-                  )}
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {selectedAdventure.description}
+                  </p>
                 </div>
 
-                {/* Lessons */}
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                    <Sparkles
-                      className="w-5 h-5"
-                      style={{ color: world.color.secondary }}
-                    />
-                    Practice Lessons
-                  </h3>
-                  {currentData.lessons && currentData.lessons.length > 0 ? (
-                    <div className="space-y-3">
-                      {currentData.lessons.map((lesson) => (
-                        <div
-                          key={lesson.id}
-                          onClick={() =>
-                            !lesson.under_construction &&
-                            router.push(`/lesson/${lesson.id}`)
-                          }
-                          className={`p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-all border border-gray-200 dark:border-gray-600 ${
-                            lesson.under_construction
-                              ? "opacity-60 cursor-not-allowed"
-                              : "hover:shadow-md cursor-pointer"
-                          }`}
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
-                                {lesson.title}
-                                {lesson.under_construction && (
-                                  <Lock className="w-3 h-3 text-gray-400" />
-                                )}
+                <div className="grid md:grid-cols-2 gap-8">
+                  {/* Units */}
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                      <BookOpen
+                        className="w-5 h-5"
+                        style={{ color: world.color.primary }}
+                      />
+                      Foundation Units
+                    </h3>
+                    {currentData.units && currentData.units.length > 0 ? (
+                      <div className="space-y-3">
+                        {currentData.units.map((unit) => (
+                          <div
+                            key={unit.id}
+                            onClick={() => router.push(`/units/${unit.id}`)}
+                            className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition-all cursor-pointer border border-gray-200 dark:border-gray-600"
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <div className="font-semibold text-gray-900 dark:text-white mb-1">
+                                  {unit.title}
+                                </div>
+                                <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                                  <Clock className="w-3 h-3" />
+                                  {unit.length || 5} min
+                                </div>
                               </div>
-                              <div className="text-sm text-gray-600 dark:text-gray-400">
-                                {lesson.content?.steps?.length || 0} steps
-                              </div>
-                            </div>
-                            {lesson.under_construction ? (
-                              <div className="text-xs text-gray-500">Soon</div>
-                            ) : (
                               <ChevronRight className="w-5 h-5 text-gray-400" />
-                            )}
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg text-center text-gray-500 dark:text-gray-400">
-                      No lessons available yet
-                    </div>
-                  )}
-                </div>
-              </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg text-center text-gray-500 dark:text-gray-400">
+                        No units available yet
+                      </div>
+                    )}
+                  </div>
 
-              {/* CTA Button */}
-              <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                <button
-                  onClick={() => {
-                    // Navigate to first available unit or lesson
-                    if (currentData.units && currentData.units.length > 0) {
-                      router.push(`/units/${currentData.units[0].id}`);
-                    } else if (
-                      currentData.lessons &&
-                      currentData.lessons.length > 0 &&
-                      !currentData.lessons[0].under_construction
-                    ) {
-                      router.push(`/lesson/${currentData.lessons[0].id}`);
+                  {/* Lessons */}
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                      <Sparkles
+                        className="w-5 h-5"
+                        style={{ color: world.color.secondary }}
+                      />
+                      Activities
+                    </h3>
+                    {currentData.lessons && currentData.lessons.length > 0 ? (
+                      <div className="space-y-3">
+                        {currentData.lessons.map((lesson) => (
+                          <div
+                            key={lesson.id}
+                            onClick={() =>
+                              !lesson.under_construction &&
+                              router.push(`/lesson/${lesson.id}`)
+                            }
+                            className={`p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-all border border-gray-200 dark:border-gray-600 ${
+                              lesson.under_construction
+                                ? "opacity-60 cursor-not-allowed"
+                                : "hover:shadow-md cursor-pointer"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <div className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                                  {lesson.title}
+                                  {lesson.under_construction && (
+                                    <Lock className="w-3 h-3 text-gray-400" />
+                                  )}
+                                </div>
+                                <div className="text-sm text-gray-600 dark:text-gray-400">
+                                  {lesson.content?.steps?.length || 0} steps
+                                </div>
+                              </div>
+                              {lesson.under_construction ? (
+                                <div className="text-xs text-gray-500">
+                                  Soon
+                                </div>
+                              ) : (
+                                <ChevronRight className="w-5 h-5 text-gray-400" />
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg text-center text-gray-500 dark:text-gray-400">
+                        No lessons available yet
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* CTA Button */}
+                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                  <button
+                    onClick={() => {
+                      // Navigate to first available unit or lesson
+                      if (currentData.units && currentData.units.length > 0) {
+                        router.push(`/units/${currentData.units[0].id}`);
+                      } else if (
+                        currentData.lessons &&
+                        currentData.lessons.length > 0 &&
+                        !currentData.lessons[0].under_construction
+                      ) {
+                        router.push(`/lesson/${currentData.lessons[0].id}`);
+                      }
+                    }}
+                    className="w-full md:w-auto px-8 py-4 rounded-lg text-white font-bold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-3"
+                    style={{ backgroundColor: world.color.primary }}
+                    disabled={
+                      (!currentData.units || currentData.units.length === 0) &&
+                      (!currentData.lessons || currentData.lessons.length === 0)
                     }
-                  }}
-                  className="w-full md:w-auto px-8 py-4 rounded-lg text-white font-bold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-3"
-                  style={{ backgroundColor: world.color.primary }}
-                  disabled={
-                    (!currentData.units || currentData.units.length === 0) &&
-                    (!currentData.lessons || currentData.lessons.length === 0)
-                  }
-                >
-                  <Play className="w-6 h-6" />
-                  Start This Adventure
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  >
+                    <Play className="w-6 h-6" />
+                    Start This Adventure
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
