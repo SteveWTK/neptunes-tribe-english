@@ -422,7 +422,7 @@ export default function EcoMapProgressOceans({
         </div>
       )}
 
-      {/* Enhanced Theme Popup */}
+      {/* Enhanced Adventure Popup */}
       <AnimatePresence>
         {showThemePopup && hoveredRegion && currentWeeklyTheme && (
           <motion.div
@@ -438,11 +438,11 @@ export default function EcoMapProgressOceans({
             }}
           >
             <div className="p-4">
-              {/* Theme Header */}
+              {/* Adventure Header */}
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-green-500 rounded-full"></div>
                 <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                  {lang === "pt" ? "Tema desta Semana" : "This Week's Theme"}
+                  {lang === "pt" ? "Mundo deste Mês" : "This Month's World"}
                 </span>
               </div>
 
@@ -648,7 +648,7 @@ export default function EcoMapProgressOceans({
         </ComposableMap>
       </div>
 
-      {/* Enhanced Legend with Weekly Theme */}
+      {/* Enhanced Legend with Weekly Adventure */}
       <div className="mt-4 flex flex-wrap justify-center gap-4 text-sm">
         {currentWeeklyTheme && (
           <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900 rounded-full">
@@ -658,34 +658,34 @@ export default function EcoMapProgressOceans({
             </span>
           </div>
         )}
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-gray-200 border border-gray-300 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">Not Started</span>
-        </div>
+        </div> */}
         {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-cyan-400 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
             Countries In Progress
           </span>
         </div> */}
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-green-500 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
             Countries Completed
           </span>
-        </div>
+        </div> */}
         {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-blue-400 bg-opacity-60 border border-blue-600 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
             Marine Zones In Progress
           </span>
         </div> */}
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-purple-500 bg-opacity-70 border border-purple-600 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
             Marine Zones Completed
           </span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

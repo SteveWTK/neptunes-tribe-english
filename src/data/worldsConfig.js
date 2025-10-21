@@ -31,8 +31,10 @@ export const WORLDS = {
       west: -81,
     },
     icon: "TreePine", // Lucide icon name
-    imageUrl: "/worlds/south-america.webp",
-    heroUrl: "/worlds/south-america.webp",
+    imageUrl:
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Piaui%20coast%20marine%20turtle.webp",
+    heroUrl:
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Piaui%20coast%20marine%20turtle.webp",
     mapUrl: "/maps/south-america.png",
     adventures: [
       {

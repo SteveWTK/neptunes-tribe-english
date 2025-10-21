@@ -48,14 +48,14 @@ export default function HeaderBase({
     site: {
       en: [
         { href: "/units", label: "Units" },
-        { href: "/themes", label: "Themes" },
+        { href: "/worlds", label: "Worlds" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "About Us" },
         { href: "/subscriptions", label: "Subscriptions" },
       ],
       pt: [
         { href: "/units", label: "Atividades" },
-        { href: "/themes", label: "Temas" },
+        { href: "/worlds", label: "Mundos" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
         { href: "/subscriptions", label: "Assinaturas" },

@@ -431,10 +431,43 @@ function WorldDetailContent() {
                                 </div>
                                 <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
                                   <Clock className="w-3 h-3" />
-                                  {unit.length || 5} min
+                                  {unit.length || 5} gaps
                                 </div>
                               </div>
-                              <ChevronRight className="w-5 h-5 text-gray-400" />
+
+                              {/* <div className="items-center">
+                                <div
+                                  className="w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-xl backdrop-blur-sm"
+                                  style={{
+                                    backgroundColor: `${world.color.primary}CC`,
+                                  }}
+                                >
+                                  <Image
+                                    src={unit.image}
+                                    alt={unit.title}
+                                    fill
+                                    className="object-cover rounded-2xl p-[3px]"
+                                    priority
+                                  />
+                                  <ChevronRight className="w-6 h-6 z-10 text-gray-400" />
+                                </div> */}
+                              <div className="flex gap-6 items-center">
+                                <div
+                                  className="w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-xl backdrop-blur-sm"
+                                  style={{
+                                    backgroundColor: `${world.color.primary}CC`,
+                                  }}
+                                >
+                                  <Image
+                                    src={unit.image}
+                                    alt={unit.title}
+                                    fill
+                                    className="object-cover rounded-2xl p-[3px]"
+                                    priority
+                                  />
+                                </div>
+                                <ChevronRight className="w-6 h-6 z-10 text-gray-400" />
+                              </div>
                             </div>
                           </div>
                         ))}

@@ -315,8 +315,8 @@ export default function EcoMapClient({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
-            // className="bg-primary-600 dark:bg-primary-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+            // className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+            className="bg-emerald-50 dark:bg-gray-800 rounded-2xl px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
           >
             <div className="flex items-center justify-between">
               <div className="flex-1">
@@ -324,7 +324,7 @@ export default function EcoMapClient({
                   {/* <span>🌍</span> */}
                   {copy.exploreWorlds}
                 </h2>
-                <p className="text-white/90 text-lg mb-2">
+                <p className=" text-primary-900/90 dark:text-white/90 text-lg mb-2">
                   {copy.worldsSubtitle}
                 </p>
                 {/* <div className="flex gap-3 flex-wrap">

@@ -47,7 +47,7 @@ function WorldsContent() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
       {/* Hero Section */}
-      <div className=" text-white">
+      <div className=" text-primary-950 dark:text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -61,7 +61,7 @@ function WorldsContent() {
                 Explore Our Planet
               </h1>
             </div>
-            <p className="text-xl text-white/90 max-w-3xl mx-auto mb-2">
+            <p className="text-xl text-primary-950/90 dark:text-white/90 max-w-3xl mx-auto mb-2">
               Journey through 8 incredible Worlds.
             </p>
 
