@@ -1,5 +1,11 @@
 "use client";
-import React, { useRef, useEffect, useState, useMemo, useCallback } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   getAllCluesProgressive,
@@ -26,7 +32,7 @@ export default function WordSnakeGame() {
   const [letters, setLetters] = useState([]); // {x, y, letter, isCorrect, isEraser}
   const [collectedWord, setCollectedWord] = useState("");
   const [score, setScore] = useState(0);
-  const [level, setLevel] = useState(1);
+  const [level, setLevel] = useState(9);
   const [gameOver, setGameOver] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -129,7 +135,13 @@ export default function WordSnakeGame() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    if (!isStarted || gameOver || isPaused || direction.x === 0 && direction.y === 0) return;
+    if (
+      !isStarted ||
+      gameOver ||
+      isPaused ||
+      (direction.x === 0 && direction.y === 0)
+    )
+      return;
 
     const id = setInterval(() => {
       moveSnake();
@@ -190,7 +202,7 @@ export default function WordSnakeGame() {
   }, [wordComplete, showLevelUp, isPaused, isStarted]);
 
   const handleWordComplete = () => {
-    setScore((s) => s + 100 + (Math.max(0, 60 - timeElapsed) * 2)); // Time bonus
+    setScore((s) => s + 100 + Math.max(0, 60 - timeElapsed) * 2); // Time bonus
     setIsPaused(true);
     setShowLevelUp(true);
     setShowFact(true);
@@ -238,7 +250,9 @@ export default function WordSnakeGame() {
     let nextSnake = [newHead, ...snake];
 
     // Check letter collision
-    const collided = letters.find((l) => l.x === newHead.x && l.y === newHead.y);
+    const collided = letters.find(
+      (l) => l.x === newHead.x && l.y === newHead.y
+    );
 
     if (collided) {
       setLetters((prev) => prev.filter((l) => l !== collided));
@@ -268,7 +282,7 @@ export default function WordSnakeGame() {
   };
 
   const spawnLetter = () => {
-    if (letters.length >= 8) return;
+    if (letters.length >= 10) return;
 
     // 70% chance for correct letter, 20% random, 10% eraser
     const rand = Math.random();
@@ -491,7 +505,9 @@ export default function WordSnakeGame() {
           <div className="text-sm">
             <span className="font-semibold">Level:</span> {level}
           </div>
-          <div className={`px-3 py-1 rounded-full text-xs font-bold text-white ${difficultyColor[difficulty]}`}>
+          <div
+            className={`px-3 py-1 rounded-full text-xs font-bold text-white ${difficultyColor[difficulty]}`}
+          >
             {difficulty}
           </div>
           <div className="text-sm">
@@ -554,7 +570,11 @@ export default function WordSnakeGame() {
         </div>
 
         <div className="mt-3 text-xs text-gray-600 dark:text-gray-400">
-          Press <kbd className="px-2 py-1 bg-white dark:bg-gray-700 rounded border">Backspace</kbd> or collect ⌫ to undo last letter
+          Press{" "}
+          <kbd className="px-2 py-1 bg-white dark:bg-gray-700 rounded border">
+            Backspace
+          </kbd>{" "}
+          or collect ⌫ to undo last letter
         </div>
       </div>
 
@@ -656,7 +676,9 @@ export default function WordSnakeGame() {
         {gameOver && (
           <div className="absolute inset-0 z-[10] bg-black/70 flex flex-col items-center justify-center text-white p-8">
             <h2 className="text-3xl font-bold mb-3">Game Over!</h2>
-            <p className="mb-2">Final Score: <span className="font-bold text-2xl">{score}</span></p>
+            <p className="mb-2">
+              Final Score: <span className="font-bold text-2xl">{score}</span>
+            </p>
             <p className="mb-6">Level Reached: {level}</p>
             <button
               onClick={handleRestart}
@@ -704,7 +726,9 @@ export default function WordSnakeGame() {
           <button
             onClick={handleBackspace}
             className="w-auto px-6 h-12 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-bold shadow-lg mt-2"
-            disabled={!isStarted || gameOver || isPaused || collectedWord.length === 0}
+            disabled={
+              !isStarted || gameOver || isPaused || collectedWord.length === 0
+            }
           >
             ⌫ Undo
           </button>

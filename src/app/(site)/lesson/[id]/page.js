@@ -56,6 +56,9 @@ import AISpeechPractice from "@/components/exercises/AISpeechPractice";
 import MemoryMatch from "@/components/exercises/MemoryMatch";
 import VideoPlayer from "@/components/exercises/VideoPlayer";
 import ConversationVote from "@/components/ConversationVote";
+import WordSnakeLesson from "@/components/WordSnakeLesson";
+import UnitModal from "@/components/UnitModal";
+import UnitReferenceStep from "@/components/UnitReferenceStep";
 import Link from "next/link";
 
 function DynamicLessonContent() {
@@ -86,6 +89,8 @@ function DynamicLessonContent() {
   const [userVoiceGender, setUserVoiceGender] = useState("male");
   const [stepCompleted, setStepCompleted] = useState(false);
   const [autoTranslating, setAutoTranslating] = useState(false);
+  const [unitModalOpen, setUnitModalOpen] = useState(false);
+  const [currentUnitId, setCurrentUnitId] = useState(null);
 
   // Reset keys for each exercise type to force re-render
   const [aiWritingKey, setAiWritingKey] = useState(0);
@@ -1099,6 +1104,198 @@ function DynamicLessonContent() {
                   );
                 }
               )}
+            </div>
+          </div>
+        );
+
+      case "memory_match":
+        const memoryVocabulary = currentStepData.vocabulary || [];
+        const translatedVocabulary = memoryVocabulary.map((word, idx) => ({
+          ...word,
+          english:
+            translations[`memory-english-${currentStep}-${idx}`] ||
+            word.english,
+          translation:
+            translations[`memory-translation-${currentStep}-${idx}`] ||
+            word.translation ||
+            word.portuguese,
+        }));
+
+        return (
+          <MemoryMatch
+            vocabulary={translatedVocabulary}
+            lessonId={lessonId}
+            onComplete={(xp) => {
+              setXpEarned((prev) => prev + xp);
+              setCompletedSteps((prev) => new Set([...prev, currentStep]));
+              setStepCompleted(true);
+            }}
+          />
+        );
+
+      case "conversation_vote":
+        return (
+          <ConversationVote
+            step={currentStepData}
+            onComplete={() => handleNext()}
+          />
+        );
+
+      case "unit_reference":
+        return (
+          <UnitReferenceStep
+            unitId={currentStepData.unit_id}
+            instructions={currentStepData.instructions}
+            onStartExercise={() => {
+              setCurrentUnitId(currentStepData.unit_id);
+              setUnitModalOpen(true);
+            }}
+          />
+        );
+
+      case "word_snake":
+        return (
+          <div>
+            {currentStepData.instructions && (
+              <div className="mb-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+                <p className="text-gray-700 dark:text-gray-300">
+                  {currentStepData.instructions}
+                </p>
+              </div>
+            )}
+            <WordSnakeLesson
+              clues={currentStepData.clues || []}
+              onComplete={(result) => {
+                console.log("Word Snake completed:", result);
+                setStepCompleted(true);
+              }}
+            />
+          </div>
+        );
+
+      case "video":
+        return (
+          <VideoPlayer
+            title={currentStepData.title}
+            videoUrl={currentStepData.video_url}
+            description={currentStepData.description}
+            className="mb-6"
+          />
+        );
+
+      // FIXED: Completion step with better button handling
+      case "completion":
+        return (
+          <div className="text-center">
+            <div className="bg-gradient-to-r from-green-50 to-primary-50 dark:from-green-900/20 dark:to-primary-900/20 p-8 rounded-xl">
+              {/* Translation button */}
+              {/* {userPreferredLanguage !== "en" && (
+                <div className="flex justify-end mb-4">
+                  <button
+                    onClick={() => {
+                      const content = `${currentStepData.content}${currentStepData.cultural_context ? "\n\nCultural Context: " + currentStepData.cultural_context : ""}${currentStepData.reflection_questions ? "\n\nReflection Questions:\n" + currentStepData.reflection_questions.join("\n") : ""}`;
+                      translateContent(content, `scenario-${currentStep}`);
+                    }}
+                    disabled={translating}
+                    className="flex items-center space-x-2 px-3 py-1 text-sm bg-white dark:bg-green-800 text-green-700 dark:text-gray-300 rounded-lg hover:bg-green-100 dark:hover:bg-green-700 transition-colors"
+                  >
+                    <span>
+                      {translating
+                        ? "Traduzindo..."
+                        : showTranslation
+                          ? "Show English"
+                          : "Traduzir"}
+                    </span>
+                  </button>
+                </div>
+              )} */}
+
+              {currentStepData.video_url ? (
+                <VideoPlayer
+                  title={currentStepData.title}
+                  videoUrl={currentStepData.video_url}
+                  description={currentStepData.video_description}
+                  className="mb-4"
+                />
+              ) : currentStepData.image_url ? (
+                <img
+                  src={currentStepData.image_url}
+                  alt="Scenario"
+                  className="w-full max-w-md mx-auto rounded-lg shadow-md mb-4"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
+              ) : null}
+
+              <Trophy className="w-16 h-16 text-[#d97706] mx-auto mb-4" />
+
+              {/* Show translated or original content */}
+              {showTranslation && translations[`completion-${currentStep}`] ? (
+                <div className="space-y-4 mb-6">
+                  <div className="whitespace-pre-line text-gray-700 dark:text-gray-300">
+                    {translations[`completion-${currentStep}`]}
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 italic">
+                    (Translated to {userPreferredLanguage})
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                    {t("lesson_complete")}
+                  </h3>
+                  <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
+                    {t("great_job")} {t("you_completed_lesson")} &quot;
+                    {lesson.title}&quot;
+                  </p>
+
+                  {currentStepData.achievements && (
+                    <div className="text-left max-w-md mx-auto space-y-2 mb-6">
+                      <h4 className="font-semibold text-center mb-3">
+                        {t("achievements")}
+                      </h4>
+                      {currentStepData.achievements.map(
+                        (achievement, index) => (
+                          <p
+                            key={index}
+                            className="text-gray-700 dark:text-gray-300 text-sm"
+                          >
+                            {translations[
+                              `achievement-${currentStep}-${index}`
+                            ] || achievement}
+                          </p>
+                        )
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
+              <div className="flex flex-col gap-1">
+                <div className="bg-white dark:bg-gray-800 px-4 py-1 rounded-lg inline-block mb-6">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    {t("total_xp_earned")}
+                  </p>
+                  <p className="text-3xl font-bold text-green-600">
+                    {xpEarned} XP
+                  </p>
+                </div>
+
+                <button
+                  onClick={handleLessonComplete}
+                  disabled={completing}
+                  className="bg-gradient-to-r from-primary-500 to-accent-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {completing ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>{t("saving_progress")}</span>
+                    </div>
+                  ) : (
+                    t("Return to Lessons")
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         );
@@ -2504,183 +2701,6 @@ function DynamicLessonContent() {
           </div>
         );
 
-      case "memory_match":
-        const memoryVocabulary = currentStepData.vocabulary || [];
-        const translatedVocabulary = memoryVocabulary.map((word, idx) => ({
-          ...word,
-          english:
-            translations[`memory-english-${currentStep}-${idx}`] ||
-            word.english,
-          translation:
-            translations[`memory-translation-${currentStep}-${idx}`] ||
-            word.translation ||
-            word.portuguese,
-        }));
-
-        return (
-          <MemoryMatch
-            vocabulary={translatedVocabulary}
-            lessonId={lessonId}
-            onComplete={(xp) => {
-              setXpEarned((prev) => prev + xp);
-              setCompletedSteps((prev) => new Set([...prev, currentStep]));
-              setStepCompleted(true);
-            }}
-          />
-        );
-
-      case "conversation_vote":
-        return (
-          <ConversationVote
-            step={currentStepData}
-            onComplete={() => handleNext()}
-          />
-        );
-
-      // FIXED: Completion step with better button handling
-      case "completion":
-        return (
-          <div className="text-center">
-            <div className="bg-gradient-to-r from-green-50 to-primary-50 dark:from-green-900/20 dark:to-primary-900/20 p-8 rounded-xl">
-              {/* Translation button */}
-              {/* {userPreferredLanguage !== "en" && (
-                <div className="flex justify-end mb-4">
-                  <button
-                    onClick={() => {
-                      const content = `${currentStepData.content}${currentStepData.cultural_context ? "\n\nCultural Context: " + currentStepData.cultural_context : ""}${currentStepData.reflection_questions ? "\n\nReflection Questions:\n" + currentStepData.reflection_questions.join("\n") : ""}`;
-                      translateContent(content, `scenario-${currentStep}`);
-                    }}
-                    disabled={translating}
-                    className="flex items-center space-x-2 px-3 py-1 text-sm bg-white dark:bg-green-800 text-green-700 dark:text-gray-300 rounded-lg hover:bg-green-100 dark:hover:bg-green-700 transition-colors"
-                  >
-                    <span>
-                      {translating
-                        ? "Traduzindo..."
-                        : showTranslation
-                          ? "Show English"
-                          : "Traduzir"}
-                    </span>
-                  </button>
-                </div>
-              )} */}
-
-              {currentStepData.video_url ? (
-                <VideoPlayer
-                  title={currentStepData.title}
-                  videoUrl={currentStepData.video_url}
-                  description={currentStepData.video_description}
-                  className="mb-4"
-                />
-              ) : currentStepData.image_url ? (
-                <img
-                  src={currentStepData.image_url}
-                  alt="Scenario"
-                  className="w-full max-w-md mx-auto rounded-lg shadow-md mb-4"
-                  onError={(e) => {
-                    e.target.style.display = "none";
-                  }}
-                />
-              ) : null}
-
-              <Trophy className="w-16 h-16 text-[#d97706] mx-auto mb-4" />
-
-              {/* Show translated or original content */}
-              {showTranslation && translations[`completion-${currentStep}`] ? (
-                <div className="space-y-4 mb-6">
-                  <div className="whitespace-pre-line text-gray-700 dark:text-gray-300">
-                    {translations[`completion-${currentStep}`]}
-                  </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 italic">
-                    (Translated to {userPreferredLanguage})
-                  </p>
-                </div>
-              ) : (
-                <>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                    {t("lesson_complete")}
-                  </h3>
-                  <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-                    {t("great_job")} {t("you_completed_lesson")} &quot;
-                    {lesson.title}&quot;
-                  </p>
-
-                  {currentStepData.achievements && (
-                    <div className="text-left max-w-md mx-auto space-y-2 mb-6">
-                      <h4 className="font-semibold text-center mb-3">
-                        {t("achievements")}
-                      </h4>
-                      {currentStepData.achievements.map(
-                        (achievement, index) => (
-                          <p
-                            key={index}
-                            className="text-gray-700 dark:text-gray-300 text-sm"
-                          >
-                            {translations[
-                              `achievement-${currentStep}-${index}`
-                            ] || achievement}
-                          </p>
-                        )
-                      )}
-                    </div>
-                  )}
-                </>
-              )}
-              <div className="flex flex-col gap-1">
-                <div className="bg-white dark:bg-gray-800 px-4 py-1 rounded-lg inline-block mb-6">
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    {t("total_xp_earned")}
-                  </p>
-                  <p className="text-3xl font-bold text-green-600">
-                    {xpEarned} XP
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleLessonComplete}
-                  disabled={completing}
-                  className="bg-gradient-to-r from-primary-500 to-accent-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {completing ? (
-                    <div className="flex items-center space-x-2">
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>{t("saving_progress")}</span>
-                    </div>
-                  ) : (
-                    t("Return to Lessons")
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-
-      case "unit_reference":
-        return (
-          <div>
-            {currentStepData.instructions && (
-              <div className="mb-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
-                <p className="text-gray-700 dark:text-gray-300">
-                  {currentStepData.instructions}
-                </p>
-              </div>
-            )}
-            <MultiGapFillExerciseNew
-              unitId={currentStepData.unit_id}
-              units={[]}
-            />
-          </div>
-        );
-
-      case "video":
-        return (
-          <VideoPlayer
-            title={currentStepData.title}
-            videoUrl={currentStepData.video_url}
-            description={currentStepData.description}
-            className="mb-6"
-          />
-        );
-
       default:
         return (
           <div className="text-center py-8">
@@ -2849,6 +2869,18 @@ function DynamicLessonContent() {
           )}
         </button>
       </div>
+
+      {/* Unit Modal */}
+      <UnitModal
+        unitId={currentUnitId}
+        isOpen={unitModalOpen}
+        onClose={() => setUnitModalOpen(false)}
+        onComplete={(result) => {
+          console.log("Unit completed:", result);
+          setStepCompleted(true);
+          setUnitModalOpen(false);
+        }}
+      />
     </div>
   );
 }
