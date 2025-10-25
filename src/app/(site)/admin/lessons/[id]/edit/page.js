@@ -21,6 +21,7 @@ import {
 } from "@/lib/supabase/lesson-queries";
 import { useAuth } from "@/components/AuthProvider";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { WORLDS } from "@/data/worldsConfig";
 
 import ScenarioStepForm from "@/components/admin/step-forms/ScenarioStepForm";
 import VocabularyStepForm from "@/components/admin/step-forms/VocabularyStepForm";
@@ -48,6 +49,14 @@ function LessonEditorContent() {
   const [jsonText, setJsonText] = useState("");
   const [expandedStep, setExpandedStep] = useState(null);
   const [draggedIndex, setDraggedIndex] = useState(null);
+  const [selectedWorldId, setSelectedWorldId] = useState("");
+
+  // Get worlds array for dropdown
+  const worldsArray = Object.values(WORLDS);
+
+  // Get adventures for selected world
+  const selectedWorld = selectedWorldId ? WORLDS[selectedWorldId] : null;
+  const adventures = selectedWorld ? selectedWorld.adventures : [];
 
   const STEP_TYPES = [
     { value: "unit_reference", label: "Unit Reference (Gap-Fill Exercise)" },
@@ -69,6 +78,13 @@ function LessonEditorContent() {
   useEffect(() => {
     loadLesson();
   }, [lessonId]);
+
+  // Sync selectedWorldId when lesson loads
+  useEffect(() => {
+    if (lesson?.world) {
+      setSelectedWorldId(lesson.world);
+    }
+  }, [lesson?.world]);
 
   async function loadLesson() {
     try {
@@ -418,6 +434,55 @@ function LessonEditorContent() {
                     <option value="schools">Schools (Students)</option>
                     <option value="both">Both</option>
                   </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    World
+                  </label>
+                  <select
+                    value={lesson.world || ""}
+                    onChange={(e) => {
+                      const worldId = e.target.value;
+                      setSelectedWorldId(worldId);
+                      updateLessonField("world", worldId);
+                      // Reset adventure when world changes
+                      updateLessonField("theme_tags", worldId ? [] : null);
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  >
+                    <option value="">Select a world (optional)</option>
+                    {worldsArray.map((world) => (
+                      <option key={world.id} value={world.id}>
+                        {world.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Adventure
+                  </label>
+                  <select
+                    value={lesson.theme_tags?.[0] || ""}
+                    onChange={(e) => {
+                      const themeTag = e.target.value;
+                      updateLessonField("theme_tags", themeTag ? [themeTag] : null);
+                    }}
+                    disabled={!lesson.world}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <option value="">Select an adventure (optional)</option>
+                    {adventures.map((adventure) => (
+                      <option key={adventure.themeTag} value={adventure.themeTag}>
+                        Week {adventure.week}: {adventure.name}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {lesson.world
+                      ? "Select one of the 4 weekly adventures"
+                      : "Select a world first"}
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

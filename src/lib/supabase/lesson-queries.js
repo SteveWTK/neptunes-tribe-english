@@ -66,7 +66,9 @@ export async function createLesson(lessonData) {
       'lesson_number',
       'level_name',
       'under_construction',
-      'target_audience'
+      'target_audience',
+      'world',
+      'theme_tags'
     ];
 
     const cleanedData = {};
@@ -120,7 +122,9 @@ export async function updateLesson(lessonId, lessonData) {
       'lesson_number',
       'level_name',
       'under_construction',
-      'target_audience'
+      'target_audience',
+      'world',
+      'theme_tags'
     ];
 
     const cleanedData = {};

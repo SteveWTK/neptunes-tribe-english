@@ -59,6 +59,7 @@ import ConversationVote from "@/components/ConversationVote";
 import WordSnakeLesson from "@/components/WordSnakeLesson";
 import UnitModal from "@/components/UnitModal";
 import UnitReferenceStep from "@/components/UnitReferenceStep";
+import { WORLDS } from "@/data/worldsConfig";
 import Link from "next/link";
 
 function DynamicLessonContent() {
@@ -101,6 +102,13 @@ function DynamicLessonContent() {
   const [interactiveGameKey, setInteractiveGameKey] = useState(0);
 
   const audioRef = useRef(null);
+
+  // Helper function to get world URL from lesson
+  const getWorldUrl = () => {
+    if (!lesson?.world) return "/worlds";
+    const world = WORLDS[lesson.world];
+    return world ? `/worlds/${world.slug}` : "/worlds";
+  };
 
   // Fetch lesson data and user preferences
   useEffect(() => {
@@ -608,7 +616,7 @@ function DynamicLessonContent() {
 
   const handleLessonComplete = async () => {
     if (!user) {
-      router.push("/lesson");
+      router.push(getWorldUrl());
       return;
     }
 
@@ -626,19 +634,19 @@ function DynamicLessonContent() {
       );
 
       console.log(
-        "✅ Lesson completion successful, navigating to lessons page..."
+        "✅ Lesson completion successful, navigating to world page..."
       );
 
       // Small delay to ensure database operations complete
       setTimeout(() => {
-        router.push("/lesson");
+        router.push(getWorldUrl());
       }, 500);
     } catch (error) {
       console.error("❌ Error marking lesson complete:", error);
       setCompleting(false);
 
       // Even if completion fails, still allow navigation
-      router.push("/lesson");
+      router.push(getWorldUrl());
     }
   };
 
@@ -2730,11 +2738,11 @@ function DynamicLessonContent() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-4">
             <button
-              onClick={() => router.push("/lesson")}
+              onClick={() => router.push(getWorldUrl())}
               className="flex items-center space-x-2 text-gray-600 dark:text-gray-300 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Lessons</span>
+              <span>{lesson?.world && WORLDS[lesson.world] ? WORLDS[lesson.world].name : "Worlds"}</span>
             </button>
             <span className="text-gray-400">•</span>
             <span className="text-gray-600 dark:text-gray-300 font-bold">
@@ -2742,8 +2750,9 @@ function DynamicLessonContent() {
             </span>
           </div>
           <button
-            onClick={() => router.push("/lesson")}
+            onClick={() => router.push(getWorldUrl())}
             className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+            title="Back to World"
           >
             <Home className="w-5 h-5" />
           </button>

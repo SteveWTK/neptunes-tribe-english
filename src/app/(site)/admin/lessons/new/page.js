@@ -9,12 +9,14 @@ import {
 } from "@/lib/supabase/lesson-queries";
 import { useAuth } from "@/components/AuthProvider";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { WORLDS } from "@/data/worldsConfig";
 
 function NewLessonContent() {
   const router = useRouter();
   const { user } = useAuth();
   const [pillars, setPillars] = useState([]);
   const [saving, setSaving] = useState(false);
+  const [selectedWorldId, setSelectedWorldId] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -25,11 +27,34 @@ function NewLessonContent() {
     sort_order: 0,
     target_audience: "players",
     is_active: false,
+    world: "",
+    theme_tags: "",
     content: {
       type: "multi_step",
       steps: [],
     },
   });
+
+  // Get worlds array for dropdown
+  const worldsArray = Object.values(WORLDS);
+
+  // Get adventures for selected world
+  const selectedWorld = selectedWorldId ? WORLDS[selectedWorldId] : null;
+  const adventures = selectedWorld ? selectedWorld.adventures : [];
+
+  // Debug logging
+  useEffect(() => {
+    console.log("Form data:", formData);
+    console.log("Selected world ID:", selectedWorldId);
+    console.log("Adventures available:", adventures.length);
+  }, [formData.world, selectedWorldId, adventures.length]);
+
+  // Sync selectedWorldId when formData.world changes (e.g., when loading existing lesson)
+  useEffect(() => {
+    if (formData.world && formData.world !== selectedWorldId) {
+      setSelectedWorldId(formData.world);
+    }
+  }, [formData.world, selectedWorldId]);
 
   useEffect(() => {
     loadPillars();
@@ -45,7 +70,7 @@ function NewLessonContent() {
   }
 
   function updateField(field, value) {
-    setFormData({ ...formData, [field]: value });
+    setFormData((prev) => ({ ...prev, [field]: value }));
   }
 
   async function handleCreate() {
@@ -61,7 +86,17 @@ function NewLessonContent() {
 
     try {
       setSaving(true);
-      const newLesson = await createLesson(formData);
+
+      // Prepare data for Supabase - theme_tags must be an array
+      const lessonData = {
+        ...formData,
+        theme_tags: formData.theme_tags ? [formData.theme_tags] : null,
+        world: formData.world || null,
+      };
+
+      console.log("Creating lesson with data:", lessonData);
+
+      const newLesson = await createLesson(lessonData);
       alert("Lesson created successfully!");
       router.push(`/admin/lessons/${newLesson.id}/edit`);
     } catch (error) {
@@ -154,7 +189,75 @@ function NewLessonContent() {
                   <option value="Expert">Expert</option>
                 </select>
               </div>
+            </div>
 
+            {/* World and Adventure Selection */}
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                World & Adventure Assignment
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    World
+                  </label>
+                  <select
+                    value={formData.world || ""}
+                    onChange={(e) => {
+                      const worldId = e.target.value;
+                      console.log("World selected:", worldId);
+                      setSelectedWorldId(worldId);
+                      setFormData((prev) => ({
+                        ...prev,
+                        world: worldId,
+                        theme_tags: "", // Reset adventure when world changes
+                      }));
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  >
+                    <option value="">Select a world (optional)</option>
+                    {worldsArray.map((world) => (
+                      <option key={world.id} value={world.id}>
+                        {world.name}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Assign to one of the 7 continents/regions
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Adventure
+                  </label>
+                  <select
+                    value={formData.theme_tags || ""}
+                    onChange={(e) => {
+                      const themeTag = e.target.value;
+                      console.log("Adventure selected:", themeTag);
+                      updateField("theme_tags", themeTag);
+                    }}
+                    disabled={!formData.world}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <option value="">Select an adventure (optional)</option>
+                    {adventures.map((adventure) => (
+                      <option key={adventure.themeTag} value={adventure.themeTag}>
+                        Week {adventure.week}: {adventure.name}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {formData.world
+                      ? "Select one of the 4 weekly adventures"
+                      : "Select a world first"}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Target Audience

@@ -16,7 +16,6 @@ import {
   Lock,
   CheckCircle,
   MapPin,
-  Clock,
   Award,
   Home,
 } from "lucide-react";
@@ -91,13 +90,6 @@ function WorldDetailContent() {
     try {
       const supabase = createClient();
 
-      // Load units with this theme tag
-      const { data: unitsData, error: unitsError } = await supabase
-        .from("units")
-        .select("*")
-        .contains("theme_tags", [adventure.themeTag])
-        .limit(6);
-
       // Load lessons with this theme tag
       const { data: lessonsData, error: lessonsError } = await supabase
         .from("lessons")
@@ -105,13 +97,53 @@ function WorldDetailContent() {
         .eq("is_active", true)
         .contains("theme_tags", [adventure.themeTag])
         .order("sort_order")
-        .limit(5);
+        .limit(10);
+
+      if (lessonsError) console.error("Error loading lessons:", lessonsError);
+
+      // Load all units for this adventure
+      const { data: unitsData, error: unitsError } = await supabase
+        .from("units")
+        .select("id, title, image, length")
+        .contains("theme_tags", [adventure.themeTag]);
+
+      if (unitsError) console.error("Error loading units:", unitsError);
+
+      // Create a map of unit_id -> unit for quick lookup
+      const unitsMap = {};
+      (unitsData || []).forEach((unit) => {
+        unitsMap[unit.id] = unit;
+      });
+
+      // Attach unit data to lessons based on unit_reference steps
+      const lessonsWithUnits = (lessonsData || []).map((lesson) => {
+        // Find first unit_reference step in lesson content
+        const unitStep = lesson.content?.steps?.find(
+          (step) => step.type === "unit_reference"
+        );
+        const unitId = unitStep?.unit_id;
+        const unit = unitId ? unitsMap[unitId] : null;
+
+        // Debug logging
+        console.log("Lesson:", lesson.title);
+        console.log("Unit step found:", unitStep);
+        console.log("Unit ID:", unitId);
+        console.log("Unit data:", unit);
+        console.log("---");
+
+        return {
+          ...lesson,
+          unit: unit || null,
+        };
+      });
+
+      console.log("Units map:", unitsMap);
+      console.log("Final lessons with units:", lessonsWithUnits);
 
       setAdventureData((prev) => ({
         ...prev,
         [adventure.id]: {
-          units: unitsData || [],
-          lessons: lessonsData || [],
+          lessons: lessonsWithUnits,
         },
       }));
     } catch (error) {
@@ -407,86 +439,14 @@ function WorldDetailContent() {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8">
-                  {/* Units */}
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                      <BookOpen
-                        className="w-5 h-5"
-                        style={{ color: world.color.primary }}
-                      />
-                      Foundation Units
-                    </h3>
-                    {currentData.units && currentData.units.length > 0 ? (
-                      <div className="space-y-3">
-                        {currentData.units.map((unit) => (
-                          <div
-                            key={unit.id}
-                            onClick={() => router.push(`/units/${unit.id}`)}
-                            className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition-all cursor-pointer border border-gray-200 dark:border-gray-600"
-                          >
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <div className="font-semibold text-gray-900 dark:text-white mb-1">
-                                  {unit.title}
-                                </div>
-                                <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
-                                  <Clock className="w-3 h-3" />
-                                  {unit.length || 5} gaps
-                                </div>
-                              </div>
-
-                              {/* <div className="items-center">
-                                <div
-                                  className="w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-xl backdrop-blur-sm"
-                                  style={{
-                                    backgroundColor: `${world.color.primary}CC`,
-                                  }}
-                                >
-                                  <Image
-                                    src={unit.image}
-                                    alt={unit.title}
-                                    fill
-                                    className="object-cover rounded-2xl p-[3px]"
-                                    priority
-                                  />
-                                  <ChevronRight className="w-6 h-6 z-10 text-gray-400" />
-                                </div> */}
-                              <div className="flex gap-6 items-center">
-                                <div
-                                  className="w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-xl backdrop-blur-sm"
-                                  style={{
-                                    backgroundColor: `${world.color.primary}CC`,
-                                  }}
-                                >
-                                  <Image
-                                    src={unit.image}
-                                    alt={unit.title}
-                                    fill
-                                    className="object-cover rounded-2xl p-[3px]"
-                                    priority
-                                  />
-                                </div>
-                                <ChevronRight className="w-6 h-6 z-10 text-gray-400" />
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg text-center text-gray-500 dark:text-gray-400">
-                        No units available yet
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Lessons */}
+                  {/* Learning Activities */}
                   <div>
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                       <Sparkles
                         className="w-5 h-5"
-                        style={{ color: world.color.secondary }}
+                        style={{ color: world.color.primary }}
                       />
-                      Activities
+                      Learning Activities
                     </h3>
                     {currentData.lessons && currentData.lessons.length > 0 ? (
                       <div className="space-y-3">
@@ -503,7 +463,7 @@ function WorldDetailContent() {
                                 : "hover:shadow-md cursor-pointer"
                             }`}
                           >
-                            <div className="flex items-start justify-between">
+                            <div className="flex items-start justify-between gap-4">
                               <div className="flex-1">
                                 <div className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
                                   {lesson.title}
@@ -512,23 +472,37 @@ function WorldDetailContent() {
                                   )}
                                 </div>
                                 <div className="text-sm text-gray-600 dark:text-gray-400">
-                                  {lesson.content?.steps?.length || 0} steps
+                                  {lesson.content?.steps?.length || 0} activities
                                 </div>
                               </div>
-                              {lesson.under_construction ? (
-                                <div className="text-xs text-gray-500">
-                                  Soon
-                                </div>
-                              ) : (
-                                <ChevronRight className="w-5 h-5 text-gray-400" />
-                              )}
+
+                              <div className="flex gap-3 items-center">
+                                {/* Unit Image */}
+                                {lesson.unit?.image && (
+                                  <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                    <Image
+                                      src={lesson.unit.image}
+                                      alt={lesson.unit.title || "Unit"}
+                                      fill
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                )}
+                                {lesson.under_construction ? (
+                                  <div className="text-xs text-gray-500">
+                                    Soon
+                                  </div>
+                                ) : (
+                                  <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                                )}
+                              </div>
                             </div>
                           </div>
                         ))}
                       </div>
                     ) : (
                       <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg text-center text-gray-500 dark:text-gray-400">
-                        No lessons available yet
+                        No learning activities available yet
                       </div>
                     )}
                   </div>
