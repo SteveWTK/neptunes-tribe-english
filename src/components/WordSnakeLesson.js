@@ -789,48 +789,50 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
         </AnimatePresence>
       </div>
 
-      {/* Mobile Controls */}
-      <div className="md:hidden flex flex-col items-center gap-4">
-        <div className="grid grid-cols-3 gap-2">
-          <div></div>
-          <button
-            onClick={() => handleDirectionPress({ x: 0, y: -1 })}
-            disabled={!isStarted || isPaused || gameOver || showLevelUp}
-            className="w-16 h-16 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 rounded-lg flex items-center justify-center text-white text-2xl font-bold shadow-lg"
-          >
-            ↑
-          </button>
-          <div></div>
-          <button
-            onClick={() => handleDirectionPress({ x: -1, y: 0 })}
-            disabled={!isStarted || isPaused || gameOver || showLevelUp}
-            className="w-16 h-16 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 rounded-lg flex items-center justify-center text-white text-2xl font-bold shadow-lg"
-          >
-            ←
-          </button>
-          <button
-            onClick={handleBackspace}
-            disabled={!isStarted || isPaused || gameOver || showLevelUp}
-            className="w-16 h-16 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 rounded-lg flex items-center justify-center text-white text-xl font-bold shadow-lg"
-          >
-            ⌫
-          </button>
-          <button
-            onClick={() => handleDirectionPress({ x: 1, y: 0 })}
-            disabled={!isStarted || isPaused || gameOver || showLevelUp}
-            className="w-16 h-16 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 rounded-lg flex items-center justify-center text-white text-2xl font-bold shadow-lg"
-          >
-            →
-          </button>
-          <div></div>
-          <button
-            onClick={() => handleDirectionPress({ x: 0, y: 1 })}
-            disabled={!isStarted || isPaused || gameOver || showLevelUp}
-            className="w-16 h-16 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 rounded-lg flex items-center justify-center text-white text-2xl font-bold shadow-lg"
-          >
-            ↓
-          </button>
-          <div></div>
+      {/* Mobile Controls - Floating Overlay */}
+      <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-20">
+        <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-3 border border-white/20">
+          <div className="grid grid-cols-3 gap-2">
+            <div></div>
+            <button
+              onClick={() => handleDirectionPress({ x: 0, y: -1 })}
+              disabled={!isStarted || isPaused || gameOver || showLevelUp}
+              className="w-12 h-12 bg-primary-600/90 hover:bg-primary-700 active:bg-primary-800 disabled:bg-gray-400/50 rounded-lg flex items-center justify-center text-white text-xl font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95"
+            >
+              ↑
+            </button>
+            <div></div>
+            <button
+              onClick={() => handleDirectionPress({ x: -1, y: 0 })}
+              disabled={!isStarted || isPaused || gameOver || showLevelUp}
+              className="w-12 h-12 bg-primary-600/90 hover:bg-primary-700 active:bg-primary-800 disabled:bg-gray-400/50 rounded-lg flex items-center justify-center text-white text-xl font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95"
+            >
+              ←
+            </button>
+            <button
+              onClick={handleBackspace}
+              disabled={!isStarted || isPaused || gameOver || showLevelUp}
+              className="w-12 h-12 bg-purple-600/90 hover:bg-purple-700 active:bg-purple-800 disabled:bg-gray-400/50 rounded-lg flex items-center justify-center text-white text-lg font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95"
+            >
+              ⌫
+            </button>
+            <button
+              onClick={() => handleDirectionPress({ x: 1, y: 0 })}
+              disabled={!isStarted || isPaused || gameOver || showLevelUp}
+              className="w-12 h-12 bg-primary-600/90 hover:bg-primary-700 active:bg-primary-800 disabled:bg-gray-400/50 rounded-lg flex items-center justify-center text-white text-xl font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95"
+            >
+              →
+            </button>
+            <div></div>
+            <button
+              onClick={() => handleDirectionPress({ x: 0, y: 1 })}
+              disabled={!isStarted || isPaused || gameOver || showLevelUp}
+              className="w-12 h-12 bg-primary-600/90 hover:bg-primary-700 active:bg-primary-800 disabled:bg-gray-400/50 rounded-lg flex items-center justify-center text-white text-xl font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95"
+            >
+              ↓
+            </button>
+            <div></div>
+          </div>
         </div>
       </div>
 
