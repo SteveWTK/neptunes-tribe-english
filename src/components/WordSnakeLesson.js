@@ -22,6 +22,9 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
   const canvasRef = useRef(null);
   const particlesRef = useRef(null);
 
+  // Touch tracking for swipe gestures
+  const touchStartRef = useRef(null);
+
   // Game state
   const [snake, setSnake] = useState([{ x: 10, y: 10 }]);
   const [direction, setDirection] = useState({ x: 0, y: 0 });
@@ -591,15 +594,59 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
     });
   }, [snake, letters, direction, collectedWord]);
 
-  // Mobile controls
-  const handleDirectionPress = (newDir) => {
+  // Touch gesture handlers for swipe controls
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    touchStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+      time: Date.now(),
+    };
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!touchStartRef.current) return;
     if (!isStarted || isPaused || gameOver || showLevelUp) return;
-    if (
-      (newDir.x !== 0 && direction.y === 0) ||
-      (newDir.y !== 0 && direction.x === 0)
-    ) {
-      setDirection(newDir);
+
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - touchStartRef.current.x;
+    const deltaY = touch.clientY - touchStartRef.current.y;
+    const deltaTime = Date.now() - touchStartRef.current.time;
+
+    // Minimum swipe distance (30px) and max time (300ms) for a valid swipe
+    const minSwipeDistance = 30;
+    const maxSwipeTime = 300;
+
+    if (deltaTime > maxSwipeTime) {
+      touchStartRef.current = null;
+      return;
     }
+
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+
+    // Determine swipe direction based on the larger delta
+    if (absX > absY && absX > minSwipeDistance) {
+      // Horizontal swipe
+      if (deltaX > 0 && direction.x === 0) {
+        setDirection({ x: 1, y: 0 }); // Right
+      } else if (deltaX < 0 && direction.x === 0) {
+        setDirection({ x: -1, y: 0 }); // Left
+      }
+    } else if (absY > absX && absY > minSwipeDistance) {
+      // Vertical swipe
+      if (deltaY > 0 && direction.y === 0) {
+        setDirection({ x: 0, y: 1 }); // Down
+      } else if (deltaY < 0 && direction.y === 0) {
+        setDirection({ x: 0, y: -1 }); // Up
+      }
+    }
+
+    touchStartRef.current = null;
+  };
+
+  const handleTouchCancel = () => {
+    touchStartRef.current = null;
   };
 
   if (allCompleted) {
@@ -702,7 +749,10 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
           ref={canvasRef}
           width={CANVAS}
           height={CANVAS}
-          className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl shadow-2xl border-4 border-white dark:border-gray-700"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchCancel}
+          className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl shadow-2xl border-4 border-white dark:border-gray-700 touch-none"
         />
         <canvas
           ref={particlesRef}
@@ -787,58 +837,27 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Mobile Backspace Button - Small floating button for undo */}
+        {isStarted && !gameOver && collectedWord.length > 0 && (
+          <button
+            onClick={handleBackspace}
+            className="md:hidden absolute bottom-4 right-4 w-12 h-12 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg z-20 active:scale-95 transition-all"
+            aria-label="Backspace"
+          >
+            ⌫
+          </button>
+        )}
       </div>
 
-      {/* Mobile Controls - Floating Overlay */}
-      <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-20">
-        <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-3 border border-white/20">
-          <div className="grid grid-cols-3 gap-2">
-            <div></div>
-            <button
-              onClick={() => handleDirectionPress({ x: 0, y: -1 })}
-              disabled={!isStarted || isPaused || gameOver || showLevelUp}
-              className="w-12 h-12 bg-primary-600/90 hover:bg-primary-700 active:bg-primary-800 disabled:bg-gray-400/50 rounded-lg flex items-center justify-center text-white text-xl font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95"
-            >
-              ↑
-            </button>
-            <div></div>
-            <button
-              onClick={() => handleDirectionPress({ x: -1, y: 0 })}
-              disabled={!isStarted || isPaused || gameOver || showLevelUp}
-              className="w-12 h-12 bg-primary-600/90 hover:bg-primary-700 active:bg-primary-800 disabled:bg-gray-400/50 rounded-lg flex items-center justify-center text-white text-xl font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95"
-            >
-              ←
-            </button>
-            <button
-              onClick={handleBackspace}
-              disabled={!isStarted || isPaused || gameOver || showLevelUp}
-              className="w-12 h-12 bg-purple-600/90 hover:bg-purple-700 active:bg-purple-800 disabled:bg-gray-400/50 rounded-lg flex items-center justify-center text-white text-lg font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95"
-            >
-              ⌫
-            </button>
-            <button
-              onClick={() => handleDirectionPress({ x: 1, y: 0 })}
-              disabled={!isStarted || isPaused || gameOver || showLevelUp}
-              className="w-12 h-12 bg-primary-600/90 hover:bg-primary-700 active:bg-primary-800 disabled:bg-gray-400/50 rounded-lg flex items-center justify-center text-white text-xl font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95"
-            >
-              →
-            </button>
-            <div></div>
-            <button
-              onClick={() => handleDirectionPress({ x: 0, y: 1 })}
-              disabled={!isStarted || isPaused || gameOver || showLevelUp}
-              className="w-12 h-12 bg-primary-600/90 hover:bg-primary-700 active:bg-primary-800 disabled:bg-gray-400/50 rounded-lg flex items-center justify-center text-white text-xl font-bold shadow-lg backdrop-blur-sm transition-all active:scale-95"
-            >
-              ↓
-            </button>
-            <div></div>
-          </div>
-        </div>
-      </div>
-
-      {/* Desktop Controls Info */}
-      <div className="hidden md:block text-center text-sm text-gray-600 dark:text-gray-400">
-        Use arrow keys to move • Backspace to undo • P to pause
+      {/* Controls Info */}
+      <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+        <span className="hidden md:inline">
+          Use arrow keys to move • Backspace to undo • P to pause
+        </span>
+        <span className="md:hidden">
+          Swipe on the game board to move the snake
+        </span>
       </div>
 
       {/* Educational Fact Modal */}
