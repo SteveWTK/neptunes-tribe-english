@@ -339,7 +339,7 @@ export default function EcoMapClient({
       </div>
 
       {/* Main Map Section */}
-      <div data-tour="eco-map" className="max-w-6xl mx-auto space-y-8">
+      <div data-tour="eco-map" className="max-w-6xl mx-auto space-y-2">
         <EcoMapProgressOceanZones
           highlightedRegions={highlightedRegions}
           completedUnitsByCountry={completedUnitsByCountry}
@@ -352,7 +352,7 @@ export default function EcoMapClient({
         />
 
         {/* Ecosystem Progress Toggle Section (your existing code) */}
-        <div className="px-4">
+        {/* <div className="px-4">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold flex items-center gap-2">
               <Trophy className="w-5 h-5" />
@@ -444,7 +444,7 @@ export default function EcoMapClient({
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </div> */}
 
         {/* Region Explorer Section */}
         <RegionExplorer

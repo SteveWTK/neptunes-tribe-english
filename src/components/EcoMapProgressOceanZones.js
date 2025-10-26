@@ -649,7 +649,7 @@ export default function EcoMapProgressOceans({
       </div>
 
       {/* Enhanced Legend with Weekly Adventure */}
-      <div className="mt-4 flex flex-wrap justify-center gap-4 text-sm">
+      {/* <div className="mt-4 flex flex-wrap justify-center gap-4 text-sm">
         {currentWeeklyTheme && (
           <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900 rounded-full">
             <div className="w-4 h-4 bg-blue-400 rounded border-2 border-blue-600"></div>
@@ -657,36 +657,36 @@ export default function EcoMapProgressOceans({
               {lang === "pt" ? "Tema desta Semana" : "This Week's Theme"}
             </span>
           </div>
-        )}
-        {/* <div className="flex items-center gap-2">
+        )} */}
+      {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-gray-200 border border-gray-300 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">Not Started</span>
         </div> */}
-        {/* <div className="flex items-center gap-2">
+      {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-cyan-400 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
             Countries In Progress
           </span>
         </div> */}
-        {/* <div className="flex items-center gap-2">
+      {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-green-500 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
             Countries Completed
           </span>
         </div> */}
-        {/* <div className="flex items-center gap-2">
+      {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-blue-400 bg-opacity-60 border border-blue-600 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
             Marine Zones In Progress
           </span>
         </div> */}
-        {/* <div className="flex items-center gap-2">
+      {/* <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-purple-500 bg-opacity-70 border border-purple-600 rounded"></div>
           <span className="text-gray-600 dark:text-gray-400">
             Marine Zones Completed
           </span>
         </div> */}
-      </div>
+      {/* </div> */}
     </div>
   );
 }
