@@ -52,7 +52,7 @@ export default function EcoMapClient({
       weeklyThemeTitle: "This Week's Adventure",
       exploreTheme: "Start Adventure",
       exploreWorlds: "Explore the Planet",
-      worldsSubtitle: "Begin your adventure into the 8 Worlds",
+      worldsSubtitle: "Begin your adventure",
       impactTitle: "Keep increasing your impact",
       impactSubtitle:
         "Explore more ecosystems and complete environmental challenges to expand your impact!",
@@ -65,7 +65,7 @@ export default function EcoMapClient({
       weeklyThemeTitle: "Aventura desta Semana",
       exploreTheme: "Iniciar Aventura",
       exploreWorlds: "Explore o Planeta",
-      worldsSubtitle: "Inicie a sua aventura pelos 8 Mundos",
+      worldsSubtitle: "Inicie a sua aventura",
       impactTitle: "Continue aumentando seu impacto",
       impactSubtitle:
         "Explore mais ecossistemas e conclua desafios ambientais para expandir seu impacto!",
@@ -263,7 +263,7 @@ export default function EcoMapClient({
   return (
     <div className="pt-4">
       {/* Header Section */}
-      <div className="text-center mb-4">
+      <div className="text-center mb-2">
         <h1 className="text-xl lg:text-2xl text-primary-800 dark:text-[#e5e7eb] font-bold mb-2 mx-2">
           {copy.title}!
         </h1>
@@ -309,41 +309,30 @@ export default function EcoMapClient({
       )} */}
 
       {/* New: Prominent Worlds CTA */}
-      <div className="max-w-6xl mx-auto mb-8 px-4">
+      <div className="max-w-6xl mx-auto mb-4 px-4">
         <Link href="/worlds">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             // className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
-            className="bg-emerald-50 dark:bg-gray-800 rounded-2xl px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+            className="bg-white dark:bg-primary-950 rounded-2xl px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group w-full"
           >
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <h2 className="text-2xl font-bold flex items-center gap-3">
-                  {/* <span>🌍</span> */}
+            <div className="flex items-center gap-3 justify-center">
+              <div>
+                {/* <h2 className="text-2xl font-bold flex items-center gap-3">
                   {copy.exploreWorlds}
-                </h2>
+                </h2> */}
                 <p className=" text-primary-900/90 dark:text-white/90 text-lg mb-2">
+                  {/* <span>🌍</span> */}
                   {copy.worldsSubtitle}
                 </p>
-                {/* <div className="flex gap-3 flex-wrap">
-                  <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
-                    7 Worlds
-                  </span>
-                  <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
-                    28 Adventures
-                  </span>
-                  <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
-                    100+ Activities
-                  </span>
-                </div> */}
               </div>
-              <div className="hidden md:block ml-6">
-                <div className="bg-white/10 rounded-full p-3 group-hover:bg-white/20 transition-all">
-                  <ChevronRight className="w-8 h-8 group-hover:translate-x-1 transition-transform" />
-                </div>
+              {/* <div className="hidden md:block"> */}
+              <div className="bg-white/10 rounded-full p-1 group-hover:bg-white/20 transition-all">
+                <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
               </div>
+              {/* </div> */}
             </div>
           </motion.div>
         </Link>
