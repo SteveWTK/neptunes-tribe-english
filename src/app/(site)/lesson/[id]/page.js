@@ -1039,7 +1039,7 @@ function DynamicLessonContent() {
                 setTimeout(() => handleNext(), 1000);
               }}
             />
-            <div className="flex justify-center mt-4">
+            {/* <div className="flex justify-center mt-4">
               <button
                 onClick={() => {
                   // Clear localStorage for this gap fill exercise
@@ -1057,7 +1057,7 @@ function DynamicLessonContent() {
                 <RefreshCw className="w-4 h-4" />
                 {userLanguage !== "pt-BR" ? "Start Again" : "Comece de Novo"}
               </button>
-            </div>
+            </div> */}
           </div>
         );
 
@@ -1353,7 +1353,7 @@ function DynamicLessonContent() {
                 />
               ) : null}
 
-              <Trophy className="w-16 h-16 text-[#d97706] mx-auto mb-4" />
+              {/* <Trophy className="w-16 h-16 text-[#d97706] mx-auto mb-4" /> */}
 
               {/* Circular Progress Bar */}
               <div className="w-48 h-48 mx-auto mb-6">
@@ -2964,7 +2964,7 @@ function DynamicLessonContent() {
       </div>
 
       {/* Navigation */}
-      <div className="flex flex-col gap-4 sm:flex-row justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700">
+      <div className="flex gap-4 justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700">
         {currentStep === 0 ? (
           <button
             onClick={() => router.push(getWorldUrl())}
