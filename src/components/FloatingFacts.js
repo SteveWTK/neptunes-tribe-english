@@ -13,21 +13,21 @@ export default function FloatingFacts({ facts = [] }) {
   const [currentFactIndex, setCurrentFactIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
-  // If no facts, don't render anything
-  if (!facts || facts.length === 0) return null;
-
-  const currentFact = facts[currentFactIndex];
-
   // Cycle through facts every 6 seconds
   useEffect(() => {
-    if (facts.length <= 1) return; // No need to cycle if only one fact
+    if (!facts || facts.length <= 1) return; // No need to cycle if no facts or only one fact
 
     const interval = setInterval(() => {
       setCurrentFactIndex((prev) => (prev + 1) % facts.length);
     }, 6000); // 6 seconds per fact
 
     return () => clearInterval(interval);
-  }, [facts.length]);
+  }, [facts, facts.length]);
+
+  // If no facts, don't render anything
+  if (!facts || facts.length === 0) return null;
+
+  const currentFact = facts[currentFactIndex];
 
   // Parse fact to check if it has a label (e.g., "Habitat: ...")
   const parseFactLabel = (fact) => {
