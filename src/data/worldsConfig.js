@@ -32,9 +32,9 @@ export const WORLDS = {
     },
     icon: "TreePine", // Lucide icon name
     imageUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Piaui%20coast%20marine%20turtle.webp",
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Caqueta%20titi%20with%20baby.webp",
     heroUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Piaui%20coast%20marine%20turtle.webp",
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Caqueta%20titi%20with%20baby.webp",
     mapUrl: "/maps/south-america.png",
     adventures: [
       {
@@ -423,7 +423,8 @@ export const WORLDS = {
       west: -180,
     },
     icon: "Waves",
-    imageUrl: "/worlds/vaquitas.jpg",
+    imageUrl:
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Piaui%20coast%20marine%20turtle.webp",
     heroUrl:
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Great%20white%20shark.jpg",
     mapUrl: "/maps/oceans.png",
