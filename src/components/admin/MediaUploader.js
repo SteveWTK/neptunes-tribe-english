@@ -25,7 +25,8 @@ export default function MediaUploader({
       onChange(url);
     } catch (err) {
       console.error("Upload error:", err);
-      setError("Failed to upload file. Please try again.");
+      // Show the actual error message from the upload function
+      setError(err.message || "Failed to upload file. Please try again.");
     } finally {
       setUploading(false);
     }

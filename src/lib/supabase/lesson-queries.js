@@ -46,36 +46,38 @@ export async function getLessonByIdForCMS(lessonId) {
 export async function createLesson(lessonData) {
   try {
     const allowedFields = [
-      'title',
-      'description',
-      'description_pt',
-      'pillar_id',
-      'difficulty',
-      'xp_reward',
-      'content',
-      'image_url',
-      'audio_url',
-      'estimated_duration',
-      'is_active',
-      'sort_order',
-      'audio_assets',
-      'visual_assets',
-      'interactive_config',
-      'lesson_code',
-      'unit_number',
-      'lesson_number',
-      'level_name',
-      'under_construction',
-      'target_audience',
-      'world',
-      'theme_tags'
+      "title",
+      "description",
+      "description_pt",
+      "pillar_id",
+      "difficulty",
+      "xp_reward",
+      "content",
+      "image_url",
+      "audio_url",
+      "estimated_duration",
+      "is_active",
+      "sort_order",
+      "audio_assets",
+      "visual_assets",
+      "interactive_config",
+      "lesson_code",
+      "unit_number",
+      "lesson_number",
+      "level_name",
+      "under_construction",
+      "target_audience",
+      "world",
+      "theme_tags",
     ];
 
     const cleanedData = {};
-    allowedFields.forEach(field => {
+    allowedFields.forEach((field) => {
       if (field in lessonData) {
-        if (field === 'pillar_id') {
-          cleanedData[field] = lessonData[field] ? parseInt(lessonData[field]) : null;
+        if (field === "pillar_id") {
+          cleanedData[field] = lessonData[field]
+            ? parseInt(lessonData[field])
+            : null;
         } else {
           cleanedData[field] = lessonData[field];
         }
@@ -102,36 +104,38 @@ export async function createLesson(lessonData) {
 export async function updateLesson(lessonId, lessonData) {
   try {
     const allowedFields = [
-      'title',
-      'description',
-      'description_pt',
-      'pillar_id',
-      'difficulty',
-      'xp_reward',
-      'content',
-      'image_url',
-      'audio_url',
-      'estimated_duration',
-      'is_active',
-      'sort_order',
-      'audio_assets',
-      'visual_assets',
-      'interactive_config',
-      'lesson_code',
-      'unit_number',
-      'lesson_number',
-      'level_name',
-      'under_construction',
-      'target_audience',
-      'world',
-      'theme_tags'
+      "title",
+      "description",
+      "description_pt",
+      "pillar_id",
+      "difficulty",
+      "xp_reward",
+      "content",
+      "image_url",
+      "audio_url",
+      "estimated_duration",
+      "is_active",
+      "sort_order",
+      "audio_assets",
+      "visual_assets",
+      "interactive_config",
+      "lesson_code",
+      "unit_number",
+      "lesson_number",
+      "level_name",
+      "under_construction",
+      "target_audience",
+      "world",
+      "theme_tags",
     ];
 
     const cleanedData = {};
-    allowedFields.forEach(field => {
+    allowedFields.forEach((field) => {
       if (field in lessonData) {
-        if (field === 'pillar_id') {
-          cleanedData[field] = lessonData[field] ? parseInt(lessonData[field]) : null;
+        if (field === "pillar_id") {
+          cleanedData[field] = lessonData[field]
+            ? parseInt(lessonData[field])
+            : null;
         } else {
           cleanedData[field] = lessonData[field];
         }
@@ -195,22 +199,74 @@ export async function cloneLesson(lessonId) {
 
 export async function uploadMedia(file, folder = "lesson-media") {
   try {
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+    console.log("uploadMedia called with:", { fileName: file.name, folder });
+
+    const fileExt = file.name.split(".").pop().toLowerCase();
+    const fileName = `${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(7)}.${fileExt}`;
     const filePath = `${folder}/${fileName}`;
 
-    const { error } = await supabase.storage
-      .from("videos")
+    // Determine bucket based on file type
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp", "svg"];
+    const videoExtensions = ["mp4", "webm", "ogg", "mov"];
+    const audioExtensions = ["mp3", "wav", "ogg", "m4a"];
+
+    let bucketName = "unit-images"; // Default to images bucket
+
+    if (videoExtensions.includes(fileExt)) {
+      bucketName = "videos";
+    } else if (audioExtensions.includes(fileExt)) {
+      bucketName = "audio";
+    }
+
+    console.log("Uploading to bucket:", bucketName, "path:", filePath);
+
+    // Upload to appropriate bucket
+    const { data: uploadData, error } = await supabase.storage
+      .from(bucketName)
       .upload(filePath, file, {
         cacheControl: "3600",
         upsert: false,
       });
 
-    if (error) throw error;
+    if (error) {
+      console.error(`Upload error details:`, {
+        error,
+        errorMessage: error.message,
+        errorName: error.name,
+        statusCode: error.statusCode,
+        bucketName,
+        filePath,
+        fileExt,
+        fileSize: file.size,
+        fileType: file.type,
+      });
 
+      // Provide helpful error messages based on common issues
+      if (error.message?.includes("new row violates row-level security")) {
+        throw new Error(
+          `Permission denied: The bucket "${bucketName}" exists but your user doesn't have permission to upload. Check RLS policies in Supabase.`
+        );
+      } else if (error.message?.includes("Bucket not found")) {
+        throw new Error(
+          `Bucket "${bucketName}" does not exist. Please create it in Supabase Storage and make it public.`
+        );
+      } else {
+        throw new Error(
+          `Failed to upload to ${bucketName}: ${error.message || "Unknown error"}`
+        );
+      }
+    }
+
+    console.log("Upload successful:", uploadData);
+
+    // Get public URL
     const {
       data: { publicUrl },
-    } = supabase.storage.from("videos").getPublicUrl(filePath);
+    } = supabase.storage.from(bucketName).getPublicUrl(filePath);
+
+    console.log("Public URL generated:", publicUrl);
 
     return publicUrl;
   } catch (error) {

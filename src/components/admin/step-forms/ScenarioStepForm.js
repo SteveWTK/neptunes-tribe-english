@@ -81,6 +81,38 @@ export default function ScenarioStepForm({ step, onChange }) {
         folder="audio"
       />
 
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Key Facts (one per line - for hovering modals)
+        </label>
+        <textarea
+          value={(step.facts || []).join('\n')}
+          onChange={(e) => {
+            // Keep all lines, including empty ones, while typing
+            // Only filter on blur to preserve typing experience
+            const factsArray = e.target.value.split('\n');
+            updateField("facts", factsArray);
+          }}
+          onBlur={(e) => {
+            // Remove empty lines when user leaves the field
+            const factsArray = e.target.value.split('\n').filter(f => f.trim());
+            updateField("facts", factsArray);
+          }}
+          onKeyDown={(e) => {
+            // Ensure Enter key works for new lines
+            if (e.key === 'Enter') {
+              e.stopPropagation();
+            }
+          }}
+          rows={4}
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-mono text-sm"
+          placeholder="Enter key facts about the species/theme, one per line:&#10;Habitat: Tropical rainforests&#10;Diet: Fruits, leaves, and insects&#10;Status: Critically endangered&#10;Fact: Can swing up to 40 feet between trees"
+        />
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          These facts will appear as floating modals during the scenario step. Press Enter to create a new line.
+        </p>
+      </div>
+
       <div className="flex items-center">
         <input
           type="checkbox"

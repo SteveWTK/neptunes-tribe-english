@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Plus, Trash2 } from "lucide-react";
+import MediaUploader from "../MediaUploader";
 
 export default function AIGapFillStepForm({ step, onChange }) {
   const updateField = (field, value) => {
@@ -64,6 +65,14 @@ export default function AIGapFillStepForm({ step, onChange }) {
           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
         />
       </div>
+
+      <MediaUploader
+        label="Theme Image (optional - displays discreetly at top of step)"
+        value={step.image_url || ""}
+        onChange={(url) => updateField("image_url", url)}
+        accept="image/*"
+        folder="gapfill-images"
+      />
 
       <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
         <div className="flex justify-between items-center mb-4">

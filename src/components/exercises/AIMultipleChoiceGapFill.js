@@ -653,14 +653,14 @@ export default function AIMultipleChoiceGapFill({
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
           {t("complete_sentences_mc")}
         </h3>
         <p className="text-gray-600 dark:text-gray-400">
           {t("choose_best_word_instruction")}
         </p>
-      </div>
+      </div> */}
 
       {sentences.map((sentence) => renderSentenceWithOptions(sentence))}
 

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n \"const STEP_TYPES\" src/app/(site)/admin/lessons/[id]/edit/page.js)",
+      "Bash(grep -n \"function renderStepForm\" src/app/(site)/admin/lessons/[id]/edit/page.js)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

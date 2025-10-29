@@ -59,6 +59,11 @@ import ConversationVote from "@/components/ConversationVote";
 import WordSnakeLesson from "@/components/WordSnakeLesson";
 import UnitModal from "@/components/UnitModal";
 import UnitReferenceStep from "@/components/UnitReferenceStep";
+import FloatingFacts from "@/components/FloatingFacts";
+import SingleGapFillSeries from "@/components/gapfill/SingleGapFillSeries";
+import { fetchSingleGapChallenges } from "@/lib/data-service";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import { WORLDS } from "@/data/worldsConfig";
 import Link from "next/link";
 
@@ -92,6 +97,7 @@ function DynamicLessonContent() {
   const [autoTranslating, setAutoTranslating] = useState(false);
   const [unitModalOpen, setUnitModalOpen] = useState(false);
   const [currentUnitId, setCurrentUnitId] = useState(null);
+  const [challengeExercises, setChallengeExercises] = useState({});
 
   // Reset keys for each exercise type to force re-render
   const [aiWritingKey, setAiWritingKey] = useState(0);
@@ -157,6 +163,35 @@ function DynamicLessonContent() {
       fetchLesson();
     }
   }, [lessonId, user]);
+
+  // Load challenge exercises for challenge_reference steps
+  useEffect(() => {
+    const loadChallengeExercises = async () => {
+      if (!lesson?.content?.steps) return;
+
+      const currentStepData = lesson.content.steps[currentStep];
+
+      if (
+        currentStepData?.type === "challenge_reference" &&
+        currentStepData.challenge_id &&
+        !challengeExercises[currentStepData.challenge_id]
+      ) {
+        try {
+          const exercises = await fetchSingleGapChallenges(
+            currentStepData.challenge_id
+          );
+          setChallengeExercises((prev) => ({
+            ...prev,
+            [currentStepData.challenge_id]: exercises,
+          }));
+        } catch (error) {
+          console.error("Failed to load challenge:", error);
+        }
+      }
+    };
+
+    loadChallengeExercises();
+  }, [currentStep, lesson?.content?.steps, challengeExercises]);
 
   // Translation utility function
   const translateContent = async (content, key) => {
@@ -765,6 +800,11 @@ function DynamicLessonContent() {
       case "scenario":
         return (
           <div className="text-center">
+            {/* Floating Facts Modal */}
+            {currentStepData.facts && currentStepData.facts.length > 0 && (
+              <FloatingFacts facts={currentStepData.facts} />
+            )}
+
             <div className="bg-white dark:bg-primary-900/20 rounded-xl p-6 mb-6">
               {/* Translation button */}
               {/* {userPreferredLanguage !== "en" && (
@@ -972,6 +1012,20 @@ function DynamicLessonContent() {
       case "ai_gap_fill":
         return (
           <div className="space-y-4">
+            {/* Theme Image - discreet display */}
+            {currentStepData.image_url && (
+              <div className="flex justify-center mb-6">
+                <img
+                  src={currentStepData.image_url}
+                  alt="Gap fill theme"
+                  className="w-48 h-32 sm:w-96 sm:h-48 object-cover rounded-lg shadow-md opacity-90"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
+              </div>
+            )}
+
             <AIMultipleChoiceGapFill
               key={aiGapFillKey}
               sentences={currentStepData.sentences}
@@ -1083,11 +1137,25 @@ function DynamicLessonContent() {
       case "vocabulary":
         return (
           <div className="space-y-4">
-            <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
+            {/* Theme Image - discreet display */}
+            {currentStepData.image_url && (
+              <div className="flex justify-end mb-4">
+                <img
+                  src={currentStepData.image_url}
+                  alt="Vocabulary theme"
+                  className="w-32 h-32 object-cover rounded-lg shadow-md opacity-90"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
+              </div>
+            )}
+
+            {/* <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
               {translations[`vocab-content-${currentStep}`] ||
                 currentStepData.content ||
                 t("learn_essential_words")}
-            </p>
+            </p> */}
             <div className="grid gap-4">
               {(currentStepData.vocabulary || currentStepData.words || []).map(
                 (item, index) => {
@@ -1181,6 +1249,53 @@ function DynamicLessonContent() {
           </div>
         );
 
+      case "challenge_reference":
+        const exercises = challengeExercises[currentStepData.challenge_id];
+
+        if (!currentStepData.challenge_id) {
+          return (
+            <div className="text-center p-8 bg-red-50 dark:bg-red-900/20 rounded-xl">
+              <p className="text-red-600 dark:text-red-400">
+                No challenge ID specified. Please add a challenge ID in the CMS.
+              </p>
+            </div>
+          );
+        }
+
+        if (!exercises) {
+          return (
+            <div className="text-center p-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+              <p className="text-gray-600 dark:text-gray-400">
+                Loading challenge...
+              </p>
+            </div>
+          );
+        }
+
+        if (exercises.length === 0) {
+          return (
+            <div className="text-center p-8 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl">
+              <p className="text-yellow-700 dark:text-yellow-400">
+                No exercises found for this challenge.
+              </p>
+            </div>
+          );
+        }
+
+        return (
+          <div>
+            {currentStepData.description && (
+              <div className="mb-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+                <p className="text-gray-700 dark:text-gray-300">
+                  {currentStepData.description}
+                </p>
+              </div>
+            )}
+            <SingleGapFillSeries exercises={exercises} />
+          </div>
+        );
+
       case "video":
         return (
           <VideoPlayer
@@ -1193,6 +1308,8 @@ function DynamicLessonContent() {
 
       // FIXED: Completion step with better button handling
       case "completion":
+        const totalSteps = steps.length;
+
         return (
           <div className="text-center">
             <div className="bg-gradient-to-r from-green-50 to-primary-50 dark:from-green-900/20 dark:to-primary-900/20 p-8 rounded-xl">
@@ -1237,6 +1354,29 @@ function DynamicLessonContent() {
               ) : null}
 
               <Trophy className="w-16 h-16 text-[#d97706] mx-auto mb-4" />
+
+              {/* Circular Progress Bar */}
+              <div className="w-48 h-48 mx-auto mb-6">
+                <CircularProgressbar
+                  value={currentStep + 1}
+                  maxValue={totalSteps}
+                  text={`${Math.round(
+                    ((currentStep + 1) / totalSteps) * 100
+                  )}%`}
+                  styles={buildStyles({
+                    pathColor:
+                      ((currentStep + 1) / totalSteps) * 100 >= 80
+                        ? `#22c55e` // Green for 80%+
+                        : ((currentStep + 1) / totalSteps) * 100 >= 60
+                        ? `#3b82f6` // Blue for 60-79%
+                        : `#f59e0b`, // Amber for <60%
+                    textColor: "#5E82A6", // Primary color
+                    trailColor: "#d6d6d6",
+                    backgroundColor: "#f0f0f0",
+                    textSize: "24px",
+                  })}
+                />
+              </div>
 
               {/* Show translated or original content */}
               {showTranslation && translations[`completion-${currentStep}`] ? (
@@ -2742,7 +2882,11 @@ function DynamicLessonContent() {
               className="flex items-center space-x-2 text-gray-600 dark:text-gray-300 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>{lesson?.world && WORLDS[lesson.world] ? WORLDS[lesson.world].name : "Worlds"}</span>
+              <span>
+                {lesson?.world && WORLDS[lesson.world]
+                  ? WORLDS[lesson.world].name
+                  : "Worlds"}
+              </span>
             </button>
             <span className="text-gray-400">•</span>
             <span className="text-gray-600 dark:text-gray-300 font-bold">
@@ -2767,9 +2911,9 @@ function DynamicLessonContent() {
               {/* <span className="px-3 py-1 bg-primary-100 text-primary-800 rounded-full text-sm font-medium">
                 {lesson.pillar?.display_name || "Lesson"}
               </span> */}
-              <span className="px-3 py-1 bg-white text-accent-800 rounded-full text-sm font-medium">
+              {/* <span className="px-3 py-1 bg-white text-accent-800 rounded-full text-sm font-medium">
                 {lesson.difficulty}
-              </span>
+              </span> */}
               {/* <span className="text-gray-600 dark:text-gray-300 text-sm">
                 {lesson.xp_reward} XP Available
               </span> */}
@@ -2801,11 +2945,10 @@ function DynamicLessonContent() {
       {/* Step Content */}
       <div className="mb-8">
         <div className="flex items-center space-x-2 mb-4">
-          {getStepIcon(currentStepData?.type)}
+          {/* {getStepIcon(currentStepData?.type)} */}
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
             {translations[`step-title-${currentStep}`] ||
-              currentStepData?.title ||
-              `Step ${currentStep + 1}`}
+              currentStepData?.title}
           </h2>
         </div>
 
@@ -2823,13 +2966,14 @@ function DynamicLessonContent() {
       {/* Navigation */}
       <div className="flex flex-col gap-4 sm:flex-row justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700">
         {currentStep === 0 ? (
-          <Link
-            href="/lesson"
+          <button
+            onClick={() => router.push(getWorldUrl())}
+            // disabled={currentStep === 0 || completing}
             className="flex items-center space-x-2 px-4 py-2 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white border-2 border-accent-600 dark:border-accent-400 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Voltar</span>
-          </Link>
+            {/* <span>Voltar</span> */}
+          </button>
         ) : (
           <button
             onClick={handlePrevious}
@@ -2837,7 +2981,7 @@ function DynamicLessonContent() {
             className="flex items-center space-x-2 px-4 py-2 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white border-2 border-accent-600 dark:border-accent-400 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Atividade anterior</span>
+            {/* <span>Atividade anterior</span> */}
           </button>
         )}
 
@@ -2869,9 +3013,7 @@ function DynamicLessonContent() {
           ) : (
             <>
               <span>
-                {currentStep === steps.length - 1
-                  ? "Aula Completa"
-                  : "Próxima atividade"}
+                {currentStep === steps.length - 1 ? "Aula Completa" : ""}
               </span>
               <ArrowRight className="w-4 h-4" />
             </>

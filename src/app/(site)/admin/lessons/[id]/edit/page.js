@@ -34,6 +34,7 @@ import ConversationVoteStepForm from "@/components/admin/step-forms/Conversation
 import JSONStepForm from "@/components/admin/step-forms/JSONStepForm";
 import UnitReferenceStepForm from "@/components/admin/step-forms/UnitReferenceStepForm";
 import WordSnakeStepForm from "@/components/admin/step-forms/WordSnakeStepForm";
+import ChallengeReferenceStepForm from "@/components/admin/step-forms/ChallengeReferenceStepForm";
 
 function LessonEditorContent() {
   const params = useParams();
@@ -60,6 +61,7 @@ function LessonEditorContent() {
 
   const STEP_TYPES = [
     { value: "unit_reference", label: "Unit Reference (Gap-Fill Exercise)" },
+    { value: "challenge_reference", label: "Challenge Reference (SingleGapFillSeries)" },
     { value: "word_snake", label: "Word Snake (Letter Collection Game)" },
     { value: "scenario", label: "Scenario" },
     { value: "vocabulary", label: "Vocabulary" },
@@ -192,6 +194,8 @@ function LessonEditorContent() {
     switch (step.type) {
       case "unit_reference":
         return <UnitReferenceStepForm {...commonProps} />;
+      case "challenge_reference":
+        return <ChallengeReferenceStepForm {...commonProps} />;
       case "word_snake":
         return <WordSnakeStepForm {...commonProps} />;
       case "scenario":
