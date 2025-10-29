@@ -3012,9 +3012,9 @@ function DynamicLessonContent() {
             </>
           ) : (
             <>
-              <span>
+              {/* <span>
                 {currentStep === steps.length - 1 ? "Aula Completa" : ""}
-              </span>
+              </span> */}
               <ArrowRight className="w-4 h-4" />
             </>
           )}
