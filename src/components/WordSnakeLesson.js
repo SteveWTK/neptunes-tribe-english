@@ -319,7 +319,7 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
     const interval = setInterval(() => {
       setLetters((currentLetters) => {
         // Check if we already have enough letters
-        if (currentLetters.length >= 10) return currentLetters;
+        if (currentLetters.length >= 12) return currentLetters;
 
         // Calculate current progress using ref
         const currentCollected = collectedWordRef.current.replace(/\s+/g, "");

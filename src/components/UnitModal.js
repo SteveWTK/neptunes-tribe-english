@@ -75,8 +75,8 @@ export default function UnitModal({ unitId, isOpen, onClose, onComplete }) {
             </div>
 
             {/* Content - Scrollable */}
-            <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
-              <div className="max-w-6xl mx-auto">
+            <div className="flex-1 overflow-y-auto p-2 md:p-4 lg:p-6">
+              <div className="max-w-7xl mx-auto">
                 <MultiGapFillExerciseNew
                   unitId={unitId}
                   units={[]}
@@ -97,7 +97,11 @@ export default function UnitModal({ unitId, isOpen, onClose, onComplete }) {
             <div className="p-4 md:p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
               <div className="flex justify-between items-center max-w-6xl mx-auto">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Press <kbd className="px-2 py-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-xs font-mono">ESC</kbd> to close
+                  Press{" "}
+                  <kbd className="px-2 py-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-xs font-mono">
+                    ESC
+                  </kbd>{" "}
+                  to close
                 </p>
                 <button
                   onClick={onClose}
