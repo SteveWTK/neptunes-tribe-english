@@ -8,7 +8,11 @@ import { BookOpen, Play } from "lucide-react";
  * UnitReferenceStep - Displays unit preview before opening modal
  * Fetches unit data from Supabase and shows title, description, and image
  */
-export default function UnitReferenceStep({ unitId, instructions, onStartExercise }) {
+export default function UnitReferenceStep({
+  unitId,
+  instructions,
+  onStartExercise,
+}) {
   const [unit, setUnit] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -58,15 +62,13 @@ export default function UnitReferenceStep({ unitId, instructions, onStartExercis
         <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2">
           {error || "Unit not found"}
         </h3>
-        <p className="text-gray-600 dark:text-gray-400">
-          Unit ID: {unitId}
-        </p>
+        <p className="text-gray-600 dark:text-gray-400">Unit ID: {unitId}</p>
       </div>
     );
   }
 
   return (
-    <div className="py-8">
+    <div className="pb-6">
       {instructions && (
         <div className="mb-6 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
           <p className="text-gray-700 dark:text-gray-300 text-center">
@@ -84,7 +86,7 @@ export default function UnitReferenceStep({ unitId, instructions, onStartExercis
                 src={unit.image}
                 alt={unit.title}
                 fill
-                className="object-cover"
+                className="object-cover absolute bottom-36"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
