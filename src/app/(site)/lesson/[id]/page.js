@@ -694,29 +694,33 @@ function DynamicLessonContent() {
       return;
     }
 
-    // Check if we have an audio URL
-    if (!currentStepData.audio_url) {
-      console.warn("No audio URL provided for scenario");
-      return;
-    }
-
     try {
-      // If audio_url starts with "/audio/", try to play it directly
-      if (currentStepData.audio_url.startsWith("/audio/")) {
-        // Check if file exists first
-        const checkResponse = await fetch(currentStepData.audio_url, {
-          method: "HEAD",
-        });
-        if (checkResponse.ok) {
-          audioRef.current.src = currentStepData.audio_url;
-          await audioRef.current.play();
-          setIsPlaying(true);
-          return;
-        }
+      // Check if we have an uploaded audio URL (from Supabase or local)
+      if (currentStepData.audio_url) {
+        console.log("Playing uploaded audio from:", currentStepData.audio_url);
+
+        // Try to play the uploaded audio file directly
+        audioRef.current.src = currentStepData.audio_url;
+        await audioRef.current.play();
+        setIsPlaying(true);
+
+        // Clean up when audio ends
+        audioRef.current.onended = () => {
+          setIsPlaying(false);
+        };
+
+        // If audio plays successfully, return early
+        return;
       }
 
-      // Fallback to TTS generation
-      console.log("Generating TTS audio for scenario");
+      // Fallback to TTS generation if no audio_url is provided
+      console.log("No uploaded audio found, generating TTS audio for scenario");
+
+      if (!currentStepData.content) {
+        console.warn("No content available for TTS generation");
+        return;
+      }
+
       const response = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

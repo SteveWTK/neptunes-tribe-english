@@ -159,7 +159,9 @@ export default function AISpeechPractice({
         <div className="bg-blue-50 p-4 rounded-lg">
           {/* <p className="text-gray-700 mb-2">{prompt}</p> */}
           <div className="bg-white p-3 rounded border-l-4 border-accent-500">
-            <p className="font-mono text-lg">&quot;{expectedText}&quot;</p>
+            <p className="font-mono text-lg text-primary-900">
+              &quot;{expectedText}&quot;
+            </p>
           </div>
         </div>
       </div>
@@ -260,8 +262,8 @@ export default function AISpeechPractice({
                   feedback.pronunciation_score >= 80
                     ? "text-green-500"
                     : feedback.pronunciation_score >= 60
-                      ? "text-yellow-500"
-                      : "text-red-500"
+                    ? "text-yellow-500"
+                    : "text-red-500"
                 }`}
               >
                 {feedback.pronunciation_score}
@@ -274,8 +276,8 @@ export default function AISpeechPractice({
                   feedback.accuracy_score >= 80
                     ? "text-green-500"
                     : feedback.accuracy_score >= 60
-                      ? "text-yellow-500"
-                      : "text-red-500"
+                    ? "text-yellow-500"
+                    : "text-red-500"
                 }`}
               >
                 {feedback.accuracy_score}
@@ -288,8 +290,8 @@ export default function AISpeechPractice({
                   feedback.overall_score >= 80
                     ? "text-green-500"
                     : feedback.overall_score >= 60
-                      ? "text-yellow-500"
-                      : "text-red-500"
+                    ? "text-yellow-500"
+                    : "text-red-500"
                 }`}
               >
                 {feedback.overall_score}
