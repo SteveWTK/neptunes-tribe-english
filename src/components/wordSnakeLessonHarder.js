@@ -341,10 +341,16 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
           letter = "⌫";
           isEraser = true;
           isCorrect = false;
-        } else {
-          // Correct next letter (90%)
+        } else if (rand < 0.8) {
+          // Correct next letter (70%)
           letter = currentNextLetter;
           isCorrect = true;
+          isEraser = false;
+        } else {
+          // Random distractor letter (20%)
+          const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+          letter = alphabet[Math.floor(Math.random() * alphabet.length)];
+          isCorrect = letter === currentNextLetter;
           isEraser = false;
         }
 
