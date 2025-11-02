@@ -686,9 +686,21 @@ function DynamicLessonContent() {
   };
 
   const toggleAudio = async () => {
-    if (!audioRef.current) return;
+    console.log("[toggleAudio] Function called");
+    console.log("[toggleAudio] Current step data:", {
+      hasAudioUrl: !!currentStepData.audio_url,
+      audioUrl: currentStepData.audio_url,
+      hasContent: !!currentStepData.content,
+      audioRefExists: !!audioRef.current
+    });
+
+    if (!audioRef.current) {
+      console.warn("[toggleAudio] No audio ref available");
+      return;
+    }
 
     if (isPlaying) {
+      console.log("[toggleAudio] Pausing audio");
       audioRef.current.pause();
       setIsPlaying(false);
       return;
@@ -697,15 +709,19 @@ function DynamicLessonContent() {
     try {
       // Check if we have an uploaded audio URL (from Supabase or local)
       if (currentStepData.audio_url) {
-        console.log("Playing uploaded audio from:", currentStepData.audio_url);
+        console.log("[toggleAudio] Playing uploaded audio from:", currentStepData.audio_url);
 
         // Try to play the uploaded audio file directly
         audioRef.current.src = currentStepData.audio_url;
+        console.log("[toggleAudio] Audio source set, attempting to play...");
+
         await audioRef.current.play();
+        console.log("[toggleAudio] Audio playing successfully");
         setIsPlaying(true);
 
         // Clean up when audio ends
         audioRef.current.onended = () => {
+          console.log("[toggleAudio] Audio ended");
           setIsPlaying(false);
         };
 
@@ -859,12 +875,14 @@ function DynamicLessonContent() {
 
               <button
                 onClick={toggleAudio}
-                className="flex items-center space-x-2 mx-auto bg-accent-600 text-white px-4 py-2 rounded-lg hover:bg-accent-700 transition-colors"
-                disabled={!currentStepData.content}
+                className="flex items-center space-x-2 mx-auto bg-accent-600 text-white px-4 py-2 rounded-lg hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!currentStepData.audio_url && !currentStepData.content}
                 title={
-                  !currentStepData.content
-                    ? "No content available for audio"
-                    : "Listen to scenario in English"
+                  !currentStepData.audio_url && !currentStepData.content
+                    ? "No audio or content available"
+                    : currentStepData.audio_url
+                    ? "Listen to uploaded audio"
+                    : "Listen to scenario in English (AI voice)"
                 }
               >
                 {isPlaying ? (
@@ -1043,7 +1061,7 @@ function DynamicLessonContent() {
                 setTimeout(() => handleNext(), 1000);
               }}
             />
-            {/* <div className="flex justify-center mt-4">
+            <div className="flex justify-center mt-4">
               <button
                 onClick={() => {
                   // Clear localStorage for this gap fill exercise
@@ -1059,9 +1077,9 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {userLanguage !== "pt-BR" ? "Start Again" : "Comece de Novo"}
+                {/* {userLanguage !== "pt-BR" ? "Start Again" : "Comece de Novo"} */}
               </button>
-            </div> */}
+            </div>
           </div>
         );
 
