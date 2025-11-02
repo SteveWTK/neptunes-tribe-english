@@ -302,15 +302,25 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
 
   // Check if word is complete
   useEffect(() => {
-    if (collectedWord.replace(/\s+/g, "") === targetWord.replace(/\s+/g, "")) {
+    if (collectedWord.replace(/\s+/g, "") === targetWord.replace(/\s+/g, "") &&
+        !showLevelUp && isStarted) {
       const timeBonus = Math.max(0, 100 - timeElapsed);
       setScore((s) => s + timeBonus + 50);
       setShowFact(true);
       setShowLevelUp(true);
+      setIsPaused(true);
       playSound("complete");
       createConfetti();
+
+      // Move to next word after celebration
+      setTimeout(() => {
+        setShowLevelUp(false);
+        setShowFact(false);
+        setIsPaused(false);
+        nextWord();
+      }, 3000); // 3 second delay to show the celebration
     }
-  }, [collectedWord, targetWord, timeElapsed]);
+  }, [collectedWord, targetWord, timeElapsed, showLevelUp, isStarted]);
 
   // Spawn letters periodically
   useEffect(() => {
