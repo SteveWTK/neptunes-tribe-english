@@ -23,7 +23,7 @@ export default function AIWritingExercise({
   example,
   lessonId,
   onComplete,
-  minWords = 50,
+  minWords = 20,
   maxWords = 200,
   englishVariant = "british",
   voiceGender = "male",
@@ -359,7 +359,7 @@ export default function AIWritingExercise({
           <div className="text-sm text-gray-600 dark:text-gray-400">
             {wordCount < minWords && (
               <span className="text-orange-600">
-                {t("need_more_words")} {minWords - wordCount} {t("words")}
+                {t("need_more_words")}: {minWords - wordCount} {t("words")}
               </span>
             )}
           </div>

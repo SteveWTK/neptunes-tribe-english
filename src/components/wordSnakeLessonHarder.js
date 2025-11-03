@@ -174,10 +174,13 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
     const nextIndex = currentClueIndex + 1;
 
     if (nextIndex >= clues.length) {
-      // All words completed - trigger lesson completion
-      if (onComplete) {
-        onComplete({ score, wordsCompleted: clues.length });
-      }
+      // All words completed - close all modals and set completion state
+      setShowLevelUp(false);
+      setShowFact(false);
+      setIsPaused(false);
+      setGameOver(true);
+      // Move to next clue index to trigger allCompleted
+      setCurrentClueIndex(nextIndex);
       return;
     }
 
@@ -669,9 +672,23 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
         <p className="text-lg text-green-700 dark:text-green-300 mb-4">
           You&apos;ve mastered all {clues.length} words!
         </p>
-        <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+        <div className="text-2xl font-bold text-green-600 dark:text-green-400 mb-6">
           Final Score: {score}
         </div>
+        {onComplete && (
+          <button
+            onClick={() => {
+              // Ensure all modals are closed before completing
+              setShowFact(false);
+              setShowLevelUp(false);
+              setIsPaused(false);
+              onComplete({ score, wordsCompleted: clues.length });
+            }}
+            className="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-lg transform transition hover:scale-105"
+          >
+            Continue to Next Step
+          </button>
+        )}
       </div>
     );
   }

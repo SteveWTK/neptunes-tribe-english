@@ -95,9 +95,9 @@ export default function AIGapFillExercise({ sentences, lessonId, onComplete }) {
       let contextPrompt = "";
 
       if (hintLevel === 1) {
-        contextPrompt = `This is a football/soccer context sentence: "${sentence.text}". 
+        contextPrompt = `This is an environmental context sentence: "${sentence.text}". 
           Give a helpful first hint about what type of word fits here (noun, verb, adjective) 
-          and relate it to football situations. Be encouraging and educational but don't reveal the answer.`;
+          and relate it to environmental. Be encouraging and educational but don't reveal the answer.`;
       } else {
         contextPrompt = `This is the second hint for: "${sentence.text}". 
           The student still needs help. Give a more specific clue about the meaning or context 
@@ -150,7 +150,7 @@ export default function AIGapFillExercise({ sentences, lessonId, onComplete }) {
           "Think about what type of word would make sense here. Is it an action (verb), person/thing (noun), or description (adjective)?";
       } else {
         fallbackHint =
-          "Consider the context of the sentence and what would commonly happen in football situations like this.";
+          "Consider the context of the sentence and what would commonly happen in situations like this.";
       }
 
       setHintUsage((prev) => ({
@@ -216,10 +216,14 @@ export default function AIGapFillExercise({ sentences, lessonId, onComplete }) {
           {usedHints > 0 && (
             <div className="flex items-center space-x-1">
               <Lightbulb
-                className={`w-4 h-4 ${hasUsedAllHints ? "text-orange-500" : "text-yellow-500"}`}
+                className={`w-4 h-4 ${
+                  hasUsedAllHints ? "text-orange-500" : "text-yellow-500"
+                }`}
               />
               <span
-                className={`text-xs font-medium ${hasUsedAllHints ? "text-orange-600" : "text-yellow-600"}`}
+                className={`text-xs font-medium ${
+                  hasUsedAllHints ? "text-orange-600" : "text-yellow-600"
+                }`}
               >
                 {usedHints}/{MAX_HINTS_PER_GAP} hints used
               </span>
@@ -243,10 +247,10 @@ export default function AIGapFillExercise({ sentences, lessonId, onComplete }) {
                 feedback?.isCorrect
                   ? "border-green-500 text-green-600"
                   : feedback?.isCorrect === false
-                    ? "border-red-500 text-red-600"
-                    : usedHints > 0
-                      ? "border-yellow-400 dark:border-yellow-600 focus:border-yellow-500"
-                      : "border-gray-400 dark:border-gray-600 focus:border-blue-500"
+                  ? "border-red-500 text-red-600"
+                  : usedHints > 0
+                  ? "border-yellow-400 dark:border-yellow-600 focus:border-yellow-500"
+                  : "border-gray-400 dark:border-gray-600 focus:border-blue-500"
               }`}
             placeholder="..."
             disabled={feedback?.isCorrect}

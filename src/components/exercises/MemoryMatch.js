@@ -222,9 +222,9 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
         <h3 className="text-xl sm:text-2xl font-bold text-primary-900 dark:text-white mb-2">
           Memory Match Challenge
         </h3>
-        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+        {/* <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
           Combine as palavras em inglês com suas traduções em português
-        </p>
+        </p> */}
       </div>
 
       {!gameStarted && (

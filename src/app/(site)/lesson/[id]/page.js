@@ -691,7 +691,7 @@ function DynamicLessonContent() {
       hasAudioUrl: !!currentStepData.audio_url,
       audioUrl: currentStepData.audio_url,
       hasContent: !!currentStepData.content,
-      audioRefExists: !!audioRef.current
+      audioRefExists: !!audioRef.current,
     });
 
     if (!audioRef.current) {
@@ -709,7 +709,10 @@ function DynamicLessonContent() {
     try {
       // Check if we have an uploaded audio URL (from Supabase or local)
       if (currentStepData.audio_url) {
-        console.log("[toggleAudio] Playing uploaded audio from:", currentStepData.audio_url);
+        console.log(
+          "[toggleAudio] Playing uploaded audio from:",
+          currentStepData.audio_url
+        );
 
         // Try to play the uploaded audio file directly
         audioRef.current.src = currentStepData.audio_url;
@@ -876,7 +879,9 @@ function DynamicLessonContent() {
               <button
                 onClick={toggleAudio}
                 className="flex items-center space-x-2 mx-auto bg-accent-600 text-white px-4 py-2 rounded-lg hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!currentStepData.audio_url && !currentStepData.content}
+                disabled={
+                  !currentStepData.audio_url && !currentStepData.content
+                }
                 title={
                   !currentStepData.audio_url && !currentStepData.content
                     ? "No audio or content available"
@@ -893,7 +898,7 @@ function DynamicLessonContent() {
                 ) : (
                   <>
                     <Volume2 className="w-4 h-4" />
-                    <span>Ouça o texto em inglês</span>
+                    {/* <span>Ouça o texto em inglês</span> */}
                   </>
                 )}
               </button>
@@ -1150,7 +1155,7 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {userLanguage !== "pt-BR" ? "Start Again" : "Comece de Novo"}
+                {/* {userLanguage !== "pt-BR" ? "Start Again" : "Comece de Novo"} */}
               </button>
             </div>
           </div>
@@ -1263,6 +1268,7 @@ function DynamicLessonContent() {
             )}
             <WordSnakeLesson
               clues={currentStepData.clues || []}
+              difficulty={currentStepData.difficulty || "easy"}
               onComplete={(result) => {
                 console.log("Word Snake completed:", result);
                 setStepCompleted(true);

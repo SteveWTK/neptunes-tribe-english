@@ -153,9 +153,13 @@ export default function AISpeechPractice({
       <div className="mb-6">
         {/* <h3 className="text-lg font-semibold mb-2">Pratique sua Pronuncia.</h3> */}
         <p className="px-4 mb-4 text-primary-800 dark:text-white">
+          Activate your microphone and read the text below aloud to practice and
+          receive feedback on your pronunciation.
+        </p>
+        {/* <p className="px-4 mb-4 text-primary-800 dark:text-white">
           Ative o microfone e leia o texto abaixo em voz alta para praticar e
           receber feedback sobre sua pronuncia.
-        </p>
+        </p> */}
         <div className="bg-blue-50 p-4 rounded-lg">
           {/* <p className="text-gray-700 mb-2">{prompt}</p> */}
           <div className="bg-white p-3 rounded border-l-4 border-accent-500">

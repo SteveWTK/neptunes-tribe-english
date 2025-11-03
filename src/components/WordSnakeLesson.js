@@ -12,13 +12,25 @@ import { motion, AnimatePresence } from "framer-motion";
  * Word Snake Lesson Component
  * Inline version of Word Snake game for use within lesson flows
  * Accepts custom clues from lesson content instead of using preset clue file
+ *
+ * @param {Array} clues - Array of word clues {clue, answer, hint, fact}
+ * @param {Function} onComplete - Callback when all words completed
+ * @param {String} difficulty - "easy" or "hard" mode
+ *   - easy: Only correct letters appear, no wrong letters, no erasers
+ *   - hard: Includes distractor letters and eraser tiles
  */
 
 const GRID_SIZE = 20;
 const TILE = 25;
 const CANVAS = GRID_SIZE * TILE;
+const BASE_SPEED = 200; // Starting speed (higher = slower)
+const SPEED_DECREASE_PER_WORD = 15; // Speed increase per word completed
 
-export default function WordSnakeLesson({ clues = [], onComplete }) {
+export default function WordSnakeLesson({
+  clues = [],
+  onComplete,
+  difficulty = "easy", // Default to easy mode
+}) {
   const canvasRef = useRef(null);
   const particlesRef = useRef(null);
 
@@ -39,9 +51,14 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
   const [showHint, setShowHint] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [muted, setMuted] = useState(false);
-  const [speed, setSpeed] = useState(180);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [showFact, setShowFact] = useState(false);
+
+  // Calculate speed based on words completed (gets faster each word)
+  const speed = Math.max(
+    80,
+    BASE_SPEED - currentClueIndex * SPEED_DECREASE_PER_WORD
+  );
 
   // Refs to access current values without triggering re-renders
   const collectedWordRef = useRef("");
@@ -174,10 +191,13 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
     const nextIndex = currentClueIndex + 1;
 
     if (nextIndex >= clues.length) {
-      // All words completed - trigger lesson completion
-      if (onComplete) {
-        onComplete({ score, wordsCompleted: clues.length });
-      }
+      // All words completed - close all modals and set completion state
+      setShowLevelUp(false);
+      setShowFact(false);
+      setIsPaused(false);
+      setGameOver(true);
+      // Move to next clue index to trigger allCompleted
+      setCurrentClueIndex(nextIndex);
       return;
     }
 
@@ -233,20 +253,32 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
         );
 
         if (collided) {
-          setLetters((prev) => prev.filter((l) => l !== collided));
-
           if (collided.isEraser) {
-            // Eraser power-up
+            // Eraser power-up (only in hard mode)
+            setLetters((prev) => prev.filter((l) => l !== collided));
             handleBackspace();
             playSound("powerup");
             return [newHead, ...prevSnake];
           } else if (collided.isCorrect) {
-            // Correct letter
+            // Check if this is the NEXT expected letter in sequence
+            const normalizedTarget = targetWord.replace(/\s+/g, "");
+            const normalizedCollected = collectedWord.replace(/\s+/g, "");
+            const expectedNextLetter = normalizedTarget[normalizedCollected.length];
+
+            // In EASY mode, only accept if it's the exact next letter needed
+            if (difficulty === "easy" && collided.letter !== expectedNextLetter) {
+              // Wrong order! Play error sound, don't pick up
+              playSound("wrong");
+              return [newHead, ...prevSnake.slice(0, -1)]; // Don't grow
+            }
+
+            // Correct letter in correct order - remove it and add to word
+            setLetters((prev) => prev.filter((l) => l !== collided));
+
             let newWord = collectedWord + collided.letter;
 
             // Auto-add space for multi-word answers
-            const normalizedTarget = targetWord.replace(/\s+/g, "");
-            const normalizedCollected = newWord.replace(/\s+/g, "");
+            const normalizedNewCollected = newWord.replace(/\s+/g, "");
 
             if (targetWord.includes(" ")) {
               const targetSpacePositions = [];
@@ -261,7 +293,7 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
                   pos -
                   (targetWord.substring(0, pos).match(/\s/g) || []).length;
                 if (
-                  normalizedCollected.length === normalizedPos &&
+                  normalizedNewCollected.length === normalizedPos &&
                   !newWord.includes(" ")
                 ) {
                   newWord += " ";
@@ -274,11 +306,20 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
             playSound("collect");
             return [newHead, ...prevSnake];
           } else {
-            // Wrong letter
-            setCollectedWord((prev) => prev + collided.letter);
-            setScore((s) => Math.max(0, s - 5));
-            playSound("wrong");
-            return [newHead, ...prevSnake];
+            // Wrong letter (only in hard mode)
+            if (difficulty === "easy") {
+              // EASY MODE: Play wrong sound but DON'T pick up the letter or grow snake
+              playSound("wrong");
+              // Letter stays on board, snake doesn't grow
+              return [newHead, ...prevSnake.slice(0, -1)]; // Don't grow
+            } else {
+              // HARD MODE: Pick up wrong letter, add to word, lose points
+              setLetters((prev) => prev.filter((l) => l !== collided));
+              setCollectedWord((prev) => prev + collided.letter);
+              setScore((s) => Math.max(0, s - 5));
+              playSound("wrong");
+              return [newHead, ...prevSnake];
+            }
           }
         }
 
@@ -302,8 +343,11 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
 
   // Check if word is complete
   useEffect(() => {
-    if (collectedWord.replace(/\s+/g, "") === targetWord.replace(/\s+/g, "") &&
-        !showLevelUp && isStarted) {
+    if (
+      collectedWord.replace(/\s+/g, "") === targetWord.replace(/\s+/g, "") &&
+      !showLevelUp &&
+      isStarted
+    ) {
       const timeBonus = Math.max(0, 100 - timeElapsed);
       setScore((s) => s + timeBonus + 50);
       setShowFact(true);
@@ -342,20 +386,34 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
         const currentNextLetter = currentTarget[currentCollected.length] || "";
         if (!currentNextLetter) return currentLetters;
 
-        // 70% chance for correct letter, 20% random, 10% eraser
-        const rand = Math.random();
         let letter, isCorrect, isEraser;
 
-        if (rand < 0.1 && currentCollected.length > 0) {
-          // Eraser (10%)
-          letter = "⌫";
-          isEraser = true;
-          isCorrect = false;
-        } else {
-          // Correct next letter (90%)
+        if (difficulty === "easy") {
+          // EASY MODE: Only spawn correct letters (no distractors, no erasers)
           letter = currentNextLetter;
           isCorrect = true;
           isEraser = false;
+        } else {
+          // HARD MODE: 70% correct letter, 20% random letter, 10% eraser
+          const rand = Math.random();
+
+          if (rand < 0.1 && currentCollected.length > 0) {
+            // Eraser (10%)
+            letter = "⌫";
+            isEraser = true;
+            isCorrect = false;
+          } else if (rand < 0.3) {
+            // Random distractor letter (20%)
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            letter = alphabet[Math.floor(Math.random() * alphabet.length)];
+            isCorrect = false;
+            isEraser = false;
+          } else {
+            // Correct next letter (70%)
+            letter = currentNextLetter;
+            isCorrect = true;
+            isEraser = false;
+          }
         }
 
         // Find empty position using ref for snake
@@ -388,7 +446,7 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
     }, 2500);
 
     return () => clearInterval(interval);
-  }, [isStarted, isPaused, gameOver, targetWord]);
+  }, [isStarted, isPaused, gameOver, targetWord, difficulty]);
 
   // Countdown timer
   useEffect(() => {
@@ -657,15 +715,29 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
     return (
       <div className="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl border-2 border-green-200 dark:border-green-800">
         <div className="text-6xl mb-4">🎉</div>
-        <h2 className="text-3xl font-bold text-green-900 dark:text-green-100 mb-2">
+        <h2 className="text-3xl text-center font-bold text-green-900 dark:text-green-100 mb-2">
           All Words Completed!
         </h2>
-        <p className="text-lg text-green-700 dark:text-green-300 mb-4">
+        {/* <p className="text-lg text-green-700 dark:text-green-300 mb-4">
           You&apos;ve mastered all {clues.length} words!
-        </p>
-        <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+        </p> */}
+        {/* <div className="text-2xl font-bold text-green-600 dark:text-green-400 mb-6">
           Final Score: {score}
-        </div>
+        </div> */}
+        {/* {onComplete && (
+          <button
+            onClick={() => {
+              // Ensure all modals are closed before completing
+              setShowFact(false);
+              setShowLevelUp(false);
+              setIsPaused(false);
+              onComplete({ score, wordsCompleted: clues.length });
+            }}
+            className="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-lg transform transition hover:scale-105"
+          >
+            Continue to Next Step
+          </button>
+        )} */}
       </div>
     );
   }
@@ -897,13 +969,29 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
                 </p>
               </div>
 
+              {/* {currentClueIndex + 1 < clues.length ? (
+                <button
+                  onClick={nextWord}
+                  className="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg font-semibold"
+                >
+                  Next Word
+                </button>
+              ) : (
+                <button
+                  onClick={setShowFact(false)}
+                  className="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg font-semibold"
+                >
+                  All Words Completed
+                </button>
+              )} */}
+
               <button
                 onClick={nextWord}
                 className="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg font-semibold"
               >
                 {currentClueIndex + 1 < clues.length
                   ? "Next Word"
-                  : "Complete Activity"}
+                  : "All Words Completed"}
               </button>
             </div>
           </motion.div>
