@@ -13,14 +13,17 @@ import { useLanguage } from "@/lib/contexts/LanguageContext";
 import TextExpander from "./TextExpander";
 import PieChartAnswers from "./PieChartAnswers";
 
-export default function MultiGapFillExerciseNew({ unitId }) {
+export default function MultiGapFillExerciseNew({
+  unitId,
+  initialShowFullText = false
+}) {
   const [unitData, setUnitData] = useState(null);
   const [textId, setTextId] = useState(null);
   const [fullText, setFullText] = useState("");
   const [gapText, setGapText] = useState("");
   const [questions, setQuestions] = useState([]);
   const [userAnswers, setUserAnswers] = useState({});
-  const [showFullText, setShowFullText] = useState(false);
+  const [showFullText, setShowFullText] = useState(initialShowFullText);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [translations, setTranslations] = useState({});

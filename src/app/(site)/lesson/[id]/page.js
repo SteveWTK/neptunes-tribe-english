@@ -97,6 +97,7 @@ function DynamicLessonContent() {
   const [autoTranslating, setAutoTranslating] = useState(false);
   const [unitModalOpen, setUnitModalOpen] = useState(false);
   const [currentUnitId, setCurrentUnitId] = useState(null);
+  const [unitShowFullText, setUnitShowFullText] = useState(false);
   const [challengeExercises, setChallengeExercises] = useState({});
 
   // Reset keys for each exercise type to force re-render
@@ -651,7 +652,7 @@ function DynamicLessonContent() {
 
   const handleLessonComplete = async () => {
     if (!user) {
-      router.push(getWorldUrl());
+      router.push(getWorldUrl() + "#content");
       return;
     }
 
@@ -663,9 +664,7 @@ function DynamicLessonContent() {
       await markLessonComplete(
         user.id,
         lesson.id,
-        Math.round((completedSteps.size / steps.length) * 100),
-        xpEarned,
-        Date.now() - startTime
+        xpEarned || 0
       );
 
       console.log(
@@ -674,14 +673,14 @@ function DynamicLessonContent() {
 
       // Small delay to ensure database operations complete
       setTimeout(() => {
-        router.push(getWorldUrl());
+        router.push(getWorldUrl() + "#content");
       }, 500);
     } catch (error) {
       console.error("❌ Error marking lesson complete:", error);
       setCompleting(false);
 
       // Even if completion fails, still allow navigation
-      router.push(getWorldUrl());
+      router.push(getWorldUrl() + "#content");
     }
   };
 
@@ -1251,6 +1250,9 @@ function DynamicLessonContent() {
             instructions={currentStepData.instructions}
             onStartExercise={() => {
               setCurrentUnitId(currentStepData.unit_id);
+              setUnitShowFullText(
+                currentStepData.showFullTextByDefault || false
+              );
               setUnitModalOpen(true);
             }}
           />
@@ -3053,6 +3055,7 @@ function DynamicLessonContent() {
       <UnitModal
         unitId={currentUnitId}
         isOpen={unitModalOpen}
+        initialShowFullText={unitShowFullText}
         onClose={() => setUnitModalOpen(false)}
         onComplete={(result) => {
           console.log("Unit completed:", result);

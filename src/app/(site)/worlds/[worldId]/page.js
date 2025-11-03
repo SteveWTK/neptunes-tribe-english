@@ -64,6 +64,7 @@ function WorldDetailContent() {
   const [world, setWorld] = useState(null);
   const [selectedAdventure, setSelectedAdventure] = useState(null);
   const [adventureData, setAdventureData] = useState({});
+  const [completedLessons, setCompletedLessons] = useState(new Set());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -85,6 +86,19 @@ function WorldDetailContent() {
       loadAdventureContent(selectedAdventure);
     }
   }, [selectedAdventure, user]);
+
+  useEffect(() => {
+    // Handle anchor scrolling after content loads
+    if (typeof window !== "undefined" && window.location.hash === "#content") {
+      // Wait for content to render, then scroll
+      setTimeout(() => {
+        const element = document.getElementById("content");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 500);
+    }
+  }, [adventureData, selectedAdventure]);
 
   const loadAdventureContent = async (adventure) => {
     try {
@@ -108,6 +122,11 @@ function WorldDetailContent() {
         .contains("theme_tags", [adventure.themeTag]);
 
       if (unitsError) console.error("Error loading units:", unitsError);
+
+      console.log(
+        `📦 Loaded ${unitsData?.length || 0} units for theme '${adventure.themeTag}':`,
+        unitsData?.map((u) => ({ id: u.id, title: u.title }))
+      );
 
       // Create a map of unit_id -> unit for quick lookup
       const unitsMap = {};
@@ -146,8 +165,47 @@ function WorldDetailContent() {
           lessons: lessonsWithUnits,
         },
       }));
+
+      // Load lesson completions for the user
+      if ((user?.userId || user?.id) && lessonsWithUnits.length > 0) {
+        console.log("📚 Calling loadLessonCompletions with user:", user);
+        loadLessonCompletions(lessonsWithUnits.map((l) => l.id));
+      } else {
+        console.log("⚠️ Not loading completions:", {
+          hasUserId: !!(user?.userId || user?.id),
+          hasLessons: lessonsWithUnits.length > 0,
+          user,
+        });
+      }
     } catch (error) {
       console.error("Error loading adventure content:", error);
+    }
+  };
+
+  const loadLessonCompletions = async (lessonIds) => {
+    try {
+      const supabase = createClient();
+      const userId = user.userId || user.id;
+
+      console.log("🔍 Loading completions for user:", userId, "lessons:", lessonIds);
+
+      const { data, error } = await supabase
+        .from("lesson_completions")
+        .select("lesson_id")
+        .eq("user_id", userId)
+        .in("lesson_id", lessonIds);
+
+      if (error) {
+        console.error("Error loading lesson completions:", error);
+        return;
+      }
+
+      console.log("✅ Completions data from DB:", data);
+      const completedSet = new Set(data.map((c) => c.lesson_id));
+      setCompletedLessons(completedSet);
+      console.log("✅ Completed lessons set:", Array.from(completedSet));
+    } catch (error) {
+      console.error("Error loading lesson completions:", error);
     }
   };
 
@@ -450,55 +508,71 @@ function WorldDetailContent() {
                     </h3>
                     {currentData.lessons && currentData.lessons.length > 0 ? (
                       <div className="space-y-3">
-                        {currentData.lessons.map((lesson) => (
-                          <div
-                            key={lesson.id}
-                            onClick={() =>
-                              !lesson.under_construction &&
-                              router.push(`/lesson/${lesson.id}`)
-                            }
-                            className={`p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-all border border-gray-200 dark:border-gray-600 ${
-                              lesson.under_construction
-                                ? "opacity-60 cursor-not-allowed"
-                                : "hover:shadow-md cursor-pointer"
-                            }`}
-                          >
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <div className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
-                                  {lesson.title}
-                                  {lesson.under_construction && (
-                                    <Lock className="w-3 h-3 text-gray-400" />
+                        {currentData.lessons.map((lesson) => {
+                          const isCompleted = completedLessons.has(lesson.id);
+                          console.log(`Lesson ${lesson.id} (${lesson.title}):`, {
+                            isCompleted,
+                            completedLessons: Array.from(completedLessons),
+                            hasUnit: !!lesson.unit,
+                            unitImage: lesson.unit?.image,
+                          });
+                          return (
+                            <div
+                              key={lesson.id}
+                              onClick={() =>
+                                !lesson.under_construction &&
+                                router.push(`/lesson/${lesson.id}`)
+                              }
+                              className={`p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-all border border-gray-200 dark:border-gray-600 ${
+                                lesson.under_construction
+                                  ? "opacity-60 cursor-not-allowed"
+                                  : "hover:shadow-md cursor-pointer"
+                              }`}
+                            >
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                                    {lesson.title}
+                                    {lesson.under_construction && (
+                                      <Lock className="w-3 h-3 text-gray-400" />
+                                    )}
+                                    {isCompleted && (
+                                      <CheckCircle
+                                        className="w-4 h-4"
+                                        style={{ color: world.color.primary }}
+                                        title="Completed"
+                                      />
+                                    )}
+                                  </div>
+                                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                                    {lesson.content?.steps?.length || 0} activities
+                                  </div>
+                                </div>
+
+                                <div className="flex gap-3 items-center">
+                                  {/* Unit Image */}
+                                  {lesson.unit?.image && (
+                                    <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                      <Image
+                                        src={lesson.unit.image}
+                                        alt={lesson.unit.title || "Unit"}
+                                        fill
+                                        className="object-cover"
+                                      />
+                                    </div>
+                                  )}
+                                  {lesson.under_construction ? (
+                                    <div className="text-xs text-gray-500">
+                                      Soon
+                                    </div>
+                                  ) : (
+                                    <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />
                                   )}
                                 </div>
-                                <div className="text-sm text-gray-600 dark:text-gray-400">
-                                  {lesson.content?.steps?.length || 0} activities
-                                </div>
-                              </div>
-
-                              <div className="flex gap-3 items-center">
-                                {/* Unit Image */}
-                                {lesson.unit?.image && (
-                                  <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
-                                    <Image
-                                      src={lesson.unit.image}
-                                      alt={lesson.unit.title || "Unit"}
-                                      fill
-                                      className="object-cover"
-                                    />
-                                  </div>
-                                )}
-                                {lesson.under_construction ? (
-                                  <div className="text-xs text-gray-500">
-                                    Soon
-                                  </div>
-                                ) : (
-                                  <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                                )}
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     ) : (
                       <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg text-center text-gray-500 dark:text-gray-400">

@@ -100,6 +100,33 @@ export default function UnitReferenceStepForm({ step, onChange }) {
         />
       </div>
 
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Initial Display Mode
+        </label>
+        <select
+          value={step.showFullTextByDefault ? "full_text" : "gap_fill"}
+          onChange={(e) =>
+            updateField("showFullTextByDefault", e.target.value === "full_text")
+          }
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+        >
+          <option value="gap_fill">
+            Gap Fill Exercise (default - students fill in the blanks first)
+          </option>
+          <option value="full_text">
+            Full Text (students read the complete text first)
+          </option>
+        </select>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <strong>Gap Fill:</strong> Students complete the exercise first, then
+          can view the full text.
+          <br />
+          <strong>Full Text:</strong> Students read the full text first, then can
+          practice with the gap fill exercise.
+        </p>
+      </div>
+
       <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
         <p className="text-sm text-gray-600 dark:text-gray-400">
           <strong>Note:</strong> This step will display the selected unit&apos;s

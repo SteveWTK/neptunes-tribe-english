@@ -25,42 +25,59 @@ export async function getLessonById(lessonId) {
 }
 
 // Mark a lesson as complete for a user
+// Uses API route to handle authentication and RLS
 export async function markLessonComplete(userId, lessonId, xpEarned = 0) {
   try {
-    // Check if already completed
-    const { data: existing } = await supabase
-      .from("lesson_completions")
-      .select("id")
-      .eq("user_id", userId)
-      .eq("lesson_id", lessonId)
-      .single();
+    const response = await fetch("/api/lesson-completion", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        lessonId,
+        xpEarned,
+      }),
+    });
 
-    if (existing) {
-      console.log("Lesson already completed");
-      return existing;
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("API error:", errorData);
+      throw new Error(errorData.error || "Failed to mark lesson complete");
     }
 
-    // Insert completion record
-    const { data, error } = await supabase
-      .from("lesson_completions")
-      .insert({
-        user_id: userId,
-        lesson_id: lessonId,
-        xp_earned: xpEarned,
-        completed_at: new Date().toISOString(),
-      })
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    // TODO: Update user's total XP in users table if needed
-    // You can add this logic here or in a database trigger
-
-    return data;
+    const result = await response.json();
+    console.log("✅ Lesson completion result:", result);
+    return result.data;
   } catch (error) {
     console.error("Error marking lesson complete:", error);
     throw error;
+  }
+}
+
+// Check if a lesson is completed
+export async function isLessonCompleted(lessonId) {
+  try {
+    const response = await fetch(
+      `/api/lesson-completion?lessonId=${lessonId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("API error:", errorData);
+      return false;
+    }
+
+    const result = await response.json();
+    return result.completed;
+  } catch (error) {
+    console.error("Error checking lesson completion:", error);
+    return false;
   }
 }
 
@@ -78,24 +95,6 @@ export async function getPlayerPreferredLanguage(userId) {
   } catch (error) {
     console.error("Error fetching preferred language:", error);
     return "en"; // Default to English
-  }
-}
-
-// Check if lesson is completed by user
-export async function isLessonCompleted(userId, lessonId) {
-  try {
-    const { data, error } = await supabase
-      .from("lesson_completions")
-      .select("id")
-      .eq("user_id", userId)
-      .eq("lesson_id", lessonId)
-      .single();
-
-    if (error && error.code !== "PGRST116") throw error; // PGRST116 = not found
-    return !!data;
-  } catch (error) {
-    console.error("Error checking lesson completion:", error);
-    return false;
   }
 }
 

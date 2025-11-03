@@ -116,14 +116,49 @@ function LessonEditorContent() {
           contentToSave = JSON.parse(jsonText);
         } catch (err) {
           alert("Invalid JSON. Please fix the errors before saving.");
+          setSaving(false);
           return;
         }
       }
 
+      // Save the lesson
       await updateLesson(lessonId, {
         ...lesson,
         content: contentToSave,
       });
+
+      // Sync theme tags to units (non-blocking)
+      if (lesson.theme_tags && lesson.theme_tags.length > 0) {
+        console.log(
+          "Syncing theme tags to units:",
+          lesson.theme_tags
+        );
+        try {
+          const response = await fetch("/api/sync-unit-theme-tags", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              lessonId: lessonId,
+              themeTags: lesson.theme_tags,
+            }),
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            console.log(
+              `✅ Theme tags synced to ${result.unitsUpdated} units:`,
+              result.updates
+            );
+          } else {
+            console.warn("Theme tag sync returned error:", result);
+          }
+        } catch (syncError) {
+          // Don't fail the save if sync fails
+          console.error("Error syncing theme tags (non-critical):", syncError);
+        }
+      }
 
       alert("Lesson saved successfully!");
       router.push("/admin/lessons");

@@ -8,7 +8,13 @@ import MultiGapFillExerciseNew from "@/components/MultiGapFillExerciseNew";
  * UnitModal - Full-screen modal overlay for displaying units within lesson flows
  * Preserves the unit's responsive design and layout
  */
-export default function UnitModal({ unitId, isOpen, onClose, onComplete }) {
+export default function UnitModal({
+  unitId,
+  isOpen,
+  onClose,
+  onComplete,
+  initialShowFullText = false
+}) {
   // Close on Escape key
   useEffect(() => {
     const handleEscape = (e) => {
@@ -80,6 +86,7 @@ export default function UnitModal({ unitId, isOpen, onClose, onComplete }) {
                 <MultiGapFillExerciseNew
                   unitId={unitId}
                   units={[]}
+                  initialShowFullText={initialShowFullText}
                   onComplete={(result) => {
                     if (onComplete) {
                       onComplete(result);
