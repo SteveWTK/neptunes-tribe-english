@@ -75,13 +75,19 @@ export default function WordSnakeStepForm({ step, onChange }) {
           onChange={(e) => updateField("difficulty", e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
         >
-          <option value="easy">Easy - Only correct letters appear (recommended for beginners)</option>
-          <option value="hard">Hard - Includes distractor letters and erasers</option>
+          <option value="easy">
+            Easy - Only correct letters appear (recommended for beginners)
+          </option>
+          <option value="hard">
+            Hard - Includes distractor letters and erasers
+          </option>
         </select>
         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-          <strong>Easy:</strong> Perfect for first-time players. Only shows correct letters, wrong letters make a sound but aren't picked up.
+          <strong>Easy:</strong> Perfect for first-time players. Only shows
+          correct letters, wrong letters make a sound but aren&apos;t picked up.
           <br />
-          <strong>Hard:</strong> For experienced players. Includes random letters and eraser tiles for extra challenge.
+          <strong>Hard:</strong> For experienced players. Includes random
+          letters and eraser tiles for extra challenge.
         </p>
       </div>
 
@@ -93,7 +99,10 @@ export default function WordSnakeStepForm({ step, onChange }) {
             <ul className="list-disc ml-4 space-y-1">
               <li>Students move a snake to collect letters in order</li>
               <li>They must spell the answer word based on the clue</li>
-              <li>The snake speeds up slightly after each word (progressive difficulty)</li>
+              <li>
+                The snake speeds up slightly after each word (progressive
+                difficulty)
+              </li>
               <li>Recommended: 3-5 words per mini-game</li>
               <li>Words should relate to the lesson topic</li>
             </ul>
@@ -118,7 +127,9 @@ export default function WordSnakeStepForm({ step, onChange }) {
 
         {(step.clues || []).length === 0 && (
           <div className="text-center py-8 text-gray-500 dark:text-gray-400 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
-            <p>No clues added yet. Click &quot;Add Clue&quot; to get started!</p>
+            <p>
+              No clues added yet. Click &quot;Add Clue&quot; to get started!
+            </p>
           </div>
         )}
 
@@ -184,7 +195,8 @@ export default function WordSnakeStepForm({ step, onChange }) {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-mono font-bold"
                   />
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    Use spaces for multi-word answers. Only letters and spaces allowed.
+                    Use spaces for multi-word answers. Only letters and spaces
+                    allowed.
                   </p>
                 </div>
 
@@ -236,8 +248,8 @@ export default function WordSnakeStepForm({ step, onChange }) {
         <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
           <p className="text-sm text-green-800 dark:text-green-200">
             <strong>✓ Ready!</strong> This mini-game will have{" "}
-            <strong>{(step.clues || []).length} words</strong> for students to spell.
-            Recommended: 3-5 words.
+            <strong>{(step.clues || []).length} words</strong> for students to
+            spell. Recommended: 3-5 words.
           </p>
         </div>
       )}
