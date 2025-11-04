@@ -252,7 +252,6 @@ export const WORLDS = {
         description:
           "Dive into the world's largest coral reef system and its incredible biodiversity.",
         themeTag: "great_barrier_reef",
-        underConstruction: false,
       },
       {
         id: "new_zealand",
@@ -262,7 +261,6 @@ export const WORLDS = {
         description:
           "Meet kiwis, kakapos, and other unique species in these isolated islands.",
         themeTag: "new_zealand",
-        underConstruction: false,
       },
       {
         id: "pacific_islands",
@@ -272,7 +270,6 @@ export const WORLDS = {
         description:
           "Discover the culture and ecosystems of Pacific Island nations facing climate change.",
         themeTag: "pacific_islands",
-        underConstruction: false,
       },
       {
         id: "australian_outback",
@@ -282,7 +279,6 @@ export const WORLDS = {
         description:
           "Explore the unique wildlife of Australia's arid interior.",
         themeTag: "outback",
-        underConstruction: false,
       },
     ],
   },
@@ -322,7 +318,6 @@ export const WORLDS = {
         description:
           "Explore the treeless plains of the Arctic and meet polar bears, Arctic foxes, and caribou.",
         themeTag: "arctic",
-        underConstruction: false,
       },
       {
         id: "antarctica",
@@ -332,7 +327,6 @@ export const WORLDS = {
         description:
           "Journey to Earth's coldest continent and discover penguins, seals, and whales.",
         themeTag: "antarctica",
-        underConstruction: false,
       },
       {
         id: "greenland_ice_sheet",
@@ -342,7 +336,6 @@ export const WORLDS = {
         description:
           "Understand the impact of climate change on the world's largest island.",
         themeTag: "greenland",
-        underConstruction: false,
       },
       {
         id: "northern_lights",
@@ -352,7 +345,6 @@ export const WORLDS = {
         description:
           "Learn about the aurora borealis and life in the Arctic Circle.",
         themeTag: "aurora",
-        underConstruction: false,
       },
     ],
   },
@@ -391,7 +383,6 @@ export const WORLDS = {
         description:
           "Explore geysers, hot springs, and the restoration of wolves in this iconic national park.",
         themeTag: "yellowstone",
-        underConstruction: false,
       },
       {
         id: "great_barrier_reef_americas",
@@ -401,7 +392,6 @@ export const WORLDS = {
         description:
           "Dive into the vibrant coral reefs of the Caribbean and their conservation challenges.",
         themeTag: "caribbean_reef",
-        underConstruction: false,
       },
       {
         id: "monarch_migration",
@@ -411,7 +401,6 @@ export const WORLDS = {
         description:
           "Follow the incredible 3,000-mile journey of monarch butterflies.",
         themeTag: "monarch",
-        underConstruction: false,
       },
       {
         id: "everglades",
@@ -421,7 +410,6 @@ export const WORLDS = {
         description:
           "Discover this unique subtropical wetland and its importance to Florida's ecosystem.",
         themeTag: "everglades",
-        underConstruction: false,
       },
     ],
   },
@@ -461,7 +449,6 @@ export const WORLDS = {
         description:
           "Explore the towering underwater forests and their importance to marine life.",
         themeTag: "kelp",
-        underConstruction: false,
       },
       {
         id: "deep_ocean",
@@ -471,7 +458,6 @@ export const WORLDS = {
         description:
           "Descend into the mysterious depths and meet bizarre deep-sea creatures.",
         themeTag: "deep_ocean",
-        underConstruction: false,
       },
       {
         id: "whale_migration",
@@ -481,7 +467,6 @@ export const WORLDS = {
         description:
           "Follow the epic journeys of whales across the world's oceans.",
         themeTag: "whales",
-        underConstruction: false,
       },
       {
         id: "coral_triangle",
@@ -490,77 +475,6 @@ export const WORLDS = {
         ecosystemType: "coral_reef",
         description: "Discover the most biodiverse marine region on Earth.",
         themeTag: "coral_triangle",
-        underConstruction: false,
-      },
-    ],
-  },
-
-  lost_worlds: {
-    id: "lost_worlds",
-    name: "Lost Worlds",
-    slug: "lost-worlds",
-    description:
-      "Journey through 4 billion years of Earth's history, from the first spark of life to the Ice Age. Meet dinosaurs, mammoths, and countless extinct species that once ruled our planet.",
-    order: 8,
-    color: {
-      primary: "#a855f7", // purple-500
-      secondary: "#9333ea", // purple-600
-      light: "#f3e8ff", // purple-100
-      dark: "#581c87", // purple-900
-    },
-    bounds: {
-      // Global (time-based rather than location-based)
-      north: 85,
-      south: -85,
-      east: 180,
-      west: -180,
-    },
-    icon: "Mountain",
-    imageUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/tyranosaurus-rex.jpg", // Placeholder - can be replaced with prehistoric image
-    heroUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/woolly_mammoth_bbc.jpg", // Placeholder
-    mapUrl: "/maps/lost-worlds.png", // Will need to be created
-    adventures: [
-      {
-        id: "dawn_of_life",
-        name: "Dawn of Life: Ancient Seas",
-        week: 1,
-        ecosystemType: "ancient_ocean",
-        description:
-          "Dive into Earth's primordial oceans 3.5 billion years ago. Discover the first microscopic life forms, stromatolites, and the strange creatures of the Cambrian Explosion that changed life forever.",
-        themeTag: "ancient_seas",
-        underConstruction: true,
-      },
-      {
-        id: "age_of_dinosaurs",
-        name: "Age of Dinosaurs: Mesozoic Giants",
-        week: 2,
-        ecosystemType: "prehistoric",
-        description:
-          "Walk among the giants of the Mesozoic Era. Meet Tyrannosaurus rex, Triceratops, long-necked sauropods, and discover why these magnificent creatures vanished 66 million years ago.",
-        themeTag: "dinosaurs",
-        underConstruction: true,
-      },
-      {
-        id: "ice_age_megafauna",
-        name: "Ice Age: Frozen Giants",
-        week: 3,
-        ecosystemType: "ice_age",
-        description:
-          "Journey to the last Ice Age, just 10,000 years ago. Meet woolly mammoths, saber-toothed cats, giant ground sloths, and discover how humans lived alongside these incredible beasts.",
-        themeTag: "ice_age",
-        underConstruction: true,
-      },
-      {
-        id: "extinction_and_survival",
-        name: "Mass Extinctions: Stories of Survival",
-        week: 4,
-        ecosystemType: "extinction_events",
-        description:
-          "Explore Earth's five mass extinctions and the resilient species that survived. Learn about dodo birds, passenger pigeons, and what extinction teaches us about protecting life today.",
-        themeTag: "extinctions",
-        underConstruction: true,
       },
     ],
   },

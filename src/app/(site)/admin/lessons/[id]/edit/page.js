@@ -121,11 +121,20 @@ function LessonEditorContent() {
         }
       }
 
+      console.log("💾 Saving lesson with data:", {
+        lessonId,
+        title: lesson.title,
+        under_construction: lesson.under_construction,
+        theme_tags: lesson.theme_tags,
+      });
+
       // Save the lesson
       await updateLesson(lessonId, {
         ...lesson,
         content: contentToSave,
       });
+
+      console.log("✅ Lesson saved successfully to database");
 
       // Sync theme tags to units (non-blocking)
       if (lesson.theme_tags && lesson.theme_tags.length > 0) {
@@ -163,8 +172,15 @@ function LessonEditorContent() {
       alert("Lesson saved successfully!");
       router.push("/admin/lessons");
     } catch (error) {
-      console.error("Error saving lesson:", error);
-      alert("Failed to save lesson. Please try again.");
+      console.error("❌ Error saving lesson:", error);
+      console.error("Error details:", {
+        message: error.message,
+        stack: error.stack,
+        lessonData: lesson,
+      });
+      alert(
+        `Failed to save lesson. Error: ${error.message || "Unknown error"}. Check console for details.`
+      );
     } finally {
       setSaving(false);
     }

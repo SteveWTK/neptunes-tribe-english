@@ -236,7 +236,7 @@ function WorldsContent() {
         </div>
 
         {/* Coming Soon - 8th World */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: worlds.length * 0.1 }}
@@ -254,7 +254,7 @@ function WorldsContent() {
               exciting adventures!
             </p>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Educational Context Section */}
         <div className="mt-16 bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl p-8 border border-primary-200 dark:border-primary-800">

@@ -55,6 +55,10 @@ const ECOSYSTEM_ICONS = {
   kelp_forest: Waves,
   deep_sea: Waves,
   migration: Globe,
+  ancient_ocean: Waves,
+  prehistoric: Mountain,
+  ice_age: Mountain,
+  extinction_events: Globe,
 };
 
 function WorldDetailContent() {
@@ -124,7 +128,9 @@ function WorldDetailContent() {
       if (unitsError) console.error("Error loading units:", unitsError);
 
       console.log(
-        `📦 Loaded ${unitsData?.length || 0} units for theme '${adventure.themeTag}':`,
+        `📦 Loaded ${unitsData?.length || 0} units for theme '${
+          adventure.themeTag
+        }':`,
         unitsData?.map((u) => ({ id: u.id, title: u.title }))
       );
 
@@ -187,7 +193,12 @@ function WorldDetailContent() {
       const supabase = createClient();
       const userId = user.userId || user.id;
 
-      console.log("🔍 Loading completions for user:", userId, "lessons:", lessonIds);
+      console.log(
+        "🔍 Loading completions for user:",
+        userId,
+        "lessons:",
+        lessonIds
+      );
 
       const { data, error } = await supabase
         .from("lesson_completions")
@@ -288,7 +299,7 @@ function WorldDetailContent() {
               src={world.heroUrl}
               alt={world.name}
               fill
-              className="object-cover"
+              className="object-cover object-[50%_30%]"
               priority
             />
             {/* Dark overlay for text readability */}
@@ -424,11 +435,19 @@ function WorldDetailContent() {
                     />
                     <div className="p-5">
                       <div className="flex items-center justify-between mb-3">
-                        <div
-                          className="px-3 py-1 rounded-full text-xs font-bold text-white"
-                          style={{ backgroundColor: world.color.primary }}
-                        >
-                          Week {adventure.week}
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="px-3 py-1 rounded-full text-xs font-bold text-white"
+                            style={{ backgroundColor: world.color.primary }}
+                          >
+                            Week {adventure.week}
+                          </div>
+                          {adventure.underConstruction && (
+                            <Lock
+                              className="w-3 h-3 text-gray-400"
+                              title="Under Construction"
+                            />
+                          )}
                         </div>
                         <EcoIcon
                           className="w-6 h-6"
@@ -510,12 +529,15 @@ function WorldDetailContent() {
                       <div className="space-y-3">
                         {currentData.lessons.map((lesson) => {
                           const isCompleted = completedLessons.has(lesson.id);
-                          console.log(`Lesson ${lesson.id} (${lesson.title}):`, {
-                            isCompleted,
-                            completedLessons: Array.from(completedLessons),
-                            hasUnit: !!lesson.unit,
-                            unitImage: lesson.unit?.image,
-                          });
+                          console.log(
+                            `Lesson ${lesson.id} (${lesson.title}):`,
+                            {
+                              isCompleted,
+                              completedLessons: Array.from(completedLessons),
+                              hasUnit: !!lesson.unit,
+                              unitImage: lesson.unit?.image,
+                            }
+                          );
                           return (
                             <div
                               key={lesson.id}
@@ -545,7 +567,8 @@ function WorldDetailContent() {
                                     )}
                                   </div>
                                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                                    {lesson.content?.steps?.length || 0} activities
+                                    {lesson.content?.steps?.length || 0}{" "}
+                                    activities
                                   </div>
                                 </div>
 
