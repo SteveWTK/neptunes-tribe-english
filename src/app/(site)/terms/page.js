@@ -205,11 +205,11 @@ export default function TermsOfService() {
               </p>
               <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                 <p className="text-gray-700 dark:text-gray-100">
-                  <strong>Email:</strong> info@neptunes-tribe.com
+                  <strong>Email:</strong> info@habitatenglish.com
                   <br />
                   <strong>Address:</strong> [Your Business Address]
                   <br />
-                  <strong>Website:</strong> https://neptunes-tribe.com
+                  <strong>Website:</strong> https://habitatenglish.com
                 </p>
               </div>
             </section>

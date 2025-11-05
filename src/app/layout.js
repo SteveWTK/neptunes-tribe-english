@@ -13,7 +13,8 @@ import { Toaster } from "sonner";
 import { LanguageProvider } from "@/lib/contexts/LanguageContext";
 import { DarkModeProvider } from "@/lib/contexts/DarkModeContext";
 import { SessionProvider } from "next-auth/react";
-import { OnboardingProvider } from "@/lib/contexts/OnboardingContext";
+import { OnboardingProvider as NewOnboardingProvider } from "@/components/onboarding/OnboardingProvider";
+import { OnboardingProvider as LegacyOnboardingProvider } from "@/lib/contexts/OnboardingContext";
 import { AuthProvider } from "@/components/AuthProvider";
 
 const orbitron = Orbitron({
@@ -45,7 +46,9 @@ export default function RootLayout({ children }) {
             <AuthProvider>
               <LanguageProvider>
                 <DarkModeProvider>
-                  <OnboardingProvider>{children}</OnboardingProvider>
+                  <LegacyOnboardingProvider>
+                    <NewOnboardingProvider>{children}</NewOnboardingProvider>
+                  </LegacyOnboardingProvider>
                 </DarkModeProvider>
               </LanguageProvider>
             </AuthProvider>

@@ -15,7 +15,7 @@ export const brandConfig = {
   appName: "Habitat",
   appTagline: "Learn English Through Environmental Action",
   appDescription: "Master English while exploring the world's most incredible ecosystems and conservation heroes.",
-  domain: "https://neptunes-tribe.com", // Update in production
+  domain: "https://habitatenglish.com",
 
   // ============================================
   // BRANDING & VISUALS
@@ -255,7 +255,7 @@ export const brandConfig = {
   // CONTACT & SUPPORT
   // ============================================
   support: {
-    email: "support@neptunes-tribe.com",
+    email: "support@habitatenglish.com",
     helpCenterUrl: null,
     chatWidget: false,
   },

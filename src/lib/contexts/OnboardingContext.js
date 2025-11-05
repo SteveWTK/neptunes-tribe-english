@@ -1,69 +1,54 @@
+// Legacy file - provides backwards compatibility for old onboarding components
+// This maintains the old API while using the new onboarding system under the hood
+
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useLanguage } from "@/lib/contexts/LanguageContext";
 
-const OnboardingContext = createContext();
+const LegacyOnboardingContext = createContext();
 
+// For old components that use the detailed onboarding state
 export const useOnboarding = () => {
-  const context = useContext(OnboardingContext);
+  const context = useContext(LegacyOnboardingContext);
   if (!context) {
-    throw new Error("useOnboarding must be used within an OnboardingProvider");
+    // Return a default state if not in provider (to prevent errors)
+    return {
+      onboardingState: {
+        hasSeenWelcome: true,
+        hasCompletedTour: true,
+        hasViewedUnits: true,
+        hasViewedEcoMap: true,
+        hasTriedUnit: true,
+        currentStep: 0,
+        showWelcomeModal: false,
+        showTour: false,
+        shouldTriggerOnboarding: false,
+      },
+      updateOnboardingState: () => {},
+      completeStep: () => {},
+      resetOnboarding: () => {},
+      startTour: () => {},
+      dismissWelcome: () => {},
+    };
   }
   return context;
 };
 
-export const OnboardingProvider = ({ children }) => {
+// Legacy provider for backwards compatibility
+export const LegacyOnboardingProvider = ({ children }) => {
   const { data: session } = useSession();
-  const { lang } = useLanguage();
   const [onboardingState, setOnboardingState] = useState({
-    hasSeenWelcome: false,
-    hasCompletedTour: false,
-    hasViewedUnits: false,
-    hasViewedEcoMap: false,
-    hasTriedUnit: false,
+    hasSeenWelcome: true, // Default to true to not show old modals
+    hasCompletedTour: true,
+    hasViewedUnits: true,
+    hasViewedEcoMap: true,
+    hasTriedUnit: true,
     currentStep: 0,
-    showWelcomeModal: false,
+    showWelcomeModal: false, // Don't show old welcome modal
     showTour: false,
     shouldTriggerOnboarding: false,
   });
-
-  // Check if user needs onboarding
-  useEffect(() => {
-    const checkOnboardingStatus = () => {
-      try {
-        const stored = localStorage.getItem("neptunes-tribe-onboarding");
-        if (stored) {
-          const parsedState = JSON.parse(stored);
-          setOnboardingState((prev) => ({ ...prev, ...parsedState }));
-        } else if (session?.user) {
-          // New user - trigger onboarding
-          setOnboardingState((prev) => ({
-            ...prev,
-            shouldTriggerOnboarding: true,
-            showWelcomeModal: true,
-          }));
-        }
-      } catch (error) {
-        console.error("Error loading onboarding state:", error);
-      }
-    };
-
-    checkOnboardingStatus();
-  }, [session]);
-
-  // Save state to localStorage whenever it changes
-  useEffect(() => {
-    try {
-      localStorage.setItem(
-        "neptunes-tribe-onboarding",
-        JSON.stringify(onboardingState)
-      );
-    } catch (error) {
-      console.error("Error saving onboarding state:", error);
-    }
-  }, [onboardingState]);
 
   const updateOnboardingState = (updates) => {
     setOnboardingState((prev) => ({ ...prev, ...updates }));
@@ -88,7 +73,6 @@ export const OnboardingProvider = ({ children }) => {
       showTour: false,
       shouldTriggerOnboarding: false,
     });
-    localStorage.removeItem("neptunes-tribe-onboarding");
   };
 
   const startTour = () => {
@@ -117,10 +101,12 @@ export const OnboardingProvider = ({ children }) => {
   };
 
   return (
-    <OnboardingContext.Provider value={value}>
+    <LegacyOnboardingContext.Provider value={value}>
       {children}
-    </OnboardingContext.Provider>
+    </LegacyOnboardingContext.Provider>
   );
 };
 
-export default OnboardingProvider;
+// Also export as default and named export for compatibility
+export const OnboardingProvider = LegacyOnboardingProvider;
+export default LegacyOnboardingProvider;

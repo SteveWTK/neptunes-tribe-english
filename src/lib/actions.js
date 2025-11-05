@@ -11,7 +11,8 @@ function getBaseUrl() {
     return "http://localhost:3000";
   }
 
-  return "https://neptunes-tribe.com";
+  // Use environment variable in production (set in Vercel)
+  return process.env.NEXT_PUBLIC_BASE_URL || "https://habitatenglish.com";
 }
 
 export async function signInAction() {

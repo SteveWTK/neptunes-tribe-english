@@ -133,7 +133,7 @@ export default function NGOPresentation() {
       // Slide 9: Next Steps
       slide9Title: "Ready to Partner With Us?",
       slide9Contact: "Contact Information",
-      slide9Email: "partnerships@neptunes-tribe.com",
+      slide9Email: "partnerships@habitatenglish.com",
       slide9Schedule: "Let's Schedule a Demo",
       slide9CTA:
         "Together we can educate the world while protecting our planet",
@@ -244,7 +244,7 @@ export default function NGOPresentation() {
       // Slide 9: Next Steps
       slide9Title: "Pronto para Fazer Parceria Conosco?",
       slide9Contact: "Informações de Contato",
-      slide9Email: "partnerships@neptunes-tribe.com",
+      slide9Email: "partnerships@habitatenglish.com",
       slide9Schedule: "Vamos Agendar uma Demo",
       slide9CTA:
         "Juntos podemos educar o mundo enquanto protegemos nosso planeta",
