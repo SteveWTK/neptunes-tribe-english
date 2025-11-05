@@ -605,9 +605,9 @@ export default function LandingPageSchools() {
 
                 {/* Hover overlay with "Explore" hint */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <span className="text-white font-semibold text-lg">
+                  {/* <span className="text-white font-semibold text-lg">
                     Coming Soon
-                  </span>
+                  </span> */}
                 </div>
               </div>
             ))}
