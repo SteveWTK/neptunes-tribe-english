@@ -33,7 +33,7 @@ export default function LandingPageSchools() {
     en: {
       heroTitle: "An English learning journey through eight worlds.",
       heroSubtitle:
-        "The world's first English learning platform with an environmental theme.",
+        "The first English learning platform with an environmental theme.",
       heroDescription:
         "Every week, our tribe explores a new ecosystem together. Discover amazing species, many of which are endangered. Help to save Earth's wildlife while increasing your command of English.",
       startFree: "Create an Account",
@@ -178,7 +178,7 @@ export default function LandingPageSchools() {
     pt: {
       heroTitle: "Uma jornada de inglês por oito mundos",
       heroSubtitle:
-        "A  primeira plataforma de ensino de inglês com o tema meio ambiente do mundo.",
+        "A  primeira plataforma de ensino de inglês com o tema meio ambiente.",
       heroDescription:
         "Toda semana, nossa tribo explora um novo ecossistema juntos. Descubra espécies incríveis, muitas delas ameaçadas de extinção. Ajude a salvar a vida selvagem da Terra enquanto aprimora seu domínio do inglês.",
       startFree: "Crie uma Conta",
@@ -420,7 +420,7 @@ export default function LandingPageSchools() {
   return (
     <div className="font-sans min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100">
       {/* Hero Section */}
-      <section className="relative py-20 flex items-center justify-center bg-gradient-to-br from-blue-50 via-green-50 to-cyan-50 dark:from-blue-950 dark:via-green-950 dark:to-cyan-950 overflow-hidden">
+      <section className="relative pt-8 lg:pt-20 pb-20 flex items-center justify-center bg-gradient-to-br from-blue-50 via-green-50 to-cyan-50 dark:from-blue-950 dark:via-green-950 dark:to-cyan-950 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-32 h-32 bg-blue-500 rounded-full blur-3xl animate-pulse"></div>
@@ -435,15 +435,15 @@ export default function LandingPageSchools() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Hero Content */}
             <div className="text-center lg:text-left">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
                 <span className="bg-gradient-to-r from-primary-600 to-green-600 dark:from-blue-100 dark:to-white bg-clip-text text-transparent">
                   {copy.heroTitle}
                 </span>
               </h1>
-              <h2 className="text-2xl text-gray-600 dark:text-gray-50 mb-8">
+              <h2 className="text-xl lg:text-2xl text-gray-600 dark:text-gray-50 mb-8">
                 {copy.heroSubtitle}
               </h2>
 
