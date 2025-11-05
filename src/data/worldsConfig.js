@@ -170,9 +170,9 @@ export const WORLDS = {
     },
     icon: "Globe",
     imageUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/yellow-crested%20cockatoo.jpg",
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/Giant%20panda.jpg",
     heroUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/yellow-crested%20cockatoo.jpg",
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/Giant%20panda.jpg",
     mapUrl: "/maps/eurasia.png",
     adventures: [
       {
@@ -239,9 +239,9 @@ export const WORLDS = {
     },
     icon: "Waves",
     imageUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Maui%20parrotbill.jpg",
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/Golden-mantled%20tree%20kangaroo.jpg",
     heroUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Maui%20parrotbill.jpg",
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/Golden-mantled%20tree%20kangaroo.jpg",
     mapUrl: "/maps/oceania.png",
     adventures: [
       {

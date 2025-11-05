@@ -247,7 +247,7 @@ export default function LoginPage() {
         }
 
         if (result?.ok) {
-          router.push("/units");
+          router.push("/worlds");
         }
       }
     } catch (error) {

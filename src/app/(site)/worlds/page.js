@@ -257,7 +257,7 @@ function WorldsContent() {
         </motion.div> */}
 
         {/* Educational Context Section */}
-        <div className="mt-16 bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl p-8 border border-primary-200 dark:border-primary-800">
+        <div className="mt-16 pb-16 bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl p-8 border border-primary-200 dark:border-primary-800">
           <div className="flex items-start gap-6">
             <div className="hidden md:block">
               <Award className="w-16 h-16 text-primary-600 dark:text-primary-400" />

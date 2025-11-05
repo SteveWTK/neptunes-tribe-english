@@ -205,7 +205,7 @@ export default function LoginPage() {
         } else if (data.session) {
           // User is immediately signed in (email confirmation disabled)
           setMessage("Account created successfully! You are now signed in.");
-          router.push("/units");
+          router.push("/worlds");
         }
       } else {
         // Login logic
@@ -247,7 +247,7 @@ export default function LoginPage() {
         }
 
         if (result?.ok) {
-          router.push("/units");
+          router.push("/worlds");
         }
       }
     } catch (error) {

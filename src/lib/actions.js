@@ -15,7 +15,7 @@ function getBaseUrl() {
 }
 
 export async function signInAction() {
-  await signIn("google", { redirectTo: "/units" });
+  await signIn("google", { redirectTo: "/worlds" });
 }
 
 export async function registerUser({ email, password }) {

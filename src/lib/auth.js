@@ -163,7 +163,7 @@ const authConfig = {
       }
 
       // For any other case, redirect to units page
-      const defaultUrl = `${correctBaseUrl}/units`;
+      const defaultUrl = `${correctBaseUrl}/worlds`;
       console.log("Default redirect to:", defaultUrl);
       return defaultUrl;
     },

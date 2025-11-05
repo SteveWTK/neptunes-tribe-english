@@ -25,12 +25,12 @@ export default auth((req) => {
 
   // Redirect logged-in users away from auth pages
   if (isLoggedIn && isAuthRoute) {
-    return NextResponse.redirect(new URL("/eco-map", nextUrl));
+    return NextResponse.redirect(new URL("/worlds", nextUrl));
   }
 
-  // Redirect logged-in users from homepage to eco-map
+  // Redirect logged-in users from homepage to worlds page
   if (isLoggedIn && nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/eco-map", nextUrl));
+    return NextResponse.redirect(new URL("/worlds", nextUrl));
   }
 
   // Redirect non-logged-in users to login for protected routes
