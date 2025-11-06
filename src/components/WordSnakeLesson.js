@@ -7,6 +7,7 @@ import React, {
   useCallback,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import WordSnakeOnboarding from "./onboarding/WordSnakeOnboarding";
 
 /**
  * Word Snake Lesson Component
@@ -36,6 +37,21 @@ export default function WordSnakeLesson({
 
   // Touch tracking for swipe gestures
   const touchStartRef = useRef(null);
+
+  // Onboarding state
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  // Check if user has seen onboarding on component mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hasSeenOnboarding = localStorage.getItem(
+        `wordSnakeOnboarding_${difficulty}_completed`
+      );
+      if (!hasSeenOnboarding) {
+        setShowOnboarding(true);
+      }
+    }
+  }, [difficulty]);
 
   // Game state
   const [snake, setSnake] = useState([{ x: 10, y: 10 }]);
@@ -743,7 +759,17 @@ export default function WordSnakeLesson({
   }
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6 bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl">
+    <>
+      {/* Onboarding Modal */}
+      {showOnboarding && (
+        <WordSnakeOnboarding
+          difficulty={difficulty}
+          onComplete={() => setShowOnboarding(false)}
+          show={showOnboarding}
+        />
+      )}
+
+      <div className="flex flex-col items-center gap-6 p-6 bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl">
       {/* Header */}
       <div className="w-full max-w-2xl">
         <div className="flex justify-between items-center mb-4">
@@ -998,5 +1024,6 @@ export default function WordSnakeLesson({
         )}
       </AnimatePresence>
     </div>
+    </>
   );
 }
