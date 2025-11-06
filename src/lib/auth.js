@@ -28,6 +28,53 @@ const authConfig = {
       },
       checks: ["pkce", "state"],
     }),
+    Credentials({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        try {
+          console.log("🔐 Credentials authorize called for:", credentials?.email);
+
+          if (!credentials?.email || !credentials?.password) {
+            console.log("❌ Missing email or password");
+            return null;
+          }
+
+          // Authenticate with Supabase Auth
+          const supabase = await getSupabaseAdmin();
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email: credentials.email,
+            password: credentials.password,
+          });
+
+          if (error) {
+            console.error("❌ Supabase auth error:", error.message);
+            return null;
+          }
+
+          if (!data.user) {
+            console.log("❌ No user returned from Supabase");
+            return null;
+          }
+
+          console.log("✅ User authenticated successfully:", data.user.email);
+
+          // Return user object that NextAuth expects
+          return {
+            id: data.user.id,
+            email: data.user.email,
+            name: data.user.user_metadata?.name || data.user.email,
+            image: data.user.user_metadata?.avatar_url || null,
+          };
+        } catch (error) {
+          console.error("❌ Error in authorize:", error);
+          return null;
+        }
+      },
+    }),
   ],
 
   callbacks: {
