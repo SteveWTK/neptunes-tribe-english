@@ -35,7 +35,7 @@ const josefin = Josefin_Sans({
   variable: "--font-josefin-sans",
 });
 
-<meta name="apple-mobile-web-app-title" content="Neptune's Tribe" />;
+<meta name="apple-mobile-web-app-title" content="Habitat English" />;
 
 export default function RootLayout({ children }) {
   return (
