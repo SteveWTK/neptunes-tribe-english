@@ -5,22 +5,45 @@ import {
 } from "@/lib/data-service";
 import SiteHomeClient from "./SiteHomeClient"; // 👈 new component
 
+// Force dynamic rendering - don't prerender at build time
+export const dynamic = "force-dynamic";
+
 export default async function SiteHomePage() {
-  const units = await fetchFeaturedUnits();
-  const unitDetails = await Promise.all(
-    units.map((unit) => fetchUnitDetails(unit.id))
-  );
+  try {
+    const units = await fetchFeaturedUnits();
 
-  const featuredUnits = units.map((unit, index) => ({
-    ...unit,
-    ...unitDetails[index],
-  }));
+    // Fetch unit details with error handling for individual units
+    const unitDetailsPromises = units.map(async (unit) => {
+      try {
+        return await fetchUnitDetails(unit.id);
+      } catch (error) {
+        console.error(`Failed to fetch details for unit ${unit.id}:`, error);
+        return null; // Return null for failed fetches
+      }
+    });
 
-  const challenges = await fetchSingleGapChallenges("default");
+    const unitDetails = await Promise.all(unitDetailsPromises);
 
-  return (
-    <SiteHomeClient featuredUnits={featuredUnits} challenges={challenges} />
-  );
+    // Filter out any units that failed to fetch details
+    const featuredUnits = units
+      .map((unit, index) => ({
+        ...unit,
+        ...unitDetails[index],
+      }))
+      .filter((unit, index) => unitDetails[index] !== null);
+
+    const challenges = await fetchSingleGapChallenges("default");
+
+    return (
+      <SiteHomeClient featuredUnits={featuredUnits} challenges={challenges} />
+    );
+  } catch (error) {
+    console.error("Error loading content page:", error);
+    // Return a fallback UI instead of crashing
+    return (
+      <SiteHomeClient featuredUnits={[]} challenges={[]} />
+    );
+  }
 }
 
 // import UnitCard from "@/components/UnitCard";
