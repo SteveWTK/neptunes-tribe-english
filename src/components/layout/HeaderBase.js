@@ -69,12 +69,12 @@ export default function HeaderBase({
 
   const t = {
     en: {
-      ecoMap: "Eco Map",
+      ecoMap: "Dashboard",
       signIn: "Sign In",
       signOut: "Sign Out",
     },
     pt: {
-      ecoMap: "Eco Map",
+      ecoMap: "Painel",
       signIn: "Entrar",
       signOut: "Sair",
     },
