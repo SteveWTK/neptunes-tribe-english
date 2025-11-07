@@ -45,7 +45,7 @@ export default function AboutUsPage() {
         "As a specialist in ESL methodology and a wildlife enthusiast, Paul ensures our platform meets the highest standards of language pedagogy and learning effectiveness.",
       founder4Title: "Strategic Director",
       founder4Bio:
-        "With decades of experience as a language school director, David provides the strategic expertise that will allow Neptune's Tribe to inspire learners worldwide.",
+        "With decades of experience as a language school director, David provides the strategic expertise that will allow Habitat English to inspire learners worldwide.",
       valuesTitle: "Our Values",
       value1Title: "Environmental Responsibility",
       value1Text:
@@ -101,7 +101,7 @@ export default function AboutUsPage() {
         "Especializando-se em metodologia de Inglês como Língua Estrangeira e um entusiasta da natureza, Paul garante que nossa plataforma atenda aos mais altos padrões de pedagogia e eficácia de aprendizado.",
       founder4Title: "Diretor Estratégico",
       founder4Bio:
-        "Com décadas de experiência como diretor de escola de idiomas, David fornece a expertise estratégica que garante que a Neptune's Tribe ajude a inspirar alunos no mundo todo.",
+        "Com décadas de experiência como diretor de escola de idiomas, David fornece a expertise estratégica que garante que a Habitat English ajude a inspirar alunos no mundo todo.",
       valuesTitle: "Nossos Valores",
       value1Title: "Responsabilidade Ambiental",
       value1Text:
