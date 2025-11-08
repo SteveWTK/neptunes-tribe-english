@@ -51,15 +51,15 @@ function WorldsContent() {
       <div className=" text-primary-950 dark:text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Help Button - Top Right */}
-          <div className="flex justify-end mb-4">
+          {/* <div className="flex justify-end mb-0">
             <RestartOnboardingButton variant="icon" />
-          </div>
+          </div> */}
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center"
+            className="text-center relative"
           >
             <div className="inline-flex items-center gap-3 mb-6">
               {/* <Globe className="w-12 h-12" /> */}
@@ -70,6 +70,10 @@ function WorldsContent() {
             <p className="text-xl text-primary-950/90 dark:text-white/90 max-w-3xl mx-auto mb-2">
               Journey through 8 incredible Worlds.
             </p>
+            <RestartOnboardingButton
+              variant="icon"
+              className="absolute bottom-0 right-0"
+            />
 
             {/* Quick Stats */}
             {/* <div className="flex flex-wrap justify-center gap-6 mt-8">

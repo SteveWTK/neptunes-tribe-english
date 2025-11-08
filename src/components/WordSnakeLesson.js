@@ -279,10 +279,14 @@ export default function WordSnakeLesson({
             // Check if this is the NEXT expected letter in sequence
             const normalizedTarget = targetWord.replace(/\s+/g, "");
             const normalizedCollected = collectedWord.replace(/\s+/g, "");
-            const expectedNextLetter = normalizedTarget[normalizedCollected.length];
+            const expectedNextLetter =
+              normalizedTarget[normalizedCollected.length];
 
             // In EASY mode, only accept if it's the exact next letter needed
-            if (difficulty === "easy" && collided.letter !== expectedNextLetter) {
+            if (
+              difficulty === "easy" &&
+              collided.letter !== expectedNextLetter
+            ) {
               // Wrong order! Play error sound, don't pick up
               playSound("wrong");
               return [newHead, ...prevSnake.slice(0, -1)]; // Don't grow
@@ -770,255 +774,255 @@ export default function WordSnakeLesson({
       )}
 
       <div className="flex flex-col items-center gap-6 p-6 bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl">
-      {/* Header */}
-      <div className="w-full max-w-2xl">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Word Snake Challenge
-            </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Word {currentClueIndex + 1} of {clues.length}
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            {/* Help Button - Shows tutorial again */}
-            <button
-              onClick={() => setShowOnboarding(true)}
-              className="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-200 dark:hover:bg-cyan-800/50 transition-colors"
-              title="Show tutorial again"
-              aria-label="Show tutorial"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+        {/* Header */}
+        <div className="w-full max-w-2xl">
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Word Snake Challenge
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Word {currentClueIndex + 1} of {clues.length}
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              {/* Help Button - Shows tutorial again */}
+              <button
+                onClick={() => setShowOnboarding(true)}
+                className="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-200 dark:hover:bg-cyan-800/50 transition-colors"
+                title="Show tutorial again"
+                aria-label="Show tutorial"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </button>
-            <div className="text-right">
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">
-                {score}
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
-                points
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Progress bar */}
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4">
-          <div
-            className="bg-gradient-to-r from-primary-500 to-accent-500 h-2 rounded-full transition-all duration-300"
-            style={{
-              width: `${((currentClueIndex + 1) / clues.length) * 100}%`,
-            }}
-          />
-        </div>
-
-        {/* Clue */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-4">
-          <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 lg:mb-2">
-            CLUE:
-          </div>
-          <div className="text-xl font-medium text-gray-900 dark:text-white mb-4">
-            {currentClue.clue}
-          </div>
-
-          {showHint && currentClue.hint && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 p-3 rounded-lg"
-            >
-              💡 Hint: {currentClue.hint}
-            </motion.div>
-          )}
-
-          {/* Collected word display - Crossword style */}
-          <div className="mt-4 hidden lg:block">
-            <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">
-              YOUR ANSWER:
-            </div>
-            <div className="flex flex-wrap gap-1 justify-center">
-              {displayWord.split("").map((char, i) => (
-                <div
-                  key={i}
-                  className={`w-8 h-10 flex items-center justify-center rounded font-bold text-lg ${
-                    char === "_"
-                      ? "bg-white dark:bg-gray-700 border-2 border-dashed border-gray-300 dark:border-gray-600"
-                      : char === " "
-                      ? "w-4"
-                      : "bg-gradient-to-br from-primary-400 to-accent-600 text-white shadow-md"
-                  }`}
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  {char !== "_" && char !== " " && char}
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </button>
+              <div className="text-right">
+                <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                  {score}
                 </div>
-              ))}
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  points
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Game Canvas */}
-      <div className="relative">
-        <canvas
-          ref={canvasRef}
-          width={CANVAS}
-          height={CANVAS}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onTouchCancel={handleTouchCancel}
-          className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl shadow-2xl border-4 border-white dark:border-gray-700 touch-none"
-        />
-        <canvas
-          ref={particlesRef}
-          width={CANVAS}
-          height={CANVAS}
-          className="absolute top-0 left-0 pointer-events-none rounded-2xl"
-        />
-
-        {/* Countdown */}
-        <AnimatePresence>
-          {countdown > 0 && (
-            <motion.div
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl"
-            >
-              <div className="text-8xl font-bold text-white">{countdown}</div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Game Over */}
-        <AnimatePresence>
-          {gameOver && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-2xl"
-            >
-              <div className="text-center text-white">
-                <div className="text-4xl font-bold mb-4">Game Over!</div>
-                <button
-                  onClick={resetGame}
-                  className="px-6 py-3 bg-primary-600 hover:bg-primary-700 rounded-lg font-semibold"
-                >
-                  Try Again
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Start Screen */}
-        <AnimatePresence>
-          {!isStarted && !gameOver && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-2xl"
-            >
-              <div className="text-center text-white">
-                <div className="text-4xl font-bold mb-4">Ready?</div>
-                <button
-                  onClick={startGame}
-                  className="px-6 py-3 bg-primary-600 hover:bg-primary-700 rounded-lg font-semibold"
-                >
-                  Start Game
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Pause Screen */}
-        <AnimatePresence>
-          {isPaused && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-2xl"
-            >
-              <div className="text-center text-white">
-                <div className="text-4xl font-bold mb-4">Paused</div>
-                <button
-                  onClick={togglePause}
-                  className="px-6 py-3 bg-primary-600 hover:bg-primary-700 rounded-lg font-semibold"
-                >
-                  Resume
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Mobile Backspace Button - Small floating button for undo */}
-        {isStarted && !gameOver && collectedWord.length > 0 && (
-          <button
-            onClick={handleBackspace}
-            className="md:hidden absolute bottom-4 right-4 w-12 h-12 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg z-20 active:scale-95 transition-all"
-            aria-label="Backspace"
-          >
-            ⌫
-          </button>
-        )}
-      </div>
-
-      {/* Controls Info */}
-      <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-        <span className="hidden md:inline">
-          Use arrow keys to move • Backspace to undo • P to pause
-        </span>
-        <span className="md:hidden">
-          Swipe on the game board to move the snake
-        </span>
-      </div>
-
-      {/* Educational Fact Modal */}
-      <AnimatePresence>
-        {showFact && currentClue.fact && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
-            onClick={() => setShowFact(false)}
-          >
+          {/* Progress bar */}
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4">
             <div
-              className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
+              className="bg-gradient-to-r from-primary-500 to-accent-500 h-2 rounded-full transition-all duration-300"
+              style={{
+                width: `${((currentClueIndex + 1) / clues.length) * 100}%`,
+              }}
+            />
+          </div>
+
+          {/* Clue */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-4">
+            <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 lg:mb-2">
+              CLUE:
+            </div>
+            <div className="text-xl font-medium text-gray-900 dark:text-white mb-4">
+              {currentClue.clue}
+            </div>
+
+            {showHint && currentClue.hint && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 p-3 rounded-lg"
+              >
+                💡 Hint: {currentClue.hint}
+              </motion.div>
+            )}
+
+            {/* Collected word display - Crossword style */}
+            <div className="mt-4 hidden lg:block">
+              <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">
+                YOUR ANSWER:
+              </div>
+              <div className="flex flex-wrap gap-1 justify-center">
+                {displayWord.split("").map((char, i) => (
+                  <div
+                    key={i}
+                    className={`w-8 h-10 flex items-center justify-center rounded font-bold text-lg ${
+                      char === "_"
+                        ? "bg-white dark:bg-gray-700 border-2 border-dashed border-gray-300 dark:border-gray-600"
+                        : char === " "
+                        ? "w-4"
+                        : "bg-gradient-to-br from-primary-400 to-accent-600 text-white shadow-md"
+                    }`}
+                  >
+                    {char !== "_" && char !== " " && char}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Game Canvas */}
+        <div className="relative">
+          <canvas
+            ref={canvasRef}
+            width={CANVAS}
+            height={CANVAS}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchCancel}
+            className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl shadow-2xl border-4 border-white dark:border-gray-700 touch-none"
+          />
+          <canvas
+            ref={particlesRef}
+            width={CANVAS}
+            height={CANVAS}
+            className="absolute top-0 left-0 pointer-events-none rounded-2xl"
+          />
+
+          {/* Countdown */}
+          <AnimatePresence>
+            {countdown > 0 && (
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl"
+              >
+                <div className="text-8xl font-bold text-white">{countdown}</div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Game Over */}
+          <AnimatePresence>
+            {gameOver && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-2xl"
+              >
+                <div className="text-center text-white">
+                  <div className="text-4xl font-bold mb-4">Game Over!</div>
+                  <button
+                    onClick={resetGame}
+                    className="px-6 py-3 bg-primary-600 hover:bg-primary-700 rounded-lg font-semibold"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Start Screen */}
+          <AnimatePresence>
+            {!isStarted && !gameOver && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-2xl"
+              >
+                <div className="text-center text-white">
+                  <div className="text-4xl font-bold mb-4">Ready?</div>
+                  <button
+                    onClick={startGame}
+                    className="px-6 py-3 bg-primary-600 hover:bg-primary-700 rounded-lg font-semibold"
+                  >
+                    Start Game
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Pause Screen */}
+          <AnimatePresence>
+            {isPaused && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-2xl"
+              >
+                <div className="text-center text-white">
+                  <div className="text-4xl font-bold mb-4">Paused</div>
+                  <button
+                    onClick={togglePause}
+                    className="px-6 py-3 bg-primary-600 hover:bg-primary-700 rounded-lg font-semibold"
+                  >
+                    Resume
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Mobile Backspace Button - Small floating button for undo */}
+          {isStarted && !gameOver && collectedWord.length > 0 && (
+            <button
+              onClick={handleBackspace}
+              className="md:hidden absolute bottom-4 right-4 w-12 h-12 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg z-20 active:scale-95 transition-all"
+              aria-label="Backspace"
             >
-              <div className="text-center mb-6">
-                <div className="text-6xl mb-4">🎉</div>
-                <h3 className="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">
-                  Correct!
-                </h3>
-                <div className="text-3xl font-mono font-bold text-gray-900 dark:text-white mb-4">
-                  {targetWord}
-                </div>
-              </div>
+              ⌫
+            </button>
+          )}
+        </div>
 
-              <div className="bg-primary-50 dark:bg-primary-900/20 rounded-xl p-4 mb-6">
-                <div className="text-sm font-semibold text-primary-600 dark:text-primary-400 mb-2">
-                  DID YOU KNOW?
-                </div>
-                <p className="text-gray-700 dark:text-gray-300">
-                  {currentClue.fact}
-                </p>
-              </div>
+        {/* Controls Info */}
+        <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+          <span className="hidden md:inline">
+            Use arrow keys to move • Backspace to undo • P to pause
+          </span>
+          <span className="md:hidden">
+            Swipe on the game board to move the snake
+          </span>
+        </div>
 
-              {/* {currentClueIndex + 1 < clues.length ? (
+        {/* Educational Fact Modal */}
+        <AnimatePresence>
+          {showFact && currentClue.fact && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+              onClick={() => setShowFact(false)}
+            >
+              <div
+                className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="text-center mb-6">
+                  <div className="text-6xl mb-4">🎉</div>
+                  <h3 className="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">
+                    Correct!
+                  </h3>
+                  <div className="text-3xl font-mono font-bold text-gray-900 dark:text-white mb-4">
+                    {targetWord}
+                  </div>
+                </div>
+
+                <div className="bg-primary-50 dark:bg-primary-900/20 rounded-xl p-4 mb-6">
+                  <div className="text-sm font-semibold text-primary-600 dark:text-primary-400 mb-2">
+                    DID YOU KNOW?
+                  </div>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {currentClue.fact}
+                  </p>
+                </div>
+
+                {/* {currentClueIndex + 1 < clues.length ? (
                 <button
                   onClick={nextWord}
                   className="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg font-semibold"
@@ -1034,19 +1038,19 @@ export default function WordSnakeLesson({
                 </button>
               )} */}
 
-              <button
-                onClick={nextWord}
-                className="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg font-semibold"
-              >
-                {currentClueIndex + 1 < clues.length
-                  ? "Next Word"
-                  : "All Words Completed"}
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+                <button
+                  onClick={nextWord}
+                  className="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg font-semibold"
+                >
+                  {currentClueIndex + 1 < clues.length
+                    ? "Next Word"
+                    : "All Words Completed"}
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </>
   );
 }

@@ -10,12 +10,12 @@ import StudentOnboarding from "./StudentOnboarding";
 // ============================================================
 // Set to false to disable onboarding for specific roles during development
 const ONBOARDING_ENABLED_BY_ROLE = {
-  Teacher: false, // Educators see the 6-step educator onboarding
-  Coordinator: false, // Coordinators see the 6-step educator onboarding
-  Admin: false, // Admins see the 6-step educator onboarding
+  Teacher: true,        // Educators see the 6-step educator onboarding
+  Coordinator: true,    // Coordinators see the 6-step educator onboarding
+  Admin: true,          // Admins see the 6-step educator onboarding
   Platform_admin: true, // Platform admins see the 6-step educator onboarding
-  User: false, // Regular users see the 5-step student onboarding
-  Student: true,
+  User: true,           // Regular users see the 5-step student onboarding
+  Student: true,        // Students see the 5-step student onboarding
 };
 
 // Set to false to completely disable all onboarding (overrides role settings)

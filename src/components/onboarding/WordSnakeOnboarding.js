@@ -13,7 +13,6 @@ import {
   Zap,
   CheckCircle2,
   X,
-  PartyPopper,
 } from "lucide-react";
 
 /**
@@ -63,9 +62,10 @@ export default function WordSnakeOnboarding({
             Guide your snake to collect letters and spell words based on the
             clues.
           </p>
-          <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 dark:from-emerald-900/20 dark:to-cyan-900/20 p-4 rounded-lg border-2 border-emerald-200 dark:border-emerald-700">
+          <div className="bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 p-4 rounded-lg border-2 border-accent-200 dark:border-accent-400">
             <div className="flex items-start gap-3">
-              <div className="text-3xl">🎯</div>
+              {/* <div className="text-3xl">🎯</div> */}
+              <Target />
               <div>
                 <div className="font-semibold text-gray-900 dark:text-white mb-1">
                   Your Goal
@@ -153,8 +153,8 @@ export default function WordSnakeOnboarding({
               </div>
             </>
           )}
-          <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg border border-amber-200 dark:border-amber-700">
-            <p className="text-sm text-amber-800 dark:text-amber-200">
+          <div className="bg-accent-50 dark:bg-accent-900/20 p-3 rounded-lg border border-accent-200 dark:border-accent-400">
+            <p className="text-sm text-accent-800 dark:text-accent-200">
               ⚠️ <strong>Avoid the walls!</strong> Hitting a wall ends the game.
             </p>
           </div>
@@ -275,7 +275,7 @@ export default function WordSnakeOnboarding({
       ),
     },
     {
-      title: "Ready to Play! 🎮",
+      title: "Ready to Play!",
       icon: CheckCircle2,
       content: (
         <div className="space-y-4">
@@ -284,7 +284,7 @@ export default function WordSnakeOnboarding({
           </p>
           <div className="space-y-2">
             <div className="flex items-center gap-3 text-sm">
-              <div className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center flex-shrink-0">
+              <div className="w-6 h-6 rounded-full bg-accent-500 text-white flex items-center justify-center flex-shrink-0">
                 ✓
               </div>
               <span className="text-gray-700 dark:text-gray-300">
@@ -292,7 +292,7 @@ export default function WordSnakeOnboarding({
               </span>
             </div>
             <div className="flex items-center gap-3 text-sm">
-              <div className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center flex-shrink-0">
+              <div className="w-6 h-6 rounded-full bg-accent-500 text-white flex items-center justify-center flex-shrink-0">
                 ✓
               </div>
               <span className="text-gray-700 dark:text-gray-300">
@@ -302,7 +302,7 @@ export default function WordSnakeOnboarding({
               </span>
             </div>
             <div className="flex items-center gap-3 text-sm">
-              <div className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center flex-shrink-0">
+              <div className="w-6 h-6 rounded-full bg-accent-500 text-white flex items-center justify-center flex-shrink-0">
                 ✓
               </div>
               <span className="text-gray-700 dark:text-gray-300">
@@ -311,7 +311,7 @@ export default function WordSnakeOnboarding({
             </div>
             {difficulty === "hard" && (
               <div className="flex items-center gap-3 text-sm">
-                <div className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center flex-shrink-0">
+                <div className="w-6 h-6 rounded-full bg-accent-500 text-white flex items-center justify-center flex-shrink-0">
                   ✓
                 </div>
                 <span className="text-gray-700 dark:text-gray-300">
@@ -320,7 +320,7 @@ export default function WordSnakeOnboarding({
               </div>
             )}
             <div className="flex items-center gap-3 text-sm">
-              <div className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center flex-shrink-0">
+              <div className="w-6 h-6 rounded-full bg-accent-500 text-white flex items-center justify-center flex-shrink-0">
                 ✓
               </div>
               <span className="text-gray-700 dark:text-gray-300">
@@ -328,12 +328,12 @@ export default function WordSnakeOnboarding({
               </span>
             </div>
           </div>
-          <div className="bg-gradient-to-r from-cyan-50 to-emerald-50 dark:from-cyan-900/20 dark:to-emerald-900/20 p-4 rounded-lg border-2 border-cyan-200 dark:border-cyan-700 mt-6">
+          <div className="bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 p-4 rounded-lg border-2 border-accent-200 dark:border-accent-400 mt-6">
             <p className="text-sm font-medium text-center text-gray-900 dark:text-white">
               Click &quot;Start Playing&quot; below to begin!{" "}
-              <span>
+              {/* <span>
                 <PartyPopper className="w-6 h-6" />
-              </span>
+              </span> */}
             </p>
           </div>
         </div>
@@ -381,7 +381,7 @@ export default function WordSnakeOnboarding({
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-br from-emerald-500 to-cyan-500 flex-shrink-0">
+              <div className="w-14 h-14 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full flex items-center justify-center flex-shrink-0">
                 <IconComponent className="w-7 h-7 text-white" />
               </div>
               <div>
@@ -410,7 +410,7 @@ export default function WordSnakeOnboarding({
                 key={index}
                 className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
                   index <= currentStep
-                    ? "bg-gradient-to-r from-emerald-500 to-cyan-500"
+                    ? "bg-gradient-to-r from-primary-500 to-accent-500"
                     : "bg-gray-200 dark:bg-gray-700"
                 }`}
               />
@@ -453,7 +453,7 @@ export default function WordSnakeOnboarding({
               )}
               <button
                 onClick={handleNext}
-                className="px-6 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-medium hover:from-emerald-600 hover:to-cyan-600 transition-all shadow-lg shadow-emerald-500/30"
+                className="px-6 py-2 rounded-lg bg-primary-900 text-white font-medium hover:bg-primary-950 transition-all shadow-lg shadow-primary-500/30"
               >
                 {currentStep === steps.length - 1 ? "Start Playing!" : "Next"}
               </button>
