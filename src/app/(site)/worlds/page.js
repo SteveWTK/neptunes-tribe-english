@@ -17,6 +17,7 @@ import { useAuth } from "@/components/AuthProvider";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { getAllWorlds } from "@/data/worldsConfig";
 import { motion } from "framer-motion";
+import RestartOnboardingButton from "@/components/onboarding/RestartOnboardingButton";
 
 // Icon mapping for Lucide icons
 const ICON_MAP = {
@@ -49,6 +50,11 @@ function WorldsContent() {
       {/* Hero Section */}
       <div className=" text-primary-950 dark:text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          {/* Help Button - Top Right */}
+          <div className="flex justify-end mb-4">
+            <RestartOnboardingButton variant="icon" />
+          </div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

@@ -13,6 +13,7 @@ import {
   Zap,
   CheckCircle2,
   X,
+  PartyPopper,
 } from "lucide-react";
 
 /**
@@ -30,7 +31,7 @@ import {
 export default function WordSnakeOnboarding({
   difficulty = "easy",
   onComplete,
-  show = true
+  show = true,
 }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -38,8 +39,9 @@ export default function WordSnakeOnboarding({
   // Detect if user is on mobile device
   useEffect(() => {
     const checkMobile = () => {
-      const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-                     window.innerWidth < 768;
+      const mobile =
+        /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+        window.innerWidth < 768;
       setIsMobile(mobile);
     };
 
@@ -58,7 +60,8 @@ export default function WordSnakeOnboarding({
       content: (
         <div className="space-y-4">
           <p className="text-gray-700 dark:text-gray-300">
-            Guide your snake to collect letters and spell words based on the clues.
+            Guide your snake to collect letters and spell words based on the
+            clues.
           </p>
           <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 dark:from-emerald-900/20 dark:to-cyan-900/20 p-4 rounded-lg border-2 border-emerald-200 dark:border-emerald-700">
             <div className="flex items-start gap-3">
@@ -68,8 +71,9 @@ export default function WordSnakeOnboarding({
                   Your Goal
                 </div>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Read the clue, then collect letters <strong>in the correct order</strong> to
-                  spell the word. Complete all words to finish this activity!
+                  Read the clue, then collect letters{" "}
+                  <strong>in the correct order</strong> to spell the word.
+                  Complete all words to finish this activity!
                 </p>
               </div>
             </div>
@@ -117,23 +121,30 @@ export default function WordSnakeOnboarding({
           ) : (
             <>
               <p className="text-gray-700 dark:text-gray-300">
-                Control your snake using the <strong>arrow keys</strong> on your keyboard:
+                Control your snake using the <strong>arrow keys</strong> on your
+                keyboard:
               </p>
               <div className="flex justify-center gap-2 mb-4">
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 grid-rows-3 gap-2">
                   <div className="col-start-2">
                     <div className="bg-gray-800 dark:bg-gray-700 text-white p-3 rounded-lg flex items-center justify-center">
                       <ArrowUp className="w-6 h-6" />
                     </div>
                   </div>
-                  <div className="bg-gray-800 dark:bg-gray-700 text-white p-3 rounded-lg flex items-center justify-center">
-                    <ArrowLeft className="w-6 h-6" />
+                  <div className="col-start-1 row-start-2">
+                    <div className="bg-gray-800 dark:bg-gray-700 text-white p-3 rounded-lg flex items-center justify-center">
+                      <ArrowLeft className="w-6 h-6" />
+                    </div>
                   </div>
-                  <div className="bg-gray-800 dark:bg-gray-700 text-white p-3 rounded-lg flex items-center justify-center">
-                    <ArrowDown className="w-6 h-6" />
+                  <div className="col-start-3 row-start-2">
+                    <div className="bg-gray-800 dark:bg-gray-700 text-white p-3 rounded-lg flex items-center justify-center">
+                      <ArrowRight className="w-6 h-6" />
+                    </div>
                   </div>
-                  <div className="bg-gray-800 dark:bg-gray-700 text-white p-3 rounded-lg flex items-center justify-center">
-                    <ArrowRight className="w-6 h-6" />
+                  <div className="col-start-2 row-start-3">
+                    <div className="bg-gray-800 dark:bg-gray-700 text-white p-3 rounded-lg flex items-center justify-center">
+                      <ArrowDown className="w-6 h-6" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -151,14 +162,18 @@ export default function WordSnakeOnboarding({
       ),
     },
     {
-      title: difficulty === "easy" ? "Collect Letters in Order ✨" : "Collect & Erase Letters ⚡",
+      title:
+        difficulty === "easy"
+          ? "Collect Letters in Order ✨"
+          : "Collect & Erase Letters ⚡",
       icon: difficulty === "easy" ? CheckCircle2 : Zap,
       content: (
         <div className="space-y-4">
           {difficulty === "easy" ? (
             <>
               <p className="text-gray-700 dark:text-gray-300">
-                In <strong>Easy Mode</strong>, only the correct letters appear on the board.
+                In <strong>Easy Mode</strong>, only the correct letters appear
+                on the board.
               </p>
               <div className="space-y-3">
                 <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border-2 border-green-200 dark:border-green-700">
@@ -182,7 +197,8 @@ export default function WordSnakeOnboarding({
                         Collect in Order
                       </div>
                       <p className="text-sm text-gray-700 dark:text-gray-300">
-                        Guide your snake to pick up the letters in the correct sequence
+                        Guide your snake to pick up the letters in the correct
+                        sequence
                       </p>
                     </div>
                   </div>
@@ -195,7 +211,8 @@ export default function WordSnakeOnboarding({
                         Complete the Word
                       </div>
                       <p className="text-sm text-gray-700 dark:text-gray-300">
-                        When you spell the word correctly, you&apos;ll move to the next one!
+                        When you spell the word correctly, you&apos;ll move to
+                        the next one!
                       </p>
                     </div>
                   </div>
@@ -205,7 +222,8 @@ export default function WordSnakeOnboarding({
           ) : (
             <>
               <p className="text-gray-700 dark:text-gray-300">
-                In <strong>Hard Mode</strong>, there are distractor letters and eraser tiles!
+                In <strong>Hard Mode</strong>, there are distractor letters and
+                eraser tiles!
               </p>
               <div className="space-y-3">
                 <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border-2 border-amber-200 dark:border-amber-700">
@@ -216,7 +234,8 @@ export default function WordSnakeOnboarding({
                         Watch Out for Distractors
                       </div>
                       <p className="text-sm text-gray-700 dark:text-gray-300">
-                        Wrong letters appear on the board - avoid collecting them!
+                        Wrong letters appear on the board - avoid collecting
+                        them!
                       </p>
                     </div>
                   </div>
@@ -229,8 +248,9 @@ export default function WordSnakeOnboarding({
                         Use Eraser Tiles
                       </div>
                       <p className="text-sm text-gray-700 dark:text-gray-300">
-                        If you pick up a wrong letter, collect an <strong>eraser tile</strong> or
-                        press <strong>Backspace</strong> on your keyboard to remove it
+                        If you pick up a wrong letter, collect an{" "}
+                        <strong>eraser tile</strong> or press{" "}
+                        <strong>Backspace</strong> on your keyboard to remove it
                       </p>
                     </div>
                   </div>
@@ -276,7 +296,9 @@ export default function WordSnakeOnboarding({
                 ✓
               </div>
               <span className="text-gray-700 dark:text-gray-300">
-                {isMobile ? "Swipe to move your snake" : "Use arrow keys to move your snake"}
+                {isMobile
+                  ? "Swipe to move your snake"
+                  : "Use arrow keys to move your snake"}
               </span>
             </div>
             <div className="flex items-center gap-3 text-sm">
@@ -308,7 +330,10 @@ export default function WordSnakeOnboarding({
           </div>
           <div className="bg-gradient-to-r from-cyan-50 to-emerald-50 dark:from-cyan-900/20 dark:to-emerald-900/20 p-4 rounded-lg border-2 border-cyan-200 dark:border-cyan-700 mt-6">
             <p className="text-sm font-medium text-center text-gray-900 dark:text-white">
-              Click &quot;Start Playing&quot; below to begin! 🎉
+              Click &quot;Start Playing&quot; below to begin!{" "}
+              <span>
+                <PartyPopper className="w-6 h-6" />
+              </span>
             </p>
           </div>
         </div>
@@ -346,7 +371,7 @@ export default function WordSnakeOnboarding({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-none p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -364,7 +389,8 @@ export default function WordSnakeOnboarding({
                   {currentStepData.title}
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  {difficulty === "easy" ? "Easy Mode" : "Hard Mode"} • Step {currentStep + 1} of {steps.length}
+                  {difficulty === "easy" ? "Easy Mode" : "Hard Mode"} • Step{" "}
+                  {currentStep + 1} of {steps.length}
                 </p>
               </div>
             </div>

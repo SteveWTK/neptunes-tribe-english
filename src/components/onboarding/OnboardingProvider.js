@@ -88,7 +88,7 @@ export function OnboardingProvider({ children }) {
     user?.role === "Teacher" ||
     user?.role === "Coordinator" ||
     user?.role === "Admin" ||
-    user?.role === "Platform_admin";
+    user?.role === "platform_admin";
 
   // Check if onboarding is enabled for this user's role
   const userRole = user?.role || "User";
