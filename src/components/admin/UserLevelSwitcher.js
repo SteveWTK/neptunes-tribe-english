@@ -20,7 +20,7 @@ export default function UserLevelSwitcher() {
   const [updating, setUpdating] = useState(false);
   const [message, setMessage] = useState("");
   const [showSwitcher, setShowSwitcher] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const levels = getAllLevels();
   const userTypes = [
@@ -121,6 +121,9 @@ export default function UserLevelSwitcher() {
   if (!showSwitcher) {
     return null;
   }
+
+  // Debug log to verify state
+  console.log("🔧 UserLevelSwitcher - isCollapsed:", isCollapsed);
 
   // Collapsed view - just the eye icon
   if (isCollapsed) {
