@@ -18,6 +18,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { getAllWorlds } from "@/data/worldsConfig";
 import { motion } from "framer-motion";
 import RestartOnboardingButton from "@/components/onboarding/RestartOnboardingButton";
+import LevelIndicator from "@/components/LevelIndicator";
 
 // Icon mapping for Lucide icons
 const ICON_MAP = {
@@ -70,6 +71,12 @@ function WorldsContent() {
             <p className="text-xl text-primary-950/90 dark:text-white/90 max-w-3xl mx-auto mb-2">
               Journey through 8 incredible Worlds.
             </p>
+
+            {/* Level Indicator - Center */}
+            <div className="flex justify-center mt-4 mb-2">
+              <LevelIndicator variant="badge" />
+            </div>
+
             <RestartOnboardingButton
               variant="icon"
               className="absolute bottom-0 right-0"

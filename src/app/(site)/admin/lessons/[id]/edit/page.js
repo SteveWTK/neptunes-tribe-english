@@ -22,6 +22,7 @@ import {
 import { useAuth } from "@/components/AuthProvider";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { WORLDS } from "@/data/worldsConfig";
+import { getAllLevels } from "@/config/levelsConfig";
 
 import ScenarioStepForm from "@/components/admin/step-forms/ScenarioStepForm";
 import VocabularyStepForm from "@/components/admin/step-forms/VocabularyStepForm";
@@ -58,6 +59,9 @@ function LessonEditorContent() {
   // Get adventures for selected world
   const selectedWorld = selectedWorldId ? WORLDS[selectedWorldId] : null;
   const adventures = selectedWorld ? selectedWorld.adventures : [];
+
+  // Get levels for dropdown
+  const levels = getAllLevels();
 
   const STEP_TYPES = [
     { value: "unit_reference", label: "Unit Reference (Gap-Fill Exercise)" },
@@ -457,7 +461,7 @@ function LessonEditorContent() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Difficulty
+                    Difficulty Level *
                   </label>
                   <select
                     value={lesson.difficulty || ""}
@@ -466,29 +470,35 @@ function LessonEditorContent() {
                     }
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
-                    <option value="">Select difficulty</option>
-                    <option value="Survival Absolute">Survival Absolute</option>
-                    <option value="Beginner">Beginner</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Advanced">Advanced</option>
-                    <option value="Expert">Expert</option>
+                    <option value="">Select level</option>
+                    {levels.map((level) => (
+                      <option key={level.id} value={level.value}>
+                        {level.icon} {level.displayName}
+                      </option>
+                    ))}
                   </select>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Users only see lessons matching their current level
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Target Audience
+                    Target Audience *
                   </label>
                   <select
-                    value={lesson.target_audience || "players"}
+                    value={lesson.target_audience || "both"}
                     onChange={(e) =>
                       updateLessonField("target_audience", e.target.value)
                     }
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
-                    <option value="players">Players (Academies/Clubs)</option>
-                    <option value="schools">Schools (Students)</option>
-                    <option value="both">Both</option>
+                    <option value="users">Individual Learners Only</option>
+                    <option value="schools">School Students Only</option>
+                    <option value="both">Both (All Users)</option>
                   </select>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Combined with level for final filtering
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

@@ -1,9 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep -n \"const STEP_TYPES\" src/app/(site)/admin/lessons/[id]/edit/page.js)",
-      "Bash(grep -n \"function renderStepForm\" src/app/(site)/admin/lessons/[id]/edit/page.js)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nFix email/password login by adding missing Credentials provider to NextAuth\n\nThe Credentials provider was imported but never added to the providers array,\ncausing email/password login attempts to fail silently with \"unauthenticated\" status.\n\nChanges:\n- Add Credentials provider configuration to auth.js\n- Implement authorize() function that authenticates against Supabase\n- Use supabase.auth.signInWithPassword() to verify credentials\n- Return proper user object for NextAuth session\n- Add detailed console logging for debugging auth flow\n\nThis fixes the issue where users could register and reset passwords successfully\nbut could not log in with email/password credentials.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(node -e \"\nconst fs = require(''fs'');\nconst content = fs.readFileSync(''src/data/worldsConfig.js'', ''utf8'');\n\n// Pattern to find themeTag lines without levels following\nconst pattern = /(themeTag: \"\"[^\"\"]+\"\",.*\\n)(        (?!levels:))/g;\nconst replacement = ''$1        levels: [\"\"Beginner\"\", \"\"Intermediate\"\", \"\"Advanced\"\"],\\n$2'';\n\nconst newContent = content.replace(pattern, replacement);\n\nfs.writeFileSync(''src/data/worldsConfig.js'', newContent, ''utf8'');\nconsole.log(''Added levels to all adventures'');\n\")"
     ],
     "deny": [],
     "ask": []

@@ -24,6 +24,11 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { getWorldBySlug } from "@/data/worldsConfig";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
+import {
+  getLessonsForUser,
+  getAvailableAdventures,
+} from "@/lib/supabase/lesson-queries";
+import LevelIndicator from "@/components/LevelIndicator";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -66,6 +71,7 @@ function WorldDetailContent() {
   const router = useRouter();
   const { user } = useAuth();
   const [world, setWorld] = useState(null);
+  const [filteredAdventures, setFilteredAdventures] = useState([]);
   const [selectedAdventure, setSelectedAdventure] = useState(null);
   const [adventureData, setAdventureData] = useState({});
   const [completedLessons, setCompletedLessons] = useState(new Set());
@@ -73,16 +79,43 @@ function WorldDetailContent() {
 
   useEffect(() => {
     // Load world from config using slug (URL parameter uses hyphens)
-    const worldData = getWorldBySlug(params.worldId);
-    if (worldData) {
-      setWorld(worldData);
-      // Auto-select first adventure
-      if (worldData.adventures.length > 0) {
-        setSelectedAdventure(worldData.adventures[0]);
+    const loadWorldData = async () => {
+      const worldData = getWorldBySlug(params.worldId);
+      if (worldData && user) {
+        setWorld(worldData);
+
+        // Filter adventures by user's level and type
+        const userId = user.userId || user.id;
+        const availableAdventures = await getAvailableAdventures(
+          userId,
+          worldData.id,
+          worldData.adventures
+        );
+
+        console.log(`🎮 Available adventures for user:`, availableAdventures);
+        setFilteredAdventures(availableAdventures);
+
+        // Auto-select first adventure that has lessons
+        const firstWithLessons = availableAdventures.find(adv => adv.hasLessons);
+        if (firstWithLessons) {
+          setSelectedAdventure(firstWithLessons);
+        } else if (availableAdventures.length > 0) {
+          // If no adventures have lessons, select the first one anyway
+          setSelectedAdventure(availableAdventures[0]);
+        }
+      } else if (worldData) {
+        // Fallback if no user (shouldn't happen with ProtectedRoute)
+        setWorld(worldData);
+        setFilteredAdventures(worldData.adventures);
+        if (worldData.adventures.length > 0) {
+          setSelectedAdventure(worldData.adventures[0]);
+        }
       }
-    }
-    setLoading(false);
-  }, [params.worldId]);
+      setLoading(false);
+    };
+
+    loadWorldData();
+  }, [params.worldId, user]);
 
   useEffect(() => {
     // Load units and lessons for selected adventure
@@ -108,16 +141,17 @@ function WorldDetailContent() {
     try {
       const supabase = createClient();
 
-      // Load lessons with this theme tag
-      const { data: lessonsData, error: lessonsError } = await supabase
-        .from("lessons")
-        .select("*")
-        .eq("is_active", true)
-        .contains("theme_tags", [adventure.themeTag])
-        .order("sort_order")
-        .limit(10);
+      // Load lessons filtered by user's level and type
+      const userId = user.userId || user.id;
+      const lessonsData = await getLessonsForUser(
+        userId,
+        world.id,
+        adventure.themeTag
+      );
 
-      if (lessonsError) console.error("Error loading lessons:", lessonsError);
+      console.log(
+        `📚 Loaded ${lessonsData?.length || 0} lessons for user at their level`
+      );
 
       // Load all units for this adventure
       const { data: unitsData, error: unitsError } = await supabase
@@ -267,25 +301,29 @@ function WorldDetailContent() {
       {/* Breadcrumb */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center gap-2 text-sm">
-            <button
-              onClick={() => router.push("/eco-map")}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
-            >
-              <Home className="w-4 h-4" />
-              Home
-            </button>
-            <ChevronRight className="w-4 h-4 text-gray-400" />
-            <button
-              onClick={() => router.push("/worlds")}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-            >
-              Worlds
-            </button>
-            <ChevronRight className="w-4 h-4 text-gray-400" />
-            <span className="text-gray-900 dark:text-white font-medium">
-              {world.name}
-            </span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm">
+              <button
+                onClick={() => router.push("/eco-map")}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
+              >
+                <Home className="w-4 h-4" />
+                Home
+              </button>
+              <ChevronRight className="w-4 h-4 text-gray-400" />
+              <button
+                onClick={() => router.push("/worlds")}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                Worlds
+              </button>
+              <ChevronRight className="w-4 h-4 text-gray-400" />
+              <span className="text-gray-900 dark:text-white font-medium">
+                {world.name}
+              </span>
+            </div>
+            {/* Level Indicator */}
+            <LevelIndicator variant="badge" />
           </div>
         </div>
       </div>
@@ -402,13 +440,11 @@ function WorldDetailContent() {
         {/* Adventure Cards - Timeline Style */}
         <Link href="#content">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {world.adventures.map((adventure, index) => {
+            {filteredAdventures.map((adventure, index) => {
               const EcoIcon = getEcosystemIcon(adventure.ecosystemType);
               const isSelected =
                 selectedAdventure && selectedAdventure.id === adventure.id;
-              const totalContent =
-                (currentData.units?.length || 0) +
-                (currentData.lessons?.length || 0);
+              const hasLessons = adventure.lessonCount > 0;
 
               return (
                 <motion.div
@@ -442,10 +478,10 @@ function WorldDetailContent() {
                           >
                             Week {adventure.week}
                           </div>
-                          {adventure.underConstruction && (
+                          {(!hasLessons || adventure.underConstruction) && (
                             <Lock
                               className="w-3 h-3 text-gray-400"
-                              title="Under Construction"
+                              title={!hasLessons ? "No lessons at your level yet" : "Under Construction"}
                             />
                           )}
                         </div>
@@ -467,9 +503,9 @@ function WorldDetailContent() {
                         <div className="flex items-center gap-1">
                           <BookOpen className="w-3 h-3" />
                           <span>
-                            {isSelected && totalContent > 0
-                              ? `${totalContent} activities`
-                              : "View content"}
+                            {hasLessons
+                              ? `${adventure.lessonCount} lesson${adventure.lessonCount !== 1 ? 's' : ''}`
+                              : "Coming soon"}
                           </span>
                         </div>
                         <ChevronRight

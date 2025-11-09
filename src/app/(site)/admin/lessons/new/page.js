@@ -10,6 +10,7 @@ import {
 import { useAuth } from "@/components/AuthProvider";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { WORLDS } from "@/data/worldsConfig";
+import { getAllLevels } from "@/config/levelsConfig";
 
 function NewLessonContent() {
   const router = useRouter();
@@ -25,7 +26,7 @@ function NewLessonContent() {
     difficulty: "Beginner",
     xp_reward: 100,
     sort_order: 0,
-    target_audience: "players",
+    target_audience: "both",
     is_active: false,
     world: "",
     theme_tags: "",
@@ -41,6 +42,9 @@ function NewLessonContent() {
   // Get adventures for selected world
   const selectedWorld = selectedWorldId ? WORLDS[selectedWorldId] : null;
   const adventures = selectedWorld ? selectedWorld.adventures : [];
+
+  // Get levels for dropdown
+  const levels = getAllLevels();
 
   // Debug logging
   useEffect(() => {
@@ -175,19 +179,22 @@ function NewLessonContent() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Difficulty
+                  Difficulty Level *
                 </label>
                 <select
                   value={formData.difficulty}
                   onChange={(e) => updateField("difficulty", e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
-                  <option value="Survival Absolute">Survival Absolute</option>
-                  <option value="Beginner">Beginner</option>
-                  <option value="Intermediate">Intermediate</option>
-                  <option value="Advanced">Advanced</option>
-                  <option value="Expert">Expert</option>
+                  {levels.map((level) => (
+                    <option key={level.id} value={level.value}>
+                      {level.icon} {level.displayName}
+                    </option>
+                  ))}
                 </select>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Users only see lessons matching their current level
+                </p>
               </div>
             </div>
 
@@ -223,7 +230,7 @@ function NewLessonContent() {
                     ))}
                   </select>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    Assign to one of the 7 continents/regions
+                    Assign to one of the 8 continents/regions
                   </p>
                 </div>
 
@@ -243,7 +250,10 @@ function NewLessonContent() {
                   >
                     <option value="">Select an adventure (optional)</option>
                     {adventures.map((adventure) => (
-                      <option key={adventure.themeTag} value={adventure.themeTag}>
+                      <option
+                        key={adventure.themeTag}
+                        value={adventure.themeTag}
+                      >
                         Week {adventure.week}: {adventure.name}
                       </option>
                     ))}
@@ -257,25 +267,53 @@ function NewLessonContent() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Target Audience
-                </label>
-                <select
-                  value={formData.target_audience}
-                  onChange={(e) =>
-                    updateField("target_audience", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                >
-                  <option value="users">Users</option>
-                  <option value="schools">Schools</option>
-                  <option value="both">Both</option>
-                </select>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Who should see this lesson?
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                Content Filtering & Visibility
+              </h3>
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                  <strong>How filtering works:</strong> Users only see lessons
+                  that match BOTH their current level AND their user type. This
+                  ensures appropriate content for each learner.
                 </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Target Audience *
+                  </label>
+                  <select
+                    value={formData.target_audience}
+                    onChange={(e) =>
+                      updateField("target_audience", e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  >
+                    <option value="users">Individual Learners Only</option>
+                    <option value="schools">School Students Only</option>
+                    <option value="both">Both (All Users)</option>
+                  </select>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    &quot;Both&quot; shows lesson to all user types
+                  </p>
+                </div>
+                <div className="flex items-center">
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="font-medium mb-2">Visibility Matrix:</p>
+                    <ul className="space-y-1 text-xs">
+                      <li>
+                        ✓ Individual users see: &quot;Individual&quot; +
+                        &quot;Both&quot;
+                      </li>
+                      <li>
+                        ✓ School users see: &quot;Schools&quot; +
+                        &quot;Both&quot;
+                      </li>
+                      <li>✓ Combined with level filtering for final result</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
 

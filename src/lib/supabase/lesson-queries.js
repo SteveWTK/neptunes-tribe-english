@@ -309,7 +309,7 @@ export async function getLessonsForUnit(unitId) {
 
 export async function getLessonById(lessonId) {
   try {
-    const { data, error } = await supabase
+    const { data, error} = await supabase
       .from("lessons")
       .select("*")
       .eq("id", lessonId)
@@ -320,5 +320,255 @@ export async function getLessonById(lessonId) {
   } catch (error) {
     console.error("Error fetching lesson:", error);
     throw error;
+  }
+}
+
+// ============================================================================
+// LEVEL-BASED FILTERING FUNCTIONS
+// ============================================================================
+
+/**
+ * Get lessons filtered by user's level and type
+ *
+ * @param {string} userId - User ID to get level/type from
+ * @param {string} worldId - World ID (e.g., "south_america")
+ * @param {string} adventureId - Adventure theme tag (e.g., "amazon_adventure")
+ * @returns {Promise<Array>} Filtered lessons matching user's level and type
+ */
+export async function getLessonsForUser(userId, worldId, adventureId) {
+  try {
+    console.log("🔍 getLessonsForUser called with:", { userId, worldId, adventureId });
+
+    // Get user's current level and type
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("current_level, user_type, id, email")
+      .eq("id", userId)
+      .single();
+
+    console.log("👤 User data query result:", { userData, userError });
+
+    if (userError) {
+      console.error("❌ Error fetching user data:", userError);
+      console.log("⚠️ Falling back to Beginner/individual defaults");
+      // Default to beginner/individual if user fetch fails
+      return getLessonsByLevelAndType("Beginner", "individual", worldId, adventureId);
+    }
+
+    const userLevel = userData?.current_level || "Beginner";
+    const userType = userData?.user_type || "individual";
+
+    console.log("✅ User level data:", { userLevel, userType });
+
+    return getLessonsByLevelAndType(userLevel, userType, worldId, adventureId);
+  } catch (error) {
+    console.error("❌ Error in getLessonsForUser:", error);
+    return [];
+  }
+}
+
+/**
+ * Get lessons by level and user type (internal helper)
+ *
+ * @param {string} level - Difficulty level (e.g., "Beginner", "Intermediate")
+ * @param {string} userType - User type ("school" or "individual")
+ * @param {string} worldId - World ID
+ * @param {string} adventureId - Adventure theme tag
+ * @returns {Promise<Array>} Filtered lessons
+ */
+export async function getLessonsByLevelAndType(level, userType, worldId, adventureId) {
+  try {
+    // Map user_type to target_audience values
+    // school users see: "schools" and "both"
+    // individual users see: "users" and "both"
+    const targetAudience = userType === "school" ? "schools" : "users";
+
+    console.log("🔎 getLessonsByLevelAndType filters:", {
+      level,
+      userType,
+      targetAudience,
+      worldId,
+      adventureId
+    });
+
+    // Build the query
+    let query = supabase
+      .from("lessons")
+      .select("*")
+      .eq("difficulty", level) // Match user's level
+      .eq("is_active", true) // Only active lessons
+      .order("sort_order", { ascending: true });
+
+    // Filter by world if provided
+    if (worldId) {
+      query = query.eq("world", worldId);
+    }
+
+    // Filter by adventure (theme_tags) if provided
+    if (adventureId) {
+      query = query.contains("theme_tags", [adventureId]);
+    }
+
+    // Filter by target audience: show lessons for user's type OR "both"
+    query = query.in("target_audience", [targetAudience, "both"]);
+
+    const { data, error } = await query;
+
+    console.log("📚 Lessons query result:", {
+      count: data?.length || 0,
+      error: error?.message,
+      samples: data?.slice(0, 2).map(l => ({
+        id: l.id,
+        title: l.title,
+        difficulty: l.difficulty,
+        target_audience: l.target_audience
+      }))
+    });
+
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error("❌ Error in getLessonsByLevelAndType:", error);
+    return [];
+  }
+}
+
+/**
+ * Get count of lessons for a specific adventure at user's level
+ *
+ * @param {string} userId - User ID
+ * @param {string} worldId - World ID
+ * @param {string} adventureId - Adventure theme tag
+ * @returns {Promise<number>} Count of available lessons
+ */
+export async function getLessonCountForUser(userId, worldId, adventureId) {
+  try {
+    const lessons = await getLessonsForUser(userId, worldId, adventureId);
+    return lessons.length;
+  } catch (error) {
+    console.error("Error getting lesson count:", error);
+    return 0;
+  }
+}
+
+/**
+ * Check if an adventure has lessons for user's level
+ *
+ * @param {string} userId - User ID
+ * @param {string} worldId - World ID
+ * @param {string} adventureId - Adventure theme tag
+ * @returns {Promise<boolean>} True if adventure has lessons for user
+ */
+export async function adventureHasLessonsForUser(userId, worldId, adventureId) {
+  try {
+    const count = await getLessonCountForUser(userId, worldId, adventureId);
+    return count > 0;
+  } catch (error) {
+    console.error("Error checking adventure lessons:", error);
+    return false;
+  }
+}
+
+/**
+ * Get all adventures in a world that have lessons for user
+ * Filters by BOTH user level AND lesson availability
+ *
+ * @param {string} userId - User ID
+ * @param {string} worldId - World ID
+ * @param {Array} adventures - Array of adventure objects from worldsConfig
+ * @returns {Promise<Array>} Filtered adventures with lesson counts
+ */
+export async function getAvailableAdventures(userId, worldId, adventures) {
+  try {
+    // Get user's current level
+    const { data: userData } = await supabase
+      .from("users")
+      .select("current_level")
+      .eq("id", userId)
+      .single();
+
+    const userLevel = userData?.current_level || "Beginner";
+
+    console.log("🎮 Filtering adventures for level:", userLevel);
+
+    // Filter adventures by user's level AND check lesson counts
+    const levelFilteredAdventures = adventures.filter((adventure) => {
+      // If adventure has no levels property, show it for all levels (backward compatible)
+      if (!adventure.levels || adventure.levels.length === 0) {
+        return true;
+      }
+      // Otherwise, check if user's level is in the adventure's levels array
+      return adventure.levels.includes(userLevel);
+    });
+
+    console.log(
+      `📊 Filtered ${levelFilteredAdventures.length}/${adventures.length} adventures for ${userLevel}`
+    );
+
+    const adventuresWithLessons = await Promise.all(
+      levelFilteredAdventures.map(async (adventure) => {
+        const lessonCount = await getLessonCountForUser(
+          userId,
+          worldId,
+          adventure.id
+        );
+
+        return {
+          ...adventure,
+          lessonCount,
+          hasLessons: lessonCount > 0,
+        };
+      })
+    );
+
+    // Return adventures filtered by level with lesson count info
+    return adventuresWithLessons;
+  } catch (error) {
+    console.error("Error getting available adventures:", error);
+    return adventures.map((adv) => ({ ...adv, lessonCount: 0, hasLessons: false }));
+  }
+}
+
+/**
+ * Update user's current level
+ *
+ * @param {string} userId - User ID
+ * @param {string} newLevel - New difficulty level (must match LEVELS.value)
+ * @returns {Promise<boolean>} Success status
+ */
+export async function updateUserLevel(userId, newLevel) {
+  try {
+    const { error } = await supabase
+      .from("users")
+      .update({ current_level: newLevel })
+      .eq("id", userId);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error("Error updating user level:", error);
+    return false;
+  }
+}
+
+/**
+ * Update user's type (school vs individual)
+ *
+ * @param {string} userId - User ID
+ * @param {string} newType - New user type ("school" or "individual")
+ * @returns {Promise<boolean>} Success status
+ */
+export async function updateUserType(userId, newType) {
+  try {
+    const { error } = await supabase
+      .from("users")
+      .update({ user_type: newType })
+      .eq("id", userId);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error("Error updating user type:", error);
+    return false;
   }
 }

@@ -45,6 +45,7 @@ export const WORLDS = {
         description:
           "Discover the world's largest tropical rainforest, home to millions of species and indigenous communities.",
         themeTag: "amazon", // Links to theme_tags in database
+        levels: ["Beginner", "Intermediate", "Advanced"], // Which levels can access this adventure
         underConstruction: false,
       },
       {
@@ -55,6 +56,7 @@ export const WORLDS = {
         description:
           "Journey through the world's longest mountain range, from cloud forests to alpine peaks.",
         themeTag: "andes",
+        levels: ["Beginner", "Intermediate", "Advanced"], // Available at Beginner and Intermediate levels
         underConstruction: true,
       },
       {
@@ -65,6 +67,7 @@ export const WORLDS = {
         description:
           "Explore the unique wildlife that inspired the theory of evolution.",
         themeTag: "galapagos",
+        levels: ["Beginner", "Intermediate", "Advanced"], // Available at Intermediate and Advanced levels
         underConstruction: true,
       },
       {
@@ -75,6 +78,7 @@ export const WORLDS = {
         description:
           "Experience the world's largest tropical wetland and its incredible concentration of wildlife.",
         themeTag: "pantanal",
+        levels: ["Beginner", "Intermediate", "Advanced"], // Available at Advanced level only
         underConstruction: true,
       },
     ],
@@ -114,6 +118,7 @@ export const WORLDS = {
         description:
           "Witness the world's largest land animal migration across the African plains.",
         themeTag: "serengeti",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -124,6 +129,7 @@ export const WORLDS = {
         description:
           "Explore the world's second-largest rainforest and home to gorillas and bonobos.",
         themeTag: "congo",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: true,
       },
       {
@@ -134,6 +140,7 @@ export const WORLDS = {
         description:
           "Discover life in the world's largest hot desert and its adaptation strategies.",
         themeTag: "sahara",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: true,
       },
       {
@@ -144,6 +151,7 @@ export const WORLDS = {
         description:
           "Meet lemurs and other unique species found nowhere else on Earth.",
         themeTag: "madagascar",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: true,
       },
     ],
@@ -183,6 +191,7 @@ export const WORLDS = {
         description:
           "Explore the world's largest forest biome and its role in climate regulation.",
         themeTag: "taiga",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -193,6 +202,7 @@ export const WORLDS = {
         description:
           "Discover the world's highest mountains and their unique biodiversity.",
         themeTag: "himalayas",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -203,6 +213,7 @@ export const WORLDS = {
         description:
           "Meet orangutans, pygmy elephants, and other incredible species in one of the oldest rainforests.",
         themeTag: "borneo",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -213,6 +224,7 @@ export const WORLDS = {
         description:
           "Explore the unique climate and biodiversity of the Mediterranean region.",
         themeTag: "mediterranean",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
     ],
@@ -252,6 +264,7 @@ export const WORLDS = {
         description:
           "Dive into the world's largest coral reef system and its incredible biodiversity.",
         themeTag: "great_barrier_reef",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -262,6 +275,7 @@ export const WORLDS = {
         description:
           "Meet kiwis, kakapos, and other unique species in these isolated islands.",
         themeTag: "new_zealand",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -272,6 +286,7 @@ export const WORLDS = {
         description:
           "Discover the culture and ecosystems of Pacific Island nations facing climate change.",
         themeTag: "pacific_islands",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -282,6 +297,7 @@ export const WORLDS = {
         description:
           "Explore the unique wildlife of Australia's arid interior.",
         themeTag: "outback",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
     ],
@@ -322,6 +338,7 @@ export const WORLDS = {
         description:
           "Explore the treeless plains of the Arctic and meet polar bears, Arctic foxes, and caribou.",
         themeTag: "arctic",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -332,6 +349,7 @@ export const WORLDS = {
         description:
           "Journey to Earth's coldest continent and discover penguins, seals, and whales.",
         themeTag: "antarctica",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -342,6 +360,7 @@ export const WORLDS = {
         description:
           "Understand the impact of climate change on the world's largest island.",
         themeTag: "greenland",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -352,6 +371,7 @@ export const WORLDS = {
         description:
           "Learn about the aurora borealis and life in the Arctic Circle.",
         themeTag: "aurora",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
     ],
@@ -391,6 +411,7 @@ export const WORLDS = {
         description:
           "Explore geysers, hot springs, and the restoration of wolves in this iconic national park.",
         themeTag: "yellowstone",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -401,6 +422,7 @@ export const WORLDS = {
         description:
           "Dive into the vibrant coral reefs of the Caribbean and their conservation challenges.",
         themeTag: "caribbean_reef",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -411,6 +433,7 @@ export const WORLDS = {
         description:
           "Follow the incredible 3,000-mile journey of monarch butterflies.",
         themeTag: "monarch",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -421,6 +444,7 @@ export const WORLDS = {
         description:
           "Discover this unique subtropical wetland and its importance to Florida's ecosystem.",
         themeTag: "everglades",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
     ],
@@ -461,6 +485,7 @@ export const WORLDS = {
         description:
           "Explore the towering underwater forests and their importance to marine life.",
         themeTag: "kelp",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -471,6 +496,7 @@ export const WORLDS = {
         description:
           "Descend into the mysterious depths and meet bizarre deep-sea creatures.",
         themeTag: "deep_ocean",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -481,6 +507,7 @@ export const WORLDS = {
         description:
           "Follow the epic journeys of whales across the world's oceans.",
         themeTag: "whales",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
       {
@@ -490,6 +517,7 @@ export const WORLDS = {
         ecosystemType: "coral_reef",
         description: "Discover the most biodiverse marine region on Earth.",
         themeTag: "coral_triangle",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: false,
       },
     ],
@@ -530,6 +558,7 @@ export const WORLDS = {
         description:
           "Dive into Earth's primordial oceans 3.5 billion years ago. Discover the first microscopic life forms, stromatolites, and the strange creatures of the Cambrian Explosion that changed life forever.",
         themeTag: "ancient_seas",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: true,
       },
       {
@@ -540,6 +569,7 @@ export const WORLDS = {
         description:
           "Walk among the giants of the Mesozoic Era. Meet Tyrannosaurus rex, Triceratops, long-necked sauropods, and discover why these magnificent creatures vanished 66 million years ago.",
         themeTag: "dinosaurs",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: true,
       },
       {
@@ -550,6 +580,7 @@ export const WORLDS = {
         description:
           "Journey to the last Ice Age, just 10,000 years ago. Meet woolly mammoths, saber-toothed cats, giant ground sloths, and discover how humans lived alongside these incredible beasts.",
         themeTag: "ice_age",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: true,
       },
       {
@@ -560,6 +591,7 @@ export const WORLDS = {
         description:
           "Explore Earth's five mass extinctions and the resilient species that survived. Learn about dodo birds, passenger pigeons, and what extinction teaches us about protecting life today.",
         themeTag: "extinctions",
+        levels: ["Beginner", "Intermediate", "Advanced"],
         underConstruction: true,
       },
     ],
