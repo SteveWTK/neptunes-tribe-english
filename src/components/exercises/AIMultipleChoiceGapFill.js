@@ -246,13 +246,13 @@ export default function AIMultipleChoiceGapFill({
       let contextPrompt = "";
 
       if (hintLevel === 1) {
-        contextPrompt = `This is a football/soccer context sentence: "${sentence.text}". 
+        contextPrompt = `This is an environmental English sentence: "${sentence.text}". 
           Give a helpful first hint about what type of word fits here (noun, verb, adjective) 
-          and relate it to football situations. Be encouraging and educational but don't reveal the answer.`;
+          and relate it to eco-themed situations. Be encouraging and educational but don't reveal the answer.`;
       } else {
         contextPrompt = `This is the second hint for: "${sentence.text}". 
           The student still needs help. Give a more specific clue about the meaning or context 
-          in football terms, but still don't give away the exact answer. Be supportive.`;
+          in environmental terms, but still don't give away the exact answer. Be supportive.`;
       }
 
       const response = await fetch("/api/ai-feedback", {
@@ -300,8 +300,7 @@ export default function AIMultipleChoiceGapFill({
         fallbackHint =
           "Think about what type of word would make sense here. Is it an action (verb), person/thing (noun), or description (adjective)?";
       } else {
-        fallbackHint =
-          "Consider the context of the sentence and what would commonly happen in football situations like this.";
+        fallbackHint = "Consider the context of the sentence.";
       }
 
       setHintUsage((prev) => ({
@@ -438,7 +437,7 @@ export default function AIMultipleChoiceGapFill({
           </button>
 
           {/* Hint Usage Indicator */}
-          {usedHints > 0 && (
+          {/* {usedHints > 0 && (
             <div className="flex items-center space-x-1">
               <Lightbulb
                 className={`w-4 h-4 ${
@@ -453,7 +452,7 @@ export default function AIMultipleChoiceGapFill({
                 {usedHints}/{MAX_HINTS_PER_GAP} {t("hints_used")}
               </span>
             </div>
-          )}
+          )} */}
         </div>
 
         {/* Sentence with gap */}
@@ -508,7 +507,7 @@ export default function AIMultipleChoiceGapFill({
               </button>
             )}
 
-            {!feedback?.isCorrect && (
+            {/* {!feedback?.isCorrect && (
               <button
                 onClick={() => getAIHint(sentenceId, sentence)}
                 disabled={hasUsedAllHints || loadingHint[sentenceId]}
@@ -530,7 +529,7 @@ export default function AIMultipleChoiceGapFill({
                 )}
                 <span>{getHintButtonText(sentenceId)}</span>
               </button>
-            )}
+            )} */}
           </div>
 
           {/* Feedback Icons */}
