@@ -15,7 +15,7 @@ import PieChartAnswers from "./PieChartAnswers";
 
 export default function MultiGapFillExerciseNew({
   unitId,
-  initialShowFullText = false
+  initialShowFullText = false,
 }) {
   const [unitData, setUnitData] = useState(null);
   const [textId, setTextId] = useState(null);
@@ -37,6 +37,7 @@ export default function MultiGapFillExerciseNew({
   const [showHoverInstruction, setShowHoverInstruction] = useState(false);
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentUserType, setCurrentUserType] = useState("");
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -718,23 +719,14 @@ export default function MultiGapFillExerciseNew({
             </h2>
 
             {isAlreadyCompleted && (
-              <div className="mx-3 p-2 bg-green-100 dark:bg-green-800 rounded-lg">
+              <div className="mx-3 px-2 py-2 w-fit bg-green-100 dark:bg-green-800 rounded-lg">
                 <p className="text-green-800 dark:text-green-100 text-sm text-center">
-                  ✅ You have already completed this unit!
+                  ✅ Completed!
                 </p>
               </div>
             )}
 
             <div className="flex gap-6 lg:gap-12 justify-around lg:justify-start">
-              <button
-                className="w-fit text-[16px] rounded-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
-                onClick={() => setShowFullText(!showFullText)}
-              >
-                {showFullText
-                  ? copy.showGapFillButton
-                  : copy.showFullTextButton}
-              </button>
-
               {unitData?.audio && (
                 <button
                   onClick={handleAudioToggle}
@@ -777,6 +769,16 @@ export default function MultiGapFillExerciseNew({
                     </svg>
                   )}
                   {isPlaying ? "Pause" : copy.playAudio}
+                </button>
+              )}
+              {session?.user?.user_type && (
+                <button
+                  className="w-fit text-[16px] rounded-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
+                  onClick={() => setShowFullText(!showFullText)}
+                >
+                  {showFullText
+                    ? copy.showGapFillButton
+                    : copy.showFullTextButton}
                 </button>
               )}
             </div>
@@ -855,7 +857,7 @@ export default function MultiGapFillExerciseNew({
             id="languageSelect"
             value={selectedLanguage}
             onChange={(e) => setSelectedLanguage(e.target.value)}
-            className="text-[16px] rounded-b-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
+            className="text-[16px] rounded-b-lg px-2 text-accent-600 hover:border-b-1 hover:border-accent-600"
           >
             <option value="no">None</option>
             {Object.keys(translations).map((langCode) => (

@@ -625,6 +625,9 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
 
   // Touch gesture handlers for swipe controls
   const handleTouchStart = (e) => {
+    // Prevent browser's back/forward swipe navigation
+    e.preventDefault();
+
     const touch = e.touches[0];
     touchStartRef.current = {
       x: touch.clientX,
@@ -634,6 +637,9 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
   };
 
   const handleTouchEnd = (e) => {
+    // Prevent browser's back/forward swipe navigation
+    e.preventDefault();
+
     if (!touchStartRef.current) return;
     if (!isStarted || isPaused || gameOver || showLevelUp) return;
 
@@ -672,6 +678,11 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
     }
 
     touchStartRef.current = null;
+  };
+
+  const handleTouchMove = (e) => {
+    // Prevent scrolling and other default touch behaviors during game
+    e.preventDefault();
   };
 
   const handleTouchCancel = () => {
@@ -820,15 +831,17 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
       </div>
 
       {/* Game Canvas */}
-      <div className="relative">
+      <div className="relative" style={{ touchAction: 'none', overscrollBehavior: 'none' }}>
         <canvas
           ref={canvasRef}
           width={CANVAS}
           height={CANVAS}
           onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           onTouchCancel={handleTouchCancel}
           className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl shadow-2xl border-4 border-white dark:border-gray-700 touch-none"
+          style={{ touchAction: 'none', WebkitUserSelect: 'none', userSelect: 'none' }}
         />
         <canvas
           ref={particlesRef}
