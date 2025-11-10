@@ -137,7 +137,7 @@ export default function UnitReferenceStep({
 
             {/* Helper text */}
             <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-              Complete this gap-fill exercise to continue the lesson
+              Listen to the audio and complete this gap-fill exercise
             </p>
           </div>
         </div>

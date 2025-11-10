@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { fetchData, fetchUnitDetails } from "@/lib/data-service";
 import supabase from "@/lib/supabase-browser";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
+import { useAuth } from "@/components/AuthProvider";
+import { createClient } from "@/lib/supabase/client";
 
 import TextExpander from "./TextExpander";
 import PieChartAnswers from "./PieChartAnswers";
@@ -37,9 +39,20 @@ export default function MultiGapFillExerciseNew({
   const [showHoverInstruction, setShowHoverInstruction] = useState(false);
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentUserType, setCurrentUserType] = useState("");
+
+  // FEATURE 1: User type/level for conditional rendering
+  const [userType, setUserType] = useState(null);
+  const [currentLevel, setCurrentLevel] = useState(null);
+
+  // FEATURE 2: Audio play limit
+  const [audioPlayCount, setAudioPlayCount] = useState(0);
+  const maxAudioPlays = 3;
+
+  // FEATURE 3: Show tooltip on audio button hover
+  const [showAudioTooltip, setShowAudioTooltip] = useState(false);
 
   const { data: session } = useSession();
+  const { user } = useAuth();
   const router = useRouter();
   const { lang } = useLanguage();
 
@@ -144,6 +157,36 @@ export default function MultiGapFillExerciseNew({
 
     if (unitId) loadData();
   }, [unitId, session?.user?.email]);
+
+  // FEATURE 1: Fetch user type and level for conditional rendering
+  useEffect(() => {
+    async function fetchUserData() {
+      if (!user?.id && !user?.userId) return;
+
+      try {
+        const supabaseClient = createClient();
+        const userId = user.userId || user.id;
+
+        const { data, error } = await supabaseClient
+          .from("users")
+          .select("user_type, current_level")
+          .eq("id", userId)
+          .single();
+
+        if (error) {
+          console.error("Error fetching user data:", error);
+          return;
+        }
+
+        setUserType(data?.user_type || "individual");
+        setCurrentLevel(data?.current_level || "Beginner");
+      } catch (error) {
+        console.error("Error in fetchUserData:", error);
+      }
+    }
+
+    fetchUserData();
+  }, [user]);
 
   // Enhanced data fetching to include notes
   useEffect(() => {
@@ -408,6 +451,9 @@ export default function MultiGapFillExerciseNew({
       setIsSubmitted(true);
       setShowHoverInstruction(true);
 
+      // FEATURE 2: Reset audio play count when user submits
+      setAudioPlayCount(0);
+
       // Hide instruction after 5 seconds
       setTimeout(() => {
         setShowHoverInstruction(false);
@@ -646,17 +692,32 @@ export default function MultiGapFillExerciseNew({
     }, 6000); // Show longer for more complex messages
   };
 
+  // FEATURE 2: Modified to track audio play count
   function handleAudioToggle() {
     if (!unitData?.audio) {
       console.warn("No audio URL available");
       return;
     }
 
+    // FEATURE 2: Check if user has exceeded play limit (only when not submitted)
+    if (!isSubmitted && audioPlayCount >= maxAudioPlays && !isPlaying) {
+      alert(
+        `You've reached the maximum of ${maxAudioPlays} plays. Submit your answers to play again.`
+      );
+      return;
+    }
+
     if (!audioRef.current) {
       audioRef.current = new Audio(unitData.audio);
 
+      // FEATURE 2: Increment play count when audio finishes (not when it starts)
       audioRef.current.addEventListener("ended", () => {
         setIsPlaying(false);
+
+        // Only count as a "play" if user listened all the way to the end
+        if (!isSubmitted) {
+          setAudioPlayCount((prev) => prev + 1);
+        }
       });
     }
 
@@ -669,6 +730,7 @@ export default function MultiGapFillExerciseNew({
         .play()
         .then(() => {
           setIsPlaying(true);
+          // REMOVED: Don't increment here - only count when audio ends
         })
         .catch((err) => {
           console.error("Audio playback failed:", err);
@@ -719,7 +781,7 @@ export default function MultiGapFillExerciseNew({
             </h2>
 
             {isAlreadyCompleted && (
-              <div className="mx-3 px-2 py-2 w-fit bg-green-100 dark:bg-green-800 rounded-lg">
+              <div className="mx-3 px-2 py-2 w-fit  bg-green-100 dark:bg-primary-800 rounded-xl">
                 <p className="text-green-800 dark:text-green-100 text-sm text-center">
                   ✅ Completed!
                 </p>
@@ -728,50 +790,97 @@ export default function MultiGapFillExerciseNew({
 
             <div className="flex gap-6 lg:gap-12 justify-around lg:justify-start">
               {unitData?.audio && (
-                <button
-                  onClick={handleAudioToggle}
-                  disabled={isLoading}
-                  className={`flex items-center gap-2 text-[16px] rounded-lg px-2 transition-colors ${
-                    isPlaying
-                      ? "text-red-600 hover:text-red-700"
-                      : "hover:text-accent-600"
-                  } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                <div
+                  className="relative"
+                  onMouseEnter={() => setShowAudioTooltip(true)}
+                  onMouseLeave={() => setShowAudioTooltip(false)}
                 >
-                  {isPlaying ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="size-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M10 9v6m4-6v6m-6 9h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 002 2z"
-                      />
-                    </svg>
-                  ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="size-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 3.75v16.5l13.5-8.25L5 3.75z"
-                      />
-                    </svg>
+                  {/* FEATURE 3: Audio hover tooltip */}
+                  {showAudioTooltip && !isSubmitted && (
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 px-3 py-2 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg shadow-lg z-50">
+                      <div className="text-center">
+                        <p className="font-semibold mb-1">
+                          🎧 Listen and complete.
+                        </p>
+                        <p>
+                          You have <strong>{maxAudioPlays}</strong> attempts.
+                        </p>
+
+                        <p className="text-gray-300 mt-1">
+                          You can pause anytime.
+                        </p>
+
+                        {/* <p className="text-gray-300 mt-1">
+                          Full plays remaining:{" "}
+                          <strong>{maxAudioPlays - audioPlayCount}</strong>
+                        </p> */}
+                      </div>
+                      {/* Tooltip arrow */}
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
+                        <div className="border-8 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                      </div>
+                    </div>
                   )}
-                  {isPlaying ? "Pause" : copy.playAudio}
-                </button>
+
+                  <button
+                    onClick={handleAudioToggle}
+                    disabled={isLoading}
+                    className={`flex items-center gap-2 text-[16px] rounded-lg px-2 transition-colors ${
+                      isPlaying
+                        ? "text-red-600 hover:text-red-700"
+                        : "hover:text-accent-600"
+                    } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  >
+                    {isPlaying ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="size-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M10 9v6m4-6v6m-6 9h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 002 2z"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="size-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 3.75v16.5l13.5-8.25L5 3.75z"
+                        />
+                      </svg>
+                    )}
+                    {isPlaying ? "Pause" : "Listen"}
+                    {/* FEATURE 2: Show play count indicator */}
+                    {!isSubmitted && audioPlayCount > 0 && (
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        ({audioPlayCount}/{maxAudioPlays})
+                      </span>
+                    )}
+                  </button>
+                </div>
               )}
-              {session?.user?.user_type && (
+
+              <p className="text-gray-300">
+                Full plays remaining:{" "}
+                <strong>{maxAudioPlays - audioPlayCount}</strong>
+              </p>
+
+              {/* FEATURE 1: Conditionally render button based on user_type */}
+              {/* Hide "Show Full Text" button for school users, show for all others */}
+              {userType !== "school" && (
                 <button
                   className="w-fit text-[16px] rounded-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
                   onClick={() => setShowFullText(!showFullText)}
@@ -846,27 +955,29 @@ export default function MultiGapFillExerciseNew({
           </div>
         </div>
 
-        <div className="m-4 flex justify-center">
-          <label
-            htmlFor="languageSelect"
-            className="mr-2 text-primary-900 dark:text-white"
-          >
-            {copy.translationButton}:
-          </label>
-          <select
-            id="languageSelect"
-            value={selectedLanguage}
-            onChange={(e) => setSelectedLanguage(e.target.value)}
-            className="text-[16px] rounded-b-lg px-2 text-accent-600 hover:border-b-1 hover:border-accent-600"
-          >
-            <option value="no">None</option>
-            {Object.keys(translations).map((langCode) => (
-              <option key={langCode} value={langCode}>
-                {languageLabels[langCode] || langCode}
-              </option>
-            ))}
-          </select>
-        </div>
+        {userType !== "school" && (
+          <div className="m-4 flex justify-center">
+            <label
+              htmlFor="languageSelect"
+              className="mr-2 text-primary-900 dark:text-white"
+            >
+              {copy.translationButton}:
+            </label>
+            <select
+              id="languageSelect"
+              value={selectedLanguage}
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+              className="text-[16px] rounded-b-lg px-2 text-accent-600 hover:border-b-1 hover:border-accent-600"
+            >
+              <option value="no">None</option>
+              {Object.keys(translations).map((langCode) => (
+                <option key={langCode} value={langCode}>
+                  {languageLabels[langCode] || langCode}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {selectedLanguage !== "no" && translations[selectedLanguage] && (
           <p className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50">
