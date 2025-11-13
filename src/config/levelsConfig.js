@@ -111,6 +111,30 @@ export const LEVELS = {
     recommendedGrade: "11th-12th grade / College",
   },
 
+  // Individual users: free travellers
+  solo: {
+    id: "solo",
+    value: "Solo", // Must match lesson.difficulty in database
+    displayName: "Solo Explorer",
+    shortName: "Solo Explorer",
+    description: "Master complex environmental topics",
+    order: 3,
+    icon: "🌍", // Customize per project
+    color: {
+      primary: "#8b5cf6", // violet-500
+      light: "#ede9fe",
+      dark: "#4c1d95",
+    },
+    characteristics: [
+      "Advanced vocabulary and idioms",
+      "Long readings (800-1500 words)",
+      "Critical thinking exercises",
+      "Research and debate topics",
+    ],
+    estimatedDuration: "12+ months",
+    recommendedGrade: "11th-12th grade / College",
+  },
+
   // FUTURE LEVELS (Add as needed):
   // expert: {
   //   id: "expert",

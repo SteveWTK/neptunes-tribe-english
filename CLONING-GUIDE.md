@@ -5,6 +5,7 @@
 This guide walks you through cloning the Habitat codebase to create new English learning apps with different themes (StartupNation, FieldTalk, etc.). The process is designed to be efficient and repeatable.
 
 **Time Estimate:**
+
 - Automated cloning: 5 minutes
 - Manual customization: 4-8 hours
 - Content creation: Ongoing
@@ -16,6 +17,7 @@ This guide walks you through cloning the Habitat codebase to create new English 
 ### What Gets Cloned (Stays the Same)
 
 ✅ **Core Functionality**
+
 - User authentication (NextAuth + Supabase)
 - Progress tracking system
 - Subscription/payment integration (Stripe)
@@ -27,6 +29,7 @@ This guide walks you through cloning the Habitat codebase to create new English 
 - Admin CMS
 
 ✅ **Technical Infrastructure**
+
 - Next.js 15 app structure
 - Supabase integration
 - Tailwind CSS setup
@@ -37,6 +40,7 @@ This guide walks you through cloning the Habitat codebase to create new English 
 ### What Gets Customized (Changes Per App)
 
 🎨 **Branding**
+
 - Logo and visual identity
 - Color scheme
 - Typography
@@ -44,12 +48,14 @@ This guide walks you through cloning the Habitat codebase to create new English 
 - Copy and messaging
 
 📚 **Content Structure**
+
 - Worlds → Industries/Sports/Topics
 - Adventures → Sub-categories
 - Terminology (e.g., "Tribe" → "Network")
 - Hero profiles (Conservation Heroes → Founders)
 
 💾 **Database Content**
+
 - Units (different subject matter)
 - Lessons (different scenarios)
 - Weekly themes (different topics)
@@ -80,6 +86,7 @@ npm run dev  # Test that it runs
 ### 2. Gather Brand Assets for New App
 
 Create a folder with:
+
 - Logo files (SVG preferred, also PNG)
   - Main logo (light and dark versions)
   - Square logo for mobile
@@ -92,11 +99,13 @@ Create a folder with:
 ### 3. Set Up New Accounts
 
 **Required:**
+
 - [ ] Supabase account → Create new project
 - [ ] Google Cloud → New OAuth app
 - [ ] OpenSSL → Generate NextAuth secret
 
 **For Production:**
+
 - [ ] Stripe account → Set up products
 - [ ] Domain name (optional, can use Vercel subdomain)
 - [ ] Vercel account for deployment
@@ -177,11 +186,11 @@ Edit `src/config/brand.config.js`:
 
 ```javascript
 export const brandConfig = {
-  appName: "StartupNation",  // ✏️ Update
-  appTagline: "...",          // ✏️ Update
+  appName: "StartupNation", // ✏️ Update
+  appTagline: "...", // ✏️ Update
 
   logo: {
-    main: "/logos/main-logo-light.png",  // ✏️ Update paths
+    main: "/logos/main-logo-light.png", // ✏️ Update paths
     // ... update all logo paths
   },
 
@@ -190,16 +199,16 @@ export const brandConfig = {
   },
 
   terminology: {
-    world: "Industry",          // ✏️ Customize
-    adventure: "Topic",         // ✏️ Customize
-    mainUnit: "Case Study",     // ✏️ Customize
+    world: "Industry", // ✏️ Customize
+    adventure: "Topic", // ✏️ Customize
+    mainUnit: "Case Study", // ✏️ Customize
     // ... update all terms
   },
 
   features: {
     // Enable/disable features
-    ngoSupport: false,          // ✏️ Habitat-specific
-    impactTracking: false,      // ✏️ Habitat-specific
+    ngoSupport: false, // ✏️ Habitat-specific
+    impactTracking: false, // ✏️ Habitat-specific
   },
 };
 ```
@@ -230,6 +239,7 @@ export const INDUSTRIES = {
 ```
 
 **OR** keep using `worldsConfig.js` and just modify the content:
+
 - Change region names
 - Update adventure names and theme tags
 - Modify colors and icons
@@ -346,6 +356,7 @@ GOOGLE_CLIENT_SECRET=your-client-secret
 In Supabase → Table Editor → units table:
 
 Add 5-10 units with:
+
 - Title (e.g., "The Lean Startup Method")
 - Description
 - Content text with gaps marked as [1], [2], etc.
@@ -358,6 +369,7 @@ Add 5-10 units with:
 In gap_fill_questions table:
 
 For each unit, add questions for each gap:
+
 - text_id (unit ID)
 - gap_number (1, 2, 3...)
 - correct_answer
@@ -396,6 +408,7 @@ Use the CMS at `/admin/lessons/new`:
 In Stripe Dashboard → Products:
 
 1. **Premium Subscription**
+
    - Name: "Premium"
    - Recurring: Monthly & Yearly prices
    - Amount: e.g., $19.99/month, $199/year
@@ -536,12 +549,14 @@ english-learning-apps/
 ### Content Updates
 
 Each app maintains its own:
+
 - Supabase database (separate content)
 - Image assets
 - Brand configuration
 - Custom features
 
 Share:
+
 - Core components
 - UI patterns
 - Bug fixes
@@ -606,6 +621,7 @@ your-new-app/
 ## Part 8: Resources
 
 ### Documentation
+
 - [Habitat PROJECT_STATUS.md](./PROJECT_STATUS.md) - Recent development context
 - [StartupNation CONFIG](./STARTUPNATION-CONFIG.md) - Detailed brand config
 - [Supabase Docs](https://supabase.com/docs)
@@ -613,12 +629,14 @@ your-new-app/
 - [Stripe Docs](https://stripe.com/docs)
 
 ### Tools
+
 - [Supabase Dashboard](https://supabase.com/dashboard)
 - [Google Cloud Console](https://console.cloud.google.com/)
 - [Stripe Dashboard](https://dashboard.stripe.com/)
 - [Vercel Dashboard](https://vercel.com/dashboard)
 
 ### Design Resources
+
 - [Tailwind CSS Colors](https://tailwindcss.com/docs/customizing-colors)
 - [Google Fonts](https://fonts.google.com/)
 - [Lucide Icons](https://lucide.dev/) (used in the app)
@@ -631,6 +649,7 @@ your-new-app/
 You now have a fully functional clone of Habitat, customized for your new brand!
 
 **Next Steps:**
+
 1. Create more content (units, lessons, weekly themes)
 2. Build marketing pages
 3. Set up analytics (Google Analytics, etc.)

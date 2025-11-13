@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node -e \"\nconst fs = require(''fs'');\nconst content = fs.readFileSync(''src/data/worldsConfig.js'', ''utf8'');\n\n// Pattern to find themeTag lines without levels following\nconst pattern = /(themeTag: \"\"[^\"\"]+\"\",.*\\n)(        (?!levels:))/g;\nconst replacement = ''$1        levels: [\"\"Beginner\"\", \"\"Intermediate\"\", \"\"Advanced\"\"],\\n$2'';\n\nconst newContent = content.replace(pattern, replacement);\n\nfs.writeFileSync(''src/data/worldsConfig.js'', newContent, ''utf8'');\nconsole.log(''Added levels to all adventures'');\n\")"
+      "Bash(node -e \"\nconst fs = require(''fs'');\nconst content = fs.readFileSync(''src/data/worldsConfig.js'', ''utf8'');\n\n// Pattern to find themeTag lines without levels following\nconst pattern = /(themeTag: \"\"[^\"\"]+\"\",.*\\n)(        (?!levels:))/g;\nconst replacement = ''$1        levels: [\"\"Beginner\"\", \"\"Intermediate\"\", \"\"Advanced\"\"],\\n$2'';\n\nconst newContent = content.replace(pattern, replacement);\n\nfs.writeFileSync(''src/data/worldsConfig.js'', newContent, ''utf8'');\nconsole.log(''Added levels to all adventures'');\n\")",
+      "Bash(npm install --save-dev fs-extra)",
+      "Read(//c/Developer/INSPIRE/startupnation-english/**)",
+      "Bash(npm run dev)",
+      "Bash(taskkill //F //IM node.exe)"
     ],
     "deny": [],
     "ask": []

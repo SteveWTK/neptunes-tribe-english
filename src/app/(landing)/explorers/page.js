@@ -21,6 +21,8 @@ import {
   Star,
   Crown,
 } from "lucide-react";
+import Link from "next/link";
+import { getAllWorlds } from "@/data/worldsConfig";
 
 export default function LandingPageExplorers() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -29,23 +31,29 @@ export default function LandingPageExplorers() {
 
   const t = {
     en: {
-      heroTitle: "Join Habitat English",
+      heroTitle: "An English learning journey through eight worlds.",
       heroSubtitle:
-        "Enrich your English as you go on environmental adventures around our planet",
+        "The first English learning platform with an environmental theme.",
       heroDescription:
         "Every week, our tribe explores a new ecosystem together. Discover amazing species, many of which are endangered. Help to save Earth's wildlife while increasing your command of English.",
-      startFree: "Start now",
-      upgradePro: "Start now",
+      startFree: "Create an Account",
+      upgradePro: "Student Area",
       exploreDemoButton: "Explore Our Interactive Map",
 
       // Community Focus
-      communityTitle: "Learn Together, Make an Impact Together",
+      communityTitle: "Why is Habitat perfect for you?",
       communitySubtitle:
         "Join hundreds of learners on a synchronised global journey",
-      weeklyTheme: "New ecosystem every week",
-      liveClasses: "Live conversation classes",
-      globalCommunity: "Learn with the tribe",
-      realImpact: "Support conservation",
+      weeklyTheme: "Improve English",
+      weeklyThemeSub:
+        "You will expand your vocabulary and develop fluency through dynamic activities and games.",
+      // liveClasses: "Live conversation classes",
+      globalCommunity: "Problem-solving",
+      globalCommunitySub:
+        "By learning about rare species and inspiring projects, you will develop awareness of the world you live in, creativity, and problem-solving skills.",
+      realImpact: "Environmental awareness",
+      RealImpactSub:
+        "Environmental awareness is already considered a crucial factor for professional development, and is increasingly valued by companies and the job market.",
 
       // Features
       featuresTitle: "Your Weekly Eco-Adventure Includes",
@@ -99,20 +107,25 @@ export default function LandingPageExplorers() {
       ],
       viewAllTiers: "View all tiers and pricing",
 
+      // Worlds Showcase
+      worldsTitle: "An unforgettable adventure through 8 worlds.",
+      worldsSubtitle:
+        "Journey through diverse ecosystems from tropical rainforests to the depths of the ocean, and even back through time to meet extinct species.",
+
       // How It Works
-      howItWorksTitle: "How Habitat English Works",
+      howItWorksTitle: "Why is Habitat perfect for your school?",
       step1Title: "Join the Tribe",
       step1Desc:
         "Sign up and take a quick English assessment to find your perfect tier",
-      step2Title: "Weekly Adventures",
+      step2Title: "Improve English",
       step2Desc:
-        "Every Monday, discover a new ecosystem with fresh content and live classes",
-      step3Title: "Learn & Connect",
+        "Your students will expand their vocabulary and develop fluency through dynamic activities and games.",
+      step3Title: "Problem-solving",
       step3Desc:
-        "Practise English while learning about conservation with fellow tribe members",
-      step4Title: "Make an Impact",
+        "By learning about rare species and inspiring projects, your students will develop awareness of the world they live in, creativity, and problem-solving skills.",
+      step4Title: "Environmental awareness",
       step4Desc:
-        "10% of revenue supports real environmental protection projects",
+        "Environmental awareness is already considered a crucial factor for professional development, and is increasingly valued by companies and the job market.",
 
       // Social Proof
       testimonialTitle: "What Our Tribe Says",
@@ -163,23 +176,29 @@ export default function LandingPageExplorers() {
         "Premium members vote each Thursday on the following week's ecosystem destination. Democracy in action!",
     },
     pt: {
-      heroTitle: "Junte-se à Habitat English",
+      heroTitle: "Uma jornada de inglês por oito mundos",
       heroSubtitle:
-        "Enriqueça seu inglês enquanto você embarca em aventuras ambientais ao redor do nosso planeta",
+        "A  primeira plataforma de ensino de inglês com o tema meio ambiente.",
       heroDescription:
         "Toda semana, nossa tribo explora um novo ecossistema juntos. Descubra espécies incríveis, muitas delas ameaçadas de extinção. Ajude a salvar a vida selvagem da Terra enquanto aprimora seu domínio do inglês.",
-      startFree: "Comece agora",
-      upgradePro: "Comece agora",
+      startFree: "Crie uma Conta",
+      upgradePro: "Àrea do Aluno",
       exploreDemoButton: "Explore Nosso Mapa Interativo",
 
       // Community Focus
-      communityTitle: "Aprenda Juntos, Cause Impacto Juntos",
+      communityTitle: "Por que Habitat é perfeito para você",
       communitySubtitle:
-        "Junte-se a centenas de estudantes numa jornada global sincronizada",
-      weeklyTheme: "Novo ecossistema toda semana",
-      liveClasses: "Aulas de conversação ao vivo",
-      globalCommunity: "Aprenda com a tribo",
-      realImpact: "Apoie a conservação",
+        "Join hundreds of learners on a synchronised global journey",
+      weeklyTheme: "Melhorar inglês",
+      weeklyThemeSub:
+        "Você expandirá o seu vocabulário e desenvolverá a fluencia através de atividades e jogos dinâmicos.",
+      // liveClasses: "Live conversation classes",
+      globalCommunity: "Resolução de problemas",
+      globalCommunitySub:
+        "Ao aprender sobre espécies raras e projetos inspiradores, você desenvolverá a consciência do mundo onde vive, a criatividade e habilidade de resolução de problemas.",
+      realImpact: "Consciência ambiental",
+      RealImpactSub:
+        "A consciência ambiental já é considerada um fator crucial para o desenvolvimento profissional, sendo cada vez mais valorizada pelas empresas e pelo mercado de trabalho.",
 
       // Features
       featuresTitle: "Sua Aventura Ecológica Semanal Inclui",
@@ -233,17 +252,22 @@ export default function LandingPageExplorers() {
       ],
       viewAllTiers: "Ver todos os níveis e preços",
 
+      // Worlds Showcase
+      worldsTitle: "Uma aventura inesquecível por 8 mundos ",
+      worldsSubtitle:
+        "Viaje por diversos ecossistemas, desde florestas tropicais até as profundezas do oceano, e até volte no tempo para conhecer espécies extintas.",
+
       // How It Works
-      howItWorksTitle: "Como Funciona a Habitat English",
-      step1Title: "Entre na Tribo",
+      howItWorksTitle: "Por que Habitat é perfeito para sua escola?",
+      step1Title: "Melhorar inglês",
       step1Desc:
-        "Cadastre-se e faça uma avaliação rápida de inglês para encontrar seu nível perfeito",
-      step2Title: "Aventuras Semanais",
+        "Seus aunos irão expandir o vocabulário e desenvolver a fluencia através de atividades e jogos dinâmicos",
+      step2Title: "Resolução de problemas",
       step2Desc:
-        "Toda segunda-feira, descubra um novo ecossistema com conteúdo inédito e aulas ao vivo",
-      step3Title: "Aprenda e Conecte",
+        "Ao aprender sobre espécies raras e projetos inspiradores, os seus alunos desenvolverão a consciência do mundo onde vivem, a criatividade e habilidade de resolução de problema",
+      step3Title: "Consciência ambiental",
       step3Desc:
-        "Pratique inglês enquanto aprende sobre conservação com outros membros da tribo",
+        "A consciência ambiental já é considerada um fator crucial para o desenvolvimento profissional, sendo cada vez mais valorizada pelas empresas e pelo mercado de trabalho",
       step4Title: "Cause um Impacto",
       step4Desc: "10% da receita apoia projetos reais de proteção ambiental",
 
@@ -302,32 +326,31 @@ export default function LandingPageExplorers() {
 
   const heroImages = [
     {
-      // src: "/landing-top/new-guinea-people-paddling.jpg",
-      // src: "/landing-top/marcus-woodbridge-campfire.jpg",
-      src: "/eco/penguins.jpeg",
-      caption: lang === "en" ? "Join the tribe!" : "Junte-se à tribo",
-    },
-    {
-      src: "/landing-top/augustin-basabose.avif",
+      src: "/landing-top/habitat-landing-main.png",
       caption:
         lang === "en"
           ? "Meet conservation heroes"
           : "Conheça heróis da conservação",
     },
-    {
-      src: "/landing-top/manu-national-park-peru.jpg",
-      caption:
-        lang === "en"
-          ? "This week: Amazon Rainforest"
-          : "Esta semana: Floresta Amazônica",
-    },
-    {
-      src: "/landing-top/vaquitas.jpg",
-      caption:
-        lang === "en"
-          ? "Next week: Endangered cetaceans"
-          : "Próxima semana: Cetáceos ameaçados de extinção",
-    },
+    // {
+    //   src: "/eco/penguins.jpeg",
+    //   caption: lang === "en" ? "Join the tribe!" : "Junte-se à tribo",
+    // },
+
+    // {
+    //   src: "/landing-top/manu-national-park-peru.jpg",
+    //   caption:
+    //     lang === "en"
+    //       ? "This week: Amazon Rainforest"
+    //       : "Esta semana: Floresta Amazônica",
+    // },
+    // {
+    //   src: "/landing-top/vaquitas.jpg",
+    //   caption:
+    //     lang === "en"
+    //       ? "Next week: Endangered cetaceans"
+    //       : "Próxima semana: Cetáceos ameaçados de extinção",
+    // },
   ];
 
   const features = [
@@ -358,11 +381,11 @@ export default function LandingPageExplorers() {
   ];
 
   const steps = [
-    {
-      icon: <Users className="w-12 h-12" />,
-      title: copy.step1Title,
-      description: copy.step1Desc,
-    },
+    // {
+    //   icon: <Users className="w-12 h-12" />,
+    //   title: copy.step1Title,
+    //   description: copy.step1Desc,
+    // },
     {
       icon: <Calendar className="w-12 h-12" />,
       title: copy.step2Title,
@@ -397,7 +420,7 @@ export default function LandingPageExplorers() {
   return (
     <div className="font-sans min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100">
       {/* Hero Section */}
-      <section className="relative py-20 flex items-center justify-center bg-gradient-to-br from-blue-50 via-green-50 to-cyan-50 dark:from-blue-950 dark:via-green-950 dark:to-cyan-950 overflow-hidden">
+      <section className="relative pt-8 lg:pt-20 pb-20 flex items-center justify-center bg-gradient-to-br from-blue-50 via-green-50 to-cyan-50 dark:from-blue-950 dark:via-green-950 dark:to-cyan-950 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-32 h-32 bg-blue-500 rounded-full blur-3xl animate-pulse"></div>
@@ -412,40 +435,38 @@ export default function LandingPageExplorers() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Hero Content */}
             <div className="text-center lg:text-left">
-              {/* Community Badge */}
-              {/* bg-gradient-to-r from-green-100 to-blue-100 dark:from-green-900 dark:to-blue-900 */}
-              <div className="inline-flex items-center gap-2 text-green-800 dark:text-green-200 px-4 py-2 rounded-full text-sm font-medium mb-6 shadow-lg">
-                <Users className="w-4 h-4" />
-                {copy.weeklyTheme}
-              </div>
-
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                <span className="bg-gradient-to-r from-blue-600 to-green-600 dark:from-blue-100 dark:to-white bg-clip-text text-transparent">
+              <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
+                <span className="bg-gradient-to-r from-primary-600 to-green-600 dark:from-blue-100 dark:to-white bg-clip-text text-transparent">
                   {copy.heroTitle}
                 </span>
               </h1>
-
-              <p className="text-xl text-gray-600 dark:text-gray-200 mb-4 max-w-2xl">
+              <h2 className="text-xl lg:text-2xl text-gray-600 dark:text-gray-50 mb-8">
                 {copy.heroSubtitle}
-              </p>
+              </h2>
 
-              <p className="text-lg text-gray-500 dark:text-gray-200 mb-8 max-w-2xl">
+              {/* <p className="text-lg text-gray-500 dark:text-gray-200 mb-8 max-w-2xl">
                 {copy.heroDescription}
-              </p>
+              </p> */}
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                {/* <button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center gap-2 justify-center">
+              <div className="flex flex-row sm:flex-row gap-4 justify-center lg:justify-start">
+                <Link
+                  href="/login"
+                  className="bg-gradient-to-r from-primary-700 to-green-700 hover:from-primary-800 hover:to-green-800 text-white px-4 py-2 lg:px-8 lg:py-4 rounded-lg text-[16px] md:text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center gap-2 justify-center"
+                >
                   {copy.startFree}
-                  <ArrowRight className="w-5 h-5" />
-                </button> */}
+                  {/* <ArrowRight className="w-5 h-5" /> */}
+                </Link>
 
-                {/* <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 flex items-center gap-2 justify-center">
-                  <Mic className="w-5 h-5" />
+                <Link
+                  href="/worlds"
+                  className="border-2 border-primary-900 text-primary-900 dark:text-primary-100 dark:border-primary-100 px-4 py-2 lg:px-8 lg:py-4 rounded-lg text-[16px] md:text-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center"
+                >
+                  {/* <Mic className="w-5 h-5" /> */}
                   {copy.upgradePro}
-                </button> */}
+                </Link>
               </div>
 
               {/* Demo Link */}
@@ -465,32 +486,35 @@ export default function LandingPageExplorers() {
                   alt="Hero"
                   className="w-full h-96 rounded-3xl object-cover shadow-2xl transition-opacity duration-1000"
                 />
-                <div className="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-3">
+                {/* <div className="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-3">
                   <p className="text-sm font-medium text-center">
                     {heroImages[currentImageIndex].caption}
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Community Stats */}
-      <section className="py-16 bg-white dark:bg-gray-900">
+      {/* Why Habitat for your School */}
+      <section className="pt-16 pb-16 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">{copy.communityTitle}</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              {copy.communityTitle}
+            </h2>
+            {/* <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               {copy.communitySubtitle}
-            </p>
+            </p> */}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {[
               {
                 icon: <Calendar className="w-8 h-8" />,
                 text: copy.weeklyTheme,
+                textSub: copy.weeklyThemeSub,
                 color: "blue",
               },
               // {
@@ -501,11 +525,13 @@ export default function LandingPageExplorers() {
               {
                 icon: <Users className="w-8 h-8" />,
                 text: copy.globalCommunity,
+                textSub: copy.globalCommunitySub,
                 color: "purple",
               },
               {
                 icon: <Fish className="w-8 h-8" />,
                 text: copy.realImpact,
+                textSub: copy.RealImpactSub,
                 color: "cyan",
               },
             ].map((item, i) => (
@@ -515,7 +541,74 @@ export default function LandingPageExplorers() {
                 >
                   {item.icon}
                 </div>
-                <p className="font-semibold">{item.text}</p>
+                <h2 className="font-semibold text-xl mb-3">{item.text}</h2>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {item.textSub}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Worlds Showcase */}
+      <section className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              {copy.worldsTitle}
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              {copy.worldsSubtitle}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {getAllWorlds().map((world, index) => (
+              <div
+                key={world.id}
+                className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+              >
+                {/* World Image */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={world.imageUrl}
+                    alt={world.name}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="text-2xl font-bold text-white mb-1">
+                      {world.name}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* World Description */}
+                <div className="p-6">
+                  <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">
+                    {world.description}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between">
+                    <span
+                      className="text-xs font-semibold px-3 py-1 rounded-full text-white"
+                      style={{ backgroundColor: world.color.primary }}
+                    >
+                      {world.adventures.length} Adventures
+                    </span>
+                    <Globe
+                      className="w-5 h-5"
+                      style={{ color: world.color.primary }}
+                    />
+                  </div>
+                </div>
+
+                {/* Hover overlay with "Explore" hint */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  {/* <span className="text-white font-semibold text-lg">
+                    Coming Soon
+                  </span> */}
+                </div>
               </div>
             ))}
           </div>
@@ -523,7 +616,7 @@ export default function LandingPageExplorers() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      {/* <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">{copy.howItWorksTitle}</h2>
@@ -534,9 +627,9 @@ export default function LandingPageExplorers() {
               <div key={i} className="text-center">
                 <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white relative">
                   {step.icon}
-                  {/* <div className="absolute -top-2 -right-2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center text-sm font-bold text-gray-800 dark:text-white">
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center text-sm font-bold text-gray-800 dark:text-white">
                     {i + 1}
-                  </div> */}
+                  </div>
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
@@ -546,7 +639,7 @@ export default function LandingPageExplorers() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
@@ -1100,7 +1193,7 @@ export default function LandingPageExplorers() {
 //           </div>
 //         </div>
 //       </section>
-//        {/* Features Section */}
+//       {/* Features Section */}
 //       <section className="py-20 bg-white dark:bg-gray-900">
 //         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 //           <div className="text-center mb-16">

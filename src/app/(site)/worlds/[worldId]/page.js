@@ -76,6 +76,35 @@ function WorldDetailContent() {
   const [adventureData, setAdventureData] = useState({});
   const [completedLessons, setCompletedLessons] = useState(new Set());
   const [loading, setLoading] = useState(true);
+  const [userType, setUserType] = useState(null);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      if (!user?.id && !user?.userId) return;
+
+      try {
+        const supabaseClient = createClient();
+        const userId = user.userId || user.id;
+
+        const { data, error } = await supabaseClient
+          .from("users")
+          .select("user_type")
+          .eq("id", userId)
+          .single();
+
+        if (error) {
+          console.error("Error fetching user data:", error);
+          return;
+        }
+
+        setUserType(data?.user_type || "individual");
+      } catch (error) {
+        console.error("Error in fetchUserData:", error);
+      }
+    }
+
+    fetchUserData();
+  }, [user]);
 
   useEffect(() => {
     // Load world from config using slug (URL parameter uses hyphens)
@@ -96,7 +125,9 @@ function WorldDetailContent() {
         setFilteredAdventures(availableAdventures);
 
         // Auto-select first adventure that has lessons
-        const firstWithLessons = availableAdventures.find(adv => adv.hasLessons);
+        const firstWithLessons = availableAdventures.find(
+          (adv) => adv.hasLessons
+        );
         if (firstWithLessons) {
           setSelectedAdventure(firstWithLessons);
         } else if (availableAdventures.length > 0) {
@@ -481,7 +512,11 @@ function WorldDetailContent() {
                           {(!hasLessons || adventure.underConstruction) && (
                             <Lock
                               className="w-3 h-3 text-gray-400"
-                              title={!hasLessons ? "No lessons at your level yet" : "Under Construction"}
+                              title={
+                                !hasLessons
+                                  ? "No lessons at your level yet"
+                                  : "Under Construction"
+                              }
                             />
                           )}
                         </div>
@@ -504,7 +539,9 @@ function WorldDetailContent() {
                           <BookOpen className="w-3 h-3" />
                           <span>
                             {hasLessons
-                              ? `${adventure.lessonCount} lesson${adventure.lessonCount !== 1 ? 's' : ''}`
+                              ? `${adventure.lessonCount} lesson${
+                                  adventure.lessonCount !== 1 ? "s" : ""
+                                }`
                               : "Coming soon"}
                           </span>
                         </div>
@@ -540,7 +577,8 @@ function WorldDetailContent() {
                       className="px-4 py-2 rounded-lg text-white font-bold"
                       style={{ backgroundColor: world.color.primary }}
                     >
-                      Week {selectedAdventure.week}
+                      {userType === "school" ? "Week" : "Adventure"}{" "}
+                      {selectedAdventure.week}
                     </div>
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                       {selectedAdventure.name}
