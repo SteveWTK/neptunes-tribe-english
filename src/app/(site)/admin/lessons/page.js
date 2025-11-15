@@ -86,7 +86,8 @@ function LessonsListContent() {
   const filteredLessons = lessons.filter((lesson) => {
     const matchesSearch =
       lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lesson.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      lesson.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lesson.world?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesPillar =
       filterPillar === "all" || lesson.pillar_id === parseInt(filterPillar);
     const matchesStatus =
@@ -223,6 +224,10 @@ function LessonsListContent() {
                       {lesson.description || "No description"}
                     </p>
                     <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                      <span>World: {lesson.world || "Not set"}</span>
+                      <span>•</span>
+                      <span>Adventure: {lesson.theme_tags || "Not set"}</span>
+                      <span>•</span>
                       <span>Difficulty: {lesson.difficulty || "Not set"}</span>
                       <span>•</span>
                       <span>XP: {lesson.xp_reward || 0}</span>

@@ -461,7 +461,7 @@ function WorldDetailContent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Weekly Adventures
+            Adventures
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
             Choose an adventure to explore its units and lessons
@@ -507,7 +507,8 @@ function WorldDetailContent() {
                             className="px-3 py-1 rounded-full text-xs font-bold text-white"
                             style={{ backgroundColor: world.color.primary }}
                           >
-                            Week {adventure.week}
+                            {userType === "school" ? "Week" : "Adventure"}{" "}
+                            {adventure.week}
                           </div>
                           {(!hasLessons || adventure.underConstruction) && (
                             <Lock

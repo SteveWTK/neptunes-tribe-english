@@ -8,6 +8,7 @@ import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
 import { auth } from "@/lib/auth";
 import SiteHomeClient from "./SiteHomeClient";
 import { descending } from "d3";
+import brandConfig from "@/config/brand.config";
 
 export default async function SiteHomePage(props) {
   const session = await auth();
@@ -32,17 +33,24 @@ export default async function SiteHomePage(props) {
   let units;
   let isFiltered = false;
   let completedUnitIds = [];
+  let isPlatformAdmin = false;
+
+  // Get the featured world from brand config
+  const featuredWorld = brandConfig.contentStructure.featuredWorld;
 
   try {
-    // Get user's completed units if logged in
+    // Get user's completed units and role if logged in
     if (session?.user?.email) {
       const { data: userData } = await supabase
         .from("users")
-        .select("id")
+        .select("id, role")
         .eq("email", session.user.email)
         .single();
 
       if (userData) {
+        // Check if user is platform admin
+        isPlatformAdmin = userData.role === "platform_admin";
+
         const { data: completedData } = await supabase
           .from("completed_units")
           .select("unit_id")
@@ -58,6 +66,12 @@ export default async function SiteHomePage(props) {
 
       // Build the query based on filters
       let query = supabase.from("units").select("*").eq("featured", true);
+
+      // Apply world filter based on user role
+      // Platform admins see all units, regular users only see featured world units
+      if (!isPlatformAdmin && featuredWorld) {
+        query = query.eq("world", featuredWorld);
+      }
 
       // Apply region/ecosystem filters
       if (regionFilter) {
@@ -116,13 +130,41 @@ export default async function SiteHomePage(props) {
         units = filteredUnits || [];
       }
     } else {
-      // Use enhanced fetchFeaturedUnits - now shows ALL units
-      units = await fetchFeaturedUnits({
-        sortBy,
-        sortOrder,
-        showCompletedOnly: showCompleted,
-        userCompletedIds: completedUnitIds,
-      });
+      // Use enhanced fetchFeaturedUnits - with world filtering
+      // Build query to filter by world for non-admin users
+      let query = supabase.from("units").select("*").eq("featured", true);
+
+      // Apply world filter based on user role
+      // Platform admins see all units, regular users only see featured world units
+      if (!isPlatformAdmin && featuredWorld) {
+        query = query.eq("world", featuredWorld);
+      }
+
+      // Apply sorting
+      switch (sortBy) {
+        case "length":
+          query = query.order("length", { ascending: sortOrder === "asc" });
+          break;
+        case "newest":
+          query = query.order("id", { descending: sortOrder === "desc" });
+          break;
+        default:
+          query = query.order("rank", { ascending: sortOrder === "asc" });
+      }
+
+      const { data: fetchedUnits, error } = await query;
+
+      if (error) {
+        console.error("Error fetching units:", error);
+        units = await fetchFeaturedUnits({
+          sortBy,
+          sortOrder,
+          showCompletedOnly: showCompleted,
+          userCompletedIds: completedUnitIds,
+        });
+      } else {
+        units = fetchedUnits || [];
+      }
     }
 
     // Apply completion filtering client-side if needed
@@ -161,6 +203,7 @@ export default async function SiteHomePage(props) {
         userInfo={{
           isLoggedIn,
           isPremiumUser,
+          isPlatformAdmin,
           email: session?.user?.email,
         }}
       />
@@ -199,6 +242,7 @@ export default async function SiteHomePage(props) {
         userInfo={{
           isLoggedIn,
           isPremiumUser,
+          isPlatformAdmin,
           email: session?.user?.email,
         }}
       />

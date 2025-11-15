@@ -109,6 +109,11 @@ export const brandConfig = {
     useWorlds: true,
     worldsConfigPath: "@/data/worldsConfig",
 
+    // Featured World (changes monthly/quarterly)
+    // Regular users only see units from this world
+    // Platform admins see all units regardless
+    featuredWorld: "south_america", // Options: south_america, africa, eurasia, oceania, polar_regions, north_america, the_oceans, lost_worlds
+
     // Alternative: Topic-based structure (for business/sports apps)
     // useTopics: true,
     // topicsConfigPath: "@/data/topicsConfig",

@@ -7,6 +7,8 @@ import UnitCard from "@/components/UnitCard";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import Link from "next/link";
 import { countryNameLookup } from "@/lib/isoMappings";
+import brandConfig from "@/config/brand.config";
+import { getWorldById } from "@/data/worldsConfig";
 
 export default function SiteHomeClient({
   featuredUnits,
@@ -20,7 +22,11 @@ export default function SiteHomeClient({
   const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
 
-  const { isLoggedIn, isPremiumUser, email } = userInfo;
+  const { isLoggedIn, isPremiumUser, isPlatformAdmin, email } = userInfo;
+
+  // Get featured world info
+  const featuredWorldId = brandConfig.contentStructure.featuredWorld;
+  const featuredWorldData = getWorldById(featuredWorldId);
 
   const t = {
     en: {
@@ -28,6 +34,9 @@ export default function SiteHomeClient({
       heroSubtitle:
         "Neptune's Tribe is an English learning journey inspired by environmental action. Learn English. Support the Planet.",
       allUnits: "All Learning Units",
+      featuredWorld: "Featured World",
+      viewingWorld: "You're viewing units from",
+      adminViewingAll: "Admin View: Showing all units from all worlds",
       unitsFound: "units found",
       completed: "completed",
       premiumOnly: "Premium Only",
@@ -62,10 +71,14 @@ export default function SiteHomeClient({
       urgentChallenge: "Urgent Environmental Challenge",
     },
     pt: {
-      heroTitle: "Pratique seu Inglês explorando o Planeta",
+      heroTitle: "Pratique seu Inglês explorando o planeta",
       heroSubtitle:
         "Neptune's Tribe é uma jornada de aprendizado de inglês inspirada pela ação ambiental.",
       allUnits: "Todas as Unidades",
+      featuredWorld: "Mundo em Destaque",
+      viewingWorld: "Você está vendo unidades de",
+      adminViewingAll:
+        "Visão Admin: Mostrando todas as unidades de todos os mundos",
       unitsFound: "unidades encontradas",
       completed: "concluídas",
       premiumOnly: "Apenas Premium",
@@ -273,13 +286,13 @@ export default function SiteHomeClient({
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-950 px-4 sm:px-8 py-8">
       {/* Header Section */}
-      <div className="text-center mb-8">
+      <div className="text-center mb-2">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
           {getPageTitle()}
         </h1>
 
         {/* Tip for non-filtered view  */}
-        {!filterInfo.isFiltered && (
+        {/* {!filterInfo.isFiltered && (
           <div className="mb-3">
             <Link
               href="/eco-map"
@@ -288,7 +301,7 @@ export default function SiteHomeClient({
               {copy.clickHint}
             </Link>
           </div>
-        )}
+        )} */}
 
         {/* User Status Bar */}
         {/* {isLoggedIn && (
@@ -313,13 +326,39 @@ export default function SiteHomeClient({
           </div>
         )} */}
         {/* Filter Toggle */}
-        <button
+        {/* <button
           onClick={() => setShowFilters(!showFilters)}
           className="px-4 py-1 bg-premium-500 text-gray-800 dark:text-white rounded-xl hover:bg-premium-600 transition-colors"
         >
           {showFilters ? "Hide Filters" : "Show Filters"}
-        </button>
+        </button> */}
       </div>
+
+      {/* Featured World Banner */}
+      {featuredWorldData && (
+        <div className="mb-4 max-w-4xl mx-auto">
+          {isPlatformAdmin ? (
+            <div className="rounded-lg px-6 pb-2 shadow-md text-center">
+              <p className="text-gray-800 dark:text-gray-50">
+                {copy.adminViewingAll}
+              </p>
+            </div>
+          ) : (
+            <div
+              className="rounded-lg px-6 pb-2 shadow-md text-center text-gray-800 dark:text-white"
+              // style={{
+              //   background: `linear-gradient(135deg, ${featuredWorldData.color.primary} 0%, ${featuredWorldData.color.secondary} 100%)`,
+              // }}
+            >
+              {/* <p className="text-sm opacity-90 mb-1">{copy.featuredWorld}</p> */}
+              <p className="text-xl font-bold">{featuredWorldData.name}</p>
+              {/* <p className="text-sm opacity-90 mt-1">
+                {featuredWorldData.description}
+              </p> */}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Filter Panel */}
       {showFilters && <FilterPanel />}
