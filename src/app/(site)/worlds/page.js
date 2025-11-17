@@ -35,12 +35,43 @@ function WorldsContent() {
   const [worlds, setWorlds] = useState([]);
   const [hoveredWorld, setHoveredWorld] = useState(null);
   const [hoveredHero, setHoveredHero] = useState(null);
+  // Track current hero index for each world (worldId -> heroIndex)
+  const [currentHeroIndexes, setCurrentHeroIndexes] = useState({});
 
   useEffect(() => {
     // Load worlds from config
     const allWorlds = getAllWorlds();
     setWorlds(allWorlds);
+
+    // Initialize hero indexes to 0 for each world
+    const initialIndexes = {};
+    allWorlds.forEach((world) => {
+      initialIndexes[world.id] = 0;
+    });
+    setCurrentHeroIndexes(initialIndexes);
   }, []);
+
+  // Carousel: Rotate heroes every 4 seconds
+  useEffect(() => {
+    if (worlds.length === 0) return;
+
+    const interval = setInterval(() => {
+      setCurrentHeroIndexes((prevIndexes) => {
+        const newIndexes = { ...prevIndexes };
+        worlds.forEach((world) => {
+          // Only rotate if world has multiple heroes
+          const heroes = world.ecoHeroes || [];
+          if (heroes.length > 1) {
+            const currentIndex = newIndexes[world.id] || 0;
+            newIndexes[world.id] = (currentIndex + 1) % heroes.length;
+          }
+        });
+        return newIndexes;
+      });
+    }, 4000); // Change hero every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [worlds]);
 
   const getIcon = (iconName) => {
     const IconComponent = ICON_MAP[iconName] || Globe;
@@ -162,50 +193,82 @@ function WorldsContent() {
                     {/* Overlay gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
 
-                    {/* Icon in corner */}
+                    {/* Icon in corner - Eco Hero Carousel */}
                     <div className="absolute bottom-4 right-4">
-                      {world.ecoHeroUrl ? (
-                        <div
-                          className="relative"
-                          onMouseEnter={() => setHoveredHero(world.id)}
-                          onMouseLeave={() => setHoveredHero(null)}
-                        >
-                          <img
-                            src={world.ecoHeroUrl}
-                            alt={world.ecoHeroName}
-                            style={{ backgroundColor: world.color.primary }}
-                            className="w-12 h-12 rounded-full p-[2px] object-cover shadow-lg md:cursor-help"
-                          />
-                          {/* Hero Name Tooltip - Always visible on mobile (<md), hover-only on desktop (>=md) */}
-                          {world.ecoHeroName && (
-                            <div
-                              className={`absolute bottom-full right-0 mb-2 px-3 py-1.5 text-white text-sm rounded-lg shadow-xl whitespace-nowrap z-20 transition-opacity duration-200
-                                ${
-                                  hoveredHero === world.id
-                                    ? "opacity-100"
-                                    : "opacity-0 pointer-events-none"
-                                }
-                                max-md:opacity-100 max-md:pointer-events-auto
-                              `}
+                      {(() => {
+                        // Get current hero for this world
+                        const heroes = world.ecoHeroes || [];
+                        const hasHeroes = heroes.length > 0;
+                        const currentHeroIndex = currentHeroIndexes[world.id] || 0;
+                        const currentHero = heroes[currentHeroIndex];
+
+                        // Fallback to legacy single hero if no heroes array
+                        const heroImageUrl = currentHero?.imageUrl || world.ecoHeroUrl;
+                        const heroName = currentHero?.name || world.ecoHeroName;
+
+                        return heroImageUrl ? (
+                          <div
+                            className="relative"
+                            onMouseEnter={() => setHoveredHero(world.id)}
+                            onMouseLeave={() => setHoveredHero(null)}
+                          >
+                            {/* Hero Image with fade transition */}
+                            <img
+                              key={`${world.id}-${currentHeroIndex}`}
+                              src={heroImageUrl}
+                              alt={heroName}
                               style={{ backgroundColor: world.color.primary }}
-                            >
-                              {world.ecoHeroName}
-                              {/* Arrow */}
+                              className="w-12 h-12 rounded-full p-[2px] object-cover shadow-lg md:cursor-help transition-opacity duration-500"
+                            />
+
+                            {/* Carousel indicators (dots) - only show if multiple heroes */}
+                            {heroes.length > 1 && (
+                              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1">
+                                {heroes.map((_, idx) => (
+                                  <div
+                                    key={idx}
+                                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                                      idx === currentHeroIndex
+                                        ? "bg-white scale-110"
+                                        : "bg-white/50"
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Hero Name Tooltip - Always visible on mobile (<md), hover-only on desktop (>=md) */}
+                            {heroName && (
                               <div
-                                className="absolute top-full right-4 -mt-1 w-2 h-2 transform rotate-45"
+                                key={`tooltip-${world.id}-${currentHeroIndex}`}
+                                className={`absolute bottom-full right-0 mb-2 px-3 py-1.5 text-white text-sm rounded-lg shadow-xl whitespace-nowrap z-20 transition-opacity duration-300
+                                  ${
+                                    hoveredHero === world.id
+                                      ? "opacity-100"
+                                      : "opacity-0 pointer-events-none"
+                                  }
+                                  max-md:opacity-100 max-md:pointer-events-auto
+                                `}
                                 style={{ backgroundColor: world.color.primary }}
-                              ></div>
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <div
-                          className="bg-white/90 dark:bg-gray-800/90 rounded-full p-3 shadow-lg"
-                          style={{ color: world.color.primary }}
-                        >
-                          <IconComponent className="w-6 h-6" />
-                        </div>
-                      )}
+                              >
+                                {heroName}
+                                {/* Arrow */}
+                                <div
+                                  className="absolute top-full right-4 -mt-1 w-2 h-2 transform rotate-45"
+                                  style={{ backgroundColor: world.color.primary }}
+                                ></div>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div
+                            className="bg-white/90 dark:bg-gray-800/90 rounded-full p-3 shadow-lg"
+                            style={{ color: world.color.primary }}
+                          >
+                            <IconComponent className="w-6 h-6" />
+                          </div>
+                        );
+                      })()}
                     </div>
                   </div>
 

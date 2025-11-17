@@ -36,9 +36,31 @@ export const WORLDS = {
     heroUrl:
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Caqueta%20titi%20with%20baby.webp",
     mapUrl: "/maps/south-america.png",
+    // Legacy single hero (kept for backward compatibility)
     ecoHeroUrl:
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/PATRICIA-MEDICI.png",
     ecoHeroName: "Patricia Medici",
+    // NEW: Multiple eco heroes carousel
+    ecoHeroes: [
+      {
+        name: "Patricia Medici",
+        imageUrl:
+          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/PATRICIA-MEDICI.png",
+        description: "Tapir conservationist", // Optional: for future use
+      },
+      {
+        name: "Marina Silva",
+        imageUrl:
+          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/Marina%20Silva.webp",
+        description: "Defending the rainforest", // Optional: for future use
+      },
+      // Add more heroes here as you find images
+      // {
+      //   name: "Chico Mendes",
+      //   imageUrl: "https://...",
+      //   description: "Rainforest defender"
+      // },
+    ],
     adventures: [
       {
         id: "amazon_rainforest",

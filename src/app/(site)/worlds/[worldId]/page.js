@@ -79,7 +79,9 @@ function WorldDetailContent() {
   const [loading, setLoading] = useState(true);
   const [userType, setUserType] = useState(null);
   const [viewingAllLevels, setViewingAllLevels] = useState(false);
-  const [hoveredHero, setHoveredHero] = useState(null);
+  const [hoveredHero, setHoveredHero] = useState(false);
+  // For single world page, we only need one number (not an object like the worlds list page)
+  const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -157,6 +159,26 @@ function WorldDetailContent() {
 
     loadWorldData();
   }, [params.worldId, user]);
+
+  // Carousel: Rotate through eco heroes every 4 seconds
+  useEffect(() => {
+    if (!world) return;
+
+    const heroes = world.ecoHeroes || [];
+
+    // Only set up carousel if there are multiple heroes
+    if (heroes.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentHeroIndex((prevIndex) => {
+        // Move to next hero, loop back to 0 at the end
+        return (prevIndex + 1) % heroes.length;
+      });
+    }, 4000); // Change hero every 4 seconds
+
+    // Cleanup: clear interval when component unmounts or world changes
+    return () => clearInterval(interval);
+  }, [world]); // Re-run if world changes
 
   useEffect(() => {
     // Load units and lessons for selected adventure
@@ -458,49 +480,80 @@ function WorldDetailContent() {
           </div>
         </div>
 
+        {/* Eco Hero Carousel - Bottom Right Corner */}
         <div className="absolute bottom-4 right-4">
-          {world.ecoHeroUrl ? (
-            <div
-              className="relative"
-              onMouseEnter={() => setHoveredHero(world.id)}
-              onMouseLeave={() => setHoveredHero(null)}
-            >
-              <img
-                src={world.ecoHeroUrl}
-                alt={world.ecoHeroName}
-                style={{ backgroundColor: world.color.primary }}
-                className="w-12 lg:w-24 h-12 lg:h-24 rounded-full p-[2px] object-cover shadow-lg md:cursor-help"
-              />
-              {/* Hero Name Tooltip - Always visible on mobile (<md), hover-only on desktop (>=md) */}
-              {world.ecoHeroName && (
-                <div
-                  className={`absolute bottom-full right-0 mb-2 px-3 py-1.5 text-white text-sm rounded-lg shadow-xl whitespace-nowrap z-20 transition-opacity duration-200
-                                ${
-                                  hoveredHero === world.id
-                                    ? "opacity-100"
-                                    : "opacity-0 pointer-events-none"
-                                }
-                                max-md:opacity-100 max-md:pointer-events-auto
-                              `}
+          {(() => {
+            // Get current hero for this world
+            const heroes = world.ecoHeroes || [];
+            const currentHero = heroes[currentHeroIndex];
+
+            // Fallback to legacy single hero if no heroes array
+            const heroImageUrl = currentHero?.imageUrl || world.ecoHeroUrl;
+            const heroName = currentHero?.name || world.ecoHeroName;
+
+            return heroImageUrl ? (
+              <div
+                className="relative"
+                onMouseEnter={() => setHoveredHero(true)}
+                onMouseLeave={() => setHoveredHero(false)}
+              >
+                {/* Hero Image with fade transition */}
+                <img
+                  key={`hero-${currentHeroIndex}`}
+                  src={heroImageUrl}
+                  alt={heroName}
                   style={{ backgroundColor: world.color.primary }}
-                >
-                  {world.ecoHeroName}
-                  {/* Arrow */}
+                  className="w-12 lg:w-24 h-12 lg:h-24 rounded-full p-[2px] object-cover shadow-lg md:cursor-help transition-opacity duration-500"
+                />
+
+                {/* Carousel indicators (dots) - only show if multiple heroes */}
+                {heroes.length > 1 && (
+                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1">
+                    {heroes.map((_, idx) => (
+                      <div
+                        key={idx}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          idx === currentHeroIndex
+                            ? "bg-white scale-110"
+                            : "bg-white/50"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {/* Hero Name Tooltip - Always visible on mobile (<md), hover-only on desktop (>=md) */}
+                {heroName && (
                   <div
-                    className="absolute top-full right-4 -mt-1 w-2 h-2 transform rotate-45"
+                    key={`tooltip-${currentHeroIndex}`}
+                    className={`absolute bottom-full right-0 mb-2 px-3 py-1.5 text-white text-sm lg:text-base rounded-lg shadow-xl whitespace-nowrap z-20 transition-opacity duration-300
+                      ${
+                        hoveredHero
+                          ? "opacity-100"
+                          : "opacity-0 pointer-events-none"
+                      }
+                      max-md:opacity-100 max-md:pointer-events-auto
+                    `}
                     style={{ backgroundColor: world.color.primary }}
-                  ></div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div
-              className="bg-white/90 dark:bg-gray-800/90 rounded-full p-3 shadow-lg"
-              style={{ color: world.color.primary }}
-            >
-              <IconComponent className="w-6 h-6" />
-            </div>
-          )}
+                  >
+                    {heroName}
+                    {/* Arrow */}
+                    <div
+                      className="absolute top-full right-4 -mt-1 w-2 h-2 transform rotate-45"
+                      style={{ backgroundColor: world.color.primary }}
+                    ></div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div
+                className="bg-white/90 dark:bg-gray-800/90 rounded-full p-3 shadow-lg"
+                style={{ color: world.color.primary }}
+              >
+                <IconComponent className="w-6 h-6" />
+              </div>
+            );
+          })()}
         </div>
 
         {/* Decorative background elements (only if no image) */}
