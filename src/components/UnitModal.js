@@ -13,7 +13,7 @@ export default function UnitModal({
   isOpen,
   onClose,
   onComplete,
-  initialShowFullText = false
+  initialShowFullText = false,
 }) {
   // Close on Escape key
   useEffect(() => {
@@ -59,10 +59,10 @@ export default function UnitModal({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-4 md:inset-8 lg:inset-12 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col"
+            className="fixed inset-4 md:inset-8 lg:inset-10 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200 dark:border-gray-700 bg-primary-50 dark:bg-primary-900/20">
+            <div className="flex items-center justify-between p-4 md:px-6 md:py-4 border-b border-gray-200 dark:border-gray-700 bg-primary-50 dark:bg-primary-900/20">
               <div>
                 <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
                   Practice Exercise
@@ -82,7 +82,7 @@ export default function UnitModal({
 
             {/* Content - Scrollable */}
             <div className="flex-1 overflow-y-auto p-2 md:p-4 lg:p-6">
-              <div className="max-w-7xl mx-auto">
+              <div className="max-w-full mx-auto">
                 <MultiGapFillExerciseNew
                   unitId={unitId}
                   units={[]}
@@ -101,7 +101,7 @@ export default function UnitModal({
             </div>
 
             {/* Footer */}
-            <div className="p-4 md:p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+            <div className="p-4 md:px-6 md:py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
               <div className="flex justify-between items-center max-w-6xl mx-auto">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Press{" "}
