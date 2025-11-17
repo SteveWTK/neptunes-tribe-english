@@ -101,6 +101,14 @@ export const UI_TRANSLATIONS = {
     all_answers_correct: "Perfect! All your answers are correct.",
     some_answers_need_work:
       "Some answers need work. Revise the above feedback!",
+
+    // Completion Messages
+    lesson_completed: "Lesson Completed!",
+    you_completed_lesson: "Congratulations! You've competed",
+    achievements: "Achievements:",
+    saving_progress: "Saving Progress...",
+    activities_completed: "completed activities",
+    percent_complete: "% complete",
   },
   "pt-BR": {
     // Common UI Elements

@@ -54,11 +54,11 @@ export default function FloatingFacts({ facts = [] }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -20, scale: 0.9 }}
         transition={{ duration: 0.5 }}
-        className="fixed top-24 right-4 md:right-64 lg:right-96 xl:right-128 z-40 max-w-xs"
+        className="fixed top-56 right-4 md:right-64 lg:right-96 xl:right-128 z-40 max-w-xs"
       >
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border-2 border-primary-200 dark:border-primary-700 overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-primary-500 to-accent-500 px-4 py-2 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-accent-500 to-primary-500 px-4 py-2 flex items-center justify-between">
             <div className="flex items-center gap-2 text-white">
               <Info className="w-4 h-4" />
               <span className="font-semibold text-sm">

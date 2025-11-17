@@ -34,6 +34,7 @@ function WorldsContent() {
   const { user } = useAuth();
   const [worlds, setWorlds] = useState([]);
   const [hoveredWorld, setHoveredWorld] = useState(null);
+  const [hoveredHero, setHoveredHero] = useState(null);
 
   useEffect(() => {
     // Load worlds from config
@@ -163,12 +164,48 @@ function WorldsContent() {
 
                     {/* Icon in corner */}
                     <div className="absolute bottom-4 right-4">
-                      <div
-                        className="bg-white/90 dark:bg-gray-800/90 rounded-full p-3 shadow-lg"
-                        style={{ color: world.color.primary }}
-                      >
-                        <IconComponent className="w-6 h-6" />
-                      </div>
+                      {world.ecoHeroUrl ? (
+                        <div
+                          className="relative"
+                          onMouseEnter={() => setHoveredHero(world.id)}
+                          onMouseLeave={() => setHoveredHero(null)}
+                        >
+                          <img
+                            src={world.ecoHeroUrl}
+                            alt={world.ecoHeroName}
+                            style={{ backgroundColor: world.color.primary }}
+                            className="w-12 h-12 rounded-full p-[2px] object-cover shadow-lg md:cursor-help"
+                          />
+                          {/* Hero Name Tooltip - Always visible on mobile (<md), hover-only on desktop (>=md) */}
+                          {world.ecoHeroName && (
+                            <div
+                              className={`absolute bottom-full right-0 mb-2 px-3 py-1.5 text-white text-sm rounded-lg shadow-xl whitespace-nowrap z-20 transition-opacity duration-200
+                                ${
+                                  hoveredHero === world.id
+                                    ? "opacity-100"
+                                    : "opacity-0 pointer-events-none"
+                                }
+                                max-md:opacity-100 max-md:pointer-events-auto
+                              `}
+                              style={{ backgroundColor: world.color.primary }}
+                            >
+                              {world.ecoHeroName}
+                              {/* Arrow */}
+                              <div
+                                className="absolute top-full right-4 -mt-1 w-2 h-2 transform rotate-45"
+                                style={{ backgroundColor: world.color.primary }}
+                              ></div>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div
+                          className="bg-white/90 dark:bg-gray-800/90 rounded-full p-3 shadow-lg"
+                          style={{ color: world.color.primary }}
+                        >
+                          <IconComponent className="w-6 h-6" />
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -193,10 +230,10 @@ function WorldsContent() {
                         <Sparkles className="w-4 h-4" />
                         <span>{world.adventures.length} Adventures</span>
                       </div>
-                      <div className="flex items-center gap-1">
+                      {/* <div className="flex items-center gap-1">
                         <BookOpen className="w-4 h-4" />
                         <span>4 Weeks</span>
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Adventure Preview */}

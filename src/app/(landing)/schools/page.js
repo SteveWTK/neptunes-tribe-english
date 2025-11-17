@@ -191,7 +191,7 @@ export default function LandingPageSchools() {
         "Join hundreds of learners on a synchronised global journey",
       weeklyTheme: "Melhorar inglês",
       weeklyThemeSub:
-        "Seus aunos irão expandir o vocabulário e desenvolver a fluencia através de atividades e jogos dinâmicos.",
+        "Seus aunos irão expandir o vocabulário e desenvolver a fluência através de atividades e jogos dinâmicos.",
       // liveClasses: "Live conversation classes",
       globalCommunity: "Resolução de problemas",
       globalCommunitySub:

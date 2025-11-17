@@ -329,6 +329,7 @@ export async function getLessonById(lessonId) {
 
 /**
  * Get lessons filtered by user's level and type
+ * Supports "All Levels" filter for individual users via localStorage
  *
  * @param {string} userId - User ID to get level/type from
  * @param {string} worldId - World ID (e.g., "south_america")
@@ -350,19 +351,94 @@ export async function getLessonsForUser(userId, worldId, adventureId) {
 
     if (userError) {
       console.error("❌ Error fetching user data:", userError);
-      console.log("⚠️ Falling back to Beginner/individual defaults");
-      // Default to beginner/individual if user fetch fails
-      return getLessonsByLevelAndType("Beginner", "individual", worldId, adventureId);
+      console.log("⚠️ Falling back to Level 1/individual defaults");
+      // Default to Level 1/individual if user fetch fails
+      return getLessonsByLevelAndType("Level 1", "individual", worldId, adventureId);
     }
 
-    const userLevel = userData?.current_level || "Beginner";
+    const userLevel = userData?.current_level || "Level 1";
     const userType = userData?.user_type || "individual";
 
-    console.log("✅ User level data:", { userLevel, userType });
+    // Check if user's database level is set to "All Levels" (admin testing)
+    if (userLevel === "All Levels") {
+      console.log("🌍 User level is 'All Levels' - fetching all lessons");
+      return getLessonsAllLevels(userType, worldId, adventureId);
+    }
 
-    return getLessonsByLevelAndType(userLevel, userType, worldId, adventureId);
+    // Check localStorage for level filter (individual users only)
+    let effectiveLevel = userLevel;
+    if (userType === "individual" && typeof window !== 'undefined') {
+      const levelFilter = localStorage.getItem("level_filter");
+      if (levelFilter === "all") {
+        // Return lessons from all levels
+        console.log("🌍 localStorage filter is 'all' - fetching all lessons");
+        return getLessonsAllLevels(userType, worldId, adventureId);
+      } else if (levelFilter && levelFilter !== userLevel) {
+        // User has selected a specific level filter
+        effectiveLevel = levelFilter;
+      }
+    }
+
+    console.log("✅ User level data:", { userLevel, userType, effectiveLevel });
+
+    return getLessonsByLevelAndType(effectiveLevel, userType, worldId, adventureId);
   } catch (error) {
     console.error("❌ Error in getLessonsForUser:", error);
+    return [];
+  }
+}
+
+/**
+ * Get lessons from all levels (for individual users viewing "All Levels")
+ *
+ * @param {string} userType - User type ("school" or "individual")
+ * @param {string} worldId - World ID
+ * @param {string} adventureId - Adventure theme tag
+ * @returns {Promise<Array>} Lessons from all levels
+ */
+export async function getLessonsAllLevels(userType, worldId, adventureId) {
+  try {
+    const targetAudience = userType === "school" ? "schools" : "users";
+
+    console.log("🌍 getLessonsAllLevels filters:", {
+      userType,
+      targetAudience,
+      worldId,
+      adventureId
+    });
+
+    // Build the query - no difficulty filter
+    let query = supabase
+      .from("lessons")
+      .select("*")
+      .eq("is_active", true)
+      .order("difficulty", { ascending: true }) // Order by level first
+      .order("sort_order", { ascending: true }); // Then by sort order
+
+    // Filter by world if provided
+    if (worldId) {
+      query = query.eq("world", worldId);
+    }
+
+    // Filter by adventure (theme_tags) if provided
+    if (adventureId) {
+      query = query.contains("theme_tags", [adventureId]);
+    }
+
+    // Filter by target audience
+    query = query.in("target_audience", [targetAudience, "both"]);
+
+    const { data, error } = await query;
+
+    console.log("📚 All levels lessons query result:", {
+      count: data?.length || 0,
+      error: error?.message
+    });
+
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error("❌ Error in getLessonsAllLevels:", error);
     return [];
   }
 }
@@ -472,6 +548,7 @@ export async function adventureHasLessonsForUser(userId, worldId, adventureId) {
 /**
  * Get all adventures in a world that have lessons for user
  * Filters by BOTH user level AND lesson availability
+ * Supports "All Levels" view for individual users
  *
  * @param {string} userId - User ID
  * @param {string} worldId - World ID
@@ -480,29 +557,46 @@ export async function adventureHasLessonsForUser(userId, worldId, adventureId) {
  */
 export async function getAvailableAdventures(userId, worldId, adventures) {
   try {
-    // Get user's current level
+    // Get user's current level and type
     const { data: userData } = await supabase
       .from("users")
-      .select("current_level")
+      .select("current_level, user_type")
       .eq("id", userId)
       .single();
 
-    const userLevel = userData?.current_level || "Beginner";
+    const userLevel = userData?.current_level || "Level 1";
+    const userType = userData?.user_type || "individual";
 
-    console.log("🎮 Filtering adventures for level:", userLevel);
+    // Check if user is viewing all levels
+    let viewingAllLevels = false;
 
-    // Filter adventures by user's level AND check lesson counts
-    const levelFilteredAdventures = adventures.filter((adventure) => {
-      // If adventure has no levels property, show it for all levels (backward compatible)
-      if (!adventure.levels || adventure.levels.length === 0) {
-        return true;
-      }
-      // Otherwise, check if user's level is in the adventure's levels array
-      return adventure.levels.includes(userLevel);
-    });
+    // Check database level for "All Levels" (admin testing)
+    if (userLevel === "All Levels") {
+      viewingAllLevels = true;
+    } else if (userType === "individual" && typeof window !== 'undefined') {
+      // Check localStorage for individual users
+      const levelFilter = localStorage.getItem("level_filter");
+      viewingAllLevels = (levelFilter === "all" || levelFilter === null);
+    }
+
+    console.log("🎮 Filtering adventures:", { userLevel, userType, viewingAllLevels });
+
+    // Filter adventures by user's level (unless viewing all levels)
+    let levelFilteredAdventures = adventures;
+
+    if (!viewingAllLevels) {
+      levelFilteredAdventures = adventures.filter((adventure) => {
+        // If adventure has no levels property, show it for all levels (backward compatible)
+        if (!adventure.levels || adventure.levels.length === 0) {
+          return true;
+        }
+        // Otherwise, check if user's level is in the adventure's levels array
+        return adventure.levels.includes(userLevel);
+      });
+    }
 
     console.log(
-      `📊 Filtered ${levelFilteredAdventures.length}/${adventures.length} adventures for ${userLevel}`
+      `📊 Filtered ${levelFilteredAdventures.length}/${adventures.length} adventures for ${viewingAllLevels ? 'All Levels' : userLevel}`
     );
 
     const adventuresWithLessons = await Promise.all(

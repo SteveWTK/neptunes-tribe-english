@@ -41,7 +41,7 @@ export default function HeaderBase({
         { href: "/worlds", label: "Mundos" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
-        { href: "/subscriptions", label: "Assinaturas" },
+        { href: "/subscriptions", label: "Planos" },
         // { href: "/explorers", label: "Para Exploradores Solo" },
         // { href: "/schools", label: "Para Escolas" },
         // { href: "/about-us", label: "Sobre Nós" },
@@ -60,7 +60,7 @@ export default function HeaderBase({
         { href: "/worlds", label: "Mundos" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
-        { href: "/subscriptions", label: "Assinaturas" },
+        { href: "/subscriptions", label: "Planos" },
       ],
     },
   };

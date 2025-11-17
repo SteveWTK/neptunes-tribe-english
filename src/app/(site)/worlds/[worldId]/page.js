@@ -29,6 +29,7 @@ import {
   getAvailableAdventures,
 } from "@/lib/supabase/lesson-queries";
 import LevelIndicator from "@/components/LevelIndicator";
+import LessonLevelBadge from "@/components/LessonLevelBadge";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -77,6 +78,7 @@ function WorldDetailContent() {
   const [completedLessons, setCompletedLessons] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [userType, setUserType] = useState(null);
+  const [viewingAllLevels, setViewingAllLevels] = useState(false);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -97,7 +99,14 @@ function WorldDetailContent() {
           return;
         }
 
-        setUserType(data?.user_type || "individual");
+        const type = data?.user_type || "individual";
+        setUserType(type);
+
+        // Check if viewing all levels (individual users only)
+        if (type === "individual" && typeof window !== 'undefined') {
+          const levelFilter = localStorage.getItem("level_filter");
+          setViewingAllLevels(levelFilter === "all" || levelFilter === null);
+        }
       } catch (error) {
         console.error("Error in fetchUserData:", error);
       }
@@ -495,7 +504,7 @@ function WorldDetailContent() {
                         : "border-transparent hover:border-gray-300 dark:hover:border-gray-600"
                     }`}
                   >
-                    {/* Week Badge */}
+                    {/* Adventure Badge */}
                     <div
                       className="h-1"
                       style={{ backgroundColor: world.color.primary }}
@@ -641,9 +650,30 @@ function WorldDetailContent() {
                                       />
                                     )}
                                   </div>
-                                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                                    {lesson.content?.steps?.length || 0}{" "}
-                                    activities
+                                  <div className="flex gap-2 items-center">
+                                    {/* Show level badge when viewing all levels */}
+                                    {viewingAllLevels && lesson.difficulty && (
+                                      <LessonLevelBadge
+                                        difficulty={lesson.difficulty}
+                                        size="sm"
+                                      />
+                                    )}
+                                    {/* Show difficulty text when not viewing all levels */}
+                                    {!viewingAllLevels && (
+                                      <div
+                                        className="text-sm text-gray-600 dark:text-gray-400"
+                                        style={{ color: world.color.light }}
+                                      >
+                                        {lesson.difficulty}
+                                      </div>
+                                    )}
+                                    {/* <span className="text-sm text-gray-600 dark:text-gray-400">
+                                      •
+                                    </span>
+                                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                                      {lesson.content?.steps?.length || 0}{" "}
+                                      activities
+                                    </div> */}
                                   </div>
                                 </div>
 

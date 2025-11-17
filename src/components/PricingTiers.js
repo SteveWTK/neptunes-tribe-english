@@ -371,7 +371,7 @@ export default function PricingTiers() {
             <Button
               className="w-full mt-6"
               variant="outline"
-              onClick={() => router.push("/units")}
+              onClick={() => router.push("/worlds")}
             >
               {copy.getStartedFree}
             </Button>

@@ -13,38 +13,38 @@
 
 export const LEVELS = {
   // Level 0: Survival Basics (Optional - for absolute beginners)
-  survival_absolute: {
-    id: "survival_absolute",
-    value: "Survival Absolute", // Must match lesson.difficulty in database
-    displayName: "Survival Mode",
-    shortName: "Survival",
-    description: "Essential basics for immediate communication",
-    order: 0,
-    icon: "🆘", // Customize per project
-    color: {
-      primary: "#ef4444", // red-500
-      light: "#fef2f2",
-      dark: "#7f1d1d",
-    },
-    // Content characteristics
-    characteristics: [
-      "Very short lessons (5-10 min)",
-      "Survival vocabulary only",
-      "Immediate practical use",
-      "Minimal grammar",
-    ],
-    // Estimated duration to complete
-    estimatedDuration: "2-4 weeks",
-    // For schools: Which grade level
-    recommendedGrade: "Any (Emergency preparedness)",
-  },
+  // survival_absolute: {
+  //   id: "survival_absolute",
+  //   value: "Survival Absolute", // Must match lesson.difficulty in database
+  //   displayName: "Survival Mode",
+  //   shortName: "Survival",
+  //   description: "Essential basics for immediate communication",
+  //   order: 0,
+  //   icon: "🆘", // Customize per project
+  //   color: {
+  //     primary: "#ef4444", // red-500
+  //     light: "#fef2f2",
+  //     dark: "#7f1d1d",
+  //   },
+  //   // Content characteristics
+  //   characteristics: [
+  //     "Very short lessons (5-10 min)",
+  //     "Survival vocabulary only",
+  //     "Immediate practical use",
+  //     "Minimal grammar",
+  //   ],
+  //   // Estimated duration to complete
+  //   estimatedDuration: "2-4 weeks",
+  //   // For schools: Which grade level
+  //   recommendedGrade: "Any (Emergency preparedness)",
+  // },
 
   // Level 1: Discovery/Beginner
   beginner: {
-    id: "beginner",
-    value: "Beginner", // Must match lesson.difficulty in database
+    id: "level_1",
+    value: "Level 1", // Must match lesson.difficulty in database
     displayName: "Level 1: Discovery",
-    shortName: "Beginner",
+    shortName: "Level 1",
     description: "Start your environmental English journey",
     order: 1,
     icon: "🌱", // Customize per project
@@ -65,10 +65,10 @@ export const LEVELS = {
 
   // Level 2: Exploration/Intermediate
   intermediate: {
-    id: "intermediate",
-    value: "Intermediate", // Must match lesson.difficulty in database
+    id: "level_2",
+    value: "Level 2", // Must match lesson.difficulty in database
     displayName: "Level 2: Explorer",
-    shortName: "Intermediate",
+    shortName: "Level 2",
     description: "Deepen your understanding and skills",
     order: 2,
     icon: "🔍", // Customize per project
@@ -89,10 +89,10 @@ export const LEVELS = {
 
   // Level 3: Mastery/Advanced
   advanced: {
-    id: "advanced",
-    value: "Advanced", // Must match lesson.difficulty in database
+    id: "level_3",
+    value: "Level 3", // Must match lesson.difficulty in database
     displayName: "Level 3: Expert",
-    shortName: "Advanced",
+    shortName: "Level 3",
     description: "Master complex environmental topics",
     order: 3,
     icon: "🏆", // Customize per project
@@ -112,28 +112,28 @@ export const LEVELS = {
   },
 
   // Individual users: free travellers
-  solo: {
-    id: "solo",
-    value: "Solo", // Must match lesson.difficulty in database
-    displayName: "Solo Explorer",
-    shortName: "Solo Explorer",
-    description: "Master complex environmental topics",
-    order: 3,
-    icon: "🌍", // Customize per project
-    color: {
-      primary: "#8b5cf6", // violet-500
-      light: "#ede9fe",
-      dark: "#4c1d95",
-    },
-    characteristics: [
-      "Advanced vocabulary and idioms",
-      "Long readings (800-1500 words)",
-      "Critical thinking exercises",
-      "Research and debate topics",
-    ],
-    estimatedDuration: "12+ months",
-    recommendedGrade: "11th-12th grade / College",
-  },
+  // solo: {
+  //   id: "solo",
+  //   value: "Solo", // Must match lesson.difficulty in database
+  //   displayName: "Solo Explorer",
+  //   shortName: "Solo",
+  //   description: "Master complex environmental topics",
+  //   order: 3,
+  //   icon: "🌍", // Customize per project
+  //   color: {
+  //     primary: "#8b5cf6", // violet-500
+  //     light: "#ede9fe",
+  //     dark: "#4c1d95",
+  //   },
+  //   characteristics: [
+  //     "Advanced vocabulary and idioms",
+  //     "Long readings (800-1500 words)",
+  //     "Critical thinking exercises",
+  //     "Research and debate topics",
+  //   ],
+  //   estimatedDuration: "12+ months",
+  //   recommendedGrade: "11th-12th grade / College",
+  // },
 
   // FUTURE LEVELS (Add as needed):
   // expert: {

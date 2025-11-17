@@ -1,32 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
-import { getLevelByValue } from "@/config/levelsConfig";
-import { Trophy, TrendingUp } from "lucide-react";
+import { getLevelByValue, getAllLevels } from "@/config/levelsConfig";
+import { Trophy, TrendingUp, ChevronDown, Check } from "lucide-react";
 
 /**
- * LevelIndicator - Shows user's current difficulty level
+ * LevelIndicator - Shows user's current difficulty level with filtering options
  *
  * Displays the user's current learning level with:
  * - Level icon and name
  * - Color-coded badge matching level theme
- * - Tooltip with level description
+ * - For individual users: Interactive dropdown to filter content by level or view all
+ * - For school users: Static display (no dropdown)
  *
  * @param {Object} props
  * @param {string} props.variant - Display variant: "badge" (compact), "card" (detailed), or "inline" (text only)
  * @param {string} props.className - Additional CSS classes
+ * @param {Function} props.onFilterChange - Optional callback when filter changes (receives selectedFilter value)
  */
-export default function LevelIndicator({ variant = "badge", className = "" }) {
+export default function LevelIndicator({
+  variant = "badge",
+  className = "",
+  onFilterChange,
+}) {
   const { user } = useAuth();
   const [userLevel, setUserLevel] = useState(null);
+  const [userType, setUserType] = useState(null);
   const [levelConfig, setLevelConfig] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState(null); // null = all levels
+  const dropdownRef = useRef(null);
 
+  // Load user level and type from Supabase
   useEffect(() => {
     const fetchUserLevel = async () => {
-      if (!user?.id) {
+      const userId = user?.userId || user?.id;
+
+      if (!userId) {
+        console.log("LevelIndicator: No user ID found");
         setLoading(false);
         return;
       }
@@ -35,8 +49,8 @@ export default function LevelIndicator({ variant = "badge", className = "" }) {
         const supabase = createClient();
         const { data, error } = await supabase
           .from("users")
-          .select("current_level")
-          .eq("id", user.id)
+          .select("current_level, user_type")
+          .eq("id", userId)
           .single();
 
         if (error) {
@@ -45,12 +59,30 @@ export default function LevelIndicator({ variant = "badge", className = "" }) {
           return;
         }
 
-        const level = data?.current_level || "Beginner";
+        console.log("LevelIndicator: User data fetched:", data);
+
+        const level = data?.current_level || "Level 1";
+        const type = data?.user_type || "individual";
         setUserLevel(level);
+        setUserType(type);
 
         // Get level configuration from levelsConfig
         const config = getLevelByValue(level);
-        setLevelConfig(config);
+        console.log("LevelIndicator: Level config found:", config);
+
+        if (!config) {
+          console.warn(`LevelIndicator: No config found for level "${level}"`);
+          // Set a default config
+          setLevelConfig({
+            icon: "🌱",
+            shortName: level,
+            displayName: level,
+            color: { primary: "#10b981" },
+            description: level,
+          });
+        } else {
+          setLevelConfig(config);
+        }
       } catch (error) {
         console.error("Error in fetchUserLevel:", error);
       } finally {
@@ -61,20 +93,156 @@ export default function LevelIndicator({ variant = "badge", className = "" }) {
     fetchUserLevel();
   }, [user]);
 
+  // Load saved filter preference from localStorage (individual users only)
+  useEffect(() => {
+    if (userType === "individual") {
+      const savedFilter = localStorage.getItem("level_filter");
+      // null or "all" means all levels, otherwise it's a specific level value
+      if (savedFilter === null) {
+        // First time user - set default to "all"
+        localStorage.setItem("level_filter", "all");
+        setSelectedFilter(null);
+      } else if (savedFilter === "all") {
+        setSelectedFilter(null);
+      } else {
+        setSelectedFilter(savedFilter);
+      }
+    } else if (userType === "school") {
+      // School users always see their assigned level
+      setSelectedFilter(userLevel);
+    }
+  }, [userType, userLevel]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
+  }, [isDropdownOpen]);
+
+  const handleFilterChange = (newFilter) => {
+    setSelectedFilter(newFilter);
+    setIsDropdownOpen(false);
+
+    // Save to localStorage
+    if (newFilter === null) {
+      localStorage.setItem("level_filter", "all");
+    } else {
+      localStorage.setItem("level_filter", newFilter);
+    }
+
+    // Notify parent component if callback provided
+    if (onFilterChange) {
+      onFilterChange(newFilter);
+    }
+
+    // Trigger page reload to apply filter
+    window.location.reload();
+  };
+
+  const allLevels = getAllLevels();
+  const isIndividual = userType === "individual";
+  const displayConfig =
+    selectedFilter === null
+      ? { icon: "", shortName: "All Levels", color: { primary: "#6b7280" } }
+      : getLevelByValue(selectedFilter) || levelConfig;
+
   if (loading || !levelConfig) {
     return null;
   }
 
-  // Badge variant - compact display
+  // Badge variant - compact display with dropdown for individual users
   if (variant === "badge") {
     return (
-      <div
-        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium text-white shadow-sm ${className}`}
-        style={{ backgroundColor: levelConfig.color.primary }}
-        title={levelConfig.description}
-      >
-        <span className="text-base">{levelConfig.icon}</span>
-        <span>{levelConfig.shortName}</span>
+      <div className={`relative ${className}`} ref={dropdownRef}>
+        <button
+          onClick={() => isIndividual && setIsDropdownOpen(!isDropdownOpen)}
+          disabled={!isIndividual}
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium bg-primary-800 text-white shadow-sm transition-all ${
+            isIndividual
+              ? "cursor-pointer hover:shadow-md hover:scale-105"
+              : "cursor-default"
+          }`}
+          // style={{ backgroundColor: displayConfig.color.primary }}
+          title={
+            isIndividual ? "Click to filter by level" : levelConfig.description
+          }
+        >
+          <span className="text-base">{displayConfig.icon}</span>
+          <span>{displayConfig.shortName}</span>
+          {isIndividual && (
+            <ChevronDown
+              className={`w-4 h-4 transition-transform ${
+                isDropdownOpen ? "rotate-180" : ""
+              }`}
+            />
+          )}
+        </button>
+
+        {/* Dropdown menu for individual users */}
+        {isIndividual && isDropdownOpen && (
+          <div className="absolute top-full mt-2 right-0 bg-white dark:bg-primary-800 rounded-lg shadow-xl border border-gray-200 dark:border-primary-700 py-2 min-w-[180px] z-50">
+            {/* All Levels option */}
+            <button
+              onClick={() => handleFilterChange(null)}
+              className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-primary-700 flex items-center justify-between ${
+                selectedFilter === null
+                  ? "bg-gray-50 dark:bg-gray-700/50 font-semibold"
+                  : ""
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                {/* <span className="text-base">🌍</span> */}
+                <span className="text-gray-900 dark:text-white">
+                  All Levels
+                </span>
+              </span>
+              {selectedFilter === null && (
+                <Check className="w-4 h-4 text-green-600" />
+              )}
+            </button>
+
+            <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+
+            {/* Individual level options */}
+            {allLevels.map((level) => (
+              <button
+                key={level.id}
+                onClick={() => handleFilterChange(level.value)}
+                className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between ${
+                  selectedFilter === level.value
+                    ? "bg-gray-50 dark:bg-gray-700/50 font-semibold"
+                    : ""
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="text-base">{level.icon}</span>
+                  <span className="text-gray-900 dark:text-white">
+                    {level.shortName}
+                  </span>
+                </span>
+                {selectedFilter === level.value && (
+                  <Check className="w-4 h-4 text-green-600" />
+                )}
+              </button>
+            ))}
+
+            <div className="border-t border-gray-200 dark:border-gray-700 mt-2 pt-2 px-4">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Filter content by difficulty level
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -83,7 +251,7 @@ export default function LevelIndicator({ variant = "badge", className = "" }) {
   if (variant === "card") {
     return (
       <div
-        className={`bg-white dark:bg-gray-800 rounded-lg border-2 p-4 ${className}`}
+        className={`bg-white dark:bg-primary-800 rounded-lg border-2 p-4 ${className}`}
         style={{ borderColor: levelConfig.color.primary }}
       >
         <div className="flex items-center gap-3 mb-2">

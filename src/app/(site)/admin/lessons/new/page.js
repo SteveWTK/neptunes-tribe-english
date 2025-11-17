@@ -23,7 +23,7 @@ function NewLessonContent() {
     description: "",
     description_pt: "",
     pillar_id: "",
-    difficulty: "Beginner",
+    difficulty: "Level 1",
     xp_reward: 100,
     sort_order: 0,
     target_audience: "both",

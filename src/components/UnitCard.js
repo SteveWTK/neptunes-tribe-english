@@ -69,7 +69,7 @@ export default function UnitCard({ unit, isPremiumUser = false }) {
             </Link>
           )}
           <span className="block mt-2 mr-4 text-accent-600 dark:text-accent-400 font-semibold">
-            Gaps: {unit.length}
+            Level: {unit.difficulty_level}
           </span>
         </div>
 

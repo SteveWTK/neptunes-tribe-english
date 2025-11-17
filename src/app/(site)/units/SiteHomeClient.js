@@ -304,27 +304,27 @@ export default function SiteHomeClient({
         )} */}
 
         {/* User Status Bar */}
-        {/* {isLoggedIn && (
+        {isLoggedIn && (
           <div className="flex justify-center items-center gap-2 mb-2s">
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+            {/* <span className="text-sm text-gray-600 dark:text-gray-400">
               Welcome back, {email?.split("@")[0]}
-            </span>
+            </span> */}
             <span
               className={`px-2 py-1 rounded-full text-xs font-medium ${
                 isPremiumUser
                   ? "bg-accent-100 text-accent-800 dark:bg-accent-900 dark:text-accent-200"
-                  : "bg-gray-100 text-premium-600 dark:bg-gray-700 dark:text-premium-400"
+                  : "bg-gray-100 text-premium-600 dark:bg-primary-700 dark:text-premium-400"
               }`}
             >
               {isPremiumUser ? "👑 Premium" : "Explorer"}
             </span>
-            {completedUnitIds.length > 0 && (
+            {/* {completedUnitIds.length > 0 && (
               <span className="text-sm text-accent-600 dark:text-accent-400">
                 {completedUnitIds.length} {copy.completed}
               </span>
-            )}
+            )} */}
           </div>
-        )} */}
+        )}
         {/* Filter Toggle */}
         {/* <button
           onClick={() => setShowFilters(!showFilters)}
@@ -342,6 +342,12 @@ export default function SiteHomeClient({
               <p className="text-gray-800 dark:text-gray-50">
                 {copy.adminViewingAll}
               </p>
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="px-4 py-1 bg-premium-500 text-gray-800 dark:text-white rounded-xl hover:bg-premium-600 transition-colors"
+              >
+                {showFilters ? "Hide Filters" : "Show Filters"}
+              </button>
             </div>
           ) : (
             <div
