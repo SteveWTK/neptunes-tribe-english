@@ -47,7 +47,7 @@ export const LEVELS = {
     shortName: "Level 1",
     description: "Start your environmental English journey",
     order: 1,
-    icon: "🌱", // Customize per project
+    icon: "", // Customize per project
     color: {
       primary: "#10b981", // emerald-500
       light: "#d1fae5",
@@ -71,7 +71,7 @@ export const LEVELS = {
     shortName: "Level 2",
     description: "Deepen your understanding and skills",
     order: 2,
-    icon: "🔍", // Customize per project
+    icon: "", // Customize per project
     color: {
       primary: "#3b82f6", // blue-500
       light: "#dbeafe",
@@ -95,7 +95,7 @@ export const LEVELS = {
     shortName: "Level 3",
     description: "Master complex environmental topics",
     order: 3,
-    icon: "🏆", // Customize per project
+    icon: "", // Customize per project
     color: {
       primary: "#8b5cf6", // violet-500
       light: "#ede9fe",

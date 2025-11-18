@@ -85,6 +85,16 @@ export default function WordSnakeGame() {
   /** Keyboard controls */
   useEffect(() => {
     const onKey = (e) => {
+      // Prevent default behavior for arrow keys to avoid page scrolling during gameplay
+      if (
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight"
+      ) {
+        e.preventDefault();
+      }
+
       if (!isStarted || gameOver || isPaused) return;
 
       switch (e.key) {

@@ -749,7 +749,7 @@ function WorldDetailContent() {
                                       />
                                     )}
                                   </div>
-                                  <div className="flex gap-2 items-center">
+                                  <div className="flex gap-2 items-center py-2">
                                     {/* Show level badge when viewing all levels */}
                                     {viewingAllLevels && lesson.difficulty && (
                                       <LessonLevelBadge

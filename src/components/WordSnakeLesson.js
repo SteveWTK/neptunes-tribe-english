@@ -141,6 +141,16 @@ export default function WordSnakeLesson({
   // Handle key presses
   useEffect(() => {
     const handleKeyPress = (e) => {
+      // Prevent default behavior for arrow keys and space to avoid page scrolling
+      if (
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight" ||
+        e.key === " "
+      ) {
+        e.preventDefault();
+      }
       if (!isStarted || isPaused || gameOver || showLevelUp) {
         if (e.key === " " && !isStarted) {
           startGame();
@@ -840,12 +850,14 @@ export default function WordSnakeLesson({
           </div>
 
           {/* Clue */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-4">
-            <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 lg:mb-2">
-              CLUE:
-            </div>
-            <div className="text-xl font-medium text-gray-900 dark:text-white mb-4">
-              {currentClue.clue}
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-2 md:p-4 lg:p-6 shadow-lg mb-2">
+            <div className="flex flex-col sm:flex-row sm:gap-4 sm:items-center">
+              <div className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                CLUE:
+              </div>
+              <div className="text-[16px] md:text-lg lg:text-xl font-medium text-gray-900 dark:text-white">
+                {currentClue.clue}
+              </div>
             </div>
 
             {showHint && currentClue.hint && (
@@ -859,7 +871,7 @@ export default function WordSnakeLesson({
             )}
 
             {/* Collected word display - Crossword style */}
-            <div className="mt-4 hidden lg:block">
+            <div className="mt-4 hidden lg:flex lg:gap-4 lg:items-center">
               <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">
                 YOUR ANSWER:
               </div>
@@ -884,7 +896,10 @@ export default function WordSnakeLesson({
         </div>
 
         {/* Game Canvas */}
-        <div className="relative" style={{ touchAction: 'none', overscrollBehavior: 'none' }}>
+        <div
+          className="relative"
+          style={{ touchAction: "none", overscrollBehavior: "none" }}
+        >
           <canvas
             ref={canvasRef}
             width={CANVAS}
@@ -894,7 +909,11 @@ export default function WordSnakeLesson({
             onTouchEnd={handleTouchEnd}
             onTouchCancel={handleTouchCancel}
             className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl shadow-2xl border-4 border-white dark:border-gray-700 touch-none"
-            style={{ touchAction: 'none', WebkitUserSelect: 'none', userSelect: 'none' }}
+            style={{
+              touchAction: "none",
+              WebkitUserSelect: "none",
+              userSelect: "none",
+            }}
           />
           <canvas
             ref={particlesRef}

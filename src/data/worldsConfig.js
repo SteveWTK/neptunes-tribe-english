@@ -49,9 +49,9 @@ export const WORLDS = {
         description: "Tapir conservationist", // Optional: for future use
       },
       {
-        name: "Marina Silva",
+        name: "INCAB BRASIL",
         imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/Marina%20Silva.webp",
+          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/INCAB-BRASIL.jpeg",
         description: "Defending the rainforest", // Optional: for future use
       },
       // Add more heroes here as you find images

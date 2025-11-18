@@ -124,6 +124,17 @@ export default function WordSnakeLesson({ clues = [], onComplete }) {
   // Handle key presses
   useEffect(() => {
     const handleKeyPress = (e) => {
+      // Prevent default behavior for arrow keys and space to avoid page scrolling
+      if (
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight" ||
+        e.key === " "
+      ) {
+        e.preventDefault();
+      }
+
       if (!isStarted || isPaused || gameOver || showLevelUp) {
         if (e.key === " " && !isStarted) {
           startGame();
