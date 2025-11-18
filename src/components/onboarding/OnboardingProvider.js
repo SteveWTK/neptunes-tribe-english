@@ -2,8 +2,10 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "@/components/AuthProvider";
+import { createClient } from "@/lib/supabase/client";
 import EducatorOnboarding from "./EducatorOnboarding";
 import StudentOnboarding from "./StudentOnboarding";
+import IndividualOnboarding from "./IndividualOnboarding";
 
 // ============================================================
 // ONBOARDING CONFIGURATION
@@ -28,14 +30,40 @@ export function OnboardingProvider({ children }) {
   const { user } = useAuth();
   const [onboardingComplete, setOnboardingComplete] = useState(true); // Default to true to avoid flash
   const [loading, setLoading] = useState(true);
+  const [userType, setUserType] = useState(null); // "school" or "individual"
 
   useEffect(() => {
     if (user) {
       checkOnboardingStatus();
+      fetchUserType();
     } else {
       setLoading(false);
     }
   }, [user]);
+
+  const fetchUserType = async () => {
+    try {
+      const supabase = createClient();
+      const userId = user?.userId || user?.id;
+
+      if (!userId) return;
+
+      const { data, error } = await supabase
+        .from("users")
+        .select("user_type")
+        .eq("id", userId)
+        .single();
+
+      if (error) {
+        console.error("Error fetching user type:", error);
+        return;
+      }
+
+      setUserType(data?.user_type || "individual");
+    } catch (error) {
+      console.error("Error in fetchUserType:", error);
+    }
+  };
 
   const checkOnboardingStatus = async () => {
     try {
@@ -90,6 +118,9 @@ export function OnboardingProvider({ children }) {
     user?.role === "Admin" ||
     user?.role === "platform_admin";
 
+  // Determine if user is an individual (not school-based)
+  const isIndividual = userType === "individual";
+
   // Check if onboarding is enabled for this user's role
   const userRole = user?.role || "User";
   const isOnboardingEnabledForRole =
@@ -107,6 +138,8 @@ export function OnboardingProvider({ children }) {
         <>
           {isEducator ? (
             <EducatorOnboarding onComplete={completeOnboarding} />
+          ) : isIndividual ? (
+            <IndividualOnboarding onComplete={completeOnboarding} />
           ) : (
             <StudentOnboarding onComplete={completeOnboarding} />
           )}
