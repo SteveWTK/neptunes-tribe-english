@@ -79,7 +79,7 @@ function WorldsContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800 pb-6">
       {/* Hero Section */}
       <div className=" text-primary-950 dark:text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -199,11 +199,13 @@ function WorldsContent() {
                         // Get current hero for this world
                         const heroes = world.ecoHeroes || [];
                         const hasHeroes = heroes.length > 0;
-                        const currentHeroIndex = currentHeroIndexes[world.id] || 0;
+                        const currentHeroIndex =
+                          currentHeroIndexes[world.id] || 0;
                         const currentHero = heroes[currentHeroIndex];
 
                         // Fallback to legacy single hero if no heroes array
-                        const heroImageUrl = currentHero?.imageUrl || world.ecoHeroUrl;
+                        const heroImageUrl =
+                          currentHero?.imageUrl || world.ecoHeroUrl;
                         const heroName = currentHero?.name || world.ecoHeroName;
 
                         return heroImageUrl ? (
@@ -255,7 +257,9 @@ function WorldsContent() {
                                 {/* Arrow */}
                                 <div
                                   className="absolute top-full right-4 -mt-1 w-2 h-2 transform rotate-45"
-                                  style={{ backgroundColor: world.color.primary }}
+                                  style={{
+                                    backgroundColor: world.color.primary,
+                                  }}
                                 ></div>
                               </div>
                             )}
@@ -350,88 +354,6 @@ function WorldsContent() {
               </motion.div>
             );
           })}
-        </div>
-
-        {/* Coming Soon - 8th World */}
-        {/* <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: worlds.length * 0.1 }}
-          className="mt-8"
-        >
-          <div className="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-2xl shadow-lg p-8 text-center border-2 border-dashed border-gray-300 dark:border-gray-600">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-white dark:bg-gray-600 rounded-full mb-4">
-              <Sparkles className="w-8 h-8 text-gray-400" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">
-              More Worlds Coming Soon!
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              Our 8th world is currently under development. Stay tuned for more
-              exciting adventures!
-            </p>
-          </div>
-        </motion.div> */}
-
-        {/* Educational Context Section */}
-        <div className="mt-16 pb-16 bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl p-8 border border-primary-200 dark:border-primary-800">
-          <div className="flex items-start gap-6">
-            <div className="hidden md:block">
-              <Award className="w-16 h-16 text-primary-600 dark:text-primary-400" />
-            </div>
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                A Year-Long Journey Around Our Planet
-              </h2>
-              <p className="text-gray-700 dark:text-gray-300 mb-4">
-                Each World represents approximately 4 weeks of classroom
-                learning. Students will explore diverse ecosystems, learn
-                environmental vocabulary, and develop a deeper understanding of
-                our planet&apos;s interconnected systems.
-              </p>
-              <div className="grid md:grid-cols-3 gap-4 mt-6">
-                <div className="flex items-start gap-3">
-                  <div className="bg-primary-100 dark:bg-primary-900 rounded-lg p-2">
-                    <BookOpen className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 dark:text-white">
-                      Structured Learning
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      4 weekly Adventures per World
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="bg-accent-100 dark:bg-accent-900 rounded-lg p-2">
-                    <Sparkles className="w-5 h-5 text-accent-600 dark:text-accent-400" />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 dark:text-white">
-                      Engaging Content
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      Interactive lessons & activities
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="bg-green-100 dark:bg-green-900 rounded-lg p-2">
-                    <Globe className="w-5 h-5 text-green-600 dark:text-green-400" />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 dark:text-white">
-                      Global Perspective
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      Understand our interconnected world
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
