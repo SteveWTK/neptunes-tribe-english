@@ -1,7 +1,7 @@
 /**
  * Worlds Configuration
  *
- * Defines the 7 main Worlds in the Habitat curriculum.
+ * Defines the 8 main Worlds in the Habitat curriculum.
  * Each World represents a major geographic region and contains 4 Adventures (weekly themes).
  *
  * Structure:
@@ -426,12 +426,12 @@ export const WORLDS = {
           "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/FarwizaFarhan_2021.jpg",
         description: "Forest Conservationist", // Optional: for future use
       },
-      // {
-      //   name: "",
-      //   imageUrl:
-      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/Elephant-Nature-Park.png",
-      //   description: "The first ethical elephant sanctuary of its kind in Asia", // Optional: for future use
-      // },
+      {
+        name: "Future for Nature",
+        imageUrl:
+          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/future-for-nature.png",
+        description: "", // Optional: for future use
+      },
     ],
     adventures: [
       {
