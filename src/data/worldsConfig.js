@@ -220,10 +220,13 @@ export const WORLDS = {
       {
         id: "serengeti",
         name: "Serengeti: Great Migration",
+        name_pt: "Serengeti: Grande Migração",
         week: 1,
         ecosystemType: "savanna",
         description:
           "Witness the world's largest land animal migration across the African plains.",
+        description_pt:
+          "Testemunhe a maior migração de animais terrestres do mundo pelas planícies africanas.",
         themeTag: "serengeti",
         levels: [
           "Level 1",
@@ -239,10 +242,13 @@ export const WORLDS = {
       {
         id: "congo_basin",
         name: "Congo Basin: Heart of Africa",
+        name_pt: "Bacia do Congo: Coração da África",
         week: 2,
         ecosystemType: "rainforest",
         description:
           "Explore the world's second-largest rainforest and home to gorillas and bonobos.",
+        description_pt:
+          "Explore a segunda maior floresta tropical do mundo, lar de gorilas e bonobos.",
         themeTag: "congo",
         levels: [
           "Level 1",
@@ -258,10 +264,13 @@ export const WORLDS = {
       {
         id: "sahara_desert",
         name: "Sahara Desert: Sea of Sand",
+        name_pt: "Deserto do Saara: Mar de Areia",
         week: 3,
         ecosystemType: "desert",
         description:
           "Discover life in the world's largest hot desert and its adaptation strategies.",
+        description_pt:
+          "Descubra a vida no maior deserto quente do mundo e suas estratégias de adaptação.",
         themeTag: "sahara",
         levels: [
           "Level 1",
@@ -277,10 +286,13 @@ export const WORLDS = {
       {
         id: "madagascar",
         name: "Madagascar: Island of Evolution",
+        name_pt: "Madagascar: Ilha da Evolução",
         week: 4,
         ecosystemType: "islands",
         description:
           "Meet lemurs and other unique species found nowhere else on Earth.",
+        description_pt:
+          "Conheça lêmures e outras espécies únicas encontradas em nenhum outro lugar da Terra.",
         themeTag: "madagascar",
         levels: [
           "Level 1",
@@ -343,10 +355,13 @@ export const WORLDS = {
       {
         id: "siberian_taiga",
         name: "Siberian Taiga: Northern Forest",
+        name_pt: "Taiga Siberiana: Floresta do Norte",
         week: 1,
         ecosystemType: "taiga",
         description:
           "Explore the world's largest forest biome and its role in climate regulation.",
+        description_pt:
+          "Explore o maior bioma florestal do mundo e seu papel na regulação climática.",
         themeTag: "taiga",
         levels: [
           "Level 1",
@@ -362,10 +377,13 @@ export const WORLDS = {
       {
         id: "himalayan_mountains",
         name: "Himalayas: Roof of the World",
+        name_pt: "Himalaia: Teto do Mundo",
         week: 2,
         ecosystemType: "mountain",
         description:
           "Discover the world's highest mountains and their unique biodiversity.",
+        description_pt:
+          "Descubra as montanhas mais altas do mundo e sua biodiversidade única.",
         themeTag: "himalayas",
         levels: [
           "Level 1",
@@ -381,10 +399,13 @@ export const WORLDS = {
       {
         id: "borneo_rainforest",
         name: "Borneo Rainforest: Orangutan Home",
+        name_pt: "Floresta de Bornéu: Lar dos Orangotangos",
         week: 3,
         ecosystemType: "rainforest",
         description:
           "Meet orangutans, pygmy elephants, and other incredible species in one of the oldest rainforests.",
+        description_pt:
+          "Conheça orangotangos, elefantes-pigmeus e outras espécies incríveis em uma das florestas tropicais mais antigas.",
         themeTag: "borneo",
         levels: [
           "Level 1",
@@ -400,10 +421,13 @@ export const WORLDS = {
       {
         id: "mediterranean",
         name: "Mediterranean: Cradle of Civilizations",
+        name_pt: "Mediterrâneo: Berço das Civilizações",
         week: 4,
         ecosystemType: "mediterranean",
         description:
           "Explore the unique climate and biodiversity of the Mediterranean region.",
+        description_pt:
+          "Explore o clima único e a biodiversidade da região do Mediterrâneo.",
         themeTag: "mediterranean",
         levels: [
           "Level 1",
@@ -466,10 +490,13 @@ export const WORLDS = {
       {
         id: "great_barrier_reef",
         name: "Great Barrier Reef: Coral Kingdom",
+        name_pt: "Grande Barreira de Corais: Reino de Coral",
         week: 1,
         ecosystemType: "coral_reef",
         description:
           "Dive into the world's largest coral reef system and its incredible biodiversity.",
+        description_pt:
+          "Mergulhe no maior sistema de recifes de coral do mundo e sua incrível biodiversidade.",
         themeTag: "great_barrier_reef",
         levels: [
           "Level 1",
@@ -485,10 +512,13 @@ export const WORLDS = {
       {
         id: "new_zealand",
         name: "New Zealand: Ancient Forests",
+        name_pt: "Nova Zelândia: Florestas Antigas",
         week: 2,
         ecosystemType: "forest",
         description:
           "Meet kiwis, kakapos, and other unique species in these isolated islands.",
+        description_pt:
+          "Conheça kiwis, kakapos e outras espécies únicas nestas ilhas isoladas.",
         themeTag: "new_zealand",
         levels: [
           "Level 1",
@@ -504,10 +534,13 @@ export const WORLDS = {
       {
         id: "pacific_islands",
         name: "Pacific Islands: Ocean Nations",
+        name_pt: "Ilhas do Pacífico: Nações Oceânicas",
         week: 3,
         ecosystemType: "islands",
         description:
           "Discover the culture and ecosystems of Pacific Island nations facing climate change.",
+        description_pt:
+          "Descubra a cultura e os ecossistemas das nações insulares do Pacífico que enfrentam as mudanças climáticas.",
         themeTag: "pacific_islands",
         levels: [
           "Level 1",
@@ -523,10 +556,13 @@ export const WORLDS = {
       {
         id: "australian_outback",
         name: "Australian Outback: Red Centre",
+        name_pt: "Outback Australiano: Centro Vermelho",
         week: 4,
         ecosystemType: "desert",
         description:
           "Explore the unique wildlife of Australia's arid interior.",
+        description_pt:
+          "Explore a fauna única do interior árido da Austrália.",
         themeTag: "outback",
         levels: [
           "Level 1",
@@ -592,10 +628,13 @@ export const WORLDS = {
       {
         id: "arctic_tundra",
         name: "Arctic Tundra: Frozen Frontier",
+        name_pt: "Tundra Ártica: Fronteira Congelada",
         week: 1,
         ecosystemType: "tundra",
         description:
           "Explore the treeless plains of the Arctic and meet polar bears, Arctic foxes, and caribou.",
+        description_pt:
+          "Explore as planícies sem árvores do Ártico e conheça ursos polares, raposas árticas e caribus.",
         themeTag: "arctic",
         levels: [
           "Level 1",
@@ -611,10 +650,13 @@ export const WORLDS = {
       {
         id: "antarctica",
         name: "Antarctica: Ice Continent",
+        name_pt: "Antártida: Continente de Gelo",
         week: 2,
         ecosystemType: "ice",
         description:
           "Journey to Earth's coldest continent and discover penguins, seals, and whales.",
+        description_pt:
+          "Viaje até o continente mais frio da Terra e descubra pinguins, focas e baleias.",
         themeTag: "antarctica",
         levels: [
           "Level 1",
@@ -630,10 +672,13 @@ export const WORLDS = {
       {
         id: "greenland_ice_sheet",
         name: "Greenland: Melting Giant",
+        name_pt: "Groenlândia: Gigante Derretendo",
         week: 3,
         ecosystemType: "ice",
         description:
           "Understand the impact of climate change on the world's largest island.",
+        description_pt:
+          "Compreenda o impacto das mudanças climáticas na maior ilha do mundo.",
         themeTag: "greenland",
         levels: [
           "Level 1",
@@ -649,10 +694,13 @@ export const WORLDS = {
       {
         id: "northern_lights",
         name: "Northern Lights: Aurora Magic",
+        name_pt: "Aurora Boreal: Magia da Aurora",
         week: 4,
         ecosystemType: "arctic",
         description:
           "Learn about the aurora borealis and life in the Arctic Circle.",
+        description_pt:
+          "Aprenda sobre a aurora boreal e a vida no Círculo Ártico.",
         themeTag: "aurora",
         levels: [
           "Level 1",
@@ -701,10 +749,13 @@ export const WORLDS = {
       {
         id: "yellowstone",
         name: "Yellowstone: America's Wilderness",
+        name_pt: "Yellowstone: Natureza Selvagem da América",
         week: 1,
         ecosystemType: "forest",
         description:
           "Explore geysers, hot springs, and the restoration of wolves in this iconic national park.",
+        description_pt:
+          "Explore gêiseres, fontes termais e a restauração de lobos neste parque nacional icônico.",
         themeTag: "yellowstone",
         levels: [
           "Level 1",
@@ -720,10 +771,13 @@ export const WORLDS = {
       {
         id: "great_barrier_reef_americas",
         name: "Caribbean Coral Reefs: Underwater Gardens",
+        name_pt: "Recifes de Coral do Caribe: Jardins Subaquáticos",
         week: 2,
         ecosystemType: "coral_reef",
         description:
           "Dive into the vibrant coral reefs of the Caribbean and their conservation challenges.",
+        description_pt:
+          "Mergulhe nos vibrantes recifes de coral do Caribe e seus desafios de conservação.",
         themeTag: "caribbean_reef",
         levels: [
           "Level 1",
@@ -739,10 +793,13 @@ export const WORLDS = {
       {
         id: "monarch_migration",
         name: "Monarch Migration: Epic Journey",
+        name_pt: "Migração das Monarcas: Jornada Épica",
         week: 3,
         ecosystemType: "migration",
         description:
           "Follow the incredible 3,000-mile journey of monarch butterflies.",
+        description_pt:
+          "Acompanhe a incrível jornada de 4.800 quilômetros das borboletas-monarca.",
         themeTag: "monarch",
         levels: [
           "Level 1",
@@ -758,10 +815,13 @@ export const WORLDS = {
       {
         id: "everglades",
         name: "Everglades: River of Grass",
+        name_pt: "Everglades: Rio de Capim",
         week: 4,
         ecosystemType: "wetlands",
         description:
           "Discover this unique subtropical wetland and its importance to Florida's ecosystem.",
+        description_pt:
+          "Descubra esta área úmida subtropical única e sua importância para o ecossistema da Flórida.",
         themeTag: "everglades",
         levels: [
           "Level 1",
@@ -811,10 +871,13 @@ export const WORLDS = {
       {
         id: "kelp_forests",
         name: "Kelp Forests: Underwater Jungles",
+        name_pt: "Florestas de Kelp: Selvas Subaquáticas",
         week: 1,
         ecosystemType: "kelp_forest",
         description:
           "Explore the towering underwater forests and their importance to marine life.",
+        description_pt:
+          "Explore as imponentes florestas subaquáticas e sua importância para a vida marinha.",
         themeTag: "kelp",
         levels: [
           "Level 1",
@@ -830,10 +893,13 @@ export const WORLDS = {
       {
         id: "deep_ocean",
         name: "Deep Ocean: The Abyss",
+        name_pt: "Oceano Profundo: O Abismo",
         week: 2,
         ecosystemType: "deep_sea",
         description:
           "Descend into the mysterious depths and meet bizarre deep-sea creatures.",
+        description_pt:
+          "Desça às profundezas misteriosas e conheça criaturas bizarras das profundezas do mar.",
         themeTag: "deep_ocean",
         levels: [
           "Level 1",
@@ -849,10 +915,13 @@ export const WORLDS = {
       {
         id: "whale_migration",
         name: "Whale Migration: Ocean Giants",
+        name_pt: "Migração das Baleias: Gigantes do Oceano",
         week: 3,
         ecosystemType: "migration",
         description:
           "Follow the epic journeys of whales across the world's oceans.",
+        description_pt:
+          "Acompanhe as jornadas épicas das baleias pelos oceanos do mundo.",
         themeTag: "whales",
         levels: [
           "Level 1",
@@ -868,9 +937,11 @@ export const WORLDS = {
       {
         id: "coral_triangle",
         name: "Coral Triangle: Marine Diversity Hotspot",
+        name_pt: "Triângulo de Coral: Hotspot de Diversidade Marinha",
         week: 4,
         ecosystemType: "coral_reef",
         description: "Discover the most biodiverse marine region on Earth.",
+        description_pt: "Descubra a região marinha mais biodiversa da Terra.",
         themeTag: "coral_triangle",
         levels: [
           "Level 1",
@@ -920,10 +991,13 @@ export const WORLDS = {
       {
         id: "dawn_of_life",
         name: "Dawn of Life: Ancient Seas",
+        name_pt: "Aurora da Vida: Mares Antigos",
         week: 1,
         ecosystemType: "ancient_ocean",
         description:
           "Dive into Earth's primordial oceans 3.5 billion years ago. Discover the first microscopic life forms, stromatolites, and the strange creatures of the Cambrian Explosion that changed life forever.",
+        description_pt:
+          "Mergulhe nos oceanos primordiais da Terra há 3,5 bilhões de anos. Descubra as primeiras formas de vida microscópicas, estromatólitos e as estranhas criaturas da Explosão Cambriana que mudaram a vida para sempre.",
         themeTag: "ancient_seas",
         levels: [
           "Level 1",
@@ -939,10 +1013,13 @@ export const WORLDS = {
       {
         id: "age_of_dinosaurs",
         name: "Age of Dinosaurs: Mesozoic Giants",
+        name_pt: "Era dos Dinossauros: Gigantes do Mesozoico",
         week: 2,
         ecosystemType: "prehistoric",
         description:
           "Walk among the giants of the Mesozoic Era. Meet Tyrannosaurus rex, Triceratops, long-necked sauropods, and discover why these magnificent creatures vanished 66 million years ago.",
+        description_pt:
+          "Caminhe entre os gigantes da Era Mesozoica. Conheça o Tyrannosaurus rex, Triceratops, saurópodes de pescoço longo e descubra por que essas criaturas magníficas desapareceram há 66 milhões de anos.",
         themeTag: "dinosaurs",
         levels: [
           "Level 1",
@@ -958,10 +1035,13 @@ export const WORLDS = {
       {
         id: "ice_age_megafauna",
         name: "Ice Age: Frozen Giants",
+        name_pt: "Era do Gelo: Gigantes Congelados",
         week: 3,
         ecosystemType: "ice_age",
         description:
           "Journey to the last Ice Age, just 10,000 years ago. Meet woolly mammoths, saber-toothed cats, giant ground sloths, and discover how humans lived alongside these incredible beasts.",
+        description_pt:
+          "Viaje à última Era do Gelo, há apenas 10.000 anos. Conheça mamutes lanosos, tigres-dentes-de-sabre, preguiças-gigantes e descubra como os humanos viveram ao lado dessas bestas incríveis.",
         themeTag: "ice_age",
         levels: [
           "Level 1",
@@ -977,10 +1057,13 @@ export const WORLDS = {
       {
         id: "extinction_and_survival",
         name: "Mass Extinctions: Stories of Survival",
+        name_pt: "Extinções em Massa: Histórias de Sobrevivência",
         week: 4,
         ecosystemType: "extinction_events",
         description:
           "Explore Earth's five mass extinctions and the resilient species that survived. Learn about dodo birds, passenger pigeons, and what extinction teaches us about protecting life today.",
+        description_pt:
+          "Explore as cinco extinções em massa da Terra e as espécies resilientes que sobreviveram. Aprenda sobre os dodôs, pombos-passageiros e o que a extinção nos ensina sobre proteger a vida hoje.",
         themeTag: "extinctions",
         levels: [
           "Level 1",
