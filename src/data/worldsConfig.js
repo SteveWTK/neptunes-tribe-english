@@ -7,15 +7,23 @@
  * Structure:
  * - World → 4 Adventures → Multiple Units & Lessons
  * - Each Adventure represents one week of classroom material
+ *
+ * BILINGUAL SUPPORT:
+ * - All translatable fields have an English version (e.g., "name") and Portuguese version (e.g., "name_pt")
+ * - Use the i18n utility functions to get the correct translation based on current language
+ * - Pattern: field (English), field_pt (Portuguese)
  */
 
 export const WORLDS = {
   south_america: {
     id: "south_america",
     name: "South America",
+    name_pt: "América do Sul",
     slug: "south-america",
     description:
       "Explore the incredible biodiversity of South America, from the Amazon rainforest to the Andes mountains and the Galápagos Islands.",
+    description_pt:
+      "Explore a incrível biodiversidade da América do Sul, desde a floresta amazônica até as montanhas dos Andes e as Ilhas Galápagos.",
     order: 1,
     color: {
       primary: "#06b6d4", // cyan-500
@@ -65,10 +73,13 @@ export const WORLDS = {
       {
         id: "amazon_rainforest",
         name: "Amazon Rainforest: Lungs of the Earth",
+        name_pt: "Floresta Amazônica: Pulmões da Terra",
         week: 1,
         ecosystemType: "rainforest",
         description:
           "Discover the world's largest tropical rainforest, home to millions of species and indigenous communities.",
+        description_pt:
+          "Descubra a maior floresta tropical do mundo, lar de milhões de espécies e comunidades indígenas.",
         themeTag: "amazon", // Links to theme_tags in database
         levels: [
           "Level 1",
@@ -84,10 +95,13 @@ export const WORLDS = {
       {
         id: "andes_mountains",
         name: "Andes Mountains: Roof of South America",
+        name_pt: "Cordilheira dos Andes: Teto da América do Sul",
         week: 2,
         ecosystemType: "mountain",
         description:
           "Journey through the world's longest mountain range, from cloud forests to alpine peaks.",
+        description_pt:
+          "Viaje pela cordilheira mais longa do mundo, desde florestas nubladas até picos alpinos.",
         themeTag: "andes",
         levels: [
           "Level 1",
@@ -103,10 +117,13 @@ export const WORLDS = {
       {
         id: "pantanal_wetlands",
         name: "Pantanal Wetlands: Wildlife Paradise",
+        name_pt: "Pantanal: Paraíso da Vida Selvagem",
         week: 3,
         ecosystemType: "wetlands",
         description:
           "Experience the world's largest tropical wetland and its incredible concentration of wildlife.",
+        description_pt:
+          "Experimente a maior área úmida tropical do mundo e sua incrível concentração de vida selvagem.",
         themeTag: "pantanal",
         levels: [
           "Level 1",
@@ -122,10 +139,13 @@ export const WORLDS = {
       {
         id: "brazil_coasts_and_moutains",
         name: "Brazil's Coasts and Mountains",
+        name_pt: "Costas e Montanhas do Brasil",
         week: 4,
         ecosystemType: "mountain",
         description:
           "Explore the coastal regions and mountain ranges of Brazil, with their lush vegetation and rich wildlife.",
+        description_pt:
+          "Explore as regiões costeiras e serras do Brasil, com sua vegetação exuberante e rica fauna.",
         themeTag: "brazil_coast",
         levels: [
           "Level 1",
@@ -155,9 +175,11 @@ export const WORLDS = {
   africa: {
     id: "africa",
     name: "Africa",
+    name_pt: "África",
     slug: "africa",
     description:
-      "Experience the continent's stunning diversity, from the Sahara Desert to the Congo Basin and the savannas of East Africa.",
+      "Descubra a impressionante diversidade do continente, do Deserto do Saara à Bacia do Congo e às savanas da África Oriental.",
+    description_pt: "",
     order: 2,
     color: {
       primary: "#10b981", // emerald-500
@@ -276,9 +298,12 @@ export const WORLDS = {
   eurasia: {
     id: "eurasia",
     name: "Eurasia",
+    name_pt: "Eurásia",
     slug: "eurasia",
     description:
       "Journey across the world's largest landmass, from European forests to Asian steppes and tropical rainforests.",
+    description_pt:
+      "Viaje pela maior massa de terra do mundo, das florestas europeias às estepes asiáticas e florestas tropicais.",
     order: 3,
     color: {
       primary: "#f59e0b", // amber-500

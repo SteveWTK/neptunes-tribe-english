@@ -16,6 +16,8 @@ import {
 import { useAuth } from "@/components/AuthProvider";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { getAllWorlds } from "@/data/worldsConfig";
+import { translateWorlds } from "@/utils/i18n";
+import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import RestartOnboardingButton from "@/components/onboarding/RestartOnboardingButton";
 import LevelIndicator from "@/components/LevelIndicator";
@@ -32,6 +34,7 @@ const ICON_MAP = {
 function WorldsContent() {
   const router = useRouter();
   const { user } = useAuth();
+  const { lang } = useLanguage(); // Get current language
   const [worlds, setWorlds] = useState([]);
   const [hoveredWorld, setHoveredWorld] = useState(null);
   const [hoveredHero, setHoveredHero] = useState(null);
@@ -39,17 +42,20 @@ function WorldsContent() {
   const [currentHeroIndexes, setCurrentHeroIndexes] = useState({});
 
   useEffect(() => {
-    // Load worlds from config
+    // Load worlds from config and translate based on current language
     const allWorlds = getAllWorlds();
-    setWorlds(allWorlds);
+    const translatedWorlds = translateWorlds(allWorlds, lang);
+    setWorlds(translatedWorlds);
 
-    // Initialize hero indexes to 0 for each world
-    const initialIndexes = {};
-    allWorlds.forEach((world) => {
-      initialIndexes[world.id] = 0;
-    });
-    setCurrentHeroIndexes(initialIndexes);
-  }, []);
+    // Initialize hero indexes to 0 for each world (only on first load)
+    if (Object.keys(currentHeroIndexes).length === 0) {
+      const initialIndexes = {};
+      allWorlds.forEach((world) => {
+        initialIndexes[world.id] = 0;
+      });
+      setCurrentHeroIndexes(initialIndexes);
+    }
+  }, [lang]); // Re-run when language changes
 
   // Carousel: Rotate heroes every 4 seconds
   useEffect(() => {

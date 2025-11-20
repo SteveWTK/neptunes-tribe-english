@@ -22,6 +22,8 @@ import {
 import { useAuth } from "@/components/AuthProvider";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { getWorldBySlug } from "@/data/worldsConfig";
+import { translateWorld } from "@/utils/i18n";
+import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -71,6 +73,7 @@ function WorldDetailContent() {
   const params = useParams();
   const router = useRouter();
   const { user } = useAuth();
+  const { lang } = useLanguage(); // Get current language
   const [world, setWorld] = useState(null);
   const [filteredAdventures, setFilteredAdventures] = useState([]);
   const [selectedAdventure, setSelectedAdventure] = useState(null);
@@ -122,15 +125,19 @@ function WorldDetailContent() {
     // Load world from config using slug (URL parameter uses hyphens)
     const loadWorldData = async () => {
       const worldData = getWorldBySlug(params.worldId);
-      if (worldData && user) {
-        setWorld(worldData);
 
-        // Filter adventures by user's level and type
+      // Translate world data based on current language
+      const translatedWorld = worldData ? translateWorld(worldData, lang) : null;
+
+      if (translatedWorld && user) {
+        setWorld(translatedWorld);
+
+        // Filter adventures by user's level and type (use original worldData for adventures)
         const userId = user.userId || user.id;
         const availableAdventures = await getAvailableAdventures(
           userId,
           worldData.id,
-          worldData.adventures
+          translatedWorld.adventures // Use translated adventures
         );
 
         console.log(`🎮 Available adventures for user:`, availableAdventures);
@@ -146,19 +153,19 @@ function WorldDetailContent() {
           // If no adventures have lessons, select the first one anyway
           setSelectedAdventure(availableAdventures[0]);
         }
-      } else if (worldData) {
+      } else if (translatedWorld) {
         // Fallback if no user (shouldn't happen with ProtectedRoute)
-        setWorld(worldData);
-        setFilteredAdventures(worldData.adventures);
-        if (worldData.adventures.length > 0) {
-          setSelectedAdventure(worldData.adventures[0]);
+        setWorld(translatedWorld);
+        setFilteredAdventures(translatedWorld.adventures);
+        if (translatedWorld.adventures.length > 0) {
+          setSelectedAdventure(translatedWorld.adventures[0]);
         }
       }
       setLoading(false);
     };
 
     loadWorldData();
-  }, [params.worldId, user]);
+  }, [params.worldId, user, lang]); // Re-run when language changes
 
   // Carousel: Rotate through eco heroes every 4 seconds
   useEffect(() => {
