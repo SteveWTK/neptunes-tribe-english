@@ -421,9 +421,12 @@ export const WORLDS = {
   oceania: {
     id: "oceania",
     name: "Oceania",
+    name_pt: "Oceânia",
     slug: "oceania",
     description:
       "Explore the islands and marine environments of the Pacific, from the Great Barrier Reef to New Zealand's unique ecosystems.",
+    description_pt:
+      "Explore as ilhas e os ambientes marinhos do Pacífico, desde a Grande Barreira de Corais até os ecossistemas únicos da Nova Zelândia.",
     order: 4,
     color: {
       primary: "#3b82f6", // blue-500
@@ -541,9 +544,12 @@ export const WORLDS = {
   polar_regions: {
     id: "polar_regions",
     name: "Polar Regions",
+    name_pt: "Regiões polares",
     slug: "polar-regions",
     description:
       "Venture to the ends of the Earth, exploring the Arctic and Antarctic and their unique adaptations to extreme cold.",
+    description_pt:
+      "Aventure-se até os confins da Terra, explorando o Ártico e a Antártida e suas adaptações únicas ao frio extremo.",
     order: 5,
     color: {
       primary: "#8b5cf6", // violet-500
@@ -664,9 +670,12 @@ export const WORLDS = {
   north_america: {
     id: "north_america",
     name: "North America",
+    name_pt: "América do Norte",
     slug: "north-america",
     description:
       "From Arctic tundra to tropical forests, discover the diverse ecosystems of North America and Central America.",
+    description_pt:
+      "Da tundra ártica às florestas tropicais, descubra os diversos ecossistemas da América do Norte e da América Central.",
     order: 6,
     color: {
       primary: "#ef4444", // red-500
@@ -770,9 +779,12 @@ export const WORLDS = {
   the_oceans: {
     id: "the_oceans",
     name: "The Oceans",
+    name_pt: "Os oceanos",
     slug: "the-oceans",
     description:
       "Dive into Earth's largest ecosystem, covering 71% of our planet, from sunlit surface waters to the mysterious deep sea.",
+    description_pt:
+      "Explore o maior ecossistema da Terra, que cobre 71% do nosso planeta, desde as águas superficiais iluminadas pelo sol até as misteriosas profundezas do oceano.",
     order: 7,
     color: {
       primary: "#0ea5e9", // sky-500
@@ -876,9 +888,12 @@ export const WORLDS = {
   lost_worlds: {
     id: "lost_worlds",
     name: "Lost Worlds",
+    name_pt: "Mundos Perdidos",
     slug: "lost-worlds",
     description:
       "Journey through 4 billion years of Earth's history, from the first spark of life to the Ice Age. Meet dinosaurs, mammoths, and countless extinct species that once ruled our planet.",
+    description_pt:
+      "Embarque em uma jornada através de 4 bilhões de anos da história da Terra, desde o primeiro vislumbre de vida até a Era do Gelo. Conheça dinossauros, mamutes e inúmeras espécies extintas que um dia dominaram nosso planeta.",
     order: 8,
     color: {
       primary: "#a855f7", // purple-500
