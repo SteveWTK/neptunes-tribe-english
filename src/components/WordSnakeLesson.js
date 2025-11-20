@@ -852,35 +852,30 @@ export default function WordSnakeLesson({
           </div>
 
           {/* Clue */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-2 md:p-4 lg:p-6 shadow-lg mb-2">
-            <div className="flex flex-col sm:flex-row sm:gap-4 sm:items-center">
+          <div className="relative bg-white dark:bg-gray-800 rounded-xl p-2 md:p-4 lg:p-6 shadow-lg mb-2">
+            <div className="flex flex-col md:flex-row md:gap-4 md:items-center">
               <div className="text-sm font-semibold text-gray-500 dark:text-gray-400">
                 CLUE:
               </div>
               <div className="flex-1 text-[16px] md:text-lg lg:text-xl font-medium text-gray-900 dark:text-white">
                 {currentClue.clue}
               </div>
-              {targetImage && (
-                <img
-                  src={targetImage}
-                  alt="Target word hint"
-                  className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg border-2 border-primary-300 dark:border-primary-600 shadow-md"
-                />
-              )}
             </div>
 
-            {showHint && currentClue.hint && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 p-3 rounded-lg"
-              >
-                💡 Hint: {currentClue.hint}
-              </motion.div>
-            )}
+            {showHint &&
+              currentClue.hint &&
+              -(
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-sm text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 p-3 rounded-lg"
+                >
+                  💡 Hint: {currentClue.hint}
+                </motion.div>
+              )}
 
             {/* Collected word display - Crossword style */}
-            <div className="mt-4 hidden lg:flex lg:gap-4 lg:items-center">
+            <div className="mt-4 hidden md:flex md:gap-4 md:items-center">
               <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">
                 YOUR ANSWER:
               </div>
@@ -901,6 +896,13 @@ export default function WordSnakeLesson({
                 ))}
               </div>
             </div>
+            {targetImage && (
+              <img
+                src={targetImage}
+                alt="Target word hint"
+                className="absolute -right-3 -top-3  w-18 h-18 sm:-right-1 md:right-2 md:top-2 lg:top-1 md:w-24 md:h-24 lg:w-32 lg:h-32 object-cover rounded-lg border-2 border-primary-300 dark:border-primary-600 shadow-md"
+              />
+            )}
           </div>
         </div>
 
