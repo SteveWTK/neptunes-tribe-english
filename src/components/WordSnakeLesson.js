@@ -86,8 +86,10 @@ export default function WordSnakeLesson({
     answer: "TEST",
     hint: "",
     fact: "",
+    targetImage: "", // Optional image for target word
   };
   const targetWord = currentClue.answer;
+  const targetImage = currentClue.targetImage;
 
   // Calculate next letter needed (without spaces)
   const normalizedTarget = targetWord.replace(/\s+/g, "");
@@ -855,9 +857,16 @@ export default function WordSnakeLesson({
               <div className="text-sm font-semibold text-gray-500 dark:text-gray-400">
                 CLUE:
               </div>
-              <div className="text-[16px] md:text-lg lg:text-xl font-medium text-gray-900 dark:text-white">
+              <div className="flex-1 text-[16px] md:text-lg lg:text-xl font-medium text-gray-900 dark:text-white">
                 {currentClue.clue}
               </div>
+              {targetImage && (
+                <img
+                  src={targetImage}
+                  alt="Target word hint"
+                  className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg border-2 border-primary-300 dark:border-primary-600 shadow-md"
+                />
+              )}
             </div>
 
             {showHint && currentClue.hint && (

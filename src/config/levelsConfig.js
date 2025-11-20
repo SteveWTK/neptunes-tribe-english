@@ -111,6 +111,30 @@ export const LEVELS = {
     recommendedGrade: "11th-12th grade / College",
   },
 
+  // Level Kids: Kids & Beginners
+  kids: {
+    id: "kids",
+    value: "Kids", // Must match lesson.difficulty in database
+    displayName: "Kids & Beginners",
+    shortName: "Kids",
+    description: "Activities and games for kids and beginners",
+    order: 0,
+    icon: "", // Customize per project
+    color: {
+      primary: "#eab308", // emerald-500
+      light: "#fef9c3",
+      dark: "#713f12",
+    },
+    characteristics: [
+      "Basic vocabulary and grammar",
+      "Short readings (200-400 words)",
+      "Simple exercises",
+      "Clear explanations",
+    ],
+    estimatedDuration: "3-6 months",
+    recommendedGrade: "6th-8th grade",
+  },
+
   // Individual users: free travellers
   // solo: {
   //   id: "solo",

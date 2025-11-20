@@ -62,16 +62,20 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
 
     const pairs = selectedWords.flatMap((word) => [
       {
-        id: word.id || word.english,
+        id: word.id || word.english || word.en,
         text: word.english || word.en,
+        image: word.enImage || word.image, // Support image for English side
         lang: "en",
         matched: false,
+        isImage: !!(word.enImage || (word.image && !word.pt && !word.portuguese && !word.translation)),
       },
       {
-        id: word.id || word.english,
+        id: word.id || word.english || word.en,
         text: word.translation || word.portuguese || word.pt,
+        image: word.ptImage, // Support image for Portuguese side
         lang: "pt",
         matched: false,
+        isImage: !!word.ptImage,
       },
     ]);
 
@@ -298,14 +302,22 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
                     : "rotateY(0deg)",
                 }}
               >
-                {/* For matched cards, show the vocabulary directly without transform */}
+                {/* For matched cards, show the vocabulary/image directly without transform */}
                 {isMatched ? (
                   <div
                     className={`absolute inset-0 flex items-center justify-center rounded-xl p-2 ${"bg-gradient-to-br from-accent-600 to-accent-800 text-white"}`}
                   >
-                    <span className="text-center font-semibold text-xs sm:text-sm">
-                      {card.text}
-                    </span>
+                    {card.isImage && card.image ? (
+                      <img
+                        src={card.image}
+                        alt={card.text || "Memory card"}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    ) : (
+                      <span className="text-center font-semibold text-xs sm:text-sm">
+                        {card.text}
+                      </span>
+                    )}
                     <Check className="absolute top-1 right-1 w-4 h-4" />
                   </div>
                 ) : (
@@ -317,7 +329,7 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
                     >
                       <Target className="w-6 h-6 sm:w-8 sm:h-8 text-[#dc2626]" />
                     </div>
-                    {/* Back face - Vocabulary */}
+                    {/* Back face - Vocabulary or Image */}
                     <div
                       className={`absolute inset-0 flex items-center justify-center rounded-xl p-2 rotate-y-180 backface-hidden ${
                         card.lang === "en"
@@ -329,9 +341,17 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
                         transform: "rotateY(180deg)",
                       }}
                     >
-                      <span className="text-center font-semibold text-xs sm:text-sm">
-                        {card.text}
-                      </span>
+                      {card.isImage && card.image ? (
+                        <img
+                          src={card.image}
+                          alt={card.text || "Memory card"}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      ) : (
+                        <span className="text-center font-semibold text-xs sm:text-sm">
+                          {card.text}
+                        </span>
+                      )}
                     </div>
                   </>
                 )}

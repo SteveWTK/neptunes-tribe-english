@@ -14,6 +14,7 @@ export default function WordSnakeStepForm({ step, onChange }) {
       answer: "",
       hint: "",
       fact: "",
+      targetImage: "", // Optional image URL for visual hint
     };
     updateField("clues", [...(step.clues || []), newClue]);
   };
@@ -105,6 +106,7 @@ export default function WordSnakeStepForm({ step, onChange }) {
               </li>
               <li>Recommended: 3-5 words per mini-game</li>
               <li>Words should relate to the lesson topic</li>
+              <li><strong>NEW:</strong> Add target images for visual learners - images appear next to text clues</li>
             </ul>
           </div>
         </div>
@@ -202,7 +204,7 @@ export default function WordSnakeStepForm({ step, onChange }) {
 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Clue *
+                    Clue (Text) *
                   </label>
                   <input
                     type="text"
@@ -211,6 +213,31 @@ export default function WordSnakeStepForm({ step, onChange }) {
                     placeholder="e.g., Largest animal on Earth"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Target Image (Optional - Visual Clue)
+                  </label>
+                  <input
+                    type="text"
+                    value={clue.targetImage || ""}
+                    onChange={(e) => updateClue(index, "targetImage", e.target.value)}
+                    placeholder="Image URL (shows alongside text clue)"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  />
+                  {clue.targetImage && (
+                    <div className="mt-2">
+                      <img
+                        src={clue.targetImage}
+                        alt="Target preview"
+                        className="w-32 h-32 object-cover rounded-lg border-2 border-primary-300 dark:border-primary-600 shadow-md"
+                      />
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                        ✓ Image will appear next to the clue text
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div>
