@@ -121,9 +121,9 @@ export const LEVELS = {
     order: 0,
     icon: "", // Customize per project
     color: {
-      primary: "#eab308", // emerald-500
-      light: "#fef9c3",
-      dark: "#713f12",
+      primary: "#d946ef", // emerald-500
+      light: "#fae8ff",
+      dark: "#a21caf",
     },
     characteristics: [
       "Basic vocabulary and grammar",

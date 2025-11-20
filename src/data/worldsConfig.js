@@ -561,8 +561,7 @@ export const WORLDS = {
         ecosystemType: "desert",
         description:
           "Explore the unique wildlife of Australia's arid interior.",
-        description_pt:
-          "Explore a fauna única do interior árido da Austrália.",
+        description_pt: "Explore a fauna única do interior árido da Austrália.",
         themeTag: "outback",
         levels: [
           "Level 1",
@@ -584,9 +583,9 @@ export const WORLDS = {
     name_pt: "Regiões polares",
     slug: "polar-regions",
     description:
-      "Venture to the ends of the Earth, exploring the Arctic and Antarctic and their unique adaptations to extreme cold.",
+      "Venture to the ends of the Earth, exploring the Arctic and Antarctic and the unique adaptations of their inhabitants to extreme cold.",
     description_pt:
-      "Aventure-se até os confins da Terra, explorando o Ártico e a Antártida e suas adaptações únicas ao frio extremo.",
+      "Aventure-se até os confins da Terra, explorando o Ártico e a Antártida e as adaptações únicas de seus habitantes ao frio extremo.",
     order: 5,
     color: {
       primary: "#8b5cf6", // violet-500
