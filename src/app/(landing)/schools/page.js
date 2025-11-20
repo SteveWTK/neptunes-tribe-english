@@ -23,10 +23,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { getAllWorlds } from "@/data/worldsConfig";
+import { translateWorlds } from "@/utils/i18n";
 
 export default function LandingPageSchools() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeFeature, setActiveFeature] = useState(0);
+  const [worlds, setWorlds] = useState([]);
   const { lang } = useLanguage();
 
   const t = {
@@ -417,6 +419,12 @@ export default function LandingPageSchools() {
     return () => clearInterval(featureInterval);
   }, [features.length]);
 
+  useEffect(() => {
+    const allWorlds = getAllWorlds();
+    const translatedWorlds = translateWorlds(allWorlds, lang);
+    setWorlds(translatedWorlds);
+  }, [lang]);
+
   return (
     <div className="font-sans min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100">
       {/* Hero Section */}
@@ -564,7 +572,7 @@ export default function LandingPageSchools() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {getAllWorlds().map((world, index) => (
+            {worlds.map((world, index) => (
               <div
                 key={world.id}
                 className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
