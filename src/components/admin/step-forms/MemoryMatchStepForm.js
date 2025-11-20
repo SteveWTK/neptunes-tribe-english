@@ -14,7 +14,7 @@ export default function MemoryMatchStepForm({ step, onChange, allSteps }) {
       en: "",
       pt: "",
       enImage: "", // Optional image URL for English side
-      ptImage: ""  // Optional image URL for Portuguese side
+      ptImage: "", // Optional image URL for Portuguese side
     };
     updateField("vocabulary", [...(step.vocabulary || []), newPair]);
   };
@@ -31,7 +31,9 @@ export default function MemoryMatchStepForm({ step, onChange, allSteps }) {
   };
 
   const importFromVocabularyStep = (sourceStepId) => {
-    const vocabStep = allSteps?.find(s => s.id === sourceStepId && s.type === "vocabulary");
+    const vocabStep = allSteps?.find(
+      (s) => s.id === sourceStepId && s.type === "vocabulary"
+    );
     if (!vocabStep || !vocabStep.vocabulary) {
       alert("No vocabulary found in selected step");
       return;
@@ -40,14 +42,16 @@ export default function MemoryMatchStepForm({ step, onChange, allSteps }) {
     const importedPairs = vocabStep.vocabulary.map((item, idx) => ({
       id: idx + 1,
       en: item.english || "",
-      pt: item.translation || ""
+      pt: item.translation || "",
     }));
 
     updateField("vocabulary", importedPairs);
     alert(`Imported ${importedPairs.length} vocabulary pairs!`);
   };
 
-  const vocabularySteps = (allSteps || []).filter(s => s.type === "vocabulary");
+  const vocabularySteps = (allSteps || []).filter(
+    (s) => s.type === "vocabulary"
+  );
 
   return (
     <div className="space-y-4">
@@ -81,10 +85,22 @@ export default function MemoryMatchStepForm({ step, onChange, allSteps }) {
           <div className="text-sm text-blue-800 dark:text-blue-200">
             <p className="font-semibold mb-1">Visual Memory Match:</p>
             <ul className="list-disc ml-4 space-y-1">
-              <li><strong>Word/Word:</strong> Leave image URLs blank for traditional vocabulary matching</li>
-              <li><strong>Word/Image:</strong> Add an image URL to one side to match words with pictures (e.g., "Jaguar" ↔ jaguar photo)</li>
-              <li><strong>Image/Image:</strong> Add image URLs to both sides to match similar concepts visually</li>
-              <li>Great for visual learners, beginners, and younger students!</li>
+              <li>
+                <strong>Word/Word:</strong> Leave image URLs blank for
+                traditional vocabulary matching
+              </li>
+              <li>
+                <strong>Word/Image:</strong> Add an image URL to one side to
+                match words with pictures (e.g., &quot;Jaguar&quot; ↔ jaguar
+                photo)
+              </li>
+              <li>
+                <strong>Image/Image:</strong> Add image URLs to both sides to
+                match similar concepts visually
+              </li>
+              <li>
+                Great for visual learners, beginners, and younger students!
+              </li>
             </ul>
           </div>
         </div>
@@ -92,7 +108,9 @@ export default function MemoryMatchStepForm({ step, onChange, allSteps }) {
 
       <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
         <div className="flex justify-between items-center mb-4">
-          <h4 className="font-medium text-gray-900 dark:text-white">Vocabulary Pairs</h4>
+          <h4 className="font-medium text-gray-900 dark:text-white">
+            Vocabulary Pairs
+          </h4>
           <div className="flex gap-2">
             <button
               type="button"
@@ -130,16 +148,22 @@ export default function MemoryMatchStepForm({ step, onChange, allSteps }) {
               <Download className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-2" />
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
-              This will replace all current pairs with vocabulary from the selected step
+              This will replace all current pairs with vocabulary from the
+              selected step
             </p>
           </div>
         )}
 
         <div className="space-y-4">
           {(step.vocabulary || []).map((pair, index) => (
-            <div key={index} className="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800">
+            <div
+              key={index}
+              className="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800"
+            >
               <div className="flex justify-between items-center mb-3">
-                <span className="font-semibold text-gray-700 dark:text-gray-300">Pair {index + 1}</span>
+                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                  Pair {index + 1}
+                </span>
                 <button
                   type="button"
                   onClick={() => removeVocabPair(index)}
@@ -158,14 +182,18 @@ export default function MemoryMatchStepForm({ step, onChange, allSteps }) {
                   <input
                     type="text"
                     value={pair.en || ""}
-                    onChange={(e) => updateVocabPair(index, "en", e.target.value)}
+                    onChange={(e) =>
+                      updateVocabPair(index, "en", e.target.value)
+                    }
                     placeholder="English word/phrase"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
                   />
                   <input
                     type="text"
                     value={pair.enImage || ""}
-                    onChange={(e) => updateVocabPair(index, "enImage", e.target.value)}
+                    onChange={(e) =>
+                      updateVocabPair(index, "enImage", e.target.value)
+                    }
                     placeholder="Image URL (optional - leave blank for text only)"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
                   />
@@ -177,7 +205,9 @@ export default function MemoryMatchStepForm({ step, onChange, allSteps }) {
                     />
                   )}
                   <p className="text-xs text-gray-600 dark:text-gray-400">
-                    {pair.enImage ? "🖼️ Will show as image" : "📝 Will show as text"}
+                    {pair.enImage
+                      ? "🖼️ Will show as image"
+                      : "📝 Will show as text"}
                   </p>
                 </div>
 
@@ -189,14 +219,18 @@ export default function MemoryMatchStepForm({ step, onChange, allSteps }) {
                   <input
                     type="text"
                     value={pair.pt || ""}
-                    onChange={(e) => updateVocabPair(index, "pt", e.target.value)}
+                    onChange={(e) =>
+                      updateVocabPair(index, "pt", e.target.value)
+                    }
                     placeholder="Portuguese word/phrase"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
                   />
                   <input
                     type="text"
                     value={pair.ptImage || ""}
-                    onChange={(e) => updateVocabPair(index, "ptImage", e.target.value)}
+                    onChange={(e) =>
+                      updateVocabPair(index, "ptImage", e.target.value)
+                    }
                     placeholder="Image URL (optional - leave blank for text only)"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
                   />
@@ -208,7 +242,9 @@ export default function MemoryMatchStepForm({ step, onChange, allSteps }) {
                     />
                   )}
                   <p className="text-xs text-gray-600 dark:text-gray-400">
-                    {pair.ptImage ? "🖼️ Will show as image" : "📝 Will show as text"}
+                    {pair.ptImage
+                      ? "🖼️ Will show as image"
+                      : "📝 Will show as text"}
                   </p>
                 </div>
               </div>
