@@ -220,11 +220,11 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
     gridSize === "3x4" ? "grid-cols-3 sm:grid-cols-4" : "grid-cols-4";
   const cardSize =
     gridSize === "3x4"
-      ? "h-18 w-22 sm:h-20 sm:w-24"
+      ? "h-20 w-24 sm:h-20 sm:w-24"
       : "h-16 w-16 sm:h-20 sm:w-24";
 
   return (
-    <div className="flex flex-col items-center gap-6 p-4">
+    <div className="flex flex-col items-center gap-6 p-1">
       <div className="text-center px-4">
         <h3 className="text-xl sm:text-2xl font-bold text-primary-900 dark:text-white mb-2">
           Memory Match Challenge
