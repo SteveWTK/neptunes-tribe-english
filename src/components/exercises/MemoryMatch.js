@@ -67,7 +67,10 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
         image: word.enImage || word.image, // Support image for English side
         lang: "en",
         matched: false,
-        isImage: !!(word.enImage || (word.image && !word.pt && !word.portuguese && !word.translation)),
+        isImage: !!(
+          word.enImage ||
+          (word.image && !word.pt && !word.portuguese && !word.translation)
+        ),
       },
       {
         id: word.id || word.english || word.en,
@@ -217,7 +220,7 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
     gridSize === "3x4" ? "grid-cols-3 sm:grid-cols-4" : "grid-cols-4";
   const cardSize =
     gridSize === "3x4"
-      ? "h-16 w-20 sm:h-20 sm:w-24"
+      ? "h-18 w-22 sm:h-20 sm:w-24"
       : "h-16 w-16 sm:h-20 sm:w-24";
 
   return (
@@ -305,7 +308,7 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
                 {/* For matched cards, show the vocabulary/image directly without transform */}
                 {isMatched ? (
                   <div
-                    className={`absolute inset-0 flex items-center justify-center rounded-xl p-2 ${"bg-gradient-to-br from-accent-600 to-accent-800 text-white"}`}
+                    className={`absolute inset-0 flex items-center justify-center rounded-xl p-1 ${"bg-gradient-to-br from-accent-600 to-accent-800 text-white"}`}
                   >
                     {card.isImage && card.image ? (
                       <img
@@ -331,7 +334,7 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
                     </div>
                     {/* Back face - Vocabulary or Image */}
                     <div
-                      className={`absolute inset-0 flex items-center justify-center rounded-xl p-2 rotate-y-180 backface-hidden ${
+                      className={`absolute inset-0 flex items-center justify-center rounded-xl p-1 rotate-y-180 backface-hidden ${
                         card.lang === "en"
                           ? "bg-primary-800 text-primary-100"
                           : "bg-emerald-800 text-primary-100"

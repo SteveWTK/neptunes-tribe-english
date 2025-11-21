@@ -85,6 +85,7 @@ function WorldDetailContent() {
   const [hoveredHero, setHoveredHero] = useState(false);
   // For single world page, we only need one number (not an object like the worlds list page)
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
+  const [isPremiumUser, setIsPremiumUser] = useState(false);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -96,7 +97,7 @@ function WorldDetailContent() {
 
         const { data, error } = await supabaseClient
           .from("users")
-          .select("user_type")
+          .select("user_type, is_premium")
           .eq("id", userId)
           .single();
 
@@ -106,7 +107,9 @@ function WorldDetailContent() {
         }
 
         const type = data?.user_type || "individual";
+        const premium = data?.is_premium || false;
         setUserType(type);
+        setIsPremiumUser(premium);
 
         // Check if viewing all levels (individual users only)
         if (type === "individual" && typeof window !== "undefined") {
@@ -127,7 +130,9 @@ function WorldDetailContent() {
       const worldData = getWorldBySlug(params.worldId);
 
       // Translate world data based on current language
-      const translatedWorld = worldData ? translateWorld(worldData, lang) : null;
+      const translatedWorld = worldData
+        ? translateWorld(worldData, lang)
+        : null;
 
       if (translatedWorld && user) {
         setWorld(translatedWorld);
@@ -591,6 +596,8 @@ function WorldDetailContent() {
               const isSelected =
                 selectedAdventure && selectedAdventure.id === adventure.id;
               const hasLessons = adventure.lessonCount > 0;
+              const isPremiumContent = adventure.is_premium;
+              const hasAccess = !isPremiumContent || isPremiumUser;
 
               return (
                 <motion.div
@@ -604,12 +611,19 @@ function WorldDetailContent() {
                   }`}
                 >
                   <div
-                    className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border-2 transition-all ${
+                    className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border-2 transition-all relative ${
                       isSelected
                         ? "border-primary-500 shadow-xl"
                         : "border-transparent hover:border-gray-300 dark:hover:border-gray-600"
-                    }`}
+                    } ${!hasAccess ? "opacity-90" : ""}`}
                   >
+                    {/* Premium Badge */}
+                    {isPremiumContent && (
+                      <div className="absolute top-6 right-2 text-accent-600 dark:text-accent-400 bg-white dark:bg-gray-800 px-2 py-1 rounded-full text-xs font-bold z-10 shadow-lg">
+                        Premium
+                      </div>
+                    )}
+
                     {/* Adventure Badge */}
                     <div
                       className="h-1"
@@ -652,14 +666,25 @@ function WorldDetailContent() {
 
                       <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                         <div className="flex items-center gap-1">
-                          <BookOpen className="w-3 h-3" />
-                          <span>
-                            {hasLessons
-                              ? `${adventure.lessonCount} lesson${
-                                  adventure.lessonCount !== 1 ? "s" : ""
-                                }`
-                              : "Coming soon"}
-                          </span>
+                          {!hasAccess ? (
+                            <>
+                              <Lock className="w-3 h-3" />
+                              <span className="text-accent-600 dark:text-accent-400 font-semibold">
+                                Upgrade to Unlock
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <BookOpen className="w-3 h-3" />
+                              <span>
+                                {hasLessons
+                                  ? `${adventure.lessonCount} lesson${
+                                      adventure.lessonCount !== 1 ? "s" : ""
+                                    }`
+                                  : "Coming soon"}
+                              </span>
+                            </>
+                          )}
                         </div>
                         <ChevronRight
                           className={`w-4 h-4 transition-transform ${
@@ -719,6 +744,10 @@ function WorldDetailContent() {
                       <div className="space-y-3">
                         {currentData.lessons.map((lesson) => {
                           const isCompleted = completedLessons.has(lesson.id);
+                          const isPremiumAdventure =
+                            selectedAdventure?.is_premium;
+                          const canAccessLesson =
+                            !isPremiumAdventure || isPremiumUser;
                           console.log(
                             `Lesson ${lesson.id} (${lesson.title}):`,
                             {
@@ -731,24 +760,35 @@ function WorldDetailContent() {
                           return (
                             <div
                               key={lesson.id}
-                              onClick={() =>
-                                !lesson.under_construction &&
-                                router.push(`/lesson/${lesson.id}`)
-                              }
-                              className={`p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-all border border-gray-200 dark:border-gray-600 ${
+                              onClick={() => {
+                                if (!canAccessLesson) {
+                                  router.push("/subscriptions");
+                                } else if (!lesson.under_construction) {
+                                  router.push(`/lesson/${lesson.id}`);
+                                }
+                              }}
+                              className={`p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-all border border-gray-200 dark:border-gray-600 relative ${
                                 lesson.under_construction
                                   ? "opacity-60 cursor-not-allowed"
-                                  : "hover:shadow-md cursor-pointer"
+                                  : canAccessLesson
+                                  ? "hover:shadow-md cursor-pointer"
+                                  : "opacity-75 cursor-pointer"
                               }`}
                             >
                               <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1">
                                   <div className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
                                     {lesson.title}
+                                    {!canAccessLesson && (
+                                      <span className="text-xs text-accent-600 dark:text-accent-400 font-semibold flex items-center gap-1">
+                                        <Lock className="w-3 h-3" />
+                                        Upgrade to Unlock
+                                      </span>
+                                    )}
                                     {lesson.under_construction && (
                                       <Lock className="w-3 h-3 text-gray-400" />
                                     )}
-                                    {isCompleted && (
+                                    {isCompleted && canAccessLesson && (
                                       <CheckCircle
                                         className="w-4 h-4"
                                         style={{ color: world.color.primary }}
@@ -818,29 +858,41 @@ function WorldDetailContent() {
 
                 {/* CTA Button */}
                 <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                  <button
-                    onClick={() => {
-                      // Navigate to first available unit or lesson
-                      if (currentData.units && currentData.units.length > 0) {
-                        router.push(`/units/${currentData.units[0].id}`);
-                      } else if (
-                        currentData.lessons &&
-                        currentData.lessons.length > 0 &&
-                        !currentData.lessons[0].under_construction
-                      ) {
-                        router.push(`/lesson/${currentData.lessons[0].id}`);
+                  {selectedAdventure?.is_premium && !isPremiumUser ? (
+                    <Link
+                      href="/subscriptions"
+                      className="w-full md:w-auto px-8 py-4 rounded-lg bg-accent-500 hover:bg-accent-600 text-white font-bold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-3"
+                    >
+                      <Lock className="w-6 h-6" />
+                      Upgrade to Unlock This Adventure
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        // Navigate to first available unit or lesson
+                        if (currentData.units && currentData.units.length > 0) {
+                          router.push(`/units/${currentData.units[0].id}`);
+                        } else if (
+                          currentData.lessons &&
+                          currentData.lessons.length > 0 &&
+                          !currentData.lessons[0].under_construction
+                        ) {
+                          router.push(`/lesson/${currentData.lessons[0].id}`);
+                        }
+                      }}
+                      className="w-full md:w-auto px-8 py-4 rounded-lg text-white font-bold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-3"
+                      style={{ backgroundColor: world.color.primary }}
+                      disabled={
+                        (!currentData.units ||
+                          currentData.units.length === 0) &&
+                        (!currentData.lessons ||
+                          currentData.lessons.length === 0)
                       }
-                    }}
-                    className="w-full md:w-auto px-8 py-4 rounded-lg text-white font-bold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-3"
-                    style={{ backgroundColor: world.color.primary }}
-                    disabled={
-                      (!currentData.units || currentData.units.length === 0) &&
-                      (!currentData.lessons || currentData.lessons.length === 0)
-                    }
-                  >
-                    <Play className="w-6 h-6" />
-                    Start This Adventure
-                  </button>
+                    >
+                      <Play className="w-6 h-6" />
+                      Start This Adventure
+                    </button>
+                  )}
                 </div>
               </motion.div>
             )}

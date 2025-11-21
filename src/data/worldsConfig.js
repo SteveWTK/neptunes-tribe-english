@@ -81,6 +81,7 @@ export const WORLDS = {
         description_pt:
           "Descubra a maior floresta tropical do mundo, lar de milhões de espécies e comunidades indígenas.",
         themeTag: "amazon", // Links to theme_tags in database
+        is_premium: false, // Free for all users
         levels: [
           "Level 1",
           "Level 2",
@@ -103,6 +104,7 @@ export const WORLDS = {
         description_pt:
           "Viaje pela cordilheira mais longa do mundo, desde florestas nubladas até picos alpinos.",
         themeTag: "andes",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -125,6 +127,7 @@ export const WORLDS = {
         description_pt:
           "Experimente a maior área úmida tropical do mundo e sua incrível concentração de vida selvagem.",
         themeTag: "pantanal",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -147,6 +150,7 @@ export const WORLDS = {
         description_pt:
           "Explore as regiões costeiras e serras do Brasil, com sua vegetação exuberante e rica fauna.",
         themeTag: "brazil_coast",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -228,6 +232,7 @@ export const WORLDS = {
         description_pt:
           "Testemunhe a maior migração de animais terrestres do mundo pelas planícies africanas.",
         themeTag: "serengeti",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -250,6 +255,7 @@ export const WORLDS = {
         description_pt:
           "Explore a segunda maior floresta tropical do mundo, lar de gorilas e bonobos.",
         themeTag: "congo",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -272,6 +278,7 @@ export const WORLDS = {
         description_pt:
           "Descubra a vida no maior deserto quente do mundo e suas estratégias de adaptação.",
         themeTag: "sahara",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -294,6 +301,7 @@ export const WORLDS = {
         description_pt:
           "Conheça lêmures e outras espécies únicas encontradas em nenhum outro lugar da Terra.",
         themeTag: "madagascar",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -363,6 +371,7 @@ export const WORLDS = {
         description_pt:
           "Explore o maior bioma florestal do mundo e seu papel na regulação climática.",
         themeTag: "taiga",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -385,6 +394,7 @@ export const WORLDS = {
         description_pt:
           "Descubra as montanhas mais altas do mundo e sua biodiversidade única.",
         themeTag: "himalayas",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -407,6 +417,7 @@ export const WORLDS = {
         description_pt:
           "Conheça orangotangos, elefantes-pigmeus e outras espécies incríveis em uma das florestas tropicais mais antigas.",
         themeTag: "borneo",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -429,6 +440,7 @@ export const WORLDS = {
         description_pt:
           "Explore o clima único e a biodiversidade da região do Mediterrâneo.",
         themeTag: "mediterranean",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -498,6 +510,7 @@ export const WORLDS = {
         description_pt:
           "Mergulhe no maior sistema de recifes de coral do mundo e sua incrível biodiversidade.",
         themeTag: "great_barrier_reef",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -520,6 +533,7 @@ export const WORLDS = {
         description_pt:
           "Conheça kiwis, kakapos e outras espécies únicas nestas ilhas isoladas.",
         themeTag: "new_zealand",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -542,6 +556,7 @@ export const WORLDS = {
         description_pt:
           "Descubra a cultura e os ecossistemas das nações insulares do Pacífico que enfrentam as mudanças climáticas.",
         themeTag: "pacific_islands",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -563,6 +578,7 @@ export const WORLDS = {
           "Explore the unique wildlife of Australia's arid interior.",
         description_pt: "Explore a fauna única do interior árido da Austrália.",
         themeTag: "outback",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -635,6 +651,7 @@ export const WORLDS = {
         description_pt:
           "Explore as planícies sem árvores do Ártico e conheça ursos polares, raposas árticas e caribus.",
         themeTag: "arctic",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -657,6 +674,7 @@ export const WORLDS = {
         description_pt:
           "Viaje até o continente mais frio da Terra e descubra pinguins, focas e baleias.",
         themeTag: "antarctica",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -679,6 +697,7 @@ export const WORLDS = {
         description_pt:
           "Compreenda o impacto das mudanças climáticas na maior ilha do mundo.",
         themeTag: "greenland",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -701,6 +720,7 @@ export const WORLDS = {
         description_pt:
           "Aprenda sobre a aurora boreal e a vida no Círculo Ártico.",
         themeTag: "aurora",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -756,6 +776,7 @@ export const WORLDS = {
         description_pt:
           "Explore gêiseres, fontes termais e a restauração de lobos neste parque nacional icônico.",
         themeTag: "yellowstone",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -778,6 +799,7 @@ export const WORLDS = {
         description_pt:
           "Mergulhe nos vibrantes recifes de coral do Caribe e seus desafios de conservação.",
         themeTag: "caribbean_reef",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -800,6 +822,7 @@ export const WORLDS = {
         description_pt:
           "Acompanhe a incrível jornada de 4.800 quilômetros das borboletas-monarca.",
         themeTag: "monarch",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -822,6 +845,7 @@ export const WORLDS = {
         description_pt:
           "Descubra esta área úmida subtropical única e sua importância para o ecossistema da Flórida.",
         themeTag: "everglades",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -878,6 +902,7 @@ export const WORLDS = {
         description_pt:
           "Explore as imponentes florestas subaquáticas e sua importância para a vida marinha.",
         themeTag: "kelp",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -900,6 +925,7 @@ export const WORLDS = {
         description_pt:
           "Desça às profundezas misteriosas e conheça criaturas bizarras das profundezas do mar.",
         themeTag: "deep_ocean",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -922,6 +948,7 @@ export const WORLDS = {
         description_pt:
           "Acompanhe as jornadas épicas das baleias pelos oceanos do mundo.",
         themeTag: "whales",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -942,6 +969,7 @@ export const WORLDS = {
         description: "Discover the most biodiverse marine region on Earth.",
         description_pt: "Descubra a região marinha mais biodiversa da Terra.",
         themeTag: "coral_triangle",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -998,6 +1026,7 @@ export const WORLDS = {
         description_pt:
           "Mergulhe nos oceanos primordiais da Terra há 3,5 bilhões de anos. Descubra as primeiras formas de vida microscópicas, estromatólitos e as estranhas criaturas da Explosão Cambriana que mudaram a vida para sempre.",
         themeTag: "ancient_seas",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -1020,6 +1049,7 @@ export const WORLDS = {
         description_pt:
           "Caminhe entre os gigantes da Era Mesozoica. Conheça o Tyrannosaurus rex, Triceratops, saurópodes de pescoço longo e descubra por que essas criaturas magníficas desapareceram há 66 milhões de anos.",
         themeTag: "dinosaurs",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -1042,6 +1072,7 @@ export const WORLDS = {
         description_pt:
           "Viaje à última Era do Gelo, há apenas 10.000 anos. Conheça mamutes lanosos, tigres-dentes-de-sabre, preguiças-gigantes e descubra como os humanos viveram ao lado dessas bestas incríveis.",
         themeTag: "ice_age",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -1064,6 +1095,7 @@ export const WORLDS = {
         description_pt:
           "Explore as cinco extinções em massa da Terra e as espécies resilientes que sobreviveram. Aprenda sobre os dodôs, pombos-passageiros e o que a extinção nos ensina sobre proteger a vida hoje.",
         themeTag: "extinctions",
+        is_premium: true, // Premium content
         levels: [
           "Level 1",
           "Level 2",
