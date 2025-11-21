@@ -220,7 +220,7 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
     gridSize === "3x4" ? "grid-cols-3 sm:grid-cols-4" : "grid-cols-4";
   const cardSize =
     gridSize === "3x4"
-      ? "h-20 w-24 sm:h-20 sm:w-24"
+      ? "h-22 w-26 sm:h-22 sm:w-26"
       : "h-16 w-16 sm:h-20 sm:w-24";
 
   return (
