@@ -27,8 +27,8 @@ export default function HeaderBase({
   const localizedLinks = {
     landing: {
       en: [
-        { href: "/units", label: "Units" },
         { href: "/worlds", label: "Worlds" },
+        { href: "/units", label: "Units" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "About Us" },
         { href: "/subscriptions", label: "Subscriptions" },
@@ -37,8 +37,8 @@ export default function HeaderBase({
         // { href: "/about-us", label: "About Us" },
       ],
       pt: [
-        { href: "/units", label: "Atividades" },
         { href: "/worlds", label: "Mundos" },
+        { href: "/units", label: "Atividades" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
         { href: "/subscriptions", label: "Planos" },
@@ -49,15 +49,16 @@ export default function HeaderBase({
     },
     site: {
       en: [
-        { href: "/units", label: "Units" },
         { href: "/worlds", label: "Worlds" },
+        { href: "/units", label: "Units" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "About Us" },
         { href: "/subscriptions", label: "Subscriptions" },
       ],
       pt: [
-        { href: "/units", label: "Atividades" },
         { href: "/worlds", label: "Mundos" },
+
+        { href: "/units", label: "Atividades" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
         { href: "/subscriptions", label: "Planos" },

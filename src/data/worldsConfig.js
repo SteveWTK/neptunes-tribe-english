@@ -25,6 +25,7 @@ export const WORLDS = {
     description_pt:
       "Explore a incrível biodiversidade da América do Sul, desde a floresta amazônica até as montanhas dos Andes e as Ilhas Galápagos.",
     order: 1,
+    coming_soon: false,
     color: {
       primary: "#06b6d4", // cyan-500
       secondary: "#0891b2", // cyan-600
@@ -186,6 +187,8 @@ export const WORLDS = {
     description_pt:
       "Descubra a impressionante diversidade do continente, do Deserto do Saara à Bacia do Congo e às savanas da África Oriental.",
     order: 2,
+    coming_soon: true,
+    next_week: true,
     color: {
       primary: "#10b981", // emerald-500
       secondary: "#059669", // emerald-600
@@ -326,6 +329,7 @@ export const WORLDS = {
     description_pt:
       "Viaje pela maior massa de terra do mundo, das florestas europeias às estepes asiáticas e florestas tropicais.",
     order: 3,
+    coming_soon: true,
     color: {
       primary: "#f59e0b", // amber-500
       secondary: "#d97706", // amber-600
@@ -465,6 +469,7 @@ export const WORLDS = {
     description_pt:
       "Explore as ilhas e os ambientes marinhos do Pacífico, desde a Grande Barreira de Corais até os ecossistemas únicos da Nova Zelândia.",
     order: 4,
+    coming_soon: true,
     color: {
       primary: "#3b82f6", // blue-500
       secondary: "#2563eb", // blue-600
@@ -603,6 +608,7 @@ export const WORLDS = {
     description_pt:
       "Aventure-se até os confins da Terra, explorando o Ártico e a Antártida e as adaptações únicas de seus habitantes ao frio extremo.",
     order: 5,
+    coming_soon: true,
     color: {
       primary: "#8b5cf6", // violet-500
       secondary: "#7c3aed", // violet-600
@@ -745,6 +751,7 @@ export const WORLDS = {
     description_pt:
       "Da tundra ártica às florestas tropicais, descubra os diversos ecossistemas da América do Norte e da América Central.",
     order: 6,
+    coming_soon: true,
     color: {
       primary: "#ef4444", // red-500
       secondary: "#dc2626", // red-600
@@ -870,6 +877,7 @@ export const WORLDS = {
     description_pt:
       "Explore o maior ecossistema da Terra, que cobre 71% do nosso planeta, desde as águas superficiais iluminadas pelo sol até as misteriosas profundezas do oceano.",
     order: 7,
+    coming_soon: true,
     color: {
       primary: "#0ea5e9", // sky-500
       secondary: "#0284c7", // sky-600
@@ -994,6 +1002,7 @@ export const WORLDS = {
     description_pt:
       "Embarque em uma jornada através de 4 bilhões de anos da história da Terra, desde o primeiro vislumbre de vida até a Era do Gelo. Conheça dinossauros, mamutes e inúmeras espécies extintas que um dia dominaram nosso planeta.",
     order: 8,
+    coming_soon: true,
     color: {
       primary: "#a855f7", // purple-500
       secondary: "#9333ea", // purple-600

@@ -861,7 +861,7 @@ function WorldDetailContent() {
                   {selectedAdventure?.is_premium && !isPremiumUser ? (
                     <Link
                       href="/subscriptions"
-                      className="w-full md:w-auto px-8 py-4 rounded-lg bg-accent-500 hover:bg-accent-600 text-white font-bold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-3"
+                      className="w-full md:w-auto px-8 py-4 rounded-lg text-accent-600 dark:text-accent-400 font-bold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-3"
                     >
                       <Lock className="w-6 h-6" />
                       Upgrade to Unlock This Adventure

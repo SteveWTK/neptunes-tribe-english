@@ -173,6 +173,19 @@ function WorldsContent() {
                       {world.order}
                     </div>
                   </div>
+                  {world.coming_soon && (
+                    <div className="absolute top-6 right-4 z-10">
+                      <div
+                        className="text-white/90 text-xs font-medium px-3 py-1 rounded-full backdrop-blur-sm"
+                        style={{
+                          backgroundColor: world.color.primary,
+                          opacity: 0.8,
+                        }}
+                      >
+                        {world.next_week ? "Next week!" : "Coming soon"}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Image/Map Placeholder */}
                   <div
