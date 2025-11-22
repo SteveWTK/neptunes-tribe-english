@@ -41,10 +41,10 @@ export const LEVELS = {
 
   // Level Kids: Kids & Beginners
   Starter: {
-    id: "starter",
-    value: "Starter", // Must match lesson.difficulty in database
-    displayName: "Starter",
-    shortName: "Starter",
+    id: "basic",
+    value: "Basic", // Must match lesson.difficulty in database
+    displayName: "Basic",
+    shortName: "Basic",
     description: "Activities and games for kids and beginners",
     order: 0,
     icon: "", // Customize per project
