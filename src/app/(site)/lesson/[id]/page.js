@@ -661,11 +661,7 @@ function DynamicLessonContent() {
     try {
       console.log("🏁 Starting lesson completion process...");
 
-      await markLessonComplete(
-        user.id,
-        lesson.id,
-        xpEarned || 0
-      );
+      await markLessonComplete(user.id, lesson.id, xpEarned || 0);
 
       console.log(
         "✅ Lesson completion successful, navigating to world page..."
@@ -822,11 +818,6 @@ function DynamicLessonContent() {
       case "scenario":
         return (
           <div className="text-center">
-            {/* Floating Facts Modal */}
-            {currentStepData.facts && currentStepData.facts.length > 0 && (
-              <FloatingFacts facts={currentStepData.facts} />
-            )}
-
             <div className="bg-white dark:bg-primary-900/20 rounded-xl p-6 mb-6">
               {/* Translation button */}
               {/* {userPreferredLanguage !== "en" && (
@@ -868,14 +859,20 @@ function DynamicLessonContent() {
                   }}
                 />
               ) : null}
-
+              {/* Floating Facts Modal */}
+              {/* {currentStepData.facts && currentStepData.facts.length > 0 && (
+                <FloatingFacts
+                  facts={currentStepData.facts}
+                  className="flex items-center"
+                />
+              )} */}
               {/* Auto-translated content */}
               <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
                 {translations[`scenario-${currentStep}`] ||
                   currentStepData.content}
               </p>
 
-              <button
+              {/* <button
                 onClick={toggleAudio}
                 className="flex items-center space-x-2 mx-auto bg-accent-600 text-white px-4 py-2 rounded-lg hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={
@@ -897,11 +894,10 @@ function DynamicLessonContent() {
                 ) : (
                   <>
                     <Volume2 className="w-4 h-4" />
-                    {/* <span>Ouça o texto em inglês</span> */}
                   </>
                 )}
               </button>
-              <audio ref={audioRef} style={{ display: "none" }} />
+              <audio ref={audioRef} style={{ display: "none" }} /> */}
 
               {currentStepData.cultural_context && (
                 <div className="bg-primary-50 dark:bg-primary-900/20 p-3 rounded-lg mt-4">

@@ -835,6 +835,16 @@ function WorldDetailContent() {
                                       />
                                     </div>
                                   )}
+                                  {!lesson.unit?.image && (
+                                    <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                      <Image
+                                        src={selectedAdventure.adventureUrl}
+                                        alt={selectedAdventure.name || "Unit"}
+                                        fill
+                                        className="object-cover"
+                                      />
+                                    </div>
+                                  )}
                                   {lesson.under_construction ? (
                                     <div className="text-xs text-gray-500">
                                       Soon

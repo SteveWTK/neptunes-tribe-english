@@ -82,6 +82,8 @@ export const WORLDS = {
         description_pt:
           "Descubra a maior floresta tropical do mundo, lar de milhões de espécies e comunidades indígenas.",
         themeTag: "amazon", // Links to theme_tags in database
+        adventureUrl:
+          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Caqueta%20titi%20with%20baby.webp",
         is_premium: false, // Free for all users
         levels: [
           "Level 1",
@@ -105,6 +107,8 @@ export const WORLDS = {
         description_pt:
           "Viaje pela cordilheira mais longa do mundo, desde florestas nubladas até picos alpinos.",
         themeTag: "andes",
+        adventureUrl:
+          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/Andes.jpg",
         is_premium: true, // Premium content
         levels: [
           "Level 1",
@@ -128,6 +132,8 @@ export const WORLDS = {
         description_pt:
           "Experimente a maior área úmida tropical do mundo e sua incrível concentração de vida selvagem.",
         themeTag: "pantanal",
+        adventureUrl:
+          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Jaguar%20underwater.jpg",
         is_premium: true, // Premium content
         levels: [
           "Level 1",
@@ -151,6 +157,8 @@ export const WORLDS = {
         description_pt:
           "Explore as regiões costeiras e serras do Brasil, com sua vegetação exuberante e rica fauna.",
         themeTag: "brazil_coast",
+        adventureUrl:
+          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Piaui%20coast%20marine%20turtle.webp",
         is_premium: true, // Premium content
         levels: [
           "Level 1",
