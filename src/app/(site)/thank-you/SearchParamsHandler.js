@@ -96,8 +96,8 @@ export default function SearchParamsHandler() {
             Thank You for Your Support!
           </h1>
           <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Your payment has been processed successfully. Welcome to
-            Neptune&apos;s Tribe!
+            Your payment has been processed successfully. Welcome to Habitat
+            English!
           </p>
           {sessionId && (
             <p className="text-xs text-gray-500 mb-4 break-all">
