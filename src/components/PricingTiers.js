@@ -35,23 +35,23 @@ export default function PricingTiers() {
     en: {
       monthly: "Monthly",
       yearly: "Yearly",
-      discount: "40% OFF",
+      discount: "33% OFF",
       mostPopular: "Most Popular",
       basicSub: "Try out our main features",
       explorerSub: "Enjoy all our content and features",
       enterpriseSub: "For teams and organisations",
       cardContentBasic: [
-        "Access to one trial learning unit",
-        "Access to one challenge",
+        "Access to one Adventure with activitities",
+        // "Access to one Adventure with activitities",
         "Access to eco-news",
         // "Basic Interactive eco-map tracking",
         // "Community access",
       ],
       cardContentExplorer: [
         "Access to all features",
-        "Accecss to all the weekly theme units, challenges and revision exercises",
+        "Accecss to all the weekly theme units, activities and revision exercises",
         "Access to your eco map",
-        "Progress tracking and analytics",
+        // "Progress tracking and analytics",
         "Priority support",
         // "Offline content access",
         // "Certificate generation",
@@ -59,7 +59,7 @@ export default function PricingTiers() {
       cardContentEnterprise: [
         "All Explorer features",
         "Up to 25 accounts (pay for only 10)",
-        "Group management tools",
+        // "Group management tools",
         // "Custom curriculum creation",
         // "Detailed analytics dashboard",
         // "API access",
@@ -91,7 +91,7 @@ export default function PricingTiers() {
     pt: {
       monthly: "Mensal",
       yearly: "Anual",
-      discount: "40% OFF",
+      discount: "33% OFF",
       mostPopular: "Mais Popular",
       basicSub: "Experimente a Habitat English",
       explorerSub: "Aproveite todo o nosso conteúdo",
@@ -161,28 +161,28 @@ export default function PricingTiers() {
     USD: {
       yearly: {
         explorer: {
-          price: 70,
-          display: "$70",
+          price: 56,
+          display: "$56",
           period: "/year",
-          savings: "Save 40%",
+          savings: "Save 33%",
         },
         enterprise: {
-          price: 700,
-          display: "$700",
+          price: 560,
+          display: "$560",
           period: "/year",
-          savings: "Save 40%",
+          savings: "Save 33%",
         },
       },
       monthly: {
         explorer: {
-          price: 9.9,
-          display: "$9.90",
+          price: 7,
+          display: "$7.00",
           period: "/month",
           savings: "",
         },
         enterprise: {
-          price: 99,
-          display: "$99",
+          price: 70,
+          display: "$70",
           period: "/month",
           savings: "",
         },
@@ -196,28 +196,28 @@ export default function PricingTiers() {
     BRL: {
       yearly: {
         explorer: {
-          price: 350,
-          display: "R$350",
+          price: 280,
+          display: "R$280",
           period: "/ano",
-          savings: "Economize 40%",
+          savings: "Economize 33%",
         },
         enterprise: {
-          price: 3500,
-          display: "R$3.500",
+          price: 2800,
+          display: "R$2.800",
           period: "/ano",
-          savings: "Economize 40%",
+          savings: "Economize 33%",
         },
       },
       monthly: {
         explorer: {
-          price: 49,
-          display: "R$49",
+          price: 35,
+          display: "R$35",
           period: "/mês",
           savings: "",
         },
         enterprise: {
-          price: 490,
-          display: "R$490",
+          price: 350,
+          display: "R$350",
           period: "/mês",
           savings: "",
         },
@@ -378,7 +378,7 @@ export default function PricingTiers() {
           </CardContent>
         </Card>
 
-        {/* Explorer Tier */}
+        {/* Premium Tier */}
         <Card className="relative border-2 border-green-500 hover:shadow-lg transition-shadow">
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
             <Badge className="bg-green-500 text-white dark:bg-green-500 dark:text-white px-3 py-1">
@@ -390,7 +390,7 @@ export default function PricingTiers() {
             <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-3">
               <Globe className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
-            <CardTitle className="text-xl">Explorer</CardTitle>
+            <CardTitle className="text-xl">Premium</CardTitle>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               {copy.explorerSub}
             </p>

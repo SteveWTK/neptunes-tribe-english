@@ -57,7 +57,6 @@ export default function HeaderBase({
       ],
       pt: [
         { href: "/worlds", label: "Mundos" },
-
         { href: "/units", label: "Atividades" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },

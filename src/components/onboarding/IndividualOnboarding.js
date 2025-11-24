@@ -49,7 +49,7 @@ export default function IndividualOnboarding({ onComplete }) {
               </p>
               <div className="bg-gradient-to-r from-cyan-50 to-emerald-50 dark:from-cyan-900/20 dark:to-emerald-900/20 p-6 rounded-xl">
                 <p className="text-gray-800 dark:text-gray-200 font-medium">
-                  Every month, we feature a new world with fresh content. Start
+                  Every week, we feature a new world with fresh content. Start
                   with South America, then unlock Africa, Eurasia, and beyond!
                 </p>
               </div>
@@ -215,7 +215,7 @@ export default function IndividualOnboarding({ onComplete }) {
                 </ul>
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                New worlds unlock monthly. Previous worlds stay accessible
+                New worlds unlock weekly. Previous worlds stay accessible
                 forever!
               </p>
             </div>
@@ -308,9 +308,9 @@ export default function IndividualOnboarding({ onComplete }) {
               </p>
               <div className="bg-gradient-to-r from-cyan-50 to-emerald-50 dark:from-cyan-900/20 dark:to-emerald-900/20 p-6 rounded-xl">
                 <p className="text-gray-800 dark:text-gray-200 font-medium">
-                  Cada mês, destacamos um novo mundo com conteúdo fresco. Comece
-                  com a América do Sul e depois desbloqueie a África, Ásia e
-                  além!
+                  Cada semana, destacamos um novo mundo com conteúdo fresco.
+                  Comece com a América do Sul e depois desbloqueie a África,
+                  Ásia e além!
                 </p>
               </div>
             </div>
@@ -479,7 +479,7 @@ export default function IndividualOnboarding({ onComplete }) {
                 </ul>
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                Novos mundos desbloqueiam mensalmente. Mundos anteriores ficam
+                Novos mundos desbloqueiam semanalmente. Mundos anteriores ficam
                 acessíveis para sempre!
               </p>
             </div>
