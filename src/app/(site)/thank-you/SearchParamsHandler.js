@@ -54,18 +54,15 @@ export default function SearchParamsHandler() {
             No worries! Your payment was cancelled and no charges were made.
           </p>
           <div className="space-y-3">
-            <Button
-              onClick={() => router.push("/dashboard")}
-              className="w-full"
-            >
-              Go to Dashboard
+            <Button onClick={() => router.push("/worlds")} className="w-full">
+              Go to worlds
             </Button>
             <Button
               variant="outline"
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/units")}
               className="w-full"
             >
-              Back to Home
+              Go to units
             </Button>
           </div>
         </div>
@@ -105,11 +102,8 @@ export default function SearchParamsHandler() {
             </p>
           )}
           <div className="w-48 flex flex-col items-center justify-center gap-3">
-            <Button
-              onClick={() => router.push("/dashboard")}
-              className="w-full"
-            >
-              Go to Dashboard
+            <Button onClick={() => router.push("/worlds")} className="w-full">
+              Go to worlds
             </Button>
             <Button
               variant="outline"
