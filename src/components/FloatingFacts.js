@@ -47,60 +47,62 @@ export default function FloatingFacts({ facts = [] }) {
   if (!isVisible) return null;
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={currentFactIndex}
-        initial={{ opacity: 0, y: 20, scale: 0.9 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -20, scale: 0.9 }}
-        transition={{ duration: 0.5 }}
-        className="z-40 max-w-xs"
-      >
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border-2 border-primary-200 dark:border-primary-700 overflow-hidden">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-accent-500 to-primary-500 px-4 py-2 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-white">
-              <Info className="w-4 h-4" />
-              <span className="font-semibold text-sm">
-                {label || "Did You Know?"}
-              </span>
-            </div>
-            <button
+    // <AnimatePresence mode="wait">
+    //   <motion.div
+    //     key={currentFactIndex}
+    //     initial={{ opacity: 0, y: 20, scale: 0.9 }}
+    //     animate={{ opacity: 1, y: 0, scale: 1 }}
+    //     exit={{ opacity: 0, y: -20, scale: 0.9 }}
+    //     transition={{ duration: 0.5 }}
+    //     className="z-40 max-w-xs"
+    //   >
+    <div className="mx-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border-2 border-primary-200 dark:border-primary-700 overflow-hidden">
+        {/* Header */}
+        <div className="bg-primary-500 px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-white">
+            <Info className="w-4 h-4" />
+            <span className="font-semibold text-sm">
+              {label || "Did You Know?"}
+            </span>
+          </div>
+          {/* <button
               onClick={() => setIsVisible(false)}
               className="text-white hover:text-gray-200 transition-colors"
               aria-label="Close"
             >
               <X className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Content */}
-          <div className="p-4">
-            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-              {value}
-            </p>
-          </div>
-
-          {/* Progress indicator (if multiple facts) */}
-          {facts.length > 1 && (
-            <div className="px-4 pb-3 flex gap-1 justify-center">
-              {facts.map((_, index) => (
-                <div
-                  key={index}
-                  className={`h-1 rounded-full transition-all duration-300 ${
-                    index === currentFactIndex
-                      ? "bg-primary-500 w-6"
-                      : "bg-gray-300 dark:bg-gray-600 w-2"
-                  }`}
-                />
-              ))}
-            </div>
-          )}
+            </button> */}
         </div>
 
-        {/* Subtle pulsing glow effect */}
-        <div className="absolute inset-0 bg-primary-400/20 dark:bg-primary-600/20 rounded-xl blur-xl -z-10 animate-pulse" />
-      </motion.div>
-    </AnimatePresence>
+        {/* Content */}
+        <div className="p-4">
+          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+            {value}
+          </p>
+        </div>
+
+        {/* Progress indicator (if multiple facts) */}
+        {facts.length > 1 && (
+          <div className="px-4 pb-3 flex gap-1 justify-center">
+            {facts.map((_, index) => (
+              <div
+                key={index}
+                className={`h-1 rounded-full transition-all duration-300 ${
+                  index === currentFactIndex
+                    ? "bg-primary-500 w-6"
+                    : "bg-gray-300 dark:bg-gray-600 w-2"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Subtle pulsing glow effect */}
+      <div className="absolute inset-0 bg-primary-400/20 dark:bg-primary-600/20 rounded-xl blur-xl -z-10 animate-pulse" />
+    </div>
+    /* </motion.div>
+    </AnimatePresence> */
   );
 }

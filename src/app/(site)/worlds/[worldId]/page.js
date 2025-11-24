@@ -463,6 +463,19 @@ function WorldDetailContent() {
                 <div className="text-white/90 text-sm font-medium bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm">
                   World {world.order}
                 </div>
+                {world.coming_soon && (
+                  <div className="z-10">
+                    <div
+                      className="text-white/90 bg-black/20 text-sm font-medium px-3 py-1 rounded-full backdrop-blur-sm"
+                      // style={{
+                      //   backgroundColor: world.color.primary,
+                      //   opacity: 0.9,
+                      // }}
+                    >
+                      {world.next_week ? "Coming next week!" : "Coming soon!"}
+                    </div>
+                  </div>
+                )}
               </div>
               <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">
                 {world.name}
@@ -491,6 +504,20 @@ function WorldDetailContent() {
             </div>
           </div>
         </div>
+
+        {/* {world.coming_soon && (
+          <div className="absolute top-6 right-6 z-10">
+            <div
+              className="text-white/90 text-xs font-medium px-3 py-1 rounded-full backdrop-blur-sm"
+              style={{
+                backgroundColor: world.color.primary,
+                opacity: 0.9,
+              }}
+            >
+              {world.next_week ? "Coming next week!" : "Coming soon!"}
+            </div>
+          </div>
+        )} */}
 
         {/* Eco Hero Carousel - Bottom Right Corner */}
         <div className="absolute bottom-4 right-4">

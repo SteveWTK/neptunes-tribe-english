@@ -21,7 +21,7 @@ export default function PricingPage() {
       pageTitle: "Join Habitat English",
       pageSubtitle:
         "Enrich your English while exploring the world's most amazing ecosystems.",
-      pageMission: "10% of all subscriptions go to environmental NGOs",
+      pageMission: "35% of all subscriptions go to environmental NGOs",
       impactTitle: "Your support has a real impact.",
       impactSubtitle:
         "Every subscription directly supports both education and environmental conservation",
@@ -43,7 +43,7 @@ export default function PricingPage() {
       pageTitle: "Junte-se à Habitat English",
       pageSubtitle:
         "Desenvolva seu inglês enquanto explora os ecossistemas mais incríveis do mundo.",
-      pageMission: "10% de todas as assinaturas vão para ONGs ambientais",
+      pageMission: "35% de todas as assinaturas vão para ONGs ambientais",
       impactTitle: "Seu Apoio Cria Impacto Real",
       impactSubtitle:
         "Cada assinatura apoia diretamente a educação e a preservação ambiental",
@@ -83,12 +83,12 @@ export default function PricingPage() {
           projects worldwide.
         </p> */}
         <section className="my-2 text-center text-[16px] text-zinc-500 dark:text-zinc-400 border-t py-2">
-          <p className="flex flex-col md:flex-row items-center justify-center gap-2">
+          {/* <p className="flex flex-col md:flex-row items-center justify-center gap-2">
             <span className="text-[16px]">
               <HeartHandshake />
             </span>
             {copy.pageMission}
-          </p>
+          </p> */}
         </section>
       </section>
 

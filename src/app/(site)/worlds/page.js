@@ -179,10 +179,10 @@ function WorldsContent() {
                         className="text-white/90 text-xs font-medium px-3 py-1 rounded-full backdrop-blur-sm"
                         style={{
                           backgroundColor: world.color.primary,
-                          opacity: 0.8,
+                          opacity: 0.9,
                         }}
                       >
-                        {world.next_week ? "Next week!" : "Coming soon!"}
+                        {world.next_week ? "Coming next week!" : "Coming soon!"}
                       </div>
                     </div>
                   )}

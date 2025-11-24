@@ -818,7 +818,7 @@ function DynamicLessonContent() {
       case "scenario":
         return (
           <div className="text-center">
-            <div className="bg-white dark:bg-primary-900/20 rounded-xl p-6 mb-6">
+            <div className="bg-white dark:bg-primary-900/20 rounded-xl p-6 mb-2">
               {/* Translation button */}
               {/* {userPreferredLanguage !== "en" && (
                 <div className="flex justify-end mb-4">
@@ -860,14 +860,11 @@ function DynamicLessonContent() {
                 />
               ) : null}
               {/* Floating Facts Modal */}
-              {/* {currentStepData.facts && currentStepData.facts.length > 0 && (
-                <FloatingFacts
-                  facts={currentStepData.facts}
-                  className="flex items-center"
-                />
-              )} */}
+              {currentStepData.facts && currentStepData.facts.length > 0 && (
+                <FloatingFacts facts={currentStepData.facts} />
+              )}
               {/* Auto-translated content */}
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
+              <p className="text-lg text-gray-700 dark:text-gray-300 mb-2">
                 {translations[`scenario-${currentStep}`] ||
                   currentStepData.content}
               </p>
