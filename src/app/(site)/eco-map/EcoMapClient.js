@@ -328,17 +328,17 @@ export default function EcoMapClient({
                 </h2> */}
               <div className="rounded-full p-1  transition-all">
                 <Globe
-                  className="w-4 h-4 md:w-6 md:h-6 group-hover:translate-x-0.5
+                  className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400 group-hover:translate-x-0.5
                  transition-transform"
                 />
               </div>
-              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2 group-hover:translate-x-0.5 transition-transform">
+              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2 group-hover:text-accent-600 dark:group-hover:text-accent-400 group-hover:translate-x-0.5 transition-transform">
                 {copy.worldsSubtitle}
               </p>
 
               {/* <div className="hidden md:block"> */}
               <div className="rounded-full p-1  transition-all">
-                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:translate-x-0.5 transition-transform" />
+                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400  group-hover:translate-x-0.5 transition-transform" />
               </div>
               {/* </div> */}
             </div>
@@ -354,14 +354,14 @@ export default function EcoMapClient({
           >
             <div className="flex gap-1 md:gap-2 align-baseline">
               <div className="rounded-full p-1 transition-all">
-                <BookOpen className="w-4 h-4 md:w-6 md:h-6 group-hover:translate-x-0.5 transition-transform" />
+                <BookOpen className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400group-hover:translate-x-0.5 transition-transform" />
               </div>
-              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2  group-hover:translate-x-0.5 transition-transform">
+              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2 group-hover:text-accent-600 dark:group-hover:text-accent-400  group-hover:translate-x-0.5 transition-transform">
                 {copy.vocabularySubtitle}
               </p>
               {/* <div className="hidden md:block"> */}
               <div className="rounded-full p-1  transition-all">
-                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:translate-x-0.5 transition-transform" />
+                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400 group-hover:translate-x-0.5 transition-transform" />
               </div>
               {/* </div> */}
             </div>

@@ -1,6 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Trophy, RefreshCw, Check, X, Target, Loader2, Zap } from "lucide-react";
+import {
+  Trophy,
+  RefreshCw,
+  Check,
+  X,
+  Target,
+  Loader2,
+  Zap,
+} from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -25,7 +33,7 @@ function celebrateWithConfetti() {
     return Math.random() * (max - min) + min;
   }
 
-  const interval = setInterval(function() {
+  const interval = setInterval(function () {
     const timeLeft = animationEnd - Date.now();
 
     if (timeLeft <= 0) {
@@ -37,12 +45,12 @@ function celebrateWithConfetti() {
     confetti({
       ...defaults,
       particleCount,
-      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
     });
     confetti({
       ...defaults,
       particleCount,
-      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
     });
   }, 250);
 }
@@ -301,7 +309,7 @@ export default function MemoryMatchGame() {
   return (
     <div className="flex flex-col items-center gap-6 p-4 min-h-screen">
       {/* Challenge Mode Banner */}
-      <div className="w-full max-w-4xl mt-4">
+      {/* <div className="w-full max-w-4xl mt-4">
         <Link href="/games/challenge">
           <div className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-2xl p-4 shadow-lg cursor-pointer transition-all transform hover:scale-[1.02]">
             <div className="flex items-center justify-center gap-3">
@@ -311,7 +319,7 @@ export default function MemoryMatchGame() {
             </div>
           </div>
         </Link>
-      </div>
+      </div> */}
 
       <div className="text-center px-4 mt-4">
         <h1 className="text-3xl sm:text-4xl font-bold text-primary-900 dark:text-white mb-2">
