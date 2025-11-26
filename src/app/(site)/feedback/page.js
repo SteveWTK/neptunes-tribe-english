@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Star,
@@ -11,6 +11,7 @@ import {
   Sparkles,
   Lightbulb,
   Target,
+  ArrowLeft,
 } from "lucide-react";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
@@ -25,12 +26,14 @@ export default function FeedbackPage() {
   const { data: session, status } = useSession();
   const { lang } = useLanguage();
   const pathname = usePathname();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const t = {
     en: {
       title: "We Value Your Feedback",
-      subtitle: "Help us improve Habitat English! Share your experience with the activities, content, and platform. Nothing is required - share as much or as little as you'd like.",
+      subtitle:
+        "Help us improve Habitat English! Share your experience with the activities, content, and platform. Nothing is required - share as much or as little as you'd like.",
 
       // Section titles
       contentQuality: "Content Quality",
@@ -47,27 +50,34 @@ export default function FeedbackPage() {
 
       // Comment labels
       additionalThoughts: "Additional thoughts (optional)",
-      contentPlaceholder: "Share your thoughts on the lessons, vocabulary, games, etc.",
+      contentPlaceholder:
+        "Share your thoughts on the lessons, vocabulary, games, etc.",
       easePlaceholder: "How was your experience navigating the site?",
-      learningPlaceholder: "Did the activities help you learn? Any suggestions?",
+      learningPlaceholder:
+        "Did the activities help you learn? Any suggestions?",
       technicalPlaceholder: "Any bugs, slow loading, or technical issues?",
 
       // Open-ended questions
       enjoyedLabel: "What did you enjoy most? (optional)",
-      enjoyedPlaceholder: "What aspects of Habitat English did you find most valuable or enjoyable?",
+      enjoyedPlaceholder:
+        "What aspects of Habitat English did you find most valuable or enjoyable?",
       improvedLabel: "What could be improved? (optional)",
       improvedPlaceholder: "What would make your experience better?",
-      featuresLabel: "Any specific features or content you'd like to see? (optional)",
-      featuresPlaceholder: "New topics, activities, or features you'd find helpful",
+      featuresLabel:
+        "Any specific features or content you'd like to see? (optional)",
+      featuresPlaceholder:
+        "New topics, activities, or features you'd find helpful",
       generalLabel: "General comments (optional)",
       generalPlaceholder: "Anything else you'd like to share?",
 
       // Actions
       submit: "Submit Feedback",
       submitting: "Submitting...",
+      back: "Back",
       signInPrompt: "Please sign in to submit feedback",
       signInButton: "Sign In",
-      allOptional: "All fields are optional. Share as much or as little as you'd like!",
+      allOptional:
+        "All fields are optional. Share as much or as little as you'd like!",
 
       // Toast messages
       thankYou: "Thank you for your detailed feedback!",
@@ -78,7 +88,8 @@ export default function FeedbackPage() {
     },
     pt: {
       title: "Valorizamos Seu Feedback",
-      subtitle: "Ajude-nos a melhorar o Habitat English! Compartilhe sua experiência com as atividades, conteúdo e plataforma. Nada é obrigatório - compartilhe o quanto quiser!",
+      subtitle:
+        "Ajude-nos a melhorar o Habitat English! Compartilhe sua experiência com as atividades, conteúdo e plataforma. Nada é obrigatório - compartilhe o quanto quiser!",
 
       // Section titles
       contentQuality: "Qualidade do Conteúdo",
@@ -95,32 +106,42 @@ export default function FeedbackPage() {
 
       // Comment labels
       additionalThoughts: "Pensamentos adicionais (opcional)",
-      contentPlaceholder: "Compartilhe seus pensamentos sobre as lições, vocabulário, jogos, etc.",
+      contentPlaceholder:
+        "Compartilhe seus pensamentos sobre as lições, vocabulário, jogos, etc.",
       easePlaceholder: "Como foi sua experiência navegando no site?",
-      learningPlaceholder: "As atividades ajudaram você a aprender? Alguma sugestão?",
-      technicalPlaceholder: "Algum erro, carregamento lento ou problemas técnicos?",
+      learningPlaceholder:
+        "As atividades ajudaram você a aprender? Alguma sugestão?",
+      technicalPlaceholder:
+        "Algum erro, carregamento lento ou problemas técnicos?",
 
       // Open-ended questions
       enjoyedLabel: "O que você mais gostou? (opcional)",
-      enjoyedPlaceholder: "Quais aspectos do Habitat English você achou mais valiosos ou agradáveis?",
+      enjoyedPlaceholder:
+        "Quais aspectos do Habitat English você achou mais valiosos ou agradáveis?",
       improvedLabel: "O que poderia ser melhorado? (opcional)",
       improvedPlaceholder: "O que tornaria sua experiência melhor?",
-      featuresLabel: "Algum recurso ou conteúdo específico que você gostaria de ver? (opcional)",
-      featuresPlaceholder: "Novos tópicos, atividades ou recursos que você acharia úteis",
+      featuresLabel:
+        "Algum recurso ou conteúdo específico que você gostaria de ver? (opcional)",
+      featuresPlaceholder:
+        "Novos tópicos, atividades ou recursos que você acharia úteis",
       generalLabel: "Comentários gerais (opcional)",
       generalPlaceholder: "Algo mais que você gostaria de compartilhar?",
 
       // Actions
       submit: "Enviar Feedback",
       submitting: "Enviando...",
+      back: "Voltar",
       signInPrompt: "Por favor, faça login para enviar feedback",
       signInButton: "Fazer Login",
-      allOptional: "Todos os campos são opcionais. Compartilhe o quanto quiser!",
+      allOptional:
+        "Todos os campos são opcionais. Compartilhe o quanto quiser!",
 
       // Toast messages
       thankYou: "Obrigado pelo seu feedback detalhado!",
-      thankYouDesc: "Seus insights são inestimáveis para melhorar o Habitat English",
-      provideRatingOrComment: "Por favor, forneça pelo menos uma avaliação ou comentário",
+      thankYouDesc:
+        "Seus insights são inestimáveis para melhorar o Habitat English",
+      provideRatingOrComment:
+        "Por favor, forneça pelo menos uma avaliação ou comentário",
       error: "Algo deu errado. Por favor, tente novamente.",
       loading: "Carregando...",
     },
@@ -247,6 +268,11 @@ export default function FeedbackPage() {
         setWhatImproved("");
         setFeatureRequests("");
         setGeneralComments("");
+
+        // Navigate back after a short delay to let user see the success message
+        setTimeout(() => {
+          router.back();
+        }, 1500);
       } else {
         toast.error(data.error || copy.error);
       }
@@ -537,16 +563,26 @@ export default function FeedbackPage() {
           </div>
 
           {/* Submit */}
-          <div className="pt-6">
+          <div className="pt-6 space-y-3">
             {session?.user ? (
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all"
-              >
-                <Send className="w-5 h-5" />
-                {isSubmitting ? copy.submitting : copy.submit}
-              </button>
+              <>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all"
+                >
+                  <Send className="w-5 h-5" />
+                  {isSubmitting ? copy.submitting : copy.submit}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => router.back()}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  {copy.back}
+                </button>
+              </>
             ) : (
               <div className="text-center py-4">
                 <p className="text-gray-600 dark:text-gray-400 mb-4">

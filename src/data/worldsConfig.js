@@ -27,6 +27,10 @@ export const WORLDS = {
     order: 1,
     coming_soon: false,
     color: {
+      // primary: "#10b981", // emerald-500
+      // secondary: "#059669", // emerald-600
+      // light: "#d1fae5", // emerald-100
+      // dark: "#064e3b", // emerald-900
       primary: "#06b6d4", // cyan-500
       secondary: "#0891b2", // cyan-600
       light: "#cffafe", // cyan-100
@@ -52,15 +56,15 @@ export const WORLDS = {
     // NEW: Multiple eco heroes carousel
     ecoHeroes: [
       {
-        name: "Patricia Medici",
+        name: "Muriqui Instituto de Biodiversidade",
         imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/PATRICIA-MEDICI.png",
+          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/mib.jpeg",
         description: "Tapir conservationist", // Optional: for future use
       },
       {
-        name: "INCAB BRASIL",
+        name: "Instituto de Pesquisas Ecológicas",
         imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/INCAB-BRASIL.jpeg",
+          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/ipe.jpeg",
         description: "Defending the rainforest", // Optional: for future use
       },
     ],
@@ -192,6 +196,10 @@ export const WORLDS = {
     coming_soon: true,
     next_week: true,
     color: {
+      // primary: "#06b6d4", // cyan-500
+      // secondary: "#0891b2", // cyan-600
+      // light: "#cffafe", // cyan-100
+      // dark: "#164e63", // cyan-900
       primary: "#10b981", // emerald-500
       secondary: "#059669", // emerald-600
       light: "#d1fae5", // emerald-100
@@ -211,19 +219,19 @@ export const WORLDS = {
     mapUrl: "/maps/africa.png",
     ecoHeroUrl: "",
     ecoHeroes: [
-      {
-        name: "Paula Kahumbu",
-        imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/Paula-Kahumbu.avif",
-        description: "Campaigner for Elephants", // Optional: for future use
-      },
-      {
-        name: "WildlifeDirect",
-        imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/wildlife-direct-logo.png",
-        description:
-          "Changing hearts, minds and laws to ensure Africa’s critical species endure forever.", // Optional: for future use
-      },
+      // {
+      //   name: "Paula Kahumbu",
+      //   imageUrl:
+      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/Paula-Kahumbu.avif",
+      //   description: "Campaigner for Elephants", // Optional: for future use
+      // },
+      // {
+      //   name: "WildlifeDirect",
+      //   imageUrl:
+      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/wildlife-direct-logo.png",
+      //   description:
+      //     "Changing hearts, minds and laws to ensure Africa’s critical species endure forever.", // Optional: for future use
+      // },
     ],
     adventures: [
       {
@@ -352,18 +360,18 @@ export const WORLDS = {
     mapUrl: "/maps/eurasia.png",
     ecoHeroUrl: "",
     ecoHeroes: [
-      {
-        name: "Lek Chailert",
-        imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/Lek%20Chailert.jpg",
-        description: "Campaigner for Elephants", // Optional: for future use
-      },
-      {
-        name: "Elephant Nature Park",
-        imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/Elephant-Nature-Park.png",
-        description: "The first ethical elephant sanctuary of its kind in Asia", // Optional: for future use
-      },
+      // {
+      //   name: "Lek Chailert",
+      //   imageUrl:
+      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/Lek%20Chailert.jpg",
+      //   description: "Campaigner for Elephants", // Optional: for future use
+      // },
+      // {
+      //   name: "Elephant Nature Park",
+      //   imageUrl:
+      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/Elephant-Nature-Park.png",
+      //   description: "The first ethical elephant sanctuary of its kind in Asia", // Optional: for future use
+      // },
     ],
     adventures: [
       {
@@ -492,18 +500,18 @@ export const WORLDS = {
     mapUrl: "/maps/oceania.png",
     ecoHeroUrl: "",
     ecoHeroes: [
-      {
-        name: "Farwiza Farhan",
-        imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/FarwizaFarhan_2021.jpg",
-        description: "Forest Conservationist", // Optional: for future use
-      },
-      {
-        name: "Future for Nature",
-        imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/future-for-nature.png",
-        description: "", // Optional: for future use
-      },
+      // {
+      //   name: "Farwiza Farhan",
+      //   imageUrl:
+      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/FarwizaFarhan_2021.jpg",
+      //   description: "Forest Conservationist", // Optional: for future use
+      // },
+      // {
+      //   name: "Future for Nature",
+      //   imageUrl:
+      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/future-for-nature.png",
+      //   description: "", // Optional: for future use
+      // },
     ],
     adventures: [
       {
@@ -632,20 +640,20 @@ export const WORLDS = {
     mapUrl: "/maps/polar-regions.png",
     ecoHeroUrl: "",
     ecoHeroes: [
-      {
-        name: "Pablo Borboroglu",
-        imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/Pablo-Garcia-Borboroglu.jpg",
-        description:
-          "Dedicated to the survival and protection of the world's penguin species",
-      },
-      {
-        name: "Global Penguin Society",
-        imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/global-penguin-society.jpg",
-        description:
-          "Dedicated to the conservation of the world´s penguin species.",
-      },
+      // {
+      //   name: "Pablo Borboroglu",
+      //   imageUrl:
+      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/Pablo-Garcia-Borboroglu.jpg",
+      //   description:
+      //     "Dedicated to the survival and protection of the world's penguin species",
+      // },
+      // {
+      //   name: "Global Penguin Society",
+      //   imageUrl:
+      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/global-penguin-society.jpg",
+      //   description:
+      //     "Dedicated to the conservation of the world´s penguin species.",
+      // },
     ],
     adventures: [
       {
