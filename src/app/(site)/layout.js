@@ -4,6 +4,7 @@ import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import OnboardingWrapper from "@/components/onboarding/OnboardingWrapper";
 import UserLevelSwitcher from "@/components/admin/UserLevelSwitcher";
+import FeedbackWidget from "@/components/feedback/FeedbackWidget";
 
 export default function LandingLayout({ children }) {
   const { darkMode, setDarkMode } = useDarkMode();
@@ -23,6 +24,8 @@ export default function LandingLayout({ children }) {
         <SiteFooter />
         {/* Admin tool: only visible to platform_admin users */}
         <UserLevelSwitcher />
+        {/* Floating feedback widget - always accessible */}
+        <FeedbackWidget />
       </OnboardingWrapper>
     </>
   );

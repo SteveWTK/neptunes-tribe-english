@@ -8,7 +8,8 @@
       "Bash(taskkill //F //IM node.exe)",
       "Bash(node -e \"\nconst fs = require(''fs'');\nconst content = fs.readFileSync(''worldsConfig.js'', ''utf8'');\n\n// Pattern to find themeTag lines NOT followed by is_premium\n// Match themeTag line, then next line that''s not is_premium\nconst pattern = /(themeTag: \"\"[^\"\"]+\"\",.*\\n)(        (?!is_premium))/g;\nconst replacement = ''$1        is_premium: true, // Premium content\\n$2'';\n\nconst newContent = content.replace(pattern, replacement);\n\nfs.writeFileSync(''worldsConfig.js'', newContent, ''utf8'');\nconsole.log(''Added is_premium to all adventures'');\n\")",
       "Bash(taskkill /F /IM node.exe)",
-      "Bash(npm install canvas-confetti)"
+      "Bash(npm install canvas-confetti)",
+      "Bash(wc -l src/app/(site)/feedback/page.js)"
     ],
     "deny": [],
     "ask": []
