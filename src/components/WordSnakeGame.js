@@ -22,7 +22,7 @@ const GRID_SIZE = 20;
 const TILE = 25;
 const CANVAS = GRID_SIZE * TILE;
 
-export default function WordSnakeGame() {
+export default function WordSnakeGame({ customClues = null }) {
   const canvasRef = useRef(null);
   const particlesRef = useRef(null);
 
@@ -32,7 +32,7 @@ export default function WordSnakeGame() {
   const [letters, setLetters] = useState([]); // {x, y, letter, isCorrect, isEraser}
   const [collectedWord, setCollectedWord] = useState("");
   const [score, setScore] = useState(0);
-  const [level, setLevel] = useState(9);
+  const [level, setLevel] = useState(1);
   const [gameOver, setGameOver] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -44,10 +44,14 @@ export default function WordSnakeGame() {
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [showFact, setShowFact] = useState(false);
 
-  // Get all clues progressively
-  const allClues = useMemo(() => getAllCluesProgressive(), []);
+  // Get all clues - use custom clues if provided, otherwise use default progressive clues
+  const allClues = useMemo(() => {
+    return customClues && customClues.length > 0
+      ? customClues
+      : getAllCluesProgressive();
+  }, [customClues]);
   const currentClue = allClues[level - 1] || allClues[0];
-  const targetWord = currentClue.answer;
+  const targetWord = currentClue?.answer || "";
   const difficulty = getDifficultyForLevel(level);
 
   // Next letter needed

@@ -442,7 +442,7 @@ export default function EcoMapProgressOceans({
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-green-500 rounded-full"></div>
                 <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                  {lang === "pt" ? "Mundo deste Mês" : "This Month's World"}
+                  {lang === "pt" ? "Mundo desta Semana" : "This Week's World"}
                 </span>
               </div>
 

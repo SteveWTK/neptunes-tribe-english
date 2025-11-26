@@ -63,12 +63,6 @@ export const WORLDS = {
           "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/INCAB-BRASIL.jpeg",
         description: "Defending the rainforest", // Optional: for future use
       },
-      // Add more heroes here as you find images
-      // {
-      //   name: "Chico Mendes",
-      //   imageUrl: "https://...",
-      //   description: "Rainforest defender"
-      // },
     ],
     adventures: [
       {

@@ -16,6 +16,8 @@ import {
   Calendar,
   MapPin,
   ChevronRight,
+  Globe,
+  BookOpen,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -52,7 +54,8 @@ export default function EcoMapClient({
       weeklyThemeTitle: "This Week's Adventure",
       exploreTheme: "Start Adventure",
       exploreWorlds: "Explore the Planet",
-      worldsSubtitle: "Begin your adventure",
+      worldsSubtitle: "Start your adventure",
+      vocabularySubtitle: "Your vocabulary",
       impactTitle: "Keep increasing your impact",
       impactSubtitle:
         "Explore more ecosystems and complete environmental challenges to expand your impact!",
@@ -65,7 +68,8 @@ export default function EcoMapClient({
       weeklyThemeTitle: "Aventura desta Semana",
       exploreTheme: "Iniciar Aventura",
       exploreWorlds: "Explore o Planeta",
-      worldsSubtitle: "Inicie a sua aventura",
+      worldsSubtitle: "Inicie sua aventura",
+      vocabularySubtitle: "Seu vocabulário",
       impactTitle: "Continue aumentando seu impacto",
       impactSubtitle:
         "Explore mais ecossistemas e conclua desafios ambientais para expandir seu impacto!",
@@ -309,28 +313,55 @@ export default function EcoMapClient({
       )} */}
 
       {/* New: Prominent Worlds CTA */}
-      <div className="max-w-6xl mx-auto mb-4 px-4">
+      <div className="flex gap-0.5 md:gap-2 justify-center max-w-6xl mx-auto mb-2 md:mb-4 px-4">
         <Link href="/worlds">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             // className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
-            className="bg-white dark:bg-primary-950 rounded-2xl px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group w-full"
+            className="bg-white dark:bg-primary-950 rounded-2xl md:px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group w-full"
           >
-            <div className="flex items-center gap-3 justify-center">
-              <div>
-                {/* <h2 className="text-2xl font-bold flex items-center gap-3">
+            <div className="flex gap-1 md:gap-2 align-baseline">
+              {/* <h2 className="text-2xl font-bold flex items-center gap-3">
                   {copy.exploreWorlds}
                 </h2> */}
-                <p className=" text-primary-900/90 dark:text-white/90 text-lg mb-2">
-                  {/* <span>🌍</span> */}
-                  {copy.worldsSubtitle}
-                </p>
+              <div className="rounded-full p-1  transition-all">
+                <Globe
+                  className="w-4 h-4 md:w-6 md:h-6 group-hover:translate-x-0.5
+                 transition-transform"
+                />
               </div>
+              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2 group-hover:translate-x-0.5 transition-transform">
+                {copy.worldsSubtitle}
+              </p>
+
               {/* <div className="hidden md:block"> */}
-              <div className="bg-white/10 rounded-full p-1 group-hover:bg-white/20 transition-all">
-                <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
+              <div className="rounded-full p-1  transition-all">
+                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+              {/* </div> */}
+            </div>
+          </motion.div>
+        </Link>
+        <Link href="/vocabulary">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            // className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+            className="bg-white dark:bg-primary-950 rounded-2xl md:px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group w-full"
+          >
+            <div className="flex gap-1 md:gap-2 align-baseline">
+              <div className="rounded-full p-1 transition-all">
+                <BookOpen className="w-4 h-4 md:w-6 md:h-6 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2  group-hover:translate-x-0.5 transition-transform">
+                {copy.vocabularySubtitle}
+              </p>
+              {/* <div className="hidden md:block"> */}
+              <div className="rounded-full p-1  transition-all">
+                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:translate-x-0.5 transition-transform" />
               </div>
               {/* </div> */}
             </div>
@@ -447,14 +478,14 @@ export default function EcoMapClient({
         </div> */}
 
         {/* Region Explorer Section */}
-        <RegionExplorer
+        {/* <RegionExplorer
           completedUnitsByCountry={completedUnitsByCountry}
           completedUnitsByOcean={completedUnitsByOcean}
           highlightedRegions={highlightedRegions}
           highlightedOceanZones={highlightedOceanZones}
           allAvailableRegions={allAvailableRegions}
           allAvailableMarineZones={allAvailableMarineZones}
-        />
+        /> */}
       </div>
 
       {/* Enhanced Call to Action Section */}

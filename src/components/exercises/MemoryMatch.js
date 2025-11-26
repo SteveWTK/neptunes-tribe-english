@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Trophy, RefreshCw, Check, X, Target } from "lucide-react";
+import { Trophy, RefreshCw, Check, X, Target, BookmarkPlus, BookmarkCheck } from "lucide-react";
+import { toast } from "sonner";
+import confetti from "canvas-confetti";
 
 function shuffle(array) {
   const newArray = [...array];
@@ -11,7 +13,45 @@ function shuffle(array) {
   return newArray;
 }
 
-export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
+// Confetti celebration function
+function celebrateWithConfetti() {
+  const duration = 3000;
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const interval = setInterval(function() {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    const particleCount = 50 * (timeLeft / duration);
+
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+    });
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+    });
+  }, 250);
+}
+
+export default function MemoryMatch({
+  vocabulary,
+  onComplete,
+  lessonId,
+  vocabularySource = null,
+  onGameComplete = null,
+}) {
   // Create a unique storage key for this lesson's memory match game
   const storageKey = `memoryMatch_${lessonId || "default"}`;
 
@@ -52,12 +92,58 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
   const [gameStarted, setGameStarted] = useState(
     savedState?.gameStarted || false
   );
+  const [savedWords, setSavedWords] = useState(new Set());
+  const [savingWord, setSavingWord] = useState(null);
+  const [fetchedVocabulary, setFetchedVocabulary] = useState([]);
+  const [isLoadingVocabulary, setIsLoadingVocabulary] = useState(false);
+
+  // Fetch vocabulary if vocabularySource is provided
+  useEffect(() => {
+    if (vocabularySource && !vocabulary?.length) {
+      fetchVocabularyBySource();
+    }
+  }, [vocabularySource]);
+
+  const fetchVocabularyBySource = async () => {
+    setIsLoadingVocabulary(true);
+    try {
+      if (vocabularySource === "personal") {
+        const response = await fetch("/api/vocabulary/personal");
+        if (response.ok) {
+          const data = await response.json();
+          const formattedVocab = (data.vocabulary || []).map((word) => ({
+            id: word.id,
+            en: word.english,
+            pt: word.portuguese,
+            enImage: word.english_image,
+            ptImage: word.portuguese_image,
+          }));
+          setFetchedVocabulary(formattedVocab);
+        }
+      } else if (vocabularySource === "default") {
+        const response = await fetch("/api/vocabulary/memory-match");
+        if (response.ok) {
+          const data = await response.json();
+          setFetchedVocabulary(data.vocabulary || []);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching vocabulary:", error);
+      toast.error("Failed to load vocabulary");
+    } finally {
+      setIsLoadingVocabulary(false);
+    }
+  };
+
+  // Use fetched vocabulary if available, otherwise use prop vocabulary
+  const activeVocabulary = fetchedVocabulary.length > 0 ? fetchedVocabulary : vocabulary;
 
   const initializeGame = () => {
-    if (!vocabulary || vocabulary.length === 0) return;
+    const vocabToUse = activeVocabulary;
+    if (!vocabToUse || vocabToUse.length === 0) return;
 
     const size = gridSize === "3x4" ? 6 : 8;
-    const shuffledVocab = shuffle([...vocabulary]);
+    const shuffledVocab = shuffle([...vocabToUse]);
     const selectedWords = shuffledVocab.slice(0, size);
 
     const pairs = selectedWords.flatMap((word) => [
@@ -131,10 +217,10 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
   ]);
 
   useEffect(() => {
-    if (vocabulary && vocabulary.length > 0 && !gameStarted && !savedState) {
+    if (activeVocabulary && activeVocabulary.length > 0 && !gameStarted && !savedState) {
       initializeGame();
     }
-  }, [vocabulary, gridSize]);
+  }, [activeVocabulary, gridSize, fetchedVocabulary]);
 
   const handleFlip = (index) => {
     // Check if card is already matched by comparing the specific card's ID
@@ -165,7 +251,13 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
         const portugueseCard = first.lang === "pt" ? first : second;
         setMatchedPairs((prev) => [
           ...prev,
-          { id: first.id, en: englishCard.text, pt: portugueseCard.text },
+          {
+            id: first.id,
+            en: englishCard.text,
+            pt: portugueseCard.text,
+            enImage: englishCard.image,
+            ptImage: portugueseCard.image,
+          },
         ]);
 
         setTimeout(() => {
@@ -177,9 +269,17 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
         if (matched.length + 1 === cards.length / 2) {
           setTimeout(() => {
             setIsComplete(true);
+            celebrateWithConfetti(); // 🎉 Trigger confetti!
+            toast.success("Congratulations! All pairs matched!", {
+              description: `Completed in ${attempts + 1} attempts`,
+              duration: 5000,
+            });
+            const score = Math.max(50, 100 - attempts * 2);
             if (onComplete) {
-              const xpEarned = Math.max(50, 100 - attempts * 2);
-              onComplete(xpEarned);
+              onComplete(score);
+            }
+            if (onGameComplete) {
+              onGameComplete(score);
             }
           }, 1000);
         }
@@ -204,6 +304,64 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
   const handleGridSizeChange = (size) => {
     setGridSize(size);
     setGameStarted(false);
+  };
+
+  const handleSaveToPersonalList = async (pair) => {
+    console.log("🔍 Attempting to save word:", pair);
+    setSavingWord(pair.id);
+    setSaveError(null);
+
+    try {
+      const payload = {
+        english: pair.en,
+        portuguese: pair.pt,
+        englishImage: pair.enImage || null,
+        portugueseImage: pair.ptImage || null,
+        lessonId: lessonId || null,
+        stepType: "memory_match",
+      };
+
+      console.log("📤 Sending payload:", payload);
+
+      const response = await fetch("/api/vocabulary/personal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      console.log("📥 Response status:", response.status);
+
+      const data = await response.json();
+      console.log("📥 Response data:", data);
+
+      if (response.status === 401) {
+        setSaveError("Please log in to save words");
+        toast.error("Please log in to save words to your practice list");
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to save word");
+      }
+
+      if (data.success) {
+        setSavedWords((prev) => new Set([...prev, pair.id]));
+        toast.success(`"${pair.en}" saved to your practice list!`, {
+          description: "You can practice it later in games",
+          duration: 3000,
+        });
+        console.log("✅ Word saved successfully");
+      } else if (data.alreadyExists) {
+        setSavedWords((prev) => new Set([...prev, pair.id]));
+        toast.info(`"${pair.en}" is already in your practice list`);
+      }
+    } catch (error) {
+      console.error("❌ Error saving word:", error);
+      setSaveError(error.message);
+      toast.error(`Failed to save word: ${error.message}`);
+    } finally {
+      setSavingWord(null);
+    }
   };
 
   if (!vocabulary || vocabulary.length === 0) {
@@ -277,7 +435,7 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
         </div>
       )}
 
-      <div className="flex flex-col lg:flex-row justify-center gap-10 w-full max-w-7xl">
+      <div className="flex flex-col lg:flex-row justify-center lg:items-start gap-10 w-full max-w-7xl">
         {/* Game Grid */}
         <div className={`grid ${gridCols} gap-2 sm:gap-3 px-2 sm:px-0 pt-4`}>
           {cards.map((card, i) => {
@@ -365,45 +523,53 @@ export default function MemoryMatch({ vocabulary, onComplete, lessonId }) {
 
         {/* Matched Pairs Display */}
         {matchedPairs.length > 0 && (
-          <div className="flex-shrink-0 w-full lg:w-auto">
-            {/* <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-3 text-center lg:text-left">
-              Pares Combinados
-            </h4> */}
-            <div className="grid grid-cols-2 gap-2 max-w-md mx-auto lg:mx-0">
-              {/* English column */}
-              <div className="space-y-2">
-                <div className="text-xs text-center text-gray-500 dark:text-gray-400 font-semibold mb-1">
-                  English
-                </div>
-                {matchedPairs.map((pair, idx) => (
-                  <div
-                    key={`en-${idx}`}
-                    className="bg-fieldtalk-400 text-primary-900 dark:text-primary-50 px-3 py-2 rounded-lg text-center text-xs sm:text-sm font-semibold animate-slideIn shadow-md"
-                    style={{
-                      animationDelay: `${idx * 0.1}s`,
-                    }}
-                  >
-                    {pair.en}
+          <div className="flex-shrink-0 w-full lg:w-80 lg:sticky lg:top-4">
+            <div className="text-xs text-center lg:text-left text-gray-500 dark:text-gray-400 font-semibold mb-3">
+              Matched Pairs ({matchedPairs.length})
+            </div>
+            <div className="space-y-2 max-w-md mx-auto lg:mx-0 lg:max-h-[600px] lg:overflow-y-auto lg:pr-2 custom-scrollbar">
+              {matchedPairs.map((pair, idx) => (
+                <div
+                  key={`pair-${idx}`}
+                  className="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-md animate-slideIn"
+                  style={{
+                    animationDelay: `${idx * 0.1}s`,
+                  }}
+                >
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="flex-1 bg-fieldtalk-400 text-primary-900 dark:text-primary-50 px-2 py-1 rounded text-center text-xs sm:text-sm font-semibold">
+                      {pair.en}
+                    </div>
+                    <div className="text-gray-400">↔</div>
+                    <div className="flex-1 bg-attention-400 text-primary-900 dark:text-primary-50 px-2 py-1 rounded text-center text-xs sm:text-sm font-semibold">
+                      {pair.pt}
+                    </div>
                   </div>
-                ))}
-              </div>
-              {/* Portuguese column */}
-              <div className="space-y-2">
-                <div className="text-xs text-center text-gray-500 dark:text-gray-400 font-semibold mb-1">
-                  Português
-                </div>
-                {matchedPairs.map((pair, idx) => (
-                  <div
-                    key={`pt-${idx}`}
-                    className="bg-attention-400 text-primary-900 dark:text-primary-50 px-3 py-2 rounded-lg text-center text-xs sm:text-sm font-semibold animate-slideIn shadow-md"
-                    style={{
-                      animationDelay: `${idx * 0.1}s`,
-                    }}
+                  <button
+                    onClick={() => handleSaveToPersonalList(pair)}
+                    disabled={savedWords.has(pair.id) || savingWord === pair.id}
+                    className={`w-full flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      savedWords.has(pair.id)
+                        ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 cursor-default"
+                        : "bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 hover:bg-primary-200 dark:hover:bg-primary-900/50"
+                    }`}
                   >
-                    {pair.pt}
-                  </div>
-                ))}
-              </div>
+                    {savedWords.has(pair.id) ? (
+                      <>
+                        <BookmarkCheck className="w-3 h-3" />
+                        <span>Saved to Practice List</span>
+                      </>
+                    ) : savingWord === pair.id ? (
+                      <span>Saving...</span>
+                    ) : (
+                      <>
+                        <BookmarkPlus className="w-3 h-3" />
+                        <span>Save for Practice</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         )}
