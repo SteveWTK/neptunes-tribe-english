@@ -303,12 +303,12 @@ export default function IndividualOnboarding({ onComplete }) {
                 <span className="font-bold text-cyan-600 dark:text-cyan-400">
                   8 ecossistemas incríveis
                 </span>
-                , aprende sobre heróis ambientais e descobre as maravilhas do
+                , aprenda sobre heróis ambientais e descubra as maravilhas do
                 nosso planeta!
               </p>
               <div className="bg-gradient-to-r from-cyan-50 to-emerald-50 dark:from-cyan-900/20 dark:to-emerald-900/20 p-6 rounded-xl">
                 <p className="text-gray-800 dark:text-gray-200 font-medium">
-                  Cada semana, destacamos um novo mundo com conteúdo fresco.
+                  Cada semana, destacamos um novo mundo com conteúdo inédito.
                   Comece com a América do Sul e depois desbloqueie a África,
                   Ásia e além!
                 </p>
@@ -493,7 +493,7 @@ export default function IndividualOnboarding({ onComplete }) {
             <div className="space-y-4 text-center">
               <div className="text-6xl mb-4">🚀</div>
               <p className="text-lg text-gray-600 dark:text-gray-300">
-                Você está pronto! Aqui está o que fazer a seguir:
+                Você está pronto! Aqui estão os próximos passos:
               </p>
               <div className="space-y-3">
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-xl text-left">
@@ -514,7 +514,7 @@ export default function IndividualOnboarding({ onComplete }) {
                     <div className="text-2xl">2️⃣</div>
                     <div>
                       <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
-                        Experimente a Página de Unidades
+                        Experimente a Página de atividades
                       </h4>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
                         Navegue como uma revista para leitura rápida
