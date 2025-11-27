@@ -29,21 +29,26 @@ export async function POST(request) {
     const supabase = await getSupabaseAdmin();
 
     // Call the database function to redeem the code
+    console.log("Attempting to redeem code:", code.trim().toUpperCase(), "for user:", session.user.email);
+
     const { data, error } = await supabase.rpc("redeem_beta_code", {
       code_to_redeem: code.trim().toUpperCase(),
       user_email: session.user.email,
     });
 
+    console.log("Supabase RPC response:", { data, error });
+
     if (error) {
       console.error("Error redeeming beta code:", error);
       return NextResponse.json(
-        { error: "Failed to redeem code" },
+        { error: error.message || "Failed to redeem code", details: error },
         { status: 500 }
       );
     }
 
     // The function returns a JSON object with success/error
     if (!data.success) {
+      console.log("Function returned error:", data.error);
       return NextResponse.json({ error: data.error }, { status: 400 });
     }
 

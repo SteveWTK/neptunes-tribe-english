@@ -115,8 +115,7 @@ BEGIN
   UPDATE users
   SET
     role = 'beta_tester',
-    is_premium = true,
-    updated_at = NOW()
+    is_premium = true
   WHERE email = user_email;
 
   -- Mark code as used
