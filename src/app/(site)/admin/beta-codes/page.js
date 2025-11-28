@@ -31,6 +31,12 @@ export default function BetaCodesAdminPage() {
   const [quantity, setQuantity] = useState(10);
   const [expirationMonths, setExpirationMonths] = useState(12);
   const [notes, setNotes] = useState("");
+  const [codeType, setCodeType] = useState("beta_tester");
+  const [premiumDurationMonths, setPremiumDurationMonths] = useState(12);
+  const [purchaserName, setPurchaserName] = useState("");
+  const [purchaserEmail, setPurchaserEmail] = useState("");
+  const [purchaseAmount, setPurchaseAmount] = useState("");
+  const [originalPrice, setOriginalPrice] = useState("");
 
   // Filter state
   const [filterOrg, setFilterOrg] = useState("");
@@ -87,6 +93,12 @@ export default function BetaCodesAdminPage() {
           quantity,
           expirationMonths,
           notes: notes.trim() || null,
+          codeType,
+          premiumDurationMonths: codeType !== 'beta_tester' ? premiumDurationMonths : null,
+          purchaserName: purchaserName.trim() || null,
+          purchaserEmail: purchaserEmail.trim() || null,
+          purchaseAmount: purchaseAmount ? parseFloat(purchaseAmount) : null,
+          originalPrice: originalPrice ? parseFloat(originalPrice) : null,
         }),
       });
 
@@ -111,6 +123,12 @@ export default function BetaCodesAdminPage() {
         setQuantity(10);
         setExpirationMonths(12);
         setNotes("");
+        setCodeType("beta_tester");
+        setPremiumDurationMonths(12);
+        setPurchaserName("");
+        setPurchaserEmail("");
+        setPurchaseAmount("");
+        setOriginalPrice("");
 
         // Refresh list
         fetchCodes();
@@ -302,7 +320,7 @@ export default function BetaCodesAdminPage() {
                     value={quantity}
                     onChange={(e) => setQuantity(parseInt(e.target.value))}
                     min="1"
-                    max="100"
+                    max="1000"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                     required
                   />
@@ -310,7 +328,103 @@ export default function BetaCodesAdminPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Expires In (months)
+                    Code Type *
+                  </label>
+                  <select
+                    value={codeType}
+                    onChange={(e) => setCodeType(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value="beta_tester">Beta Tester (Free)</option>
+                    <option value="bulk_premium">Bulk Premium</option>
+                    <option value="enterprise">Enterprise</option>
+                    <option value="donated_premium">Donated Premium</option>
+                    <option value="promotional">Promotional</option>
+                  </select>
+                </div>
+
+                {codeType !== 'beta_tester' && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Premium Duration (months) *
+                    </label>
+                    <input
+                      type="number"
+                      value={premiumDurationMonths || ''}
+                      onChange={(e) => setPremiumDurationMonths(e.target.value ? parseInt(e.target.value) : null)}
+                      min="1"
+                      max="120"
+                      placeholder="Leave empty for lifetime"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                    />
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      Leave empty for lifetime access
+                    </p>
+                  </div>
+                )}
+
+                {codeType !== 'beta_tester' && (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Purchaser Name
+                      </label>
+                      <input
+                        type="text"
+                        value={purchaserName}
+                        onChange={(e) => setPurchaserName(e.target.value)}
+                        placeholder="Company/Person who purchased"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Purchaser Email
+                      </label>
+                      <input
+                        type="email"
+                        value={purchaserEmail}
+                        onChange={(e) => setPurchaserEmail(e.target.value)}
+                        placeholder="contact@company.com"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          Amount Paid (£)
+                        </label>
+                        <input
+                          type="number"
+                          value={purchaseAmount}
+                          onChange={(e) => setPurchaseAmount(e.target.value)}
+                          placeholder="500.00"
+                          step="0.01"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          Original Price (£)
+                        </label>
+                        <input
+                          type="number"
+                          value={originalPrice}
+                          onChange={(e) => setOriginalPrice(e.target.value)}
+                          placeholder="1200.00"
+                          step="0.01"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Code Expiration (months)
                   </label>
                   <input
                     type="number"
@@ -403,6 +517,9 @@ export default function BetaCodesAdminPage() {
                         Code
                       </th>
                       <th className="text-left py-3 px-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Type
+                      </th>
+                      <th className="text-left py-3 px-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                         Organization
                       </th>
                       <th className="text-left py-3 px-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -426,6 +543,16 @@ export default function BetaCodesAdminPage() {
                           <code className="text-sm font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                             {code.code}
                           </code>
+                        </td>
+                        <td className="py-3 px-2">
+                          <span className={`inline-flex items-center text-xs px-2 py-1 rounded ${
+                            code.code_type === 'beta_tester' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200' :
+                            code.code_type === 'enterprise' ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-200' :
+                            code.code_type === 'donated_premium' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200' :
+                            'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200'
+                          }`}>
+                            {code.code_type?.replace('_', ' ') || 'beta'}
+                          </span>
                         </td>
                         <td className="py-3 px-2 text-sm text-gray-600 dark:text-gray-400">
                           {code.organization}

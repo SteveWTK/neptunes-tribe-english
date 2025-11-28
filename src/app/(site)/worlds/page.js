@@ -182,7 +182,7 @@ function WorldsContent() {
                           opacity: 0.9,
                         }}
                       >
-                        {world.next_week ? "Coming next week!" : "Coming soon!"}
+                        {world.next_week ? "Coming next!" : "Coming soon!"}
                       </div>
                     </div>
                   )}

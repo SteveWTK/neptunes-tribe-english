@@ -33,17 +33,36 @@ export async function POST(request) {
       );
     }
 
-    const { organization, quantity, expirationMonths, notes } =
-      await request.json();
+    const {
+      organization,
+      quantity,
+      expirationMonths,
+      notes,
+      codeType = 'beta_tester',
+      premiumDurationMonths = null,
+      purchaserName = null,
+      purchaserEmail = null,
+      purchaseAmount = null,
+      originalPrice = null
+    } = await request.json();
 
     if (
       !organization ||
       !quantity ||
       quantity < 1 ||
-      quantity > 100
+      quantity > 1000 // Increased limit for bulk purchases
     ) {
       return NextResponse.json(
         { error: "Invalid parameters" },
+        { status: 400 }
+      );
+    }
+
+    // Validate code type
+    const validCodeTypes = ['beta_tester', 'bulk_premium', 'enterprise', 'donated_premium', 'promotional'];
+    if (!validCodeTypes.includes(codeType)) {
+      return NextResponse.json(
+        { error: "Invalid code type" },
         { status: 400 }
       );
     }
@@ -63,6 +82,12 @@ export async function POST(request) {
       admin_user_id: userData.id,
       expiration_date: expirationDate,
       batch_notes: notes || null,
+      code_type: codeType,
+      premium_duration_months: premiumDurationMonths,
+      purchaser_name: purchaserName,
+      purchaser_email: purchaserEmail,
+      purchase_amount: purchaseAmount,
+      original_price: originalPrice,
     });
 
     if (error) {
@@ -77,6 +102,8 @@ export async function POST(request) {
       success: true,
       codes: codes.map((c) => c.code),
       count: codes.length,
+      codeType,
+      premiumDurationMonths,
     });
   } catch (error) {
     console.error("Error in code generation:", error);

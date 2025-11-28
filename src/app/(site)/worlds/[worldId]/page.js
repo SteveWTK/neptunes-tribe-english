@@ -83,7 +83,6 @@ function WorldDetailContent() {
   const [userType, setUserType] = useState(null);
   const [viewingAllLevels, setViewingAllLevels] = useState(false);
   const [hoveredHero, setHoveredHero] = useState(false);
-  // For single world page, we only need one number (not an object like the worlds list page)
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [isPremiumUser, setIsPremiumUser] = useState(false);
 
@@ -472,7 +471,7 @@ function WorldDetailContent() {
                       //   opacity: 0.9,
                       // }}
                     >
-                      {world.next_week ? "Coming next week!" : "Coming soon!"}
+                      {world.next_week ? "Coming next!" : "Coming soon!"}
                     </div>
                   </div>
                 )}
@@ -494,7 +493,11 @@ function WorldDetailContent() {
                 </div>
                 <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
                   <Calendar className="w-5 h-5" />
-                  <span className="font-medium">4 Weeks of Learning</span>
+                  {userType === "school" ? (
+                    <span className="font-medium">4 Weeks of Learning</span>
+                  ) : (
+                    <span className="font-medium">Learn at your own page</span>
+                  )}
                 </div>
                 <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
                   <Award className="w-5 h-5" />
@@ -702,13 +705,18 @@ function WorldDetailContent() {
                             </>
                           ) : (
                             <>
-                              <BookOpen className="w-3 h-3" />
+                              {/* <BookOpen className="w-3 h-3" /> */}
                               <span>
-                                {hasLessons
+                                {/* {hasLessons
                                   ? `${adventure.lessonCount} lesson${
                                       adventure.lessonCount !== 1 ? "s" : ""
                                     }`
-                                  : "Coming soon"}
+                                  : "Coming soon"} */}
+                                {world.coming_soon
+                                  ? world.next_week
+                                    ? "Coming next week!"
+                                    : "Coming soon!"
+                                  : "Explore"}
                               </span>
                             </>
                           )}

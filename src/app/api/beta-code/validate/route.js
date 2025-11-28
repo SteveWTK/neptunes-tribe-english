@@ -59,6 +59,8 @@ export async function POST(request) {
     return NextResponse.json({
       valid: true,
       organization: codeData.organization,
+      code_type: codeData.code_type,
+      premium_duration_months: codeData.premium_duration_months,
     });
   } catch (error) {
     console.error("Error validating beta code:", error);
