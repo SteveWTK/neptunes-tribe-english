@@ -484,7 +484,7 @@ function WorldDetailContent() {
               </p>
 
               {/* Stats */}
-              <div className="flex flex-wrap gap-3 mt-6">
+              {/* <div className="flex flex-wrap gap-3 mt-6">
                 <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
                   <Sparkles className="w-5 h-5" />
                   <span className="font-medium">
@@ -503,7 +503,7 @@ function WorldDetailContent() {
                   <Award className="w-5 h-5" />
                   <span className="font-medium">Earn XP & Badges</span>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
