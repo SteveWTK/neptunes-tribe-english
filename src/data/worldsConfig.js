@@ -78,7 +78,7 @@ export const WORLDS = {
         description:
           "Discover the world's largest tropical rainforest, home to millions of species and indigenous communities.",
         description_pt:
-          "Descubra a maior floresta tropical do mundo, lar de milhões de espécies e comunidades indígenas.",
+          "Domine a arte da busca por emprego com currículos impecáveis, cartas de apresentação convincentes e perfis do LinkedIn que atraem recrutadores. Aprenda a navegar em sites de vagas, aproveitar indicações e se destacar em um mercado competitivo.",
         themeTag: "amazon", // Links to theme_tags in database
         adventureUrl:
           "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Caqueta%20titi%20with%20baby.webp",

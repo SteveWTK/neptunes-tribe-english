@@ -312,18 +312,18 @@ function WorldsContent() {
 
                     {/* Stats */}
                     <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-6">
-                      <div className="flex items-center gap-1">
+                      {/* <div className="flex items-center gap-1">
                         <Sparkles className="w-4 h-4" />
                         <span>{world.adventures.length} Adventures</span>
                       </div>
-                      {/* <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1">
                         <BookOpen className="w-4 h-4" />
                         <span>4 Weeks</span>
                       </div> */}
                     </div>
 
                     {/* Adventure Preview */}
-                    <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                    {/* <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
                       <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">
                         Adventures Include:
                       </p>
@@ -348,7 +348,7 @@ function WorldsContent() {
                           </div>
                         )}
                       </div>
-                    </div>
+                    </div> */}
 
                     {/* CTA Button */}
                     <button
