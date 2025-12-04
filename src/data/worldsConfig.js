@@ -78,11 +78,11 @@ export const WORLDS = {
         description:
           "Discover the world's largest tropical rainforest, home to millions of species and indigenous communities.",
         description_pt:
-          "Domine a arte da busca por emprego com currículos impecáveis, cartas de apresentação convincentes e perfis do LinkedIn que atraem recrutadores. Aprenda a navegar em sites de vagas, aproveitar indicações e se destacar em um mercado competitivo.",
-        themeTag: "amazon", // Links to theme_tags in database
+          "Descubra a maior floresta tropical do mundo, lar de milhões de espécies e comunidades indígenas.",
+        themeTag: "amazon",
         adventureUrl:
           "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Caqueta%20titi%20with%20baby.webp",
-        is_premium: false, // Free for all users
+        is_premium: false,
         levels: [
           "Level 1",
           "Level 2",
@@ -91,7 +91,7 @@ export const WORLDS = {
           "Intermediate",
           "Advanced",
           "Solo",
-        ], // Which levels can access this adventure
+        ],
         underConstruction: false,
       },
       {
@@ -236,8 +236,8 @@ export const WORLDS = {
     adventures: [
       {
         id: "serengeti",
-        name: "Serengeti: Great Migration",
-        name_pt: "Serengeti: Grande Migração",
+        name: "Savannahs",
+        name_pt: "Savanas",
         week: 1,
         ecosystemType: "savanna",
         description:
@@ -1008,9 +1008,13 @@ export const WORLDS = {
     name_pt: "Mundos Perdidos",
     slug: "lost-worlds",
     description:
-      "Journey through 4 billion years of Earth's history, from the first spark of life to the Ice Age. Meet dinosaurs, mammoths, and countless extinct species that once ruled our planet.",
+      "See some of the extraordinary species that once inhabited this planet, but have disappeared because of environmental changes or human activity",
     description_pt:
-      "Embarque em uma jornada através de 4 bilhões de anos da história da Terra, desde o primeiro vislumbre de vida até a Era do Gelo. Conheça dinossauros, mamutes e inúmeras espécies extintas que um dia dominaram nosso planeta.",
+      "Veja algumas das espécies extraordinárias que outrora habitaram este planeta, mas que desapareceram devido a alterações ambientais ou à atividade humana.",
+    // description:
+    //   "Journey through 4 billion years of Earth's history, from the first spark of life to the Ice Age. Meet dinosaurs, mammoths, and countless extinct species that once ruled our planet.",
+    // description_pt:
+    //   "Embarque em uma jornada através de 4 bilhões de anos da história da Terra, desde o primeiro vislumbre de vida até a Era do Gelo. Conheça dinossauros, mamutes e inúmeras espécies extintas que um dia dominaram nosso planeta.",
     order: 8,
     coming_soon: true,
     color: {
