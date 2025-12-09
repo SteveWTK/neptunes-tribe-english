@@ -66,7 +66,7 @@ export default function PricingTiers() {
         // "Dedicated support manager",
       ],
       getStartedFree: "Get Started Free",
-      chooseExplorer: "Choose Explorer",
+      chooseExplorer: "Choose Premium",
       chooseEnterprise: "Choose Enterprise",
       FAQHeader: "Frequently Asked Questions",
       FAQ: [
@@ -106,7 +106,7 @@ export default function PricingTiers() {
         "Accesso a todos os recursos",
         "Acesso a todas as unidades temáticas semanais, desafios e exercícios de revisão",
         "Acesso ao seu mapa ecológico",
-        "Acompanhamento e análise de progresso",
+        // "Acompanhamento e análise de progresso",
         "Suporte prioritário",
         // "Acesso a conteúdo offline",
         // "Geração de certificados",
@@ -115,13 +115,14 @@ export default function PricingTiers() {
         "Todos os recursos Explorer",
         "Até 25 contas (pague por apenas 10)",
         "Ferramentas de gerenciamento de usuários",
+        "Para ativar os descontos da Habitat Enterprise, entre em contato conosco",
         // "Criação de currículo personalizado",
         // "Painel de análise detalhado",
         // "Acesso à API",
         // "Gerente de suporte dedicado",
       ],
       getStartedFree: "Inicie de Graça",
-      chooseExplorer: "Escolha Explorer",
+      chooseExplorer: "Escolha Premium",
       chooseEnterprise: "Escolha Enterprise",
       FAQHeader: "Perguntas frequentes",
       FAQ: [
@@ -346,7 +347,7 @@ export default function PricingTiers() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 pt-8 md:px-8">
         {/* Free Tier */}
-        <Card className="relative border-2 hover:shadow-lg transition-shadow">
+        {/* <Card className="relative border-2 hover:shadow-lg transition-shadow">
           <CardHeader className="text-center pb-4">
             <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-3">
               <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -376,16 +377,16 @@ export default function PricingTiers() {
               {copy.getStartedFree}
             </Button>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Premium Tier */}
-        <Card className="relative border-2 border-green-500 hover:shadow-lg transition-shadow">
-          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+        <Card className="relative lg:col-start-2 border-2 border-green-500 hover:shadow-lg transition-shadow">
+          {/* <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
             <Badge className="bg-green-500 text-white dark:bg-green-500 dark:text-white px-3 py-1">
               <Star className="w-3 h-3 mr-1" />
               {copy.mostPopular}
             </Badge>
-          </div>
+          </div> */}
           <CardHeader className="text-center pb-4 pt-6">
             <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-3">
               <Globe className="w-6 h-6 text-green-600 dark:text-green-400" />
@@ -428,7 +429,7 @@ export default function PricingTiers() {
         </Card>
 
         {/* Enterprise Tier */}
-        <Card className="relative border-2 hover:shadow-lg transition-shadow">
+        {/* <Card className="relative border-2 hover:shadow-lg transition-shadow">
           <CardHeader className="text-center pb-4">
             <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-3">
               <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
@@ -441,9 +442,9 @@ export default function PricingTiers() {
               <span className="text-3xl font-bold">
                 {currentPricing[billingCycle].enterprise.display}
               </span>
-              {/* <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-gray-600 dark:text-gray-400">
                 {currentPricing[billingCycle].enterprise.period}
-              </span> */}
+              </span>
               {currentPricing[billingCycle].enterprise.savings && (
                 <div className="text-green-600 text-sm font-medium">
                   {currentPricing[billingCycle].enterprise.savings}
@@ -468,7 +469,7 @@ export default function PricingTiers() {
               {loading ? "Processing..." : copy.chooseEnterprise}
             </Button>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Support Us */}
         {/* <Card className="relative border-2 border-orange-300 hover:shadow-lg transition-shadow">

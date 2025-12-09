@@ -1008,9 +1008,9 @@ export const WORLDS = {
     name_pt: "Mundos Perdidos",
     slug: "lost-worlds",
     description:
-      "See some of the extraordinary species that once inhabited this planet, but have disappeared because of environmental changes or human activity",
+      "Find out about some of the extraordinary species that once inhabited this planet, but have disappeared because of environmental changes or human activity",
     description_pt:
-      "Veja algumas das espécies extraordinárias que outrora habitaram este planeta, mas que desapareceram devido a alterações ambientais ou à atividade humana.",
+      "Descubra algumas das espécies extraordinárias que outrora habitaram este planeta, mas que desapareceram devido a alterações ambientais ou à atividade humana.",
     // description:
     //   "Journey through 4 billion years of Earth's history, from the first spark of life to the Ice Age. Meet dinosaurs, mammoths, and countless extinct species that once ruled our planet.",
     // description_pt:
@@ -1032,7 +1032,8 @@ export const WORLDS = {
     },
     icon: "Mountain",
     imageUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/tyranosaurus-rex.jpg", // Placeholder - can be replaced with prehistoric image
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/tyranosaurus-rex.jpg", // Placeholder - can
+    // be replaced with prehistoric image
     heroUrl:
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/woolly_mammoth_bbc.jpg", // Placeholder
     mapUrl: "/maps/lost-worlds.png", // Will need to be created
