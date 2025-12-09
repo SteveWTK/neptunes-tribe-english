@@ -70,22 +70,22 @@ export default function PricingTiers() {
       chooseEnterprise: "Choose Enterprise",
       FAQHeader: "Frequently Asked Questions",
       FAQ: [
-        {
-          q: "Can I switch between plans?",
-          a: "Yes! You can upgrade or downgrade your plan at any time. Changes will be prorated.",
-        },
-        {
-          q: "Is there a free trial?",
-          a: "Our Basic plan is completely free and gives you a sample of our content and features. You can upgrade to Explorer anytime to unlock everything.",
-        },
-        {
-          q: "How does the environmental impact work?",
-          a: "35% of all subscription revenue goes directly to verified ocean conservation and environmental protection NGOs.",
-        },
-        {
-          q: "What about enterprise discounts?",
-          a: "We offer volume discounts for larger organisations. Contact us for custom pricing for 25+ users.",
-        },
+        // {
+        //   q: "Can I switch between plans?",
+        //   a: "Yes! You can upgrade or downgrade your plan at any time. Changes will be prorated.",
+        // },
+        // {
+        //   q: "Is there a free trial?",
+        //   a: "Our Basic plan is completely free and gives you a sample of our content and features. You can upgrade to Explorer anytime to unlock everything.",
+        // },
+        // {
+        //   q: "How does the environmental impact work?",
+        //   a: "35% of all subscription revenue goes directly to verified ocean conservation and environmental protection NGOs.",
+        // },
+        // {
+        //   q: "What about enterprise discounts?",
+        //   a: "We offer volume discounts for larger organisations. Contact us for custom pricing for 25+ users.",
+        // },
       ],
     },
     pt: {
@@ -126,22 +126,22 @@ export default function PricingTiers() {
       chooseEnterprise: "Escolha Enterprise",
       FAQHeader: "Perguntas frequentes",
       FAQ: [
-        {
-          q: "Posso alternar entre os planos?",
-          a: "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. As alterações serão calculadas proporcionalmente.",
-        },
-        {
-          q: "Existe um teste gratuito?",
-          a: "Nosso plano Basico é totalmente gratuito e oferece uma amostra do nosso conteúdo e recursos. Você pode fazer upgrade para o Explorer a qualquer momento para desbloquear tudo.",
-        },
-        {
-          q: "Como funciona o impacto ambiental?",
-          a: "35% de toda a receita da assinatura vai diretamente para ONGs verificadas de conservação dos oceanos e proteção ambiental.",
-        },
-        {
-          q: "E os descontos para empresas?",
-          a: "Oferecemos descontos por volume para organizações maiores. Entre em contato conosco para obter preços personalizados para mais de 25 usuários.",
-        },
+        // {
+        //   q: "Posso alternar entre os planos?",
+        //   a: "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. As alterações serão calculadas proporcionalmente.",
+        // },
+        // {
+        //   q: "Existe um teste gratuito?",
+        //   a: "Nosso plano Basico é totalmente gratuito e oferece uma amostra do nosso conteúdo e recursos. Você pode fazer upgrade para o Explorer a qualquer momento para desbloquear tudo.",
+        // },
+        // {
+        //   q: "Como funciona o impacto ambiental?",
+        //   a: "35% de toda a receita da assinatura vai diretamente para ONGs verificadas de conservação dos oceanos e proteção ambiental.",
+        // },
+        // {
+        //   q: "E os descontos para empresas?",
+        //   a: "Oferecemos descontos por volume para organizações maiores. Entre em contato conosco para obter preços personalizados para mais de 25 usuários.",
+        // },
       ],
     },
   };
