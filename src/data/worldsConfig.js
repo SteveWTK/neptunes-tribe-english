@@ -189,7 +189,7 @@ export const WORLDS = {
     name_pt: "África",
     slug: "africa",
     description:
-      "Experience the continents stunning diversity, from the Sahara Desert to the Congo Basin and the savannas of East Africa.",
+      "Experience the continent's stunning diversity, from the Sahara Desert to the Congo Basin and the savannas of East Africa.",
     description_pt:
       "Descubra a impressionante diversidade do continente, do Deserto do Saara à Bacia do Congo e às savanas da África Oriental.",
     order: 2,
