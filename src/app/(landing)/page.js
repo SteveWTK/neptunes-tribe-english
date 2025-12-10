@@ -39,7 +39,8 @@ export default function LandingPageExplorers() {
       heroDescription:
         "Every week, our tribe explores a new ecosystem together. Discover amazing species, many of which are endangered. Help to save Earth's wildlife while increasing your command of English.",
       startFree: "Create an Account",
-      upgradePro: "Student Area",
+      upgradePro: "Go to Activities",
+      createAccount: "Create an Account",
       exploreDemoButton: "Explore Our Interactive Map",
 
       // Community Focus
@@ -329,10 +330,7 @@ export default function LandingPageExplorers() {
   const heroImages = [
     {
       src: "/landing-top/habitat-landing-main.png",
-      caption:
-        lang === "en"
-          ? "Meet conservation heroes"
-          : "Conheça heróis da conservação",
+      caption: lang === "en" ? "Explore Our Planet" : "Explore Nosso Planeta",
     },
     // {
     //   src: "/eco/penguins.jpeg",
@@ -427,6 +425,141 @@ export default function LandingPageExplorers() {
 
   return (
     <div className="font-sans min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+      {/* Worlds Showcase */}
+      <section className="py-10 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              {copy.heroTitle}
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-4">
+              {copy.worldsSubtitle}
+            </p>
+            <div className="flex flex-row sm:flex-row gap-4 justify-center">
+              <Link
+                href="/login"
+                className="bg-gradient-to-r from-primary-700 to-green-700 hover:from-primary-800 hover:to-green-800 text-white px-4 py-2 lg:px-8 lg:py-2 rounded-lg text-[16px] md:text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center gap-2 justify-center"
+              >
+                {copy.startFree}
+                {/* <ArrowRight className="w-5 h-5" /> */}
+              </Link>
+
+              <Link
+                href="/worlds"
+                className="border-2 border-primary-900 text-primary-900 dark:text-primary-100 dark:border-primary-100 px-4 py-2 lg:px-8 lg:py-2 rounded-lg text-[16px] md:text-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center"
+              >
+                {/* <Mic className="w-5 h-5" /> */}
+                {copy.upgradePro}
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {worlds.map((world, index) => (
+              <div
+                key={world.id}
+                className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+              >
+                {/* World Image */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={world.imageUrl}
+                    alt={world.name}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="text-2xl font-bold text-white mb-1">
+                      {world.name}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* World Description */}
+                <div className="p-6">
+                  <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">
+                    {world.description}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between">
+                    <span
+                      className="text-xs font-semibold px-3 py-1 rounded-full text-white"
+                      style={{ backgroundColor: world.color.primary }}
+                    >
+                      {world.adventures.length} Adventures
+                    </span>
+                    <Globe
+                      className="w-5 h-5"
+                      style={{ color: world.color.primary }}
+                    />
+                  </div>
+                </div>
+
+                {/* Hover overlay with "Explore" hint */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  {/* <span className="text-white font-semibold text-lg">
+                    Coming Soon
+                  </span> */}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Habitat for your School */}
+      <section className="pt-10 pb-20 bg-gray-50 dark:bg-gray-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              {copy.communityTitle}
+            </h2>
+            {/* <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              {copy.communitySubtitle}
+            </p> */}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <Calendar className="w-8 h-8" />,
+                text: copy.weeklyTheme,
+                textSub: copy.weeklyThemeSub,
+                color: "blue",
+              },
+              // {
+              //   icon: <MessageCircle className="w-8 h-8" />,
+              //   text: copy.liveClasses,
+              //   color: "green",
+              // },
+              {
+                icon: <Users className="w-8 h-8" />,
+                text: copy.globalCommunity,
+                textSub: copy.globalCommunitySub,
+                color: "purple",
+              },
+              {
+                icon: <Fish className="w-8 h-8" />,
+                text: copy.realImpact,
+                textSub: copy.RealImpactSub,
+                color: "cyan",
+              },
+            ].map((item, i) => (
+              <div key={i} className="text-center">
+                <div
+                  className={`w-16 h-16 bg-${item.color}-100 dark:bg-${item.color}-900 rounded-full flex items-center justify-center mx-auto mb-3 text-${item.color}-600 dark:text-${item.color}-400`}
+                >
+                  {item.icon}
+                </div>
+                <h2 className="font-semibold text-xl mb-3">{item.text}</h2>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {item.textSub}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section className="relative pt-8 lg:pt-20 pb-20 flex items-center justify-center bg-gradient-to-br from-blue-50 via-green-50 to-cyan-50 dark:from-blue-950 dark:via-green-950 dark:to-cyan-950 overflow-hidden">
         {/* Background Pattern */}
@@ -492,133 +625,15 @@ export default function LandingPageExplorers() {
                 <img
                   src={heroImages[currentImageIndex].src}
                   alt="Hero"
-                  className="w-full h-96 rounded-3xl object-cover shadow-2xl transition-opacity duration-1000"
+                  className=" w-fit h-auto md:w-full md:h-96 rounded-3xl object-cover shadow-2xl transition-opacity duration-1000"
                 />
-                {/* <div className="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-3">
+                {/* <div className="absolute bottom-32 right-28 bg-white/90 dark:bg-accent-700/20 backdrop-blur-sm rounded-2xl p-3">
                   <p className="text-sm font-medium text-center">
                     {heroImages[currentImageIndex].caption}
                   </p>
                 </div> */}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Habitat for your School */}
-      <section className="pt-16 pb-16 bg-gray-50 dark:bg-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              {copy.communityTitle}
-            </h2>
-            {/* <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              {copy.communitySubtitle}
-            </p> */}
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <Calendar className="w-8 h-8" />,
-                text: copy.weeklyTheme,
-                textSub: copy.weeklyThemeSub,
-                color: "blue",
-              },
-              // {
-              //   icon: <MessageCircle className="w-8 h-8" />,
-              //   text: copy.liveClasses,
-              //   color: "green",
-              // },
-              {
-                icon: <Users className="w-8 h-8" />,
-                text: copy.globalCommunity,
-                textSub: copy.globalCommunitySub,
-                color: "purple",
-              },
-              {
-                icon: <Fish className="w-8 h-8" />,
-                text: copy.realImpact,
-                textSub: copy.RealImpactSub,
-                color: "cyan",
-              },
-            ].map((item, i) => (
-              <div key={i} className="text-center">
-                <div
-                  className={`w-16 h-16 bg-${item.color}-100 dark:bg-${item.color}-900 rounded-full flex items-center justify-center mx-auto mb-3 text-${item.color}-600 dark:text-${item.color}-400`}
-                >
-                  {item.icon}
-                </div>
-                <h2 className="font-semibold text-xl mb-3">{item.text}</h2>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {item.textSub}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Worlds Showcase */}
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {copy.worldsTitle}
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              {copy.worldsSubtitle}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {worlds.map((world, index) => (
-              <div
-                key={world.id}
-                className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-              >
-                {/* World Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={world.imageUrl}
-                    alt={world.name}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-2xl font-bold text-white mb-1">
-                      {world.name}
-                    </h3>
-                  </div>
-                </div>
-
-                {/* World Description */}
-                <div className="p-6">
-                  <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">
-                    {world.description}
-                  </p>
-                  <div className="mt-4 flex items-center justify-between">
-                    <span
-                      className="text-xs font-semibold px-3 py-1 rounded-full text-white"
-                      style={{ backgroundColor: world.color.primary }}
-                    >
-                      {world.adventures.length} Adventures
-                    </span>
-                    <Globe
-                      className="w-5 h-5"
-                      style={{ color: world.color.primary }}
-                    />
-                  </div>
-                </div>
-
-                {/* Hover overlay with "Explore" hint */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  {/* <span className="text-white font-semibold text-lg">
-                    Coming Soon
-                  </span> */}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
