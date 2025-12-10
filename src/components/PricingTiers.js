@@ -49,7 +49,7 @@ export default function PricingTiers() {
       ],
       cardContentExplorer: [
         "Access to all features",
-        "Accecss to all the weekly theme units, activities and revision exercises",
+        "Access to all the weekly theme units, activities and revision exercises",
         "Access to your eco map",
         // "Progress tracking and analytics",
         "Priority support",
