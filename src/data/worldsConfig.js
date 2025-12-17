@@ -329,6 +329,131 @@ export const WORLDS = {
     ],
   },
 
+  the_oceans: {
+    id: "the_oceans",
+    name: "The Oceans",
+    name_pt: "Os oceanos",
+    slug: "the-oceans",
+    description:
+      "Dive into Earth's largest ecosystem, covering 71% of our planet, from sunlit surface waters to the mysterious deep sea.",
+    description_pt:
+      "Explore o maior ecossistema da Terra, que cobre 71% do nosso planeta, desde as águas superficiais iluminadas pelo sol até as misteriosas profundezas do oceano.",
+    order: 3,
+    coming_soon: true,
+    color: {
+      primary: "#0ea5e9", // sky-500
+      secondary: "#0284c7", // sky-600
+      light: "#e0f2fe", // sky-100
+      dark: "#0c4a6e", // sky-900
+    },
+    bounds: {
+      // Global oceans
+      north: 85,
+      south: -85,
+      east: 180,
+      west: -180,
+    },
+    icon: "Waves",
+    imageUrl:
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Piaui%20coast%20marine%20turtle.webp",
+    heroUrl:
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Great%20white%20shark.jpg",
+    mapUrl: "/maps/oceans.png",
+    ecoHeroUrl: "",
+    adventures: [
+      {
+        id: "kelp_forests",
+        name: "Kelp Forests: Underwater Jungles",
+        name_pt: "Florestas de Kelp: Selvas Subaquáticas",
+        week: 1,
+        ecosystemType: "kelp_forest",
+        description:
+          "Explore the towering underwater forests and their importance to marine life.",
+        description_pt:
+          "Explore as imponentes florestas subaquáticas e sua importância para a vida marinha.",
+        themeTag: "kelp",
+        is_premium: true, // Premium content
+        levels: [
+          "Level 1",
+          "Level 2",
+          "Level 3",
+          "Beginner",
+          "Intermediate",
+          "Advanced",
+          "Solo",
+        ],
+        underConstruction: false,
+      },
+      {
+        id: "deep_ocean",
+        name: "Deep Ocean: The Abyss",
+        name_pt: "Oceano Profundo: O Abismo",
+        week: 2,
+        ecosystemType: "deep_sea",
+        description:
+          "Descend into the mysterious depths and meet bizarre deep-sea creatures.",
+        description_pt:
+          "Desça às profundezas misteriosas e conheça criaturas bizarras das profundezas do mar.",
+        themeTag: "deep_ocean",
+        is_premium: true, // Premium content
+        levels: [
+          "Level 1",
+          "Level 2",
+          "Level 3",
+          "Beginner",
+          "Intermediate",
+          "Advanced",
+          "Solo",
+        ],
+        underConstruction: false,
+      },
+      {
+        id: "whale_migration",
+        name: "Whale Migration: Ocean Giants",
+        name_pt: "Migração das Baleias: Gigantes do Oceano",
+        week: 3,
+        ecosystemType: "migration",
+        description:
+          "Follow the epic journeys of whales across the world's oceans.",
+        description_pt:
+          "Acompanhe as jornadas épicas das baleias pelos oceanos do mundo.",
+        themeTag: "whales",
+        is_premium: true, // Premium content
+        levels: [
+          "Level 1",
+          "Level 2",
+          "Level 3",
+          "Beginner",
+          "Intermediate",
+          "Advanced",
+          "Solo",
+        ],
+        underConstruction: false,
+      },
+      {
+        id: "coral_triangle",
+        name: "Coral Triangle: Marine Diversity Hotspot",
+        name_pt: "Triângulo de Coral: Hotspot de Diversidade Marinha",
+        week: 4,
+        ecosystemType: "coral_reef",
+        description: "Discover the most biodiverse marine region on Earth.",
+        description_pt: "Descubra a região marinha mais biodiversa da Terra.",
+        themeTag: "coral_triangle",
+        is_premium: true, // Premium content
+        levels: [
+          "Level 1",
+          "Level 2",
+          "Level 3",
+          "Beginner",
+          "Intermediate",
+          "Advanced",
+          "Solo",
+        ],
+        underConstruction: false,
+      },
+    ],
+  },
+
   eurasia: {
     id: "eurasia",
     name: "Eurasia",
@@ -338,7 +463,7 @@ export const WORLDS = {
       "Journey across the world's largest landmass, from European forests to Asian steppes and tropical rainforests.",
     description_pt:
       "Viaje pela maior massa de terra do mundo, das florestas europeias às estepes asiáticas e florestas tropicais.",
-    order: 3,
+    order: 4,
     coming_soon: true,
     color: {
       primary: "#f59e0b", // amber-500
@@ -478,7 +603,7 @@ export const WORLDS = {
       "Explore the islands and marine environments of the Pacific, from the Great Barrier Reef to New Zealand's unique ecosystems.",
     description_pt:
       "Explore as ilhas e os ambientes marinhos do Pacífico, desde a Grande Barreira de Corais até os ecossistemas únicos da Nova Zelândia.",
-    order: 4,
+    order: 5,
     coming_soon: true,
     color: {
       primary: "#3b82f6", // blue-500
@@ -617,7 +742,7 @@ export const WORLDS = {
       "Venture to the ends of the Earth, exploring the Arctic and Antarctic and the unique adaptations of their inhabitants to extreme cold.",
     description_pt:
       "Aventure-se até os confins da Terra, explorando o Ártico e a Antártida e as adaptações únicas de seus habitantes ao frio extremo.",
-    order: 5,
+    order: 6,
     coming_soon: true,
     color: {
       primary: "#8b5cf6", // violet-500
@@ -760,7 +885,7 @@ export const WORLDS = {
       "From Arctic tundra to tropical forests, discover the diverse ecosystems of North America and Central America.",
     description_pt:
       "Da tundra ártica às florestas tropicais, descubra os diversos ecossistemas da América do Norte e da América Central.",
-    order: 6,
+    order: 7,
     coming_soon: true,
     color: {
       primary: "#ef4444", // red-500
@@ -862,131 +987,6 @@ export const WORLDS = {
         description_pt:
           "Descubra esta área úmida subtropical única e sua importância para o ecossistema da Flórida.",
         themeTag: "everglades",
-        is_premium: true, // Premium content
-        levels: [
-          "Level 1",
-          "Level 2",
-          "Level 3",
-          "Beginner",
-          "Intermediate",
-          "Advanced",
-          "Solo",
-        ],
-        underConstruction: false,
-      },
-    ],
-  },
-
-  the_oceans: {
-    id: "the_oceans",
-    name: "The Oceans",
-    name_pt: "Os oceanos",
-    slug: "the-oceans",
-    description:
-      "Dive into Earth's largest ecosystem, covering 71% of our planet, from sunlit surface waters to the mysterious deep sea.",
-    description_pt:
-      "Explore o maior ecossistema da Terra, que cobre 71% do nosso planeta, desde as águas superficiais iluminadas pelo sol até as misteriosas profundezas do oceano.",
-    order: 7,
-    coming_soon: true,
-    color: {
-      primary: "#0ea5e9", // sky-500
-      secondary: "#0284c7", // sky-600
-      light: "#e0f2fe", // sky-100
-      dark: "#0c4a6e", // sky-900
-    },
-    bounds: {
-      // Global oceans
-      north: 85,
-      south: -85,
-      east: 180,
-      west: -180,
-    },
-    icon: "Waves",
-    imageUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Piaui%20coast%20marine%20turtle.webp",
-    heroUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Great%20white%20shark.jpg",
-    mapUrl: "/maps/oceans.png",
-    ecoHeroUrl: "",
-    adventures: [
-      {
-        id: "kelp_forests",
-        name: "Kelp Forests: Underwater Jungles",
-        name_pt: "Florestas de Kelp: Selvas Subaquáticas",
-        week: 1,
-        ecosystemType: "kelp_forest",
-        description:
-          "Explore the towering underwater forests and their importance to marine life.",
-        description_pt:
-          "Explore as imponentes florestas subaquáticas e sua importância para a vida marinha.",
-        themeTag: "kelp",
-        is_premium: true, // Premium content
-        levels: [
-          "Level 1",
-          "Level 2",
-          "Level 3",
-          "Beginner",
-          "Intermediate",
-          "Advanced",
-          "Solo",
-        ],
-        underConstruction: false,
-      },
-      {
-        id: "deep_ocean",
-        name: "Deep Ocean: The Abyss",
-        name_pt: "Oceano Profundo: O Abismo",
-        week: 2,
-        ecosystemType: "deep_sea",
-        description:
-          "Descend into the mysterious depths and meet bizarre deep-sea creatures.",
-        description_pt:
-          "Desça às profundezas misteriosas e conheça criaturas bizarras das profundezas do mar.",
-        themeTag: "deep_ocean",
-        is_premium: true, // Premium content
-        levels: [
-          "Level 1",
-          "Level 2",
-          "Level 3",
-          "Beginner",
-          "Intermediate",
-          "Advanced",
-          "Solo",
-        ],
-        underConstruction: false,
-      },
-      {
-        id: "whale_migration",
-        name: "Whale Migration: Ocean Giants",
-        name_pt: "Migração das Baleias: Gigantes do Oceano",
-        week: 3,
-        ecosystemType: "migration",
-        description:
-          "Follow the epic journeys of whales across the world's oceans.",
-        description_pt:
-          "Acompanhe as jornadas épicas das baleias pelos oceanos do mundo.",
-        themeTag: "whales",
-        is_premium: true, // Premium content
-        levels: [
-          "Level 1",
-          "Level 2",
-          "Level 3",
-          "Beginner",
-          "Intermediate",
-          "Advanced",
-          "Solo",
-        ],
-        underConstruction: false,
-      },
-      {
-        id: "coral_triangle",
-        name: "Coral Triangle: Marine Diversity Hotspot",
-        name_pt: "Triângulo de Coral: Hotspot de Diversidade Marinha",
-        week: 4,
-        ecosystemType: "coral_reef",
-        description: "Discover the most biodiverse marine region on Earth.",
-        description_pt: "Descubra a região marinha mais biodiversa da Terra.",
-        themeTag: "coral_triangle",
         is_premium: true, // Premium content
         levels: [
           "Level 1",
