@@ -1,0 +1,19 @@
+-- Sample glossary entries for testing
+-- You can customize these entries as needed
+
+-- Example eco-related terms
+INSERT INTO public.glossary (term, translation_pt, translation_es, translation_fr, notes, difficulty_level) VALUES
+  ('ecosystem', 'ecossistema', 'ecosistema', 'écosystème', 'A biological community of interacting organisms and their physical environment.', 'Beginner'),
+  ('biodiversity', 'biodiversidade', 'biodiversidad', 'biodiversité', 'The variety of plant and animal life in a particular habitat.', 'Intermediate'),
+  ('habitat', 'habitat', 'hábitat', 'habitat', 'The natural home or environment of an animal, plant, or other organism.', 'Beginner'),
+  ('endangered species', 'espécie em extinção', 'especie en peligro', 'espèce menacée', 'A species at serious risk of extinction.', 'Intermediate'),
+  ('conservation', 'conservação', 'conservación', 'conservation', 'The protection and preservation of natural resources.', 'Beginner'),
+  ('deforestation', 'desmatamento', 'deforestación', 'déforestation', 'The clearing of forests on a large scale.', 'Intermediate'),
+  ('climate change', 'mudança climática', 'cambio climático', 'changement climatique', 'Long-term shifts in global temperatures and weather patterns.', 'Advanced'),
+  ('renewable energy', 'energia renovável', 'energía renovable', 'énergie renouvelable', 'Energy from sources that are naturally replenishing.', 'Advanced'),
+  ('pollution', 'poluição', 'contaminación', 'pollution', 'The presence of harmful substances in the environment.', 'Beginner'),
+  ('sustainable', 'sustentável', 'sostenible', 'durable', 'Able to be maintained at a certain rate or level without depleting resources.', 'Intermediate')
+ON CONFLICT (term) DO NOTHING;
+
+-- Note: The above is just sample data. Add more terms specific to your texts as needed.
+-- Use ON CONFLICT DO NOTHING to avoid errors if running this migration multiple times.

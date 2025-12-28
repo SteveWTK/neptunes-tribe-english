@@ -14,6 +14,9 @@ import { createClient } from "@/lib/supabase/client";
 
 import TextExpander from "./TextExpander";
 import PieChartAnswers from "./PieChartAnswers";
+import TextWithGlossary from "./TextWithGlossary";
+import { fetchGlossaryTerms } from "@/lib/glossaryUtils";
+import { toast } from "sonner";
 
 export default function MultiGapFillExerciseNew({
   unitId,
@@ -39,6 +42,10 @@ export default function MultiGapFillExerciseNew({
   const [showHoverInstruction, setShowHoverInstruction] = useState(false);
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // GLOSSARY FEATURE: State for glossary terms and saved words
+  const [glossaryTerms, setGlossaryTerms] = useState([]);
+  const [savedGlossaryWords, setSavedGlossaryWords] = useState(new Set());
 
   // FEATURE 1: User type/level for conditional rendering
   const [userType, setUserType] = useState(null);
@@ -188,6 +195,23 @@ export default function MultiGapFillExerciseNew({
     fetchUserData();
   }, [user]);
 
+  // GLOSSARY FEATURE: Fetch glossary terms based on user level
+  useEffect(() => {
+    async function loadGlossary() {
+      try {
+        const supabaseClient = createClient();
+        const terms = await fetchGlossaryTerms(supabaseClient, currentLevel);
+        setGlossaryTerms(terms);
+      } catch (error) {
+        console.error("Error loading glossary:", error);
+      }
+    }
+
+    if (currentLevel) {
+      loadGlossary();
+    }
+  }, [currentLevel]);
+
   // Enhanced data fetching to include notes
   useEffect(() => {
     async function loadQuestionsWithNotes() {
@@ -263,6 +287,53 @@ export default function MultiGapFillExerciseNew({
       newExpanded.add(gapNumber);
     }
     setExpandedNotes(newExpanded);
+  };
+
+  // GLOSSARY FEATURE: Save word to personal vocabulary list
+  const handleSaveGlossaryWord = async (wordData) => {
+    const { en, pt } = wordData;
+
+    try {
+      const payload = {
+        english: en,
+        portuguese: pt,
+        englishImage: null,
+        portugueseImage: null,
+        lessonId: unitId || null,
+        stepType: "glossary",
+      };
+
+      const response = await fetch("/api/vocabulary/personal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 401) {
+        toast.error("Please log in to save words to your practice list");
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to save word");
+      }
+
+      if (data.success) {
+        setSavedGlossaryWords((prev) => new Set([...prev, en.toLowerCase()]));
+        toast.success(`"${en}" saved to your practice list!`, {
+          description: "You can practice it later in vocabulary games",
+          duration: 3000,
+        });
+      } else if (data.alreadyExists) {
+        setSavedGlossaryWords((prev) => new Set([...prev, en.toLowerCase()]));
+        toast.info(`"${en}" is already in your practice list`);
+      }
+    } catch (error) {
+      console.error("Error saving glossary word:", error);
+      toast.error("Failed to save word. Please try again.");
+    }
   };
 
   const renderGapWithHoverFeedback = (question, index) => {
@@ -915,16 +986,29 @@ export default function MultiGapFillExerciseNew({
             )}
 
             {showFullText ? (
-              <p className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50">
-                {fullText}
-              </p>
+              <div className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50">
+                <TextWithGlossary
+                  text={fullText}
+                  glossaryTerms={glossaryTerms}
+                  onSaveWord={handleSaveGlossaryWord}
+                  savedWords={savedGlossaryWords}
+                  selectedLanguage={selectedLanguage}
+                />
+              </div>
             ) : (
               <div className="col-span-6 lg:col-span-4 font-orbitron font-normal text-md text-primary-900 bg-accent-50 dark:text-accent-50 dark:bg-primary-800 p-4 border-solid rounded-lg border-accent-50 relative">
                 {questions.length > 0 ? (
                   gapText.split(/\{\{(\d+)\}\}/g).map((part, index) => {
                     if (index % 2 === 0)
                       return (
-                        <span key={`text-${textId}-${index}`}>{part}</span>
+                        <TextWithGlossary
+                          key={`text-${textId}-${index}`}
+                          text={part}
+                          glossaryTerms={glossaryTerms}
+                          onSaveWord={handleSaveGlossaryWord}
+                          savedWords={savedGlossaryWords}
+                          selectedLanguage={selectedLanguage}
+                        />
                       );
 
                     const question = questions.find(
