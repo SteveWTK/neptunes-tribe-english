@@ -19,9 +19,14 @@ export default function TextWithGlossary({
 
   const handleSave = async (term, translation) => {
     if (onSaveWord) {
+      // Extract Portuguese translation if translation is an object
+      const portugueseTranslation = typeof translation === 'object'
+        ? translation.pt
+        : translation;
+
       await onSaveWord({
         en: term,
-        pt: translation,
+        pt: portugueseTranslation,
       });
     }
   };

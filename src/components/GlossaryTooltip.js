@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { BookmarkPlus, BookmarkCheck, X } from "lucide-react";
 import { toast } from "sonner";
 
@@ -16,8 +17,15 @@ export default function GlossaryTooltip({
   const [isOpen, setIsOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [mounted, setMounted] = useState(false);
   const triggerRef = useRef(null);
   const tooltipRef = useRef(null);
+
+  // Track if component is mounted (for portal)
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   // Calculate tooltip position
   useEffect(() => {
@@ -27,22 +35,23 @@ export default function GlossaryTooltip({
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
 
-      let top = triggerRect.bottom + window.scrollY + 8;
-      let left = triggerRect.left + window.scrollX;
+      // Use window.pageYOffset for better compatibility with modals
+      let top = triggerRect.bottom + (window.pageYOffset || window.scrollY) + 8;
+      let left = triggerRect.left + (window.pageXOffset || window.scrollX);
 
       // Adjust if tooltip goes off right edge
-      if (left + tooltipRect.width > viewportWidth) {
-        left = viewportWidth - tooltipRect.width - 16;
+      if (left + tooltipRect.width > viewportWidth + (window.pageXOffset || window.scrollX)) {
+        left = viewportWidth + (window.pageXOffset || window.scrollX) - tooltipRect.width - 16;
       }
 
       // Adjust if tooltip goes off left edge
-      if (left < 16) {
-        left = 16;
+      if (left < (window.pageXOffset || window.scrollX) + 16) {
+        left = (window.pageXOffset || window.scrollX) + 16;
       }
 
       // If tooltip goes off bottom, show above the trigger
       if (triggerRect.bottom + tooltipRect.height + 8 > viewportHeight) {
-        top = triggerRect.top + window.scrollY - tooltipRect.height - 8;
+        top = triggerRect.top + (window.pageYOffset || window.scrollY) - tooltipRect.height - 8;
       }
 
       setPosition({ top, left });
@@ -98,25 +107,15 @@ export default function GlossaryTooltip({
     return translation?.[selectedLanguage] || translation?.pt || "";
   };
 
-  return (
-    <>
-      <span
-        ref={triggerRef}
-        onClick={handleClick}
-        className="glossary-term cursor-pointer relative inline-block transition-all duration-200 hover:border-b-[1.5px] hover:border-dotted hover:border-teal-600"
-      >
-        {children}
-      </span>
-
-      {isOpen && (
-        <div
-          ref={tooltipRef}
-          className="fixed z-50 animate-in fade-in-0 zoom-in-95 duration-200"
-          style={{
-            top: `${position.top}px`,
-            left: `${position.left}px`,
-          }}
-        >
+  const tooltipContent = isOpen && mounted ? (
+    <div
+      ref={tooltipRef}
+      className="fixed z-[9999] animate-in fade-in-0 zoom-in-95 duration-200"
+      style={{
+        top: `${position.top}px`,
+        left: `${position.left}px`,
+      }}
+    >
           <div className="bg-white dark:bg-gray-800 border-2 border-teal-200 dark:border-teal-700 rounded-lg shadow-xl max-w-sm min-w-[180px]">
             {/* Header with close button */}
             <div className="flex items-start justify-between p-3 border-b border-teal-100 dark:border-teal-800">
@@ -179,7 +178,19 @@ export default function GlossaryTooltip({
             </div>
           </div>
         </div>
-      )}
+  ) : null;
+
+  return (
+    <>
+      <span
+        ref={triggerRef}
+        onClick={handleClick}
+        className="glossary-term cursor-pointer relative inline-block transition-all duration-200 hover:border-b-2 hover:border-teal-600"
+      >
+        {children}
+      </span>
+
+      {mounted && tooltipContent && createPortal(tooltipContent, document.body)}
     </>
   );
 }

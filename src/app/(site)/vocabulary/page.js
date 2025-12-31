@@ -349,7 +349,7 @@ export default function PersonalVocabularyPage() {
                               Português
                             </div>
                             <div className="font-semibold text-lg text-emerald-700 dark:text-emerald-400">
-                              {word.pt}
+                              {typeof word.pt === 'string' ? word.pt : word.pt?.pt || word.pt}
                             </div>
                           </div>
                         </div>

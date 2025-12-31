@@ -819,27 +819,32 @@ function DynamicLessonContent() {
         return (
           <div className="text-center">
             <div className="bg-white dark:bg-primary-900/20 rounded-xl p-6 mb-2">
-              {/* Translation button */}
-              {/* {userPreferredLanguage !== "en" && (
-                <div className="flex justify-end mb-4">
-                  <button
-                    onClick={() => {
-                      const content = `${currentStepData.content}${currentStepData.cultural_context ? "\n\nCultural Context: " + currentStepData.cultural_context : ""}${currentStepData.reflection_questions ? "\n\nReflection Questions:\n" + currentStepData.reflection_questions.join("\n") : ""}`;
-                      translateContent(content, `scenario-${currentStep}`);
-                    }}
-                    disabled={translating}
-                    className="flex items-center space-x-2 px-3 py-1 text-sm bg-white dark:bg-green-800 text-green-700 dark:text-gray-300 rounded-lg hover:bg-green-100 dark:hover:bg-green-700 transition-colors"
-                  >
-                    <span>
-                      {translating
-                        ? "Traduzindo..."
-                        : showTranslation
-                          ? "Show English"
-                          : "Traduzir"}
-                    </span>
-                  </button>
-                </div>
-              )} */}
+              <button
+                onClick={toggleAudio}
+                className="flex items-center space-x-2 mx-auto bg-accent-600 text-white px-4 py-2 mb-3 rounded-lg hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={
+                  !currentStepData.audio_url && !currentStepData.content
+                }
+                title={
+                  !currentStepData.audio_url && !currentStepData.content
+                    ? "No audio or content available"
+                    : currentStepData.audio_url
+                    ? "Listen to uploaded audio"
+                    : "Listen to scenario in English (AI voice)"
+                }
+              >
+                {isPlaying ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>{t("playing")}</span>
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+              <audio ref={audioRef} style={{ display: "none" }} />
 
               {currentStepData.video_url ? (
                 <VideoPlayer
@@ -868,33 +873,6 @@ function DynamicLessonContent() {
                 {translations[`scenario-${currentStep}`] ||
                   currentStepData.content}
               </p>
-
-              {/* <button
-                onClick={toggleAudio}
-                className="flex items-center space-x-2 mx-auto bg-accent-600 text-white px-4 py-2 rounded-lg hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={
-                  !currentStepData.audio_url && !currentStepData.content
-                }
-                title={
-                  !currentStepData.audio_url && !currentStepData.content
-                    ? "No audio or content available"
-                    : currentStepData.audio_url
-                    ? "Listen to uploaded audio"
-                    : "Listen to scenario in English (AI voice)"
-                }
-              >
-                {isPlaying ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>{t("playing")}</span>
-                  </>
-                ) : (
-                  <>
-                    <Volume2 className="w-4 h-4" />
-                  </>
-                )}
-              </button>
-              <audio ref={audioRef} style={{ display: "none" }} /> */}
 
               {currentStepData.cultural_context && (
                 <div className="bg-primary-50 dark:bg-primary-900/20 p-3 rounded-lg mt-4">

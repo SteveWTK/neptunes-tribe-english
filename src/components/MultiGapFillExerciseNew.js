@@ -299,9 +299,11 @@ export default function MultiGapFillExerciseNew({
         portuguese: pt,
         englishImage: null,
         portugueseImage: null,
-        lessonId: unitId || null,
+        lessonId: null, // unitId is an integer, but DB expects UUID - set to null for glossary saves
         stepType: "glossary",
       };
+
+      console.log("🔍 Saving glossary word:", payload);
 
       const response = await fetch("/api/vocabulary/personal", {
         method: "POST",
@@ -309,7 +311,10 @@ export default function MultiGapFillExerciseNew({
         body: JSON.stringify(payload),
       });
 
+      console.log("📥 Response status:", response.status);
+
       const data = await response.json();
+      console.log("📥 Response data:", data);
 
       if (response.status === 401) {
         toast.error("Please log in to save words to your practice list");
@@ -317,7 +322,9 @@ export default function MultiGapFillExerciseNew({
       }
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to save word");
+        const errorMsg = data.details || data.error || "Failed to save word";
+        console.error("❌ API Error:", errorMsg);
+        throw new Error(errorMsg);
       }
 
       if (data.success) {
@@ -326,13 +333,15 @@ export default function MultiGapFillExerciseNew({
           description: "You can practice it later in vocabulary games",
           duration: 3000,
         });
+        console.log("✅ Word saved successfully");
       } else if (data.alreadyExists) {
         setSavedGlossaryWords((prev) => new Set([...prev, en.toLowerCase()]));
         toast.info(`"${en}" is already in your practice list`);
+        console.log("ℹ️ Word already exists");
       }
     } catch (error) {
-      console.error("Error saving glossary word:", error);
-      toast.error("Failed to save word. Please try again.");
+      console.error("❌ Error saving glossary word:", error);
+      toast.error(`Failed to save word: ${error.message}`);
     }
   };
 
@@ -844,10 +853,10 @@ export default function MultiGapFillExerciseNew({
             <h1 className="font-orbitron font-bold text-center lg:text-left text-2xl sm:text3xl md:text-4xl lg:text-4xl text-gray-800 dark:text-white mx-3">
               {unitData?.title || "Loading Title..."}
             </h1>
-            <h2 className="font-orbitron font-bold text-center lg:text-left text-lg lg:text-xl text-gray-700 dark:text-white mx-3">
+            {/* <h2 className="font-orbitron font-bold text-center lg:text-left text-lg lg:text-xl text-gray-700 dark:text-white mx-3">
               {unitData?.description || "Loading Description..."}
-            </h2>
-            <h2 className="font-orbitron font-bold text-center lg:text-left text-[16px] lg:text-lg text-gray-700 dark:text-white mx-3">
+            </h2> */}
+            <h2 className="font-orbitron font-semibold text-center lg:text-left text-[16px] lg:text-lg text-gray-700 dark:text-white mx-3">
               {copy.region}: {unitData?.region_name || "Loading region name..."}
             </h2>
 
@@ -859,7 +868,7 @@ export default function MultiGapFillExerciseNew({
               </div>
             )}
 
-            <div className="flex gap-6 lg:gap-12 justify-around lg:justify-start">
+            <div className="flex gap-6 lg:gap-12 justify-around lg:justify-start align-middle">
               {unitData?.audio && (
                 <div
                   className="relative"
@@ -896,7 +905,7 @@ export default function MultiGapFillExerciseNew({
                   <button
                     onClick={handleAudioToggle}
                     disabled={isLoading}
-                    className={`flex items-center gap-2 text-[16px] rounded-lg px-2 transition-colors ${
+                    className={`flex items-center gap-2 text-[18px] rounded-lg px-2 transition-colors ${
                       isPlaying
                         ? "text-red-600 hover:text-red-700"
                         : "hover:text-accent-600"
@@ -905,7 +914,7 @@ export default function MultiGapFillExerciseNew({
                     {isPlaying ? (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="size-6"
+                        className="size-9"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -920,7 +929,7 @@ export default function MultiGapFillExerciseNew({
                     ) : (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="size-6"
+                        className="size-9"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -944,7 +953,7 @@ export default function MultiGapFillExerciseNew({
                 </div>
               )}
 
-              <p className="text-gray-800 dark:text-gray-200">
+              <p className="text-gray-800 dark:text-gray-200 text-sm pt-2">
                 Full plays remaining:{" "}
                 <strong>{maxAudioPlays - audioPlayCount}</strong>
               </p>

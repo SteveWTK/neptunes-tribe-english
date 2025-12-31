@@ -94,6 +94,7 @@ export default function MemoryMatch({
   );
   const [savedWords, setSavedWords] = useState(new Set());
   const [savingWord, setSavingWord] = useState(null);
+  const [saveError, setSaveError] = useState(null);
   const [fetchedVocabulary, setFetchedVocabulary] = useState([]);
   const [isLoadingVocabulary, setIsLoadingVocabulary] = useState(false);
 

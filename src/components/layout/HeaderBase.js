@@ -46,6 +46,16 @@ export default function HeaderBase({
         // { href: "/schools", label: "Para Escolas" },
         // { href: "/about-us", label: "Sobre Nós" },
       ],
+      es: [
+        { href: "/worlds", label: "Mundos" },
+        { href: "/units", label: "Atividades" },
+        { href: "/eco-news", label: "Eco News" },
+        { href: "/about-us", label: "Sobre Nosotros" },
+        { href: "/subscriptions", label: "Suscripciones" },
+        // { href: "/explorers", label: "Para Exploradores Solo" },
+        // { href: "/schools", label: "Para Escolas" },
+        // { href: "/about-us", label: "Sobre Nós" },
+      ],
     },
     site: {
       en: [
@@ -62,6 +72,16 @@ export default function HeaderBase({
         { href: "/about-us", label: "Sobre Nós" },
         { href: "/subscriptions", label: "Planos" },
       ],
+      es: [
+        { href: "/worlds", label: "Mundos" },
+        { href: "/units", label: "Atividades" },
+        { href: "/eco-news", label: "Eco News" },
+        { href: "/about-us", label: "Sobre Nosotros" },
+        { href: "/subscriptions", label: "Suscripciones" },
+        // { href: "/explorers", label: "Para Exploradores Solo" },
+        // { href: "/schools", label: "Para Escolas" },
+        // { href: "/about-us", label: "Sobre Nós" },
+      ],
     },
   };
 
@@ -77,6 +97,11 @@ export default function HeaderBase({
       ecoMap: "Painel",
       signIn: "Entrar",
       signOut: "Sair",
+    },
+    es: {
+      ecoMap: "Panel de control",
+      signIn: "Iniciar sesión",
+      signOut: "Cerrar sesión",
     },
   };
 
