@@ -35,23 +35,24 @@ export default function GlossaryTooltip({
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
 
-      // Use window.pageYOffset for better compatibility with modals
-      let top = triggerRect.bottom + (window.pageYOffset || window.scrollY) + 8;
-      let left = triggerRect.left + (window.pageXOffset || window.scrollX);
+      // For fixed positioning with portal, use viewport coordinates directly
+      // getBoundingClientRect() already gives us viewport-relative positions
+      let top = triggerRect.bottom + 8;
+      let left = triggerRect.left;
 
       // Adjust if tooltip goes off right edge
-      if (left + tooltipRect.width > viewportWidth + (window.pageXOffset || window.scrollX)) {
-        left = viewportWidth + (window.pageXOffset || window.scrollX) - tooltipRect.width - 16;
+      if (left + tooltipRect.width > viewportWidth) {
+        left = viewportWidth - tooltipRect.width - 16;
       }
 
       // Adjust if tooltip goes off left edge
-      if (left < (window.pageXOffset || window.scrollX) + 16) {
-        left = (window.pageXOffset || window.scrollX) + 16;
+      if (left < 16) {
+        left = 16;
       }
 
       // If tooltip goes off bottom, show above the trigger
       if (triggerRect.bottom + tooltipRect.height + 8 > viewportHeight) {
-        top = triggerRect.top + (window.pageYOffset || window.scrollY) - tooltipRect.height - 8;
+        top = triggerRect.top - tooltipRect.height - 8;
       }
 
       setPosition({ top, left });
