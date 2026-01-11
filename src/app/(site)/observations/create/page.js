@@ -35,21 +35,23 @@ function CreateObservationContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-blue-50 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-blue-50 dark:from-primary-900 dark:to-primary-950 py-8">
       <div className="max-w-2xl mx-auto px-4">
         {/* Back link */}
         <Link
           href="/observations"
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-6"
+          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 dark:text-white mb-6"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4 text-gray-600 dark:text-white" />
           Back to observations
         </Link>
 
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">New Observation</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
+            New Observation
+          </h1>
+          <p className="text-gray-600 dark:text-gray-100">
             Share what you&apos;ve discovered in nature
           </p>
         </div>
