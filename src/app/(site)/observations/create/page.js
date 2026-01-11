@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
@@ -7,7 +8,7 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import CreateObservationForm from "@/components/observations/CreateObservationForm";
 
-export default function CreateObservationPage() {
+function CreateObservationContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -63,5 +64,19 @@ export default function CreateObservationPage() {
         />
       </div>
     </div>
+  );
+}
+
+export default function CreateObservationPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
+          <Loader2 className="w-8 h-8 animate-spin text-accent-600 dark:text-accent-400" />
+        </div>
+      }
+    >
+      <CreateObservationContent />
+    </Suspense>
   );
 }
