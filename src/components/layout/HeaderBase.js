@@ -7,6 +7,7 @@ import SignOutButton from "@/components/ui/signoutButton";
 import { useSession } from "next-auth/react"; // Remove signOut import since we're not using it here
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { useState } from "react";
+import ChallengeNotification from "@/components/challenges/ChallengeNotification";
 
 export default function HeaderBase({
   type = "landing",
@@ -130,6 +131,9 @@ export default function HeaderBase({
 
             {/* Desktop Right side controls */}
             <div className="hidden md:flex gap-4 md:gap-3 lg:gap-4 items-center">
+              {/* Challenge notification for logged-in users */}
+              {session?.user && <ChallengeNotification />}
+
               {session?.user && (
                 <Link
                   href="/eco-map"
@@ -187,17 +191,20 @@ export default function HeaderBase({
               </button>
             </div>
 
-            {/* Mobile menu button */}
-            <button
-              className="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
+            {/* Mobile: Challenge notification + menu button */}
+            <div className="md:hidden flex items-center gap-2">
+              {session?.user && <ChallengeNotification />}
+              <button
+                className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </header>

@@ -10,7 +10,8 @@
       "Bash(taskkill /F /IM node.exe)",
       "Bash(npm install canvas-confetti)",
       "Bash(wc -l src/app/(site)/feedback/page.js)",
-      "Bash(npm run build)"
+      "Bash(npm run build)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
