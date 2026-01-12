@@ -319,7 +319,7 @@ export default function EcoMapClient({
       )} */}
 
       {/* New: Prominent Worlds CTA */}
-      <div className="flex gap-0.5 md:gap-2 justify-center max-w-6xl mx-auto mb-2 md:mb-4 px-4">
+      <div className="flex flex-wrap gap-0.5 md:gap-2 justify-center max-w-6xl mx-auto mb-2 md:mb-4 px-4">
         <Link href="/worlds">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
