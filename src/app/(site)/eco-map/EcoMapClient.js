@@ -18,6 +18,8 @@ import {
   ChevronRight,
   Globe,
   BookOpen,
+  Binoculars,
+  PawPrint,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -56,6 +58,8 @@ export default function EcoMapClient({
       exploreWorlds: "Explore the Planet",
       worldsSubtitle: "Start your adventure",
       vocabularySubtitle: "Your vocabulary",
+      observationsSubtitle: "Observations",
+      avatarSubtitle: "Avatars",
       impactTitle: "Keep increasing your impact",
       impactSubtitle:
         "Explore more ecosystems and complete environmental challenges to expand your impact!",
@@ -70,6 +74,8 @@ export default function EcoMapClient({
       exploreWorlds: "Explore o Planeta",
       worldsSubtitle: "Inicie sua aventura",
       vocabularySubtitle: "Seu vocabulário",
+      observationsSubtitle: "Observações",
+      avatarSubtitle: "Avatares",
       impactTitle: "Continue aumentando seu impacto",
       impactSubtitle:
         "Explore mais ecossistemas e conclua desafios ambientais para expandir seu impacto!",
@@ -358,6 +364,52 @@ export default function EcoMapClient({
               </div>
               <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2 group-hover:text-accent-600 dark:group-hover:text-accent-400  group-hover:translate-x-0.5 transition-transform">
                 {copy.vocabularySubtitle}
+              </p>
+              {/* <div className="hidden md:block"> */}
+              <div className="rounded-full p-1  transition-all">
+                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+              {/* </div> */}
+            </div>
+          </motion.div>
+        </Link>
+        <Link href="/observations">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            // className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+            className="bg-white dark:bg-primary-950 rounded-2xl md:px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group w-full"
+          >
+            <div className="flex gap-1 md:gap-2 align-baseline">
+              <div className="rounded-full p-1 transition-all">
+                <Binoculars className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400group-hover:translate-x-0.5 transition-transform" />
+              </div>
+              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2 group-hover:text-accent-600 dark:group-hover:text-accent-400  group-hover:translate-x-0.5 transition-transform">
+                {copy.observationsSubtitle}
+              </p>
+              {/* <div className="hidden md:block"> */}
+              <div className="rounded-full p-1  transition-all">
+                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+              {/* </div> */}
+            </div>
+          </motion.div>
+        </Link>
+        <Link href="/select-avatar">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            // className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+            className="bg-white dark:bg-primary-950 rounded-2xl md:px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group w-full"
+          >
+            <div className="flex gap-1 md:gap-2 align-baseline">
+              <div className="rounded-full p-1 transition-all">
+                <PawPrint className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400group-hover:translate-x-0.5 transition-transform" />
+              </div>
+              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2 group-hover:text-accent-600 dark:group-hover:text-accent-400  group-hover:translate-x-0.5 transition-transform">
+                {copy.avatarSubtitle}
               </p>
               {/* <div className="hidden md:block"> */}
               <div className="rounded-full p-1  transition-all">
