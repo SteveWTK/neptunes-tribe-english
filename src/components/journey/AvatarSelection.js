@@ -32,7 +32,7 @@ const IUCN_STATUS = {
   },
 };
 
-export default function AvatarSelection({ onComplete }) {
+export default function AvatarSelection({ onComplete, isChangingAvatar = false }) {
   const router = useRouter();
   const [avatars, setAvatars] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -122,12 +122,12 @@ export default function AvatarSelection({ onComplete }) {
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-3">
-          Choose Your Species
+          {isChangingAvatar ? "Change Your Species" : "Choose Your Species"}
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          Select an endangered species to protect. Your journey will be to help
-          them recover from their current conservation status to &quot;Least
-          Concern&quot;.
+          {isChangingAvatar
+            ? "Select a new endangered species to protect. Your previous progress will be reset."
+            : "Select an endangered species to protect. Your journey will be to help them recover from their current conservation status to \"Least Concern\"."}
         </p>
       </div>
 
@@ -267,9 +267,17 @@ export default function AvatarSelection({ onComplete }) {
               )}
 
               {/* Warning */}
-              <div className="text-center text-sm text-gray-500 dark:text-gray-400 mb-6">
-                <strong>Note:</strong> This choice is permanent. Your mission is
-                to help this species recover!
+              <div className={`text-center text-sm mb-6 ${isChangingAvatar ? "text-amber-600 dark:text-amber-400" : "text-gray-500 dark:text-gray-400"}`}>
+                {isChangingAvatar ? (
+                  <>
+                    <strong>Warning:</strong> Changing your species will reset all your progress.
+                    You will start fresh with {selectedAvatar.common_name} at {IUCN_STATUS[selectedAvatar.iucn_status].label} status.
+                  </>
+                ) : (
+                  <>
+                    <strong>Note:</strong> Your mission is to help this species recover!
+                  </>
+                )}
               </div>
 
               {/* Buttons */}
@@ -284,17 +292,17 @@ export default function AvatarSelection({ onComplete }) {
                 <button
                   onClick={handleConfirm}
                   disabled={submitting}
-                  className="flex-1 px-4 py-3 bg-accent-600 hover:bg-accent-700 text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                  className={`flex-1 px-4 py-3 ${isChangingAvatar ? "bg-amber-500 hover:bg-amber-600" : "bg-accent-600 hover:bg-accent-700"} text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50`}
                 >
                   {submitting ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      Starting...
+                      {isChangingAvatar ? "Switching..." : "Starting..."}
                     </>
                   ) : (
                     <>
                       <Check className="w-5 h-5" />
-                      Start My Journey
+                      {isChangingAvatar ? "Switch Species" : "Start My Journey"}
                     </>
                   )}
                 </button>

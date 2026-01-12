@@ -40,7 +40,8 @@ export default function CreateObservationForm({
 }) {
   const { data: session } = useSession();
   const router = useRouter();
-  const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
+  const uploadInputRef = useRef(null);
 
   // Form state
   const [step, setStep] = useState(1); // 1: Photo, 2: Location, 3: AI ID, 4: Details
@@ -391,27 +392,58 @@ export default function CreateObservationForm({
                 </button>
               </div>
             ) : (
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center cursor-pointer hover:border-accent-500 hover:bg-accent-50/50 dark:hover:bg-accent-900/20 transition-colors"
-              >
-                <Camera className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-3" />
-                <p className="text-gray-600 dark:text-gray-300 font-medium">
-                  Click to upload or take a photo
-                </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  JPEG, PNG, WebP or HEIC (max 10MB)
-                </p>
+              <div className="grid grid-cols-2 gap-4">
+                {/* Take Photo Option */}
+                <button
+                  onClick={() => cameraInputRef.current?.click()}
+                  className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center cursor-pointer hover:border-accent-500 hover:bg-accent-50/50 dark:hover:bg-accent-900/20 transition-colors"
+                >
+                  <Camera className="w-10 h-10 text-accent-500 dark:text-accent-400 mx-auto mb-2" />
+                  <p className="text-gray-700 dark:text-gray-200 font-medium">
+                    Take Photo
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Use your camera
+                  </p>
+                </button>
+
+                {/* Upload Photo Option */}
+                <button
+                  onClick={() => uploadInputRef.current?.click()}
+                  className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center cursor-pointer hover:border-accent-500 hover:bg-accent-50/50 dark:hover:bg-accent-900/20 transition-colors"
+                >
+                  <Upload className="w-10 h-10 text-blue-500 dark:text-blue-400 mx-auto mb-2" />
+                  <p className="text-gray-700 dark:text-gray-200 font-medium">
+                    Upload Photo
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    From your device
+                  </p>
+                </button>
               </div>
             )}
 
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+              JPEG, PNG, WebP or HEIC (max 10MB)
+            </p>
+
+            {/* Camera input - opens camera on mobile */}
             <input
-              ref={fileInputRef}
+              ref={cameraInputRef}
               type="file"
               accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
               onChange={handlePhotoSelect}
               className="hidden"
               capture="environment"
+            />
+
+            {/* Upload input - opens file picker/gallery */}
+            <input
+              ref={uploadInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+              onChange={handlePhotoSelect}
+              className="hidden"
             />
 
             {photoPreview && (
