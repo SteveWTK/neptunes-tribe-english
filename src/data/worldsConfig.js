@@ -61,12 +61,12 @@ export const WORLDS = {
           "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/mib.jpeg",
         description: "Tapir conservationist", // Optional: for future use
       },
-      {
-        name: "Instituto de Pesquisas Ecológicas",
-        imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/ipe.jpeg",
-        description: "Defending the rainforest", // Optional: for future use
-      },
+      // {
+      //   name: "Instituto de Pesquisas Ecológicas",
+      //   imageUrl:
+      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/ipe.jpeg",
+      //   description: "Defending the rainforest", // Optional: for future use
+      // },
     ],
     adventures: [
       {
