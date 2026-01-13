@@ -41,6 +41,9 @@ export async function GET(request) {
       console.log(`⏰ Auto-expired ${expiredChallenges.length} challenges for user ${userData.id}`);
     }
 
+    // Auto-assign any globally active unpredictable challenges that user doesn't have yet
+    await autoAssignGlobalChallenges(supabase, userData.id);
+
     // Get active challenges with details (now excludes expired ones)
     const { data: activeChallenges, error: challengesError } = await supabase
       .from("user_active_challenges")
@@ -157,5 +160,73 @@ export async function POST(request) {
       { error: "Internal server error", details: error.message },
       { status: 500 }
     );
+  }
+}
+
+/**
+ * Auto-assign globally active unpredictable challenges to a user
+ * This ensures all users see the same active challenges
+ */
+async function autoAssignGlobalChallenges(supabase, userId) {
+  try {
+    // Get all globally active unpredictable challenges
+    const { data: globalChallenges, error: globalError } = await supabase
+      .from("unpredictable_challenges")
+      .select("*")
+      .eq("is_active", true);
+
+    if (globalError || !globalChallenges?.length) {
+      return; // No active global challenges
+    }
+
+    // Get user's existing challenge assignments (active or completed for these challenges)
+    const challengeIds = globalChallenges.map((c) => c.id);
+    const { data: existingAssignments } = await supabase
+      .from("user_active_challenges")
+      .select("unpredictable_challenge_id, status")
+      .eq("user_id", userId)
+      .in("unpredictable_challenge_id", challengeIds)
+      .in("status", ["active", "completed"]); // Don't re-assign if already active or completed
+
+    const assignedChallengeIds = new Set(
+      existingAssignments?.map((a) => a.unpredictable_challenge_id) || []
+    );
+
+    // Assign challenges that user doesn't have yet
+    for (const challenge of globalChallenges) {
+      if (assignedChallengeIds.has(challenge.id)) {
+        continue; // User already has this challenge
+      }
+
+      // Calculate expiry time based on challenge duration
+      const expiresAt = new Date();
+      expiresAt.setHours(expiresAt.getHours() + (challenge.duration_hours || 24));
+
+      // Get target count from requirements
+      const requirements = challenge.requirements || {};
+      const targetCount = requirements.min_observations || 1;
+
+      // Create assignment for this user
+      const { error: assignError } = await supabase
+        .from("user_active_challenges")
+        .insert({
+          user_id: userId,
+          unpredictable_challenge_id: challenge.id,
+          status: "active",
+          progress_count: 0,
+          target_count: targetCount,
+          expires_at: expiresAt.toISOString(),
+          notification_shown: false,
+          notification_clicked: false,
+        });
+
+      if (assignError) {
+        console.error(`Error assigning challenge ${challenge.id} to user ${userId}:`, assignError);
+      } else {
+        console.log(`✅ Auto-assigned challenge "${challenge.title}" to user ${userId}`);
+      }
+    }
+  } catch (error) {
+    console.error("Error in autoAssignGlobalChallenges:", error);
   }
 }

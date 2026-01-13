@@ -34,61 +34,71 @@ export async function GET(request) {
       userSchoolId = userData?.school_id;
     }
 
-    // Build query for leaderboard
-    let query = supabase
+    // Build query for leaderboard - fetch journeys first
+    const { data: journeyData, error: journeyError } = await supabase
       .from("user_species_journey")
-      .select(
-        `
-        user_id,
-        total_points,
-        observations_count,
-        current_iucn_status,
-        species_avatar:species_avatars(
-          id,
-          common_name,
-          avatar_image_url,
-          iucn_status
-        ),
-        user:users!user_id(
-          id,
-          name,
-          image,
-          school_id
-        )
-      `
-      )
-      .order("total_points", { ascending: false });
+      .select("*")
+      .order("total_points", { ascending: false })
+      .range(offset, offset + limit - 1);
 
-    // Apply school filter if requested
-    if (filter === "school" && userSchoolId) {
-      // We need to filter by school, but user_species_journey doesn't have school_id directly
-      // So we'll fetch all and filter, or use a join approach
-      // For now, let's fetch and filter client-side (not ideal for large datasets)
-    }
-
-    // Apply pagination
-    query = query.range(offset, offset + limit - 1);
-
-    const { data: leaderboardData, error: leaderboardError } = await query;
-
-    if (leaderboardError) {
-      console.error("Error fetching leaderboard:", leaderboardError);
+    if (journeyError) {
+      console.error("Error fetching journeys:", journeyError);
       return NextResponse.json(
-        { error: "Failed to fetch leaderboard", details: leaderboardError.message },
+        { error: "Failed to fetch leaderboard", details: journeyError.message },
         { status: 500 }
       );
     }
 
+    console.log(`📊 Found ${journeyData?.length || 0} journey entries`);
+
+    if (!journeyData || journeyData.length === 0) {
+      return NextResponse.json({
+        success: true,
+        leaderboard: [],
+        currentUserRank: null,
+        total: 0,
+        limit,
+        offset,
+        filter,
+      });
+    }
+
+    // Get user IDs and species avatar IDs
+    const userIds = journeyData.map((j) => j.user_id).filter(Boolean);
+    const avatarIds = journeyData.map((j) => j.species_avatar_id).filter(Boolean);
+
+    // Fetch users data
+    const { data: usersData } = await supabase
+      .from("users")
+      .select("id, name, image, school_id")
+      .in("id", userIds);
+
+    // Fetch species avatars data
+    const { data: avatarsData } = await supabase
+      .from("species_avatars")
+      .select("id, common_name, avatar_image_url, iucn_status")
+      .in("id", avatarIds);
+
+    // Create lookup maps
+    const usersMap = new Map((usersData || []).map((u) => [u.id, u]));
+    const avatarsMap = new Map((avatarsData || []).map((a) => [a.id, a]));
+
+    // Build leaderboard data
+    let leaderboardData = journeyData.map((journey) => ({
+      ...journey,
+      user: usersMap.get(journey.user_id) || null,
+      species_avatar: avatarsMap.get(journey.species_avatar_id) || null,
+    }));
+
     // Filter by school if needed
-    let filteredData = leaderboardData || [];
     if (filter === "school" && userSchoolId) {
-      filteredData = filteredData.filter(
+      leaderboardData = leaderboardData.filter(
         (entry) => entry.user?.school_id === userSchoolId
       );
     }
 
     // Add rank and check if current user
-    const rankedData = filteredData.map((entry, index) => ({
+    const rankedData = leaderboardData.map((entry, index) => ({
       rank: offset + index + 1,
       userId: entry.user_id,
       userName: entry.user?.name || "Anonymous Naturalist",
@@ -114,24 +124,22 @@ export async function GET(request) {
         // Get current user's journey
         const { data: userJourney } = await supabase
           .from("user_species_journey")
-          .select(
-            `
-            user_id,
-            total_points,
-            observations_count,
-            current_iucn_status,
-            species_avatar:species_avatars(
-              id,
-              common_name,
-              avatar_image_url,
-              iucn_status
-            )
-          `
-          )
+          .select("*")
           .eq("user_id", currentUserId)
           .single();
 
         if (userJourney) {
+          // Get avatar if exists
+          let userAvatar = null;
+          if (userJourney.species_avatar_id) {
+            const { data: avatarData } = await supabase
+              .from("species_avatars")
+              .select("id, common_name, avatar_image_url, iucn_status")
+              .eq("id", userJourney.species_avatar_id)
+              .single();
+            userAvatar = avatarData;
+          }
+
           // Get exact rank
           const { count: higherRanked } = await supabase
             .from("user_species_journey")
@@ -141,12 +149,12 @@ export async function GET(request) {
           currentUserRank = {
             rank: (higherRanked || 0) + 1,
             userId: userJourney.user_id,
-            userName: session.user.name || "You",
-            userImage: session.user.image,
+            userName: session?.user?.name || "You",
+            userImage: session?.user?.image,
             totalPoints: userJourney.total_points || 0,
             observationsCount: userJourney.observations_count || 0,
             currentStatus: userJourney.current_iucn_status,
-            speciesAvatar: userJourney.species_avatar,
+            speciesAvatar: userAvatar,
             isCurrentUser: true,
           };
         }

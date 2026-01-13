@@ -213,16 +213,14 @@ function WorldsContent() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
 
                     {/* Icon in corner - Eco Hero Carousel */}
-                    <div className="absolute bottom-4 right-4">
+                    {/* <div className="absolute bottom-4 right-4">
                       {(() => {
-                        // Get current hero for this world
                         const heroes = world.ecoHeroes || [];
                         const hasHeroes = heroes.length > 0;
                         const currentHeroIndex =
                           currentHeroIndexes[world.id] || 0;
                         const currentHero = heroes[currentHeroIndex];
 
-                        // Fallback to legacy single hero if no heroes array
                         const heroImageUrl =
                           currentHero?.imageUrl || world.ecoHeroUrl;
                         const heroName = currentHero?.name || world.ecoHeroName;
@@ -233,7 +231,6 @@ function WorldsContent() {
                             onMouseEnter={() => setHoveredHero(world.id)}
                             onMouseLeave={() => setHoveredHero(null)}
                           >
-                            {/* Hero Image with fade transition */}
                             <img
                               key={`${world.id}-${currentHeroIndex}`}
                               src={heroImageUrl}
@@ -242,7 +239,6 @@ function WorldsContent() {
                               className="w-12 h-12 rounded-full p-[2px] object-cover shadow-lg md:cursor-help transition-opacity duration-500"
                             />
 
-                            {/* Carousel indicators (dots) - only show if multiple heroes */}
                             {heroes.length > 1 && (
                               <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1">
                                 {heroes.map((_, idx) => (
@@ -257,8 +253,6 @@ function WorldsContent() {
                                 ))}
                               </div>
                             )}
-
-                            {/* Hero Name Tooltip - Always visible on mobile (<md), hover-only on desktop (>=md) */}
                             {heroName && (
                               <div
                                 key={`tooltip-${world.id}-${currentHeroIndex}`}
@@ -273,7 +267,7 @@ function WorldsContent() {
                                 style={{ backgroundColor: world.color.primary }}
                               >
                                 {heroName}
-                                {/* Arrow */}
+
                                 <div
                                   className="absolute top-full right-4 -mt-1 w-2 h-2 transform rotate-45"
                                   style={{
@@ -292,7 +286,7 @@ function WorldsContent() {
                           </div>
                         );
                       })()}
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Content */}
