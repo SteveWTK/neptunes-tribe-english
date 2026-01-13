@@ -16,7 +16,9 @@ function getBaseUrl() {
 }
 
 export async function signInAction() {
-  await signIn("google", { redirectTo: "/worlds" });
+  // Redirect to post-login page which checks if user has an avatar
+  // and redirects to /select-avatar or /worlds accordingly
+  await signIn("google", { redirectTo: "/auth/post-login" });
 }
 
 export async function registerUser({ email, password }) {

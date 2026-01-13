@@ -159,6 +159,32 @@ export default function NaturalistPage() {
               </Link>
             </div>
 
+            {/* DEV: Test trigger for unpredictable challenge */}
+            {session && process.env.NODE_ENV === "development" && (
+              <div className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-xl p-4">
+                <p className="text-sm text-amber-700 dark:text-amber-300 mb-2 font-medium">
+                  Developer Testing
+                </p>
+                <button
+                  onClick={triggerTestChallenge}
+                  disabled={triggeringChallenge}
+                  className="w-full py-2 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-300 dark:disabled:bg-amber-800 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                >
+                  {triggeringChallenge ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Assigning...
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-4 h-4" />
+                      Trigger Unpredictable Challenge
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+
             {/* Active Bonus Challenges */}
             {unpredictableChallenges.length > 0 && (
               <div>
@@ -335,32 +361,6 @@ export default function NaturalistPage() {
                     </Link>
                   ))}
                 </div>
-              </div>
-            )}
-
-            {/* DEV: Test trigger for unpredictable challenge */}
-            {session && process.env.NODE_ENV === "development" && (
-              <div className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-xl p-4">
-                <p className="text-sm text-amber-700 dark:text-amber-300 mb-2 font-medium">
-                  Developer Testing
-                </p>
-                <button
-                  onClick={triggerTestChallenge}
-                  disabled={triggeringChallenge}
-                  className="w-full py-2 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-300 dark:disabled:bg-amber-800 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
-                >
-                  {triggeringChallenge ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Assigning...
-                    </>
-                  ) : (
-                    <>
-                      <Zap className="w-4 h-4" />
-                      Trigger Unpredictable Challenge
-                    </>
-                  )}
-                </button>
               </div>
             )}
           </div>

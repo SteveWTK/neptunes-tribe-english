@@ -3,6 +3,7 @@
 
 import EcoMapProgressOceanZones from "@/components/EcoMapProgressOceanZones";
 import RegionExplorer from "@/components/RegionExplorer";
+import ObservationMarkersMap from "@/components/observations/ObservationMarkersMap";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -20,6 +21,7 @@ import {
   BookOpen,
   Binoculars,
   PawPrint,
+  Camera,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -433,6 +435,34 @@ export default function EcoMapClient({
           currentWeeklyTheme={currentWeeklyTheme}
           themeImages={themeImages}
         />
+
+        {/* Wildlife Observations Map Section */}
+        <div className="px-4 mt-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold flex items-center gap-2 text-primary-800 dark:text-white">
+              <Camera className="w-5 h-5 text-accent-600 dark:text-accent-400" />
+              {lang === "pt" ? "Observações da Comunidade" : "Community Observations"}
+            </h2>
+            <Link
+              href="/observations"
+              className="text-sm text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 font-medium flex items-center gap-1"
+            >
+              {lang === "pt" ? "Ver todas" : "View all"}
+              <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            {lang === "pt"
+              ? "Explore observações de vida selvagem compartilhadas pela comunidade ao redor do mundo"
+              : "Explore wildlife observations shared by the community around the world"}
+          </p>
+          <ObservationMarkersMap
+            showFilters={true}
+            initialFilter="global"
+            maxMarkers={100}
+            className="shadow-lg"
+          />
+        </div>
 
         {/* Ecosystem Progress Toggle Section (your existing code) */}
         {/* <div className="px-4">

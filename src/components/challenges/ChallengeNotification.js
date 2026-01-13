@@ -28,8 +28,15 @@ export default function ChallengeNotification() {
       const data = await response.json();
 
       if (response.ok) {
+        // Filter out any expired challenges (belt and suspenders)
+        const now = new Date();
+        const validChallenges = (data.activeChallenges || []).filter((c) => {
+          if (!c.expires_at) return true; // No expiry = always valid
+          return new Date(c.expires_at) > now;
+        });
+
         setHasNotification(data.hasNewNotification);
-        setActiveChallenges(data.activeChallenges || []);
+        setActiveChallenges(validChallenges);
       }
     } catch (err) {
       console.error("Error fetching challenges:", err);
@@ -169,8 +176,11 @@ export default function ChallengeNotification() {
                     const challenge =
                       userChallenge.unpredictable_challenge ||
                       userChallenge.ngo_challenge;
-                    const isUnpredictable = !!userChallenge.unpredictable_challenge;
-                    const timeRemaining = getTimeRemaining(userChallenge.expires_at);
+                    const isUnpredictable =
+                      !!userChallenge.unpredictable_challenge;
+                    const timeRemaining = getTimeRemaining(
+                      userChallenge.expires_at
+                    );
 
                     return (
                       <button
@@ -188,7 +198,9 @@ export default function ChallengeNotification() {
                                   : "bg-green-100 text-green-700"
                               }`}
                             >
-                              {isUnpredictable ? "⚡ Bonus Challenge" : "🌍 NGO Challenge"}
+                              {isUnpredictable
+                                ? "⚡ Bonus Challenge"
+                                : "🌍 NGO Challenge"}
                             </span>
 
                             {/* Title */}
@@ -199,7 +211,8 @@ export default function ChallengeNotification() {
                             {/* Progress */}
                             <div className="flex items-center gap-2 text-sm text-gray-500">
                               <span>
-                                {userChallenge.progress_count}/{userChallenge.target_count}
+                                {userChallenge.progress_count}/
+                                {userChallenge.target_count}
                               </span>
 
                               {timeRemaining && (
@@ -214,12 +227,16 @@ export default function ChallengeNotification() {
                             <div className="mt-2 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                               <div
                                 className={`h-full rounded-full transition-all ${
-                                  isUnpredictable ? "bg-amber-500" : "bg-green-500"
+                                  isUnpredictable
+                                    ? "bg-amber-500"
+                                    : "bg-green-500"
                                 }`}
                                 style={{
                                   width: `${Math.min(
                                     100,
-                                    (userChallenge.progress_count / userChallenge.target_count) * 100
+                                    (userChallenge.progress_count /
+                                      userChallenge.target_count) *
+                                      100
                                   )}%`,
                                 }}
                               />
@@ -239,7 +256,7 @@ export default function ChallengeNotification() {
                 <button
                   onClick={() => {
                     setShowPopup(false);
-                    router.push("/challenges");
+                    router.push("/dashboard");
                   }}
                   className="w-full py-2 text-sm text-green-600 hover:text-green-700 font-medium"
                 >

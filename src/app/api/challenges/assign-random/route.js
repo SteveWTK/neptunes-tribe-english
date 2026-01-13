@@ -27,21 +27,49 @@ export async function POST(request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Check if user already has an active unpredictable challenge
+    // First, expire any challenges that have passed their expires_at time
+    const now = new Date().toISOString();
+    const { data: expiredChallenges } = await supabase
+      .from("user_active_challenges")
+      .update({ status: "expired" })
+      .eq("user_id", userData.id)
+      .eq("status", "active")
+      .not("expires_at", "is", null)
+      .lt("expires_at", now)
+      .select("id");
+
+    if (expiredChallenges?.length > 0) {
+      console.log(`⏰ Auto-expired ${expiredChallenges.length} challenges for user ${userData.id}`);
+    }
+
+    // Check if user already has an active unpredictable challenge (after expiring old ones)
     const { data: existingChallenge } = await supabase
       .from("user_active_challenges")
-      .select("id")
+      .select("id, expires_at")
       .eq("user_id", userData.id)
       .eq("status", "active")
       .not("unpredictable_challenge_id", "is", null)
       .single();
 
+    // Double-check that existing challenge hasn't expired
     if (existingChallenge) {
-      return NextResponse.json({
-        success: false,
-        message: "User already has an active unpredictable challenge",
-        challengeId: existingChallenge.id,
-      });
+      const isExpired = existingChallenge.expires_at && new Date(existingChallenge.expires_at) <= new Date();
+
+      if (!isExpired) {
+        return NextResponse.json({
+          success: false,
+          message: "User already has an active unpredictable challenge",
+          challengeId: existingChallenge.id,
+        });
+      }
+
+      // If expired but somehow still marked active, expire it now
+      await supabase
+        .from("user_active_challenges")
+        .update({ status: "expired" })
+        .eq("id", existingChallenge.id);
+
+      console.log(`⏰ Expired stale challenge ${existingChallenge.id}`);
     }
 
     // Get available unpredictable challenges

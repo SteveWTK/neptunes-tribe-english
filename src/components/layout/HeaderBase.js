@@ -5,8 +5,8 @@ import HeaderLogoDark from "./HeaderLogoDark";
 import Link from "next/link";
 import SignOutButton from "@/components/ui/signoutButton";
 import { useSession } from "next-auth/react"; // Remove signOut import since we're not using it here
-import { Moon, Sun, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { Moon, Sun, Menu, X, Leaf } from "lucide-react";
+import { useState, useEffect } from "react";
 import ChallengeNotification from "@/components/challenges/ChallengeNotification";
 
 export default function HeaderBase({
@@ -17,6 +17,25 @@ export default function HeaderBase({
   const { lang, setLang } = useLanguage();
   const { data: session, status } = useSession();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [speciesAvatar, setSpeciesAvatar] = useState(null);
+
+  // Fetch user's species avatar if logged in
+  useEffect(() => {
+    if (session?.user) {
+      const fetchAvatar = async () => {
+        try {
+          const response = await fetch("/api/user/journey");
+          const data = await response.json();
+          if (data.hasSelectedAvatar && data.journey?.species_avatar) {
+            setSpeciesAvatar(data.journey.species_avatar);
+          }
+        } catch (error) {
+          console.error("Error fetching avatar:", error);
+        }
+      };
+      fetchAvatar();
+    }
+  }, [session]);
 
   const languageOptions = {
     en: { label: "English", flag: "🇬🇧" },
@@ -136,17 +155,27 @@ export default function HeaderBase({
 
               {session?.user && (
                 <Link
-                  href="/eco-map"
-                  data-tour="eco-map-link"
+                  href="/dashboard"
+                  data-tour="dashboard-link"
                   className="py-0.5 px-5 rounded-2xl transition-colors flex items-center text-primary-900 hover:text-accent-600 hover:border-b-1 hover:border-accent-600 dark:text-accent-50 dark:hover:text-accent-400 dark:hover:border-accent-400 gap-2 lg:gap-4"
                 >
-                  {session?.user?.image && (
+                  {speciesAvatar?.avatar_image_url ? (
+                    <img
+                      className="h-8 w-8 rounded-full object-cover border-2 border-accent-500"
+                      src={speciesAvatar.avatar_image_url}
+                      alt={speciesAvatar.common_name}
+                    />
+                  ) : session?.user?.image ? (
                     <img
                       className="h-8 rounded-full"
                       src={session.user.image}
                       alt={session.user.name}
                       referrerPolicy="no-referrer"
                     />
+                  ) : (
+                    <div className="h-8 w-8 rounded-full bg-accent-100 dark:bg-accent-900 flex items-center justify-center">
+                      <Leaf className="w-4 h-4 text-accent-600 dark:text-accent-400" />
+                    </div>
                   )}
                   <span>{copy.ecoMap}</span>
                 </Link>
@@ -237,17 +266,27 @@ export default function HeaderBase({
               <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mb-6">
                 {session?.user && (
                   <Link
-                    href="/eco-map"
+                    href="/dashboard"
                     className="block py-2 mb-4 transition-colors flex items-center text-primary-900 hover:text-accent-600 dark:text-accent-50 dark:hover:text-accent-400 gap-2"
                     onClick={closeMobileMenu}
                   >
-                    {session?.user?.image && (
+                    {speciesAvatar?.avatar_image_url ? (
+                      <img
+                        className="h-8 w-8 rounded-full object-cover border-2 border-accent-500"
+                        src={speciesAvatar.avatar_image_url}
+                        alt={speciesAvatar.common_name}
+                      />
+                    ) : session?.user?.image ? (
                       <img
                         className="h-8 rounded-full"
                         src={session.user.image}
                         alt={session.user.name}
                         referrerPolicy="no-referrer"
                       />
+                    ) : (
+                      <div className="h-8 w-8 rounded-full bg-accent-100 dark:bg-accent-900 flex items-center justify-center">
+                        <Leaf className="w-4 h-4 text-accent-600 dark:text-accent-400" />
+                      </div>
                     )}
                     <span>{copy.ecoMap}</span>
                   </Link>

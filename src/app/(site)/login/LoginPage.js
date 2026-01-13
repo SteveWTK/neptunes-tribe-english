@@ -113,6 +113,26 @@ export default function LoginPage() {
     }
   }, [searchParams]);
 
+  // Check if user has selected an avatar and redirect accordingly
+  const redirectBasedOnAvatar = async () => {
+    try {
+      const response = await fetch("/api/user/journey");
+      const data = await response.json();
+
+      if (data.hasSelectedAvatar) {
+        // User has an avatar, go to worlds
+        router.push("/worlds");
+      } else {
+        // No avatar selected, go to avatar selection
+        router.push("/select-avatar");
+      }
+    } catch (error) {
+      console.error("Error checking journey:", error);
+      // Default to worlds if check fails
+      router.push("/worlds");
+    }
+  };
+
   const checkForExistingGoogleUser = async (email) => {
     try {
       console.log("🔍 Making API call to check user:", email);
@@ -205,7 +225,8 @@ export default function LoginPage() {
         } else if (data.session) {
           // User is immediately signed in (email confirmation disabled)
           setMessage("Account created successfully! You are now signed in.");
-          router.push("/worlds");
+          // New users should go to avatar selection
+          router.push("/select-avatar");
         }
       } else {
         // Login logic
@@ -247,7 +268,8 @@ export default function LoginPage() {
         }
 
         if (result?.ok) {
-          router.push("/worlds");
+          // Check if user has avatar and redirect accordingly
+          await redirectBasedOnAvatar();
         }
       }
     } catch (error) {

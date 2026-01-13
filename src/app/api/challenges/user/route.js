@@ -26,7 +26,22 @@ export async function GET(request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Get active challenges with details
+    // First, expire any challenges that have passed their expires_at time
+    const now = new Date().toISOString();
+    const { data: expiredChallenges } = await supabase
+      .from("user_active_challenges")
+      .update({ status: "expired" })
+      .eq("user_id", userData.id)
+      .eq("status", "active")
+      .not("expires_at", "is", null)
+      .lt("expires_at", now)
+      .select("id");
+
+    if (expiredChallenges?.length > 0) {
+      console.log(`⏰ Auto-expired ${expiredChallenges.length} challenges for user ${userData.id}`);
+    }
+
+    // Get active challenges with details (now excludes expired ones)
     const { data: activeChallenges, error: challengesError } = await supabase
       .from("user_active_challenges")
       .select(
@@ -47,8 +62,14 @@ export async function GET(request) {
       );
     }
 
+    // Filter out any challenges that might still be expired (double-check)
+    const validActiveChallenges = activeChallenges.filter((c) => {
+      if (!c.expires_at) return true; // NGO challenges without expiry are always valid
+      return new Date(c.expires_at) > new Date();
+    });
+
     // Check for new notifications (red dot)
-    const hasNewNotification = activeChallenges.some(
+    const hasNewNotification = validActiveChallenges.some(
       (c) => !c.notification_shown
     );
 
@@ -59,11 +80,19 @@ export async function GET(request) {
       .eq("user_id", userData.id)
       .eq("status", "completed");
 
+    // Get expired challenges count
+    const { count: expiredCount } = await supabase
+      .from("user_active_challenges")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", userData.id)
+      .eq("status", "expired");
+
     return NextResponse.json({
       success: true,
-      activeChallenges,
+      activeChallenges: validActiveChallenges,
       hasNewNotification,
       completedChallengesCount: completedCount || 0,
+      expiredChallengesCount: expiredCount || 0,
     });
   } catch (error) {
     console.error("Error in user challenges GET:", error);
