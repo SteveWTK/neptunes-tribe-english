@@ -121,7 +121,7 @@ export default function LoginPage() {
 
       if (data.hasSelectedAvatar) {
         // User has an avatar, go to worlds
-        router.push("/worlds");
+        router.push("/dashboard");
       } else {
         // No avatar selected, go to avatar selection
         router.push("/select-avatar");
@@ -129,7 +129,7 @@ export default function LoginPage() {
     } catch (error) {
       console.error("Error checking journey:", error);
       // Default to worlds if check fails
-      router.push("/worlds");
+      router.push("/dashboard");
     }
   };
 

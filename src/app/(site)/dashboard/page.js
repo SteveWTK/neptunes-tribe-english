@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import SpeciesJourneyWidget from "@/components/journey/SpeciesJourneyWidget";
 import ObservationMarkersMap from "@/components/observations/ObservationMarkersMap";
+import SeasonProgressBar from "@/components/season/SeasonProgressBar";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -48,15 +49,21 @@ export default function DashboardPage() {
         setLoading(true);
 
         // Fetch in parallel for performance
-        const [journeyRes, challengesRes, observationsRes, newsRes, statsRes, leaderboardRes] =
-          await Promise.all([
-            fetch("/api/user/journey"),
-            fetch("/api/challenges/user"),
-            fetch("/api/observations?limit=6"),
-            fetch("/api/eco-news?limit=3"),
-            fetch("/api/stats/community"),
-            fetch("/api/leaderboard/naturalists?limit=3"),
-          ]);
+        const [
+          journeyRes,
+          challengesRes,
+          observationsRes,
+          newsRes,
+          statsRes,
+          leaderboardRes,
+        ] = await Promise.all([
+          fetch("/api/user/journey"),
+          fetch("/api/challenges/user"),
+          fetch("/api/observations?limit=6"),
+          fetch("/api/eco-news?limit=3"),
+          fetch("/api/stats/community"),
+          fetch("/api/leaderboard/naturalists?limit=3"),
+        ]);
 
         // Process journey
         if (journeyRes.ok) {
@@ -139,8 +146,10 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
+      {/* Season Progress Bar */}
+      <SeasonProgressBar />
       {/* Header with user greeting and points */}
-      <div className="bg-gradient-to-r from-accent-600 via-accent-700 to-accent-800 dark:from-accent-800 dark:via-accent-900 dark:to-primary-900 text-white">
+      <div>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -168,7 +177,7 @@ export default function DashboardPage() {
                   !
                 </h1>
                 {journey?.species_avatar && (
-                  <p className="text-accent-100">
+                  <p className="text-gray-600 dark:text-accent-100">
                     Protecting the {journey.species_avatar.common_name}
                   </p>
                 )}
@@ -176,26 +185,33 @@ export default function DashboardPage() {
             </div>
 
             {/* Points display */}
-            <div className="flex items-center gap-6">
+            {/* <div className="flex items-center gap-6">
               <div className="text-center">
                 <div className="flex items-center gap-2 text-3xl font-bold">
                   <Trophy className="w-8 h-8 text-yellow-300" />
                   {journey?.total_points?.toLocaleString() || 0}
                 </div>
-                <p className="text-sm text-accent-100">Total Points</p>
+                <p className="text-sm text-gray-600 dark:text-accent-100">
+                  Total Points
+                </p>
               </div>
               {journey && (
                 <div className="text-center">
                   <div className="text-xl font-bold">
                     {journey.observations_count || 0}
                   </div>
-                  <p className="text-sm text-accent-100">Observations</p>
+                  <p className="text-sm text-gray-600 dark:text-accent-100">
+                    Observations
+                  </p>
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
+
+      {/* Season Progress Bar */}
+      {/* <SeasonProgressBar /> */}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -215,7 +231,7 @@ export default function DashboardPage() {
                 </span>
               </Link>
 
-              <Link
+              {/* <Link
                 href="/observations"
                 className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm hover:shadow-md transition-all hover:scale-105 flex flex-col items-center text-center group"
               >
@@ -237,7 +253,7 @@ export default function DashboardPage() {
                 <span className="text-sm font-medium text-gray-800 dark:text-white">
                   Eco Map
                 </span>
-              </Link>
+              </Link> */}
 
               <Link
                 href="/worlds"

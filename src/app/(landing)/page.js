@@ -353,32 +353,32 @@ export default function LandingPageExplorers() {
     // },
   ];
 
-  const features = [
-    {
-      icon: <MessageCircle className="w-8 h-8" />,
-      title: copy.feature1Title,
-      description: copy.feature1Desc,
-      image: "/screenshots/conversation-class.png",
-    },
-    {
-      icon: <BookOpen className="w-8 h-8" />,
-      title: copy.feature2Title,
-      description: copy.feature2Desc,
-      image: "/screenshots/units.png",
-    },
-    {
-      icon: <Map className="w-8 h-8" />,
-      title: copy.feature3Title,
-      description: copy.feature3Desc,
-      image: "/screenshots/eco-map-preview.png",
-    },
-    {
-      icon: <Vote className="w-8 h-8" />,
-      title: copy.feature4Title,
-      description: copy.feature4Desc,
-      image: "/screenshots/voting-interface.png",
-    },
-  ];
+  // const features = [
+  //   {
+  //     icon: <MessageCircle className="w-8 h-8" />,
+  //     title: copy.feature1Title,
+  //     description: copy.feature1Desc,
+  //     image: "/screenshots/conversation-class.png",
+  //   },
+  //   {
+  //     icon: <BookOpen className="w-8 h-8" />,
+  //     title: copy.feature2Title,
+  //     description: copy.feature2Desc,
+  //     image: "/screenshots/units.png",
+  //   },
+  //   {
+  //     icon: <Map className="w-8 h-8" />,
+  //     title: copy.feature3Title,
+  //     description: copy.feature3Desc,
+  //     image: "/screenshots/eco-map-preview.png",
+  //   },
+  //   {
+  //     icon: <Vote className="w-8 h-8" />,
+  //     title: copy.feature4Title,
+  //     description: copy.feature4Desc,
+  //     image: "/screenshots/voting-interface.png",
+  //   },
+  // ];
 
   const steps = [
     // {
@@ -410,12 +410,12 @@ export default function LandingPageExplorers() {
     return () => clearInterval(interval);
   }, [heroImages.length]);
 
-  useEffect(() => {
-    const featureInterval = setInterval(() => {
-      setActiveFeature((prev) => (prev + 1) % features.length);
-    }, 5000);
-    return () => clearInterval(featureInterval);
-  }, [features.length]);
+  // useEffect(() => {
+  //   const featureInterval = setInterval(() => {
+  //     setActiveFeature((prev) => (prev + 1) % features.length);
+  //   }, 5000);
+  //   return () => clearInterval(featureInterval);
+  // }, [features.length]);
 
   useEffect(() => {
     const allWorlds = getAllWorlds();
