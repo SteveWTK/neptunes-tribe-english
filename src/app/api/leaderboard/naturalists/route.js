@@ -67,11 +67,29 @@ export async function GET(request) {
     const userIds = journeyData.map((j) => j.user_id).filter(Boolean);
     const avatarIds = journeyData.map((j) => j.species_avatar_id).filter(Boolean);
 
-    // Fetch users data
-    const { data: usersData } = await supabase
+    console.log(`🔍 Looking up ${userIds.length} user IDs:`, userIds.slice(0, 3));
+
+    // Fetch users data (including email for fallback display name)
+    const { data: usersData, error: usersError } = await supabase
       .from("users")
-      .select("id, name, image, school_id")
+      .select("id, name, email, image, school_id")
       .in("id", userIds);
+
+    if (usersError) {
+      console.error("Error fetching users:", usersError);
+    }
+    console.log(`👥 Found ${usersData?.length || 0} users:`, usersData?.map(u => ({ id: u.id, name: u.name })).slice(0, 3));
+
+    // Helper to get display name: name > email prefix > "Naturalist"
+    const getDisplayName = (user) => {
+      if (user?.name) return user.name;
+      if (user?.email) {
+        const emailPrefix = user.email.split("@")[0];
+        // Capitalize first letter and limit length
+        return emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1, 15);
+      }
+      return "Naturalist";
+    };
 
     // Fetch species avatars data
     const { data: avatarsData } = await supabase
@@ -83,12 +101,20 @@ export async function GET(request) {
     const usersMap = new Map((usersData || []).map((u) => [u.id, u]));
     const avatarsMap = new Map((avatarsData || []).map((a) => [a.id, a]));
 
+    console.log(`🗺️ UsersMap has ${usersMap.size} entries`);
+
     // Build leaderboard data
-    let leaderboardData = journeyData.map((journey) => ({
-      ...journey,
-      user: usersMap.get(journey.user_id) || null,
-      species_avatar: avatarsMap.get(journey.species_avatar_id) || null,
-    }));
+    let leaderboardData = journeyData.map((journey) => {
+      const user = usersMap.get(journey.user_id);
+      if (!user && journey.user_id) {
+        console.log(`⚠️ No user found for journey user_id: ${journey.user_id} (type: ${typeof journey.user_id})`);
+      }
+      return {
+        ...journey,
+        user: user || null,
+        species_avatar: avatarsMap.get(journey.species_avatar_id) || null,
+      };
+    });
 
     // Filter by school if needed
     if (filter === "school" && userSchoolId) {
@@ -101,7 +127,7 @@ export async function GET(request) {
     const rankedData = leaderboardData.map((entry, index) => ({
       rank: offset + index + 1,
       userId: entry.user_id,
-      userName: entry.user?.name || "Anonymous Naturalist",
+      userName: getDisplayName(entry.user),
       userImage: entry.user?.image,
       totalPoints: entry.total_points || 0,
       observationsCount: entry.observations_count || 0,

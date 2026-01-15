@@ -71,9 +71,13 @@ export default function SelectAvatarPage() {
                 <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
                   You are currently helping the{" "}
                   <strong>{existingJourney.species_avatar?.common_name}</strong>{" "}
-                  with <strong>{existingJourney.total_points?.toLocaleString() || 0} points</strong> earned.
-                  If you choose a new species, <strong>all your progress will be reset</strong> and
-                  you will start fresh with the new species at its starting IUCN status.
+                  with{" "}
+                  <strong>
+                    {existingJourney.total_points?.toLocaleString() || 0} points
+                  </strong>{" "}
+                  earned. If you choose a new species,{" "}
+                  <strong>all your progress will be reset</strong> and you will
+                  start fresh with the new species at its starting IUCN status.
                 </p>
               </div>
             </div>
@@ -83,7 +87,7 @@ export default function SelectAvatarPage() {
 
       <AvatarSelection
         onComplete={(data) => {
-          router.push("/worlds");
+          router.push("/dashboard");
         }}
         isChangingAvatar={!!existingJourney}
       />

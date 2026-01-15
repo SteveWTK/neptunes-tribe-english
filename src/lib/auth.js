@@ -36,7 +36,10 @@ const authConfig = {
       },
       async authorize(credentials) {
         try {
-          console.log("🔐 Credentials authorize called for:", credentials?.email);
+          console.log(
+            "🔐 Credentials authorize called for:",
+            credentials?.email
+          );
 
           if (!credentials?.email || !credentials?.password) {
             console.log("❌ Missing email or password");
@@ -209,8 +212,8 @@ const authConfig = {
         return url;
       }
 
-      // For any other case, redirect to units page
-      const defaultUrl = `${correctBaseUrl}/worlds`;
+      // For any other case, redirect to post-login check (avatar selection)
+      const defaultUrl = `${correctBaseUrl}/auth/post-login`;
       console.log("Default redirect to:", defaultUrl);
       return defaultUrl;
     },

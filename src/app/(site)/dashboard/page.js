@@ -22,10 +22,12 @@ import {
   Star,
   Award,
   Building,
+  Settings,
 } from "lucide-react";
 import SpeciesJourneyWidget from "@/components/journey/SpeciesJourneyWidget";
 import ObservationMarkersMap from "@/components/observations/ObservationMarkersMap";
 import SeasonProgressBar from "@/components/season/SeasonProgressBar";
+import DisplayNamePrompt from "@/components/profile/DisplayNamePrompt";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -39,6 +41,9 @@ export default function DashboardPage() {
   const [communityStats, setCommunityStats] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [needsDisplayName, setNeedsDisplayName] = useState(false);
+  const [displayNameDismissed, setDisplayNameDismissed] = useState(false);
+  const [userName, setUserName] = useState(null);
 
   // Fetch all dashboard data
   useEffect(() => {
@@ -56,6 +61,7 @@ export default function DashboardPage() {
           newsRes,
           statsRes,
           leaderboardRes,
+          profileRes,
         ] = await Promise.all([
           fetch("/api/user/journey"),
           fetch("/api/challenges/user"),
@@ -63,6 +69,7 @@ export default function DashboardPage() {
           fetch("/api/eco-news?limit=3"),
           fetch("/api/stats/community"),
           fetch("/api/leaderboard/naturalists?limit=3"),
+          fetch("/api/user/profile"),
         ]);
 
         // Process journey
@@ -107,6 +114,16 @@ export default function DashboardPage() {
             }))
           );
         }
+
+        // Process profile to check if display name is needed and get user name
+        if (profileRes.ok) {
+          const profileData = await profileRes.json();
+          setNeedsDisplayName(profileData.needsDisplayName || false);
+          // Use name from database (more up-to-date than session)
+          if (profileData.user?.name) {
+            setUserName(profileData.user.name);
+          }
+        }
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
       } finally {
@@ -148,6 +165,15 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
       {/* Season Progress Bar */}
       <SeasonProgressBar />
+
+      {/* Display Name Prompt (shown if user hasn't set their name) */}
+      {needsDisplayName && !displayNameDismissed && (
+        <DisplayNamePrompt
+          onComplete={() => setNeedsDisplayName(false)}
+          onDismiss={() => setDisplayNameDismissed(true)}
+        />
+      )}
+
       {/* Header with user greeting and points */}
       <div>
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -171,9 +197,9 @@ export default function DashboardPage() {
                   <Leaf className="w-8 h-8 text-white" />
                 )}
               </div>
-              <div>
+              <div className="flex-1">
                 <h1 className="text-2xl font-bold">
-                  Welcome back, {session.user.name?.split(" ")[0] || "Explorer"}
+                  Welcome back, {(userName || session.user.name)?.split(" ")[0] || "Explorer"}
                   !
                 </h1>
                 {journey?.species_avatar && (
@@ -182,6 +208,15 @@ export default function DashboardPage() {
                   </p>
                 )}
               </div>
+
+              {/* Profile/Settings Link */}
+              <Link
+                href="/profile"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                title="Profile & Settings"
+              >
+                <Settings className="w-5 h-5 text-gray-600 dark:text-white" />
+              </Link>
             </div>
 
             {/* Points display */}

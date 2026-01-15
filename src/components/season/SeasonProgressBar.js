@@ -195,14 +195,14 @@ export default function SeasonProgressBar({ lang = "en" }) {
             </div>
 
             {/* Link to Worlds */}
-            <Link
+            {/* <Link
               href="/worlds"
               className={`hidden md:flex items-center gap-1 text-sm ${seasonConfig.accentColor} hover:opacity-80 transition-opacity`}
             >
               <Globe className="w-4 h-4" />
               <span>Explore</span>
               <ChevronRight className="w-4 h-4" />
-            </Link>
+            </Link> */}
           </div>
         </div>
 

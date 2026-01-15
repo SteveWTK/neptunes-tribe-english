@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
+import { addPointsToJourney } from "@/lib/points-helper";
 
 // World order and season mapping
 const WORLDS_ORDER = [
@@ -230,30 +231,14 @@ export async function POST(request) {
 
       // If on-time, award bonus points to user's journey
       if (bonusPoints > 0) {
-        const { data: journey } = await supabase
-          .from("user_species_journey")
-          .select("total_points")
-          .eq("user_id", userData.id)
-          .single();
-
-        if (journey) {
-          await supabase
-            .from("user_species_journey")
-            .update({
-              total_points: (journey.total_points || 0) + bonusPoints,
-            })
-            .eq("user_id", userData.id);
-
-          // Record bonus in points history
-          await supabase.from("points_history").insert({
-            user_id: userData.id,
-            points_change: bonusPoints,
-            source_type: "season_bonus",
-            description: `Season completion bonus for ${
-              WORLDS_ORDER[progress.current_world_index].name
-            }`,
-          });
-        }
+        await addPointsToJourney(
+          supabase,
+          userData.id,
+          bonusPoints,
+          "season_bonus",
+          `Season completion bonus for ${WORLDS_ORDER[progress.current_world_index].name}`,
+          { world_index: progress.current_world_index, world_name: WORLDS_ORDER[progress.current_world_index].name }
+        );
       }
 
       // Advance to next world if not the last

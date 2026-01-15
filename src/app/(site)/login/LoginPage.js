@@ -15,6 +15,7 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -36,6 +37,8 @@ export default function LoginPage() {
       toggleToRegister: "Don't have an account? Register here.",
       toggleToLogin: "Already have an account? Login here.",
       email: "Email",
+      displayName: "Display Name",
+      displayNameHint: "This is how you'll appear on leaderboards",
       password: "Password",
       confirmPassword: "Confirm Password",
       google: "Sign in with Google",
@@ -63,6 +66,8 @@ export default function LoginPage() {
       toggleToRegister: "Não tem uma conta? Registre-se aqui.",
       toggleToLogin: "Já tem uma conta? Entre aqui.",
       email: "Email",
+      displayName: "Nome de Exibição",
+      displayNameHint: "Este é o nome que aparecerá nos rankings",
       password: "Senha",
       confirmPassword: "Confirmar senha",
       google: "Entrar com o Google",
@@ -196,6 +201,10 @@ export default function LoginPage() {
           password: password,
           options: {
             emailRedirectTo: `${window.location.origin}/auth/callback`,
+            data: {
+              name: displayName,
+              display_name: displayName,
+            },
           },
         });
 
@@ -220,6 +229,7 @@ export default function LoginPage() {
           setShowModal(true);
           // Clear form
           setEmail("");
+          setDisplayName("");
           setPassword("");
           setConfirmPassword("");
         } else if (data.session) {
@@ -359,6 +369,30 @@ export default function LoginPage() {
                   className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
+
+              {isRegister && (
+                <div>
+                  <label
+                    htmlFor="displayName"
+                    className="block text-sm font-medium text-gray-700 dark:text-primary-50"
+                  >
+                    {copy.displayName}
+                  </label>
+                  <input
+                    id="displayName"
+                    name="displayName"
+                    type="text"
+                    required
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    placeholder="e.g., NatureExplorer123"
+                    className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    {copy.displayNameHint}
+                  </p>
+                </div>
+              )}
 
               <div>
                 <label
