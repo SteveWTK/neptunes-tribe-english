@@ -24,14 +24,25 @@ export async function GET(request) {
     let userSchoolId = null;
 
     if (session?.user) {
-      const { data: userData } = await supabase
+      // Try with school_id, fall back to without if column doesn't exist
+      const { data: userData, error: userError } = await supabase
         .from("users")
         .select("id, school_id")
         .eq("email", session.user.email)
         .single();
 
-      currentUserId = userData?.id;
-      userSchoolId = userData?.school_id;
+      if (userError?.code === "42703") {
+        // Column doesn't exist, try without
+        const { data: userBasic } = await supabase
+          .from("users")
+          .select("id")
+          .eq("email", session.user.email)
+          .single();
+        currentUserId = userBasic?.id;
+      } else {
+        currentUserId = userData?.id;
+        userSchoolId = userData?.school_id;
+      }
     }
 
     // Build query for leaderboard - fetch journeys first
@@ -70,10 +81,28 @@ export async function GET(request) {
     console.log(`🔍 Looking up ${userIds.length} user IDs:`, userIds.slice(0, 3));
 
     // Fetch users data (including email for fallback display name)
-    const { data: usersData, error: usersError } = await supabase
+    // Try with school_id first, fall back to without if column doesn't exist
+    let usersData = null;
+    let usersError = null;
+
+    const { data: usersWithSchool, error: schoolError } = await supabase
       .from("users")
       .select("id, name, email, image, school_id")
       .in("id", userIds);
+
+    if (schoolError?.code === "42703") {
+      // Column doesn't exist, try without school_id
+      console.log("⚠️ school_id column not found, fetching without it");
+      const { data: usersBasic, error: basicError } = await supabase
+        .from("users")
+        .select("id, name, email, image")
+        .in("id", userIds);
+      usersData = usersBasic;
+      usersError = basicError;
+    } else {
+      usersData = usersWithSchool;
+      usersError = schoolError;
+    }
 
     if (usersError) {
       console.error("Error fetching users:", usersError);
