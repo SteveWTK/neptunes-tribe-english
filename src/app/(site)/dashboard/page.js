@@ -28,6 +28,7 @@ import SpeciesJourneyWidget from "@/components/journey/SpeciesJourneyWidget";
 import ObservationMarkersMap from "@/components/observations/ObservationMarkersMap";
 import SeasonProgressBar from "@/components/season/SeasonProgressBar";
 import DisplayNamePrompt from "@/components/profile/DisplayNamePrompt";
+import DashboardTour, { shouldShowDashboardTour } from "@/components/onboarding/DashboardTour";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -44,6 +45,7 @@ export default function DashboardPage() {
   const [needsDisplayName, setNeedsDisplayName] = useState(false);
   const [displayNameDismissed, setDisplayNameDismissed] = useState(false);
   const [userName, setUserName] = useState(null);
+  const [showTour, setShowTour] = useState(false);
 
   // Fetch all dashboard data
   useEffect(() => {
@@ -149,6 +151,15 @@ export default function DashboardPage() {
     }
   }, [status, router]);
 
+  // Check if dashboard tour should be shown (after data loads)
+  useEffect(() => {
+    if (!loading && session && shouldShowDashboardTour()) {
+      // Small delay to ensure DOM is ready
+      const timer = setTimeout(() => setShowTour(true), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, session]);
+
   if (status === "loading" || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
@@ -164,7 +175,9 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
       {/* Season Progress Bar */}
-      <SeasonProgressBar />
+      <div data-tour="season-progress">
+        <SeasonProgressBar />
+      </div>
 
       {/* Display Name Prompt (shown if user hasn't set their name) */}
       {needsDisplayName && !displayNameDismissed && (
@@ -174,13 +187,21 @@ export default function DashboardPage() {
         />
       )}
 
+      {/* Dashboard Tour for new users */}
+      {showTour && (
+        <DashboardTour onComplete={() => setShowTour(false)} />
+      )}
+
       {/* Header with user greeting and points */}
       <div>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-4">
               {/* User avatar or species avatar */}
-              <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/50">
+              <div
+                data-tour="species-avatar"
+                className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/50"
+              >
                 {journey?.species_avatar?.avatar_image_url ? (
                   <img
                     src={journey.species_avatar.avatar_image_url}
@@ -199,7 +220,8 @@ export default function DashboardPage() {
               </div>
               <div className="flex-1">
                 <h1 className="text-2xl font-bold">
-                  Welcome back, {(userName || session.user.name)?.split(" ")[0] || "Explorer"}
+                  Welcome back,{" "}
+                  {(userName || session.user.name)?.split(" ")[0] || "Explorer"}
                   !
                 </h1>
                 {journey?.species_avatar && (
@@ -211,6 +233,7 @@ export default function DashboardPage() {
 
               {/* Profile/Settings Link */}
               <Link
+                data-tour="settings-link"
                 href="/profile"
                 className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                 title="Profile & Settings"
@@ -253,7 +276,18 @@ export default function DashboardPage() {
           {/* Main Content - 2 columns */}
           <div className="lg:col-span-2 space-y-8">
             {/* Quick Actions */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div data-tour="quick-actions" className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <Link
+                href="/worlds"
+                className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm hover:shadow-md transition-all hover:scale-105 flex flex-col items-center text-center group"
+              >
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/50 rounded-full flex items-center justify-center mb-2 group-hover:bg-purple-200 dark:group-hover:bg-purple-900 transition-colors">
+                  <Star className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <span className="text-sm font-medium text-gray-800 dark:text-white">
+                  Worlds and Adventures
+                </span>
+              </Link>
               <Link
                 href="/observations/create"
                 className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm hover:shadow-md transition-all hover:scale-105 flex flex-col items-center text-center group"
@@ -289,18 +323,6 @@ export default function DashboardPage() {
                   Eco Map
                 </span>
               </Link> */}
-
-              <Link
-                href="/worlds"
-                className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm hover:shadow-md transition-all hover:scale-105 flex flex-col items-center text-center group"
-              >
-                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/50 rounded-full flex items-center justify-center mb-2 group-hover:bg-purple-200 dark:group-hover:bg-purple-900 transition-colors">
-                  <Star className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                </div>
-                <span className="text-sm font-medium text-gray-800 dark:text-white">
-                  Worlds
-                </span>
-              </Link>
             </div>
 
             {/* Active Bonus Challenges */}
@@ -402,6 +424,7 @@ export default function DashboardPage() {
             {/* Recent Observations */}
             {recentObservations.length > 0 && (
               <motion.div
+                data-tour="recent-observations"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
@@ -449,6 +472,7 @@ export default function DashboardPage() {
 
             {/* Community Observations Map */}
             <motion.div
+              data-tour="wildlife-map"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.15 }}
@@ -547,7 +571,11 @@ export default function DashboardPage() {
           {/* Sidebar - 1 column */}
           <div className="space-y-6">
             {/* Species Journey Widget */}
-            {journey && <SpeciesJourneyWidget />}
+            {journey && (
+              <div data-tour="journey-widget">
+                <SpeciesJourneyWidget />
+              </div>
+            )}
 
             {/* No avatar prompt */}
             {!journey && (
@@ -570,7 +598,7 @@ export default function DashboardPage() {
             )}
 
             {/* Community Stats */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4">
+            <div data-tour="community-stats" className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4">
               <h3 className="font-bold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
                 <Users className="w-5 h-5 text-accent-600 dark:text-accent-400" />
                 Community Stats
@@ -607,7 +635,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Leaderboard Preview */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4">
+            <div data-tour="leaderboard" className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4">
               <h3 className="font-bold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
                 <Award className="w-5 h-5 text-yellow-500" />
                 Top Naturalists

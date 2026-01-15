@@ -23,14 +23,14 @@ export default auth((req) => {
   const authRoutes = ["/login", "/register"];
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-  // Redirect logged-in users away from auth pages
+  // Redirect logged-in users away from auth pages to dashboard
   if (isLoggedIn && isAuthRoute) {
-    return NextResponse.redirect(new URL("/worlds", nextUrl));
+    return NextResponse.redirect(new URL("/dashboard", nextUrl));
   }
 
-  // Redirect logged-in users from homepage to worlds page
+  // Redirect logged-in users from homepage to dashboard
   if (isLoggedIn && nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/worlds", nextUrl));
+    return NextResponse.redirect(new URL("/dashboard", nextUrl));
   }
 
   // Redirect non-logged-in users to login for protected routes

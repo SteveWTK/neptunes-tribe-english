@@ -106,7 +106,7 @@ export async function POST(request, { params }) {
       .insert({
         observation_id: id,
         user_id: userData.id,
-        content: content.trim(),
+        comment: content.trim(),
       })
       .select(
         `
@@ -130,8 +130,14 @@ export async function POST(request, { params }) {
     });
   } catch (error) {
     console.error("Error creating comment:", error);
+    console.error("Error details:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", details: error.message },
       { status: 500 }
     );
   }

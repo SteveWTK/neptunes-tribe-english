@@ -21,7 +21,9 @@ import {
   ChevronLeft,
   Sparkles,
   AlertCircle,
+  RotateCcw,
 } from "lucide-react";
+import { resetDashboardTour } from "@/components/onboarding/DashboardTour";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -396,6 +398,18 @@ export default function ProfilePage() {
             </h3>
 
             <div className="space-y-3">
+              {/* Restart Dashboard Tour */}
+              <button
+                onClick={() => {
+                  resetDashboardTour();
+                  router.push("/dashboard");
+                }}
+                className="w-full py-3 border border-gray-200 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-200 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Restart Dashboard Tour
+              </button>
+
               {/* Sign Out */}
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}

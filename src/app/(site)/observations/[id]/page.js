@@ -353,7 +353,7 @@ export default function ObservationDetailPage() {
                           </span>
                         </div>
                         <p className="text-gray-700 dark:text-gray-300 text-sm">
-                          {c.content}
+                          {c.comment}
                         </p>
                       </div>
                     </div>
