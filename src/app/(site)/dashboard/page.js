@@ -730,14 +730,14 @@ export default function DashboardPage() {
             <div className="relative h-54 lg:h-64 flex items-center justify-center">
               <div className="absolute inset-0 bg-[url('/images/map-preview.jpg')] bg-cover bg-center opacity-30 dark:opacity-20" />
               <div className="relative text-center p-6">
-                {/* <div className="w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform">
                   <Globe className="w-8 h-8 text-green-600 dark:text-green-400" />
-                </div> */}
-                <img
+                </div>
+                {/* <img
                   src="/maps/mapbox-globe.png"
                   alt="Wildlife Map"
                   className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform"
-                />
+                /> */}
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
                   Explore Wildlife Sightings
                 </h3>
