@@ -46,7 +46,70 @@ export async function updateUserProgress(userId, unitId, xpEarned) {
     .from("user_unit_completions")
     .insert({ user_id: userId, unit_id: unitId });
 
+  // Also add XP to user's species journey (for unified leaderboard)
+  await addXpToJourney(userId, xpEarned, unitId);
+
   if (upsertRes.error) console.error("Progress update error:", upsertRes.error);
   if (unitError && unitError.code !== "23505")
     console.error("Unit insert error:", unitError);
+}
+
+/**
+ * Add XP earned from lessons to user's species journey
+ * This ensures the journey total reflects ALL points (lessons + observations)
+ */
+async function addXpToJourney(userId, xpEarned, unitId) {
+  try {
+    // Get user's current journey
+    const { data: journey, error: journeyError } = await supabase
+      .from("user_species_journey")
+      .select("id, total_points")
+      .eq("user_id", userId)
+      .single();
+
+    if (journeyError) {
+      // User hasn't started journey yet - that's fine, they'll get points later
+      if (journeyError.code === "PGRST116") {
+        console.log("User has no species journey yet, skipping XP addition");
+        return;
+      }
+      console.error("Error fetching journey for XP update:", journeyError);
+      return;
+    }
+
+    // Update journey with additional points
+    const newTotalPoints = (journey.total_points || 0) + xpEarned;
+
+    const { error: updateError } = await supabase
+      .from("user_species_journey")
+      .update({
+        total_points: newTotalPoints,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("user_id", userId);
+
+    if (updateError) {
+      console.error("Error adding XP to journey:", updateError);
+    } else {
+      console.log(`✅ Added ${xpEarned} lesson XP to journey. New total: ${newTotalPoints}`);
+    }
+
+    // Optionally record in points_history for audit trail
+    try {
+      await supabase.from("points_history").insert({
+        user_id: userId,
+        points_change: xpEarned,
+        points_before: journey.total_points || 0,
+        points_after: newTotalPoints,
+        source_type: "lesson",
+        source_id: unitId,
+        description: `Lesson completion XP`,
+      });
+    } catch (historyError) {
+      // Points history is optional, don't fail if it errors
+      console.log("Could not record points history (optional):", historyError.message);
+    }
+  } catch (error) {
+    console.error("Error in addXpToJourney:", error);
+  }
 }

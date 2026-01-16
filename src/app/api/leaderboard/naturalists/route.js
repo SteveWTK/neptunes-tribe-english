@@ -4,7 +4,8 @@ import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
 
 /**
  * GET /api/leaderboard/naturalists
- * Fetches top naturalists ranked by total points
+ * Fetches top naturalists ranked by COMBINED total points
+ * (journey points from observations + XP from lessons)
  * Supports: global, school, and timeframe filters
  */
 export async function GET(request) {
@@ -45,12 +46,10 @@ export async function GET(request) {
       }
     }
 
-    // Build query for leaderboard - fetch journeys first
+    // Fetch ALL journey data (we'll sort after combining with XP)
     const { data: journeyData, error: journeyError } = await supabase
       .from("user_species_journey")
-      .select("*")
-      .order("total_points", { ascending: false })
-      .range(offset, offset + limit - 1);
+      .select("*");
 
     if (journeyError) {
       console.error("Error fetching journeys:", journeyError);
@@ -78,10 +77,9 @@ export async function GET(request) {
     const userIds = journeyData.map((j) => j.user_id).filter(Boolean);
     const avatarIds = journeyData.map((j) => j.species_avatar_id).filter(Boolean);
 
-    console.log(`🔍 Looking up ${userIds.length} user IDs:`, userIds.slice(0, 3));
+    console.log(`🔍 Looking up ${userIds.length} user IDs`);
 
     // Fetch users data (including email for fallback display name)
-    // Try with school_id first, fall back to without if column doesn't exist
     let usersData = null;
     let usersError = null;
 
@@ -107,14 +105,25 @@ export async function GET(request) {
     if (usersError) {
       console.error("Error fetching users:", usersError);
     }
-    console.log(`👥 Found ${usersData?.length || 0} users:`, usersData?.map(u => ({ id: u.id, name: u.name })).slice(0, 3));
+
+    // Fetch user_progress (XP from lessons) for all users with journeys
+    const { data: progressData, error: progressError } = await supabase
+      .from("user_progress")
+      .select("user_id, xp")
+      .in("user_id", userIds);
+
+    if (progressError && progressError.code !== "42P01") {
+      // 42P01 = table doesn't exist
+      console.error("Error fetching user progress:", progressError);
+    }
+
+    console.log(`📚 Found ${progressData?.length || 0} user progress entries`);
 
     // Helper to get display name: name > email prefix > "Naturalist"
     const getDisplayName = (user) => {
       if (user?.name) return user.name;
       if (user?.email) {
         const emailPrefix = user.email.split("@")[0];
-        // Capitalize first letter and limit length
         return emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1, 15);
       }
       return "Naturalist";
@@ -129,19 +138,24 @@ export async function GET(request) {
     // Create lookup maps
     const usersMap = new Map((usersData || []).map((u) => [u.id, u]));
     const avatarsMap = new Map((avatarsData || []).map((a) => [a.id, a]));
+    const progressMap = new Map((progressData || []).map((p) => [p.user_id, p.xp || 0]));
 
-    console.log(`🗺️ UsersMap has ${usersMap.size} entries`);
+    console.log(`🗺️ UsersMap has ${usersMap.size} entries, ProgressMap has ${progressMap.size} entries`);
 
-    // Build leaderboard data
+    // Build leaderboard data with COMBINED points
     let leaderboardData = journeyData.map((journey) => {
       const user = usersMap.get(journey.user_id);
-      if (!user && journey.user_id) {
-        console.log(`⚠️ No user found for journey user_id: ${journey.user_id} (type: ${typeof journey.user_id})`);
-      }
+      const lessonXp = progressMap.get(journey.user_id) || 0;
+      const journeyPoints = journey.total_points || 0;
+      const combinedPoints = journeyPoints + lessonXp;
+
       return {
         ...journey,
         user: user || null,
         species_avatar: avatarsMap.get(journey.species_avatar_id) || null,
+        lesson_xp: lessonXp,
+        journey_points: journeyPoints,
+        combined_points: combinedPoints,
       };
     });
 
@@ -152,13 +166,21 @@ export async function GET(request) {
       );
     }
 
+    // Sort by COMBINED points (descending)
+    leaderboardData.sort((a, b) => b.combined_points - a.combined_points);
+
+    // Apply pagination
+    const paginatedData = leaderboardData.slice(offset, offset + limit);
+
     // Add rank and check if current user
-    const rankedData = leaderboardData.map((entry, index) => ({
+    const rankedData = paginatedData.map((entry, index) => ({
       rank: offset + index + 1,
       userId: entry.user_id,
       userName: getDisplayName(entry.user),
       userImage: entry.user?.image,
-      totalPoints: entry.total_points || 0,
+      totalPoints: entry.combined_points, // Combined points
+      journeyPoints: entry.journey_points, // Observation points
+      lessonXp: entry.lesson_xp, // Lesson XP
       observationsCount: entry.observations_count || 0,
       currentStatus: entry.current_iucn_status,
       speciesAvatar: entry.species_avatar,
@@ -170,45 +192,28 @@ export async function GET(request) {
     if (currentUserId) {
       const userInList = rankedData.find((entry) => entry.isCurrentUser);
       if (!userInList) {
-        // Count how many users have more points
-        const { count } = await supabase
-          .from("user_species_journey")
-          .select("*", { count: "exact", head: true })
-          .gt("total_points", rankedData.length > 0 ? rankedData[rankedData.length - 1]?.totalPoints : 0);
+        // Find user in full sorted list
+        const userIndex = leaderboardData.findIndex((entry) => entry.user_id === currentUserId);
 
-        // Get current user's journey
-        const { data: userJourney } = await supabase
-          .from("user_species_journey")
-          .select("*")
-          .eq("user_id", currentUserId)
-          .single();
+        if (userIndex !== -1) {
+          const userEntry = leaderboardData[userIndex];
 
-        if (userJourney) {
           // Get avatar if exists
           let userAvatar = null;
-          if (userJourney.species_avatar_id) {
-            const { data: avatarData } = await supabase
-              .from("species_avatars")
-              .select("id, common_name, avatar_image_url, iucn_status")
-              .eq("id", userJourney.species_avatar_id)
-              .single();
-            userAvatar = avatarData;
+          if (userEntry.species_avatar_id) {
+            userAvatar = avatarsMap.get(userEntry.species_avatar_id);
           }
 
-          // Get exact rank
-          const { count: higherRanked } = await supabase
-            .from("user_species_journey")
-            .select("*", { count: "exact", head: true })
-            .gt("total_points", userJourney.total_points);
-
           currentUserRank = {
-            rank: (higherRanked || 0) + 1,
-            userId: userJourney.user_id,
+            rank: userIndex + 1,
+            userId: userEntry.user_id,
             userName: session?.user?.name || "You",
             userImage: session?.user?.image,
-            totalPoints: userJourney.total_points || 0,
-            observationsCount: userJourney.observations_count || 0,
-            currentStatus: userJourney.current_iucn_status,
+            totalPoints: userEntry.combined_points,
+            journeyPoints: userEntry.journey_points,
+            lessonXp: userEntry.lesson_xp,
+            observationsCount: userEntry.observations_count || 0,
+            currentStatus: userEntry.current_iucn_status,
             speciesAvatar: userAvatar,
             isCurrentUser: true,
           };
@@ -216,16 +221,11 @@ export async function GET(request) {
       }
     }
 
-    // Get total count
-    const { count: totalCount } = await supabase
-      .from("user_species_journey")
-      .select("*", { count: "exact", head: true });
-
     return NextResponse.json({
       success: true,
       leaderboard: rankedData,
       currentUserRank,
-      total: totalCount || 0,
+      total: leaderboardData.length,
       limit,
       offset,
       filter,

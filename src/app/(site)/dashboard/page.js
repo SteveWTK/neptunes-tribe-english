@@ -55,6 +55,7 @@ export default function DashboardPage() {
   const [displayNameDismissed, setDisplayNameDismissed] = useState(false);
   const [userName, setUserName] = useState(null);
   const [showTour, setShowTour] = useState(false);
+  const [activeIucnTooltip, setActiveIucnTooltip] = useState(null);
 
   // Fetch all dashboard data
   useEffect(() => {
@@ -322,7 +323,7 @@ export default function DashboardPage() {
                       const isComplete = actualIndex < currentStatusIndex;
 
                       return (
-                        <div key={level.code} className="flex-1">
+                        <div key={level.code} className="flex-1 relative">
                           <div
                             className={`h-3 rounded-full transition-all ${
                               isCurrent ? "ring-2 ring-white ring-offset-1" : ""
@@ -345,15 +346,40 @@ export default function DashboardPage() {
                               />
                             )}
                           </div>
+                          {/* Mobile: Code with click tooltip / Desktop: Full label */}
                           <div className="text-center mt-1">
+                            {/* Mobile view - clickable code with tooltip */}
+                            <button
+                              onClick={() => setActiveIucnTooltip(activeIucnTooltip === level.code ? null : level.code)}
+                              className={`md:hidden text-[10px] font-medium ${
+                                isPast ? "text-white/50" : "text-white/90"
+                              } hover:text-white transition-colors`}
+                            >
+                              {level.code}
+                            </button>
+                            {/* Desktop view - full label */}
                             <span
-                              className={`text-[10px] font-medium ${
+                              className={`hidden md:inline text-[9px] font-medium leading-tight ${
                                 isPast ? "text-white/50" : "text-white/90"
                               }`}
                             >
-                              {level.code}
+                              {level.label.split(" ").map((word, wi) => (
+                                <span key={wi} className="block">{word}</span>
+                              ))}
                             </span>
                           </div>
+                          {/* Mobile tooltip */}
+                          {activeIucnTooltip === level.code && (
+                            <div
+                              className="md:hidden absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-10"
+                              onClick={() => setActiveIucnTooltip(null)}
+                            >
+                              <div className="bg-white text-gray-800 text-xs font-medium px-2 py-1 rounded shadow-lg whitespace-nowrap">
+                                {level.label}
+                              </div>
+                              <div className="w-2 h-2 bg-white rotate-45 absolute left-1/2 -translate-x-1/2 -bottom-1" />
+                            </div>
+                          )}
                         </div>
                       );
                     })}
