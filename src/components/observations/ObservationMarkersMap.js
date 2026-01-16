@@ -80,7 +80,7 @@ export default function ObservationMarkersMap({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/outdoors-v12",
         center: [0, 20],
-        zoom: compact ? 1 : 1.5,
+        zoom: compact ? 1 : 1,
         minZoom: 1,
         maxZoom: 18,
       });
@@ -184,7 +184,9 @@ export default function ObservationMarkersMap({
 
       // Add camera icon
       el.innerHTML = `
-        <svg width="${compact ? "12" : "16"}" height="${compact ? "12" : "16"}" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="${compact ? "12" : "16"}" height="${
+        compact ? "12" : "16"
+      }" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
           <circle cx="12" cy="13" r="3"></circle>
         </svg>
@@ -220,9 +222,15 @@ export default function ObservationMarkersMap({
                   : ""
               }
               <div style="padding: 8px;">
-                <h4 style="margin: 0 0 4px 0; font-weight: 600; font-size: 14px; color: #1f2937;">${obs.species}</h4>
-                <p style="margin: 0 0 4px 0; font-size: 12px; color: #6b7280;">${obs.location || "Unknown location"}</p>
-                <p style="margin: 0; font-size: 11px; color: #9ca3af;">${new Date(obs.date).toLocaleDateString()}</p>
+                <h4 style="margin: 0 0 4px 0; font-weight: 600; font-size: 14px; color: #1f2937;">${
+                  obs.species
+                }</h4>
+                <p style="margin: 0 0 4px 0; font-size: 12px; color: #6b7280;">${
+                  obs.location || "Unknown location"
+                }</p>
+                <p style="margin: 0; font-size: 11px; color: #9ca3af;">${new Date(
+                  obs.date
+                ).toLocaleDateString()}</p>
               </div>
             </div>
           `;
@@ -242,7 +250,9 @@ export default function ObservationMarkersMap({
         }
       });
 
-      const marker = new mapboxgl.Marker(el).setLngLat([lng, lat]).addTo(map.current);
+      const marker = new mapboxgl.Marker(el)
+        .setLngLat([lng, lat])
+        .addTo(map.current);
 
       markersRef.current.push(marker);
     });
@@ -275,7 +285,9 @@ export default function ObservationMarkersMap({
 
   if (error) {
     return (
-      <div className={`bg-red-50 border border-red-200 rounded-lg p-4 ${className}`}>
+      <div
+        className={`bg-red-50 border border-red-200 rounded-lg p-4 ${className}`}
+      >
         <p className="text-red-600 text-sm">{error}</p>
       </div>
     );
@@ -304,7 +316,11 @@ export default function ObservationMarkersMap({
                       ? "bg-accent-600 text-white shadow-lg"
                       : "bg-white/90 text-gray-700 hover:bg-white shadow"
                   }
-                  ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                  ${
+                    isDisabled
+                      ? "opacity-50 cursor-not-allowed"
+                      : "cursor-pointer"
+                  }
                 `}
                 title={isDisabled ? "Sign in to access" : option.label}
               >
@@ -318,7 +334,7 @@ export default function ObservationMarkersMap({
 
       {/* Observation count */}
       {!compact && (
-        <div className="absolute top-3 right-3 z-10 bg-white/90 px-3 py-1.5 rounded-lg shadow text-sm">
+        <div className="absolute top-3 right-10 z-10 bg-white/90 px-3 py-1.5 rounded-lg shadow text-sm">
           <span className="font-medium text-gray-800">
             {fetchingData ? (
               <Loader2 className="w-4 h-4 animate-spin inline" />
@@ -334,7 +350,7 @@ export default function ObservationMarkersMap({
       <div
         ref={mapContainer}
         className={`w-full rounded-lg overflow-hidden ${
-          compact ? "h-[250px]" : "h-[400px]"
+          compact ? "h-[375px]" : "h-[600px]"
         }`}
       />
 

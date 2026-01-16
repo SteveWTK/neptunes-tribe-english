@@ -21,12 +21,32 @@ import Link from "next/link";
 // IUCN Status configuration
 const IUCN_LEVELS = [
   { code: "EX", label: "Extinct", labelPt: "Extinto", color: "#000000" },
-  { code: "EW", label: "Extinct in Wild", labelPt: "Extinto na Natureza", color: "#1f2937" },
-  { code: "CR", label: "Critically Endangered", labelPt: "Criticamente em Perigo", color: "#dc2626" },
+  {
+    code: "EW",
+    label: "Extinct in Wild",
+    labelPt: "Extinto na Natureza",
+    color: "#1f2937",
+  },
+  {
+    code: "CR",
+    label: "Critically Endangered",
+    labelPt: "Criticamente em Perigo",
+    color: "#dc2626",
+  },
   { code: "EN", label: "Endangered", labelPt: "Em Perigo", color: "#f97316" },
   { code: "VU", label: "Vulnerable", labelPt: "Vulnerável", color: "#eab308" },
-  { code: "NT", label: "Near Threatened", labelPt: "Quase Ameaçado", color: "#84cc16" },
-  { code: "LC", label: "Least Concern", labelPt: "Menor Preocupação", color: "#22c55e" },
+  {
+    code: "NT",
+    label: "Near Threatened",
+    labelPt: "Quase Ameaçado",
+    color: "#84cc16",
+  },
+  {
+    code: "LC",
+    label: "Least Concern",
+    labelPt: "Menor Preocupação",
+    color: "#22c55e",
+  },
 ];
 
 export default function SpeciesJourneyWidget({ compact = false }) {
@@ -82,7 +102,8 @@ export default function SpeciesJourneyWidget({ compact = false }) {
     return message.replace(
       /{species}/g,
       lang === "pt"
-        ? journey.species_avatar.common_name_pt || journey.species_avatar.common_name
+        ? journey.species_avatar.common_name_pt ||
+            journey.species_avatar.common_name
         : journey.species_avatar.common_name
     );
   };
@@ -152,7 +173,10 @@ export default function SpeciesJourneyWidget({ compact = false }) {
             <span className="text-sm font-medium text-gray-800 dark:text-white">
               {avatar?.common_name}
             </span>
-            <span className="text-xs font-bold" style={{ color: currentLevel?.color }}>
+            <span
+              className="text-xs font-bold"
+              style={{ color: currentLevel?.color }}
+            >
               {currentLevel?.label}
             </span>
           </div>
@@ -179,13 +203,14 @@ export default function SpeciesJourneyWidget({ compact = false }) {
           className="p-4 text-white"
           style={{
             background: `linear-gradient(135deg, ${currentLevel?.color} 0%, ${
-              IUCN_LEVELS[Math.max(0, currentStatusIndex - 1)]?.color || currentLevel?.color
+              IUCN_LEVELS[Math.max(0, currentStatusIndex - 1)]?.color ||
+              currentLevel?.color
             } 100%)`,
           }}
         >
           <div className="flex items-center gap-4">
             {/* Avatar */}
-            <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/50">
+            {/* <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/50">
               {avatar?.avatar_image_url ? (
                 <img
                   src={avatar.avatar_image_url}
@@ -195,7 +220,7 @@ export default function SpeciesJourneyWidget({ compact = false }) {
               ) : (
                 <Leaf className="w-8 h-8 text-white" />
               )}
-            </div>
+            </div> */}
 
             <div className="flex-1">
               <h3 className="font-bold text-lg">
@@ -203,7 +228,9 @@ export default function SpeciesJourneyWidget({ compact = false }) {
                   ? avatar?.common_name_pt || avatar?.common_name
                   : avatar?.common_name}
               </h3>
-              <p className="text-sm opacity-90 italic">{avatar?.scientific_name}</p>
+              <p className="text-sm opacity-90 italic">
+                {avatar?.scientific_name}
+              </p>
             </div>
 
             {/* Status Badge */}
@@ -224,7 +251,9 @@ export default function SpeciesJourneyWidget({ compact = false }) {
           <div className="mb-4">
             <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-2">
               <span>
-                {lang === "pt" ? "Progresso de Recuperação" : "Recovery Progress"}
+                {lang === "pt"
+                  ? "Progresso de Recuperação"
+                  : "Recovery Progress"}
               </span>
               <span>{journey.total_points?.toLocaleString()} pts</span>
             </div>
@@ -242,10 +271,13 @@ export default function SpeciesJourneyWidget({ compact = false }) {
                     <div key={level.code} className="flex-1">
                       <div
                         className={`h-3 rounded-full transition-all ${
-                          isCurrent ? "ring-2 ring-offset-1 dark:ring-offset-gray-800" : ""
+                          isCurrent
+                            ? "ring-2 ring-offset-1 dark:ring-offset-gray-800"
+                            : ""
                         }`}
                         style={{
-                          backgroundColor: isComplete || isCurrent ? level.color : "#374151",
+                          backgroundColor:
+                            isComplete || isCurrent ? level.color : "#374151",
                           ringColor: level.color,
                           opacity: isPast ? 0.3 : 1,
                         }}
@@ -264,7 +296,9 @@ export default function SpeciesJourneyWidget({ compact = false }) {
                       <div className="text-center mt-1">
                         <span
                           className={`text-[10px] font-medium ${
-                            isPast ? "text-gray-400 dark:text-gray-500" : "text-gray-600 dark:text-gray-300"
+                            isPast
+                              ? "text-gray-400 dark:text-gray-500"
+                              : "text-gray-600 dark:text-gray-300"
                           }`}
                         >
                           {level.code}
@@ -317,13 +351,23 @@ export default function SpeciesJourneyWidget({ compact = false }) {
                 <Target className="w-4 h-4" />
                 <span>
                   {lang === "pt"
-                    ? `${(journey.next_level_threshold.points_required - journey.total_points).toLocaleString()} pontos para ${
-                        IUCN_LEVELS.find((l) => l.code === journey.next_level_threshold.to_status)
-                          ?.labelPt
+                    ? `${(
+                        journey.next_level_threshold.points_required -
+                        journey.total_points
+                      ).toLocaleString()} pontos para ${
+                        IUCN_LEVELS.find(
+                          (l) =>
+                            l.code === journey.next_level_threshold.to_status
+                        )?.labelPt
                       }`
-                    : `${(journey.next_level_threshold.points_required - journey.total_points).toLocaleString()} points to ${
-                        IUCN_LEVELS.find((l) => l.code === journey.next_level_threshold.to_status)
-                          ?.label
+                    : `${(
+                        journey.next_level_threshold.points_required -
+                        journey.total_points
+                      ).toLocaleString()} points to ${
+                        IUCN_LEVELS.find(
+                          (l) =>
+                            l.code === journey.next_level_threshold.to_status
+                        )?.label
                       }`}
                 </span>
               </div>

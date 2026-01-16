@@ -8,13 +8,11 @@ import {
   Leaf,
   Settings,
   Zap,
-  TrendingUp,
   MapPin,
   Users,
   Award,
   Camera,
   ArrowRight,
-  X,
 } from "lucide-react";
 
 const TOUR_STORAGE_KEY = "habitat_dashboard_tour_completed";
@@ -32,9 +30,9 @@ const translations = {
       },
       {
         target: '[data-tour="species-avatar"]',
-        title: "Your Conservation Avatar",
+        title: "Your Conservation Journey",
         content:
-          "This is your species companion. Help them recover by earning points!",
+          "This is your species companion! Track their IUCN recovery status and earn points to help them thrive.",
         icon: Leaf,
       },
       {
@@ -48,19 +46,6 @@ const translations = {
         title: "Quick Actions",
         content: "Jump to Worlds for lessons or snap a wildlife observation.",
         icon: Zap,
-      },
-      {
-        target: '[data-tour="journey-widget"]',
-        title: "Your Journey Progress",
-        content: "Track your avatar's IUCN status and points to next level.",
-        icon: TrendingUp,
-      },
-      {
-        target: '[data-tour="wildlife-map"]',
-        title: "Wildlife Map",
-        content:
-          "See where you and others have spotted wildlife around the world.",
-        icon: MapPin,
       },
       {
         target: '[data-tour="community-stats"]',
@@ -81,6 +66,13 @@ const translations = {
         content: "Your wildlife photos appear here. Keep exploring!",
         icon: Camera,
       },
+      {
+        target: '[data-tour="wildlife-map"]',
+        title: "Wildlife Map",
+        content:
+          "See where you and others have spotted wildlife around the world.",
+        icon: MapPin,
+      },
     ],
     buttons: {
       next: "Next",
@@ -100,9 +92,9 @@ const translations = {
       },
       {
         target: '[data-tour="species-avatar"]',
-        title: "Seu Avatar de Conservacao",
+        title: "Sua Jornada de Conservacao",
         content:
-          "Este e seu companheiro de especie. Ajude-o a se recuperar ganhando pontos!",
+          "Este e seu companheiro de especie! Acompanhe seu status IUCN e ganhe pontos para ajuda-lo a prosperar.",
         icon: Leaf,
       },
       {
@@ -117,20 +109,6 @@ const translations = {
         content:
           "Va para Mundos para licoes ou registre uma observacao de vida selvagem.",
         icon: Zap,
-      },
-      {
-        target: '[data-tour="journey-widget"]',
-        title: "Seu Progresso",
-        content:
-          "Acompanhe o status IUCN do seu avatar e pontos para o proximo nivel.",
-        icon: TrendingUp,
-      },
-      {
-        target: '[data-tour="wildlife-map"]',
-        title: "Mapa de Vida Selvagem",
-        content:
-          "Veja onde voce e outros avistaram vida selvagem ao redor do mundo.",
-        icon: MapPin,
       },
       {
         target: '[data-tour="community-stats"]',
@@ -151,6 +129,13 @@ const translations = {
         content:
           "Suas fotos de vida selvagem aparecem aqui. Continue explorando!",
         icon: Camera,
+      },
+      {
+        target: '[data-tour="wildlife-map"]',
+        title: "Mapa de Vida Selvagem",
+        content:
+          "Veja onde voce e outros avistaram vida selvagem ao redor do mundo.",
+        icon: MapPin,
       },
     ],
     buttons: {

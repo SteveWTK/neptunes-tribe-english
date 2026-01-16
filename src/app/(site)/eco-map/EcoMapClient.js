@@ -1,20 +1,12 @@
 // app/eco-map/EcoMapClient.js - Updated to pass weekly theme data
 "use client";
 
-import EcoMapProgressOceanZones from "@/components/EcoMapProgressOceanZones";
-import RegionExplorer from "@/components/RegionExplorer";
 import ObservationMarkersMap from "@/components/observations/ObservationMarkersMap";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
 import {
-  Lightbulb,
-  TrendingUp,
-  Trophy,
-  Eye,
-  EyeOff,
-  Calendar,
   MapPin,
   ChevronRight,
   Globe,
@@ -275,374 +267,44 @@ export default function EcoMapClient({
   return (
     <div className="pt-4">
       {/* Header Section */}
-      <div className="text-center mb-2">
+      {/* <div className="text-center mb-2">
         <h1 className="text-xl lg:text-2xl text-primary-800 dark:text-[#e5e7eb] font-bold mb-2 mx-2">
           {copy.title}!
         </h1>
-        {/* <p className="text-md text-gray-600 dark:text-gray-400">
+        <p className="text-md text-gray-600 dark:text-gray-400">
           {copy.subTitle}
-        </p> */}
-      </div>
-
-      {/* Weekly Theme Banner */}
-      {/* {currentWeeklyTheme && (
-        <div className="max-w-6xl mx-auto mb-6 px-4">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-br from-primary-600 via-primary-700 to-green-600 dark:from-primary-800 dark:via-primary-900 dark:to-accent-700 text-white rounded-xl p-4 shadow-lg"
-          >
-            <div className="flex flex-col sm:flex-row items-center justify-between">
-              <div className="flex items-center gap-3 mb-4 sm:mb-0">
-                <div>
-                  <div className="flex justify-center sm:justify-start items-center gap-3">
-                    <Calendar className="w-4 h-4" />
-                    <span className="text-center sm:text-start">
-                      {copy.weeklyThemeTitle}
-                    </span>
-                  </div>
-                  <h3 className="text-center sm:text-start text-2xl font-bold">
-                    {lang === "pt"
-                      ? currentWeeklyTheme.theme_title_pt
-                      : currentWeeklyTheme.theme_title}
-                  </h3>
-                </div>
-              </div>
-              <Link
-                href={`/adventures`}
-                className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2"
-              >
-                {copy.exploreTheme}
-                <MapPin className="w-4 h-4" />
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      )} */}
-
-      {/* New: Prominent Worlds CTA */}
-      <div className="flex flex-wrap gap-0.5 md:gap-2 justify-center max-w-6xl mx-auto mb-2 md:mb-4 px-4">
-        <Link href="/worlds">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            // className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
-            className="bg-white dark:bg-primary-950 rounded-2xl md:px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group w-full"
-          >
-            <div className="flex gap-1 md:gap-2 align-baseline">
-              {/* <h2 className="text-2xl font-bold flex items-center gap-3">
-                  {copy.exploreWorlds}
-                </h2> */}
-              <div className="rounded-full p-1  transition-all">
-                <Globe
-                  className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400 group-hover:translate-x-0.5
-                 transition-transform"
-                />
-              </div>
-              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2 group-hover:text-accent-600 dark:group-hover:text-accent-400 group-hover:translate-x-0.5 transition-transform">
-                {copy.worldsSubtitle}
-              </p>
-
-              {/* <div className="hidden md:block"> */}
-              <div className="rounded-full p-1  transition-all">
-                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400  group-hover:translate-x-0.5 transition-transform" />
-              </div>
-              {/* </div> */}
-            </div>
-          </motion.div>
-        </Link>
-        <Link href="/vocabulary">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            // className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
-            className="bg-white dark:bg-primary-950 rounded-2xl md:px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group w-full"
-          >
-            <div className="flex gap-1 md:gap-2 align-baseline">
-              <div className="rounded-full p-1 transition-all">
-                <BookOpen className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400group-hover:translate-x-0.5 transition-transform" />
-              </div>
-              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2 group-hover:text-accent-600 dark:group-hover:text-accent-400  group-hover:translate-x-0.5 transition-transform">
-                {copy.vocabularySubtitle}
-              </p>
-              {/* <div className="hidden md:block"> */}
-              <div className="rounded-full p-1  transition-all">
-                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400 group-hover:translate-x-0.5 transition-transform" />
-              </div>
-              {/* </div> */}
-            </div>
-          </motion.div>
-        </Link>
-        <Link href="/observations">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            // className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
-            className="bg-white dark:bg-primary-950 rounded-2xl md:px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group w-full"
-          >
-            <div className="flex gap-1 md:gap-2 align-baseline">
-              <div className="rounded-full p-1 transition-all">
-                <Binoculars className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400group-hover:translate-x-0.5 transition-transform" />
-              </div>
-              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2 group-hover:text-accent-600 dark:group-hover:text-accent-400  group-hover:translate-x-0.5 transition-transform">
-                {copy.observationsSubtitle}
-              </p>
-              {/* <div className="hidden md:block"> */}
-              <div className="rounded-full p-1  transition-all">
-                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400 group-hover:translate-x-0.5 transition-transform" />
-              </div>
-              {/* </div> */}
-            </div>
-          </motion.div>
-        </Link>
-        <Link href="/select-avatar">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            // className="bg-gradient-to-r from-primary-600 to-accent-600 dark:from-primary-700 dark:to-accent-700 rounded-2xl px-8 pt-2 pb-1 text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group"
-            className="bg-white dark:bg-primary-950 rounded-2xl md:px-8 pt-2 pb-1 text-primary-900 dark:text-white hover:shadow-2xl transition-all duration-300 cursor-pointer group w-full"
-          >
-            <div className="flex gap-1 md:gap-2 align-baseline">
-              <div className="rounded-full p-1 transition-all">
-                <PawPrint className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400group-hover:translate-x-0.5 transition-transform" />
-              </div>
-              <p className=" text-primary-900/90 dark:text-white/90 text-sm md:text-lg md:mb-2 group-hover:text-accent-600 dark:group-hover:text-accent-400  group-hover:translate-x-0.5 transition-transform">
-                {copy.avatarSubtitle}
-              </p>
-              {/* <div className="hidden md:block"> */}
-              <div className="rounded-full p-1  transition-all">
-                <ChevronRight className="w-4 h-4 md:w-6 md:h-6 group-hover:text-accent-600 dark:group-hover:text-accent-400 group-hover:translate-x-0.5 transition-transform" />
-              </div>
-              {/* </div> */}
-            </div>
-          </motion.div>
-        </Link>
-      </div>
-
-      {/* Main Map Section */}
-      <div data-tour="eco-map" className="max-w-6xl mx-auto space-y-2">
-        <EcoMapProgressOceanZones
-          highlightedRegions={highlightedRegions}
-          completedUnitsByCountry={completedUnitsByCountry}
-          highlightedOceanZones={highlightedOceanZones}
-          completedUnitsByOcean={completedUnitsByOcean}
-          challenges={activeChallenges}
-          userChallengeProgress={userChallengeProgress}
-          currentWeeklyTheme={currentWeeklyTheme}
-          themeImages={themeImages}
-        />
-
-        {/* Wildlife Observations Map Section */}
-        <div className="px-4 mt-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold flex items-center gap-2 text-primary-800 dark:text-white">
-              <Camera className="w-5 h-5 text-accent-600 dark:text-accent-400" />
-              {lang === "pt" ? "Observações da Comunidade" : "Community Observations"}
-            </h2>
-            <Link
-              href="/observations"
-              className="text-sm text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 font-medium flex items-center gap-1"
-            >
-              {lang === "pt" ? "Ver todas" : "View all"}
-              <ChevronRight className="w-4 h-4" />
-            </Link>
-          </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            {lang === "pt"
-              ? "Explore observações de vida selvagem compartilhadas pela comunidade ao redor do mundo"
-              : "Explore wildlife observations shared by the community around the world"}
-          </p>
-          <ObservationMarkersMap
-            showFilters={true}
-            initialFilter="global"
-            maxMarkers={100}
-            className="shadow-lg"
-          />
-        </div>
-
-        {/* Ecosystem Progress Toggle Section (your existing code) */}
-        {/* <div className="px-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold flex items-center gap-2">
-              <Trophy className="w-5 h-5" />
-              Environmental Mastery Progress
-            </h2>
-            <button
-              onClick={() => setShowEcosystemProgress(!showEcosystemProgress)}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-            >
-              {showEcosystemProgress ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
-              {showEcosystemProgress ? "Hide" : "Show"} Progress Bars
-            </button>
-          </div>
-
-          <AnimatePresence>
-            {showEcosystemProgress && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"
-              >
-                {ecosystems.map((ecosystem) => {
-                  const currentLevel = getEcosystemLevel(ecosystem);
-                  const nextLevel = currentLevel
-                    ? ecosystem.levels[currentLevel.index + 1]
-                    : ecosystem.levels[0];
-
-                  return (
-                    <div
-                      key={ecosystem.id}
-                      className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow"
-                    >
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="text-xl">{ecosystem.icon}</span>
-                          <div>
-                            <h4 className="font-semibold text-sm">
-                              {ecosystem.name}
-                            </h4>
-                            <p className="text-xs text-gray-600 dark:text-gray-400">
-                              {ecosystem.description}
-                            </p>
-                          </div>
-                        </div>
-
-                        {currentLevel && (
-                          <div className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-1 rounded text-xs">
-                            {currentLevel.badge} {currentLevel.name}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span>
-                            Progress: {ecosystem.unitsCompleted} units
-                          </span>
-                          {nextLevel && (
-                            <span className="text-gray-500">
-                              Next: {nextLevel.requirement} units
-                            </span>
-                          )}
-                        </div>
-
-                        <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                          <div
-                            className={`h-2 rounded-full transition-all duration-500 bg-${ecosystem.color}-500`}
-                            style={{
-                              width: nextLevel
-                                ? `${Math.min(
-                                    100,
-                                    (ecosystem.unitsCompleted /
-                                      nextLevel.requirement) *
-                                      100
-                                  )}%`
-                                : "100%",
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div> */}
-
-        {/* Region Explorer Section */}
-        {/* <RegionExplorer
-          completedUnitsByCountry={completedUnitsByCountry}
-          completedUnitsByOcean={completedUnitsByOcean}
-          highlightedRegions={highlightedRegions}
-          highlightedOceanZones={highlightedOceanZones}
-          allAvailableRegions={allAvailableRegions}
-          allAvailableMarineZones={allAvailableMarineZones}
-        /> */}
-      </div>
-
-      {/* Enhanced Call to Action Section */}
-      {/* <div className="max-w-4xl mx-auto mt-12">
-        {completedUnitsCount > 0 ? (
-          <div className="text-center mt-6 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg mx-4">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <TrendingUp className="w-5 h-5 text-green-600" />
-              <h3 className="text-lg font-semibold">{copy.impactTitle}</h3>
-            </div>
-
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              {copy.impactSubtitle}
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href="/units"
-                className="inline-block bg-[#10b981] text-white px-6 py-3 rounded-lg hover:bg-[#059669] transition-colors font-medium"
-              >
-                {copy.continueLearning}
-              </Link>
-              <Link
-                href="/eco-news"
-                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-              >
-                Neptune&apos;s News
-              </Link>
-              {currentWeeklyTheme && (
-                <Link
-                  href={`/units?theme=${currentWeeklyTheme.id}`}
-                  className="inline-block bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-medium"
-                >
-                  {copy.exploreTheme}
-                </Link>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="text-center mt-6 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg mx-4">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <Lightbulb className="w-5 h-5 text-yellow-600" />
-              <h3 className="text-lg font-semibold">
-                Start Your Environmental Journey!
-              </h3>
-            </div>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Complete your first unit to see countries and marine ecosystems
-              light up on your eco-map!
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href="/units"
-                className="inline-block bg-[#10b981] text-white px-6 py-3 rounded-lg hover:bg-[#059669] transition-colors font-medium"
-              >
-                Start Learning
-              </Link>
-              {currentWeeklyTheme && (
-                <Link
-                  href={`/units?theme=${currentWeeklyTheme.id}`}
-                  className="inline-block bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-medium"
-                >
-                  {copy.exploreTheme}
-                </Link>
-              )}
-              <Link
-                href="/pricing"
-                className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium"
-              >
-                Go Premium
-              </Link>
-            </div>
-          </div>
-        )}
+        </p>
       </div> */}
+
+      {/* Wildlife Observations Map Section */}
+      <div className="px-4 mt-2">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold flex items-center gap-2 text-primary-800 dark:text-white">
+            <Camera className="w-5 h-5 text-accent-600 dark:text-accent-400" />
+            {lang === "pt"
+              ? "Observações da Comunidade"
+              : "Community Observations"}
+          </h2>
+          <Link
+            href="/observations"
+            className="text-sm text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 font-medium flex items-center gap-1"
+          >
+            {lang === "pt" ? "Ver todas" : "View all"}
+            <ChevronRight className="w-4 h-4" />
+          </Link>
+        </div>
+        {/* <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          {lang === "pt"
+            ? "Explore observações de vida selvagem compartilhadas pela comunidade ao redor do mundo"
+            : "Explore wildlife observations shared by the community around the world"}
+        </p> */}
+        <ObservationMarkersMap
+          showFilters={true}
+          initialFilter="global"
+          maxMarkers={100}
+          className="shadow-lg"
+        />
+      </div>
     </div>
   );
 }
