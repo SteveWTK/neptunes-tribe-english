@@ -22,57 +22,85 @@ const translations = {
   en: {
     steps: [
       {
-        target: '[data-tour="season-progress"]',
-        title: "Season Progress",
-        content:
-          "Track your progress through the current season and earn rewards!",
-        icon: Calendar,
-      },
-      {
         target: '[data-tour="species-avatar"]',
         title: "Your Conservation Journey",
-        content:
-          "This is your species companion! Track their IUCN recovery status and earn points to help them thrive.",
+        content: "Your adventure begins now — and this is your companion.",
         icon: Leaf,
       },
       {
-        target: '[data-tour="settings-link"]',
-        title: "Profile & Settings",
-        content: "Update your display name and manage your account here.",
-        icon: Settings,
+        target: '[data-tour="status-level"]',
+        title: "Your Mission>",
+        content:
+          "Your mission is to save it from extinction, bringing it to the Least Concern conservation status. Click on the acronym to see the full word.",
+        icon: Leaf,
       },
       {
         target: '[data-tour="quick-actions"]',
         title: "Quick Actions",
-        content: "Jump to Worlds for lessons or snap a wildlife observation.",
+        content: "And don't worry: you can achieve this goal in two ways.",
         icon: Zap,
       },
       {
-        target: '[data-tour="community-stats"]',
-        title: "Community Impact",
+        target: '[data-tour="eight-worlds"]',
+        title: "The 8 Worlds",
         content:
-          "See how the Habitat community is making a difference together.",
+          "Exploring the 8 worlds of the planet, from the Amazon Rainforest to the depths of the ocean.",
+        icon: Zap,
+      },
+      {
+        target: '[data-tour="observations"]',
+        title: "Observations",
+        content:
+          "Becoming a true naturalist, recording the living beings around you.",
+        icon: Zap,
+      },
+      {
+        target: '[data-tour="season-progress"]',
+        title: "Season Progress",
+        content:
+          "Stay alert! The changing of the seasons is crucial. Complete each stage on time to maximize your score.",
+        icon: Calendar,
+      },
+      {
+        target: '[data-tour="special-challenges"]',
+        title: "Special Challenges",
+        content:
+          "For extreme adventurers, special challenges offer the chance to earn extra points.",
         icon: Users,
       },
       {
-        target: '[data-tour="leaderboard"]',
-        title: "Top Naturalists",
-        content: "Compete with fellow naturalists and climb the rankings!",
+        target: '[data-tour="community"]',
+        title: "Community Impact",
+        content:
+          "And remember: you're not alone. Discover how the Habitat community is making a difference — together.",
         icon: Award,
       },
-      {
-        target: '[data-tour="recent-observations"]',
-        title: "Your Observations",
-        content: "Your wildlife photos appear here. Keep exploring!",
-        icon: Camera,
-      },
-      {
-        target: '[data-tour="wildlife-map"]',
-        title: "Wildlife Map",
-        content:
-          "See where you and others have spotted wildlife around the world.",
-        icon: MapPin,
-      },
+      // {
+      //   target: '[data-tour="community-stats"]',
+      //   title: "Community Impact",
+      //   content:
+      //     "See how the Habitat community is making a difference together.",
+      //   icon: Users,
+      // },
+      // {
+      //   target: '[data-tour="recent-observations"]',
+      //   title: "Your Observations",
+      //   content: "Your wildlife photos appear here. Keep exploring!",
+      //   icon: Camera,
+      // },
+      // {
+      //   target: '[data-tour="wildlife-map"]',
+      //   title: "Wildlife Map",
+      //   content:
+      //     "See where you and others have spotted wildlife around the world.",
+      //   icon: MapPin,
+      // },
+      // {
+      //   target: '[data-tour="settings-link"]',
+      //   title: "Profile & Settings",
+      //   content: "Update your display name and manage your account here.",
+      //   icon: Settings,
+      // },
     ],
     buttons: {
       next: "Next",
@@ -84,59 +112,87 @@ const translations = {
   pt: {
     steps: [
       {
-        target: '[data-tour="season-progress"]',
-        title: "Progresso da Temporada",
-        content:
-          "Acompanhe seu progresso na temporada atual e ganhe recompensas!",
-        icon: Calendar,
-      },
-      {
         target: '[data-tour="species-avatar"]',
         title: "Sua Jornada de Conservacao",
-        content:
-          "Este e seu companheiro de especie! Acompanhe seu status IUCN e ganhe pontos para ajuda-lo a prosperar.",
+        content: "Sua aventura começa agora — e este é o seu companheiro.",
         icon: Leaf,
       },
       {
-        target: '[data-tour="settings-link"]',
-        title: "Perfil e Configuracoes",
-        content: "Atualize seu nome e gerencie sua conta aqui.",
-        icon: Settings,
+        target: '[data-tour="status-level"]',
+        title: "Sua missão",
+        content:
+          "Sua missão é salvá-lo da extinção, levando-o ao estado de conservação Menos Preocupante (Least Concern). Clique nas siglas para ver a palavra completa.",
+        icon: Leaf,
       },
       {
         target: '[data-tour="quick-actions"]',
         title: "Acoes Rapidas",
         content:
-          "Va para Mundos para licoes ou registre uma observacao de vida selvagem.",
+          "E não se preocupe: você pode alcançar esse objetivo de duas formas.",
         icon: Zap,
       },
       {
-        target: '[data-tour="community-stats"]',
-        title: "Impacto da Comunidade",
+        target: '[data-tour="eight-worlds"]',
+        title: "Os 8 Mundos",
         content:
-          "Veja como a comunidade Habitat esta fazendo a diferenca juntos.",
+          "Explorando os 8 mundos do planeta, da Floresta Amazônica às profundezas do oceano.",
+        icon: Zap,
+      },
+      {
+        target: '[data-tour="observations"]',
+        title: "Observações",
+        content:
+          "Tornando-se um verdadeiro naturalista, registrando os seres vivos ao seu redor.",
+        icon: Zap,
+      },
+      {
+        target: '[data-tour="season-progress"]',
+        title: "Progresso da Temporada",
+        content:
+          "Fique atento! A passagem das estações do ano é decisiva. Complete cada etapa dentro do prazo para maximizar sua pontuação.",
+        icon: Calendar,
+      },
+      {
+        target: '[data-tour="special-challenges"]',
+        title: "Desafios Especiais",
+        content:
+          "Para aventureiros extremos, desafios especiais oferecem a chance de conquistar pontos extras. ",
         icon: Users,
       },
       {
-        target: '[data-tour="leaderboard"]',
-        title: "Top Naturalistas",
-        content: "Compita com outros naturalistas e suba no ranking!",
+        target: '[data-tour="community"]',
+        title: "Impacto da Comunidade",
+        content:
+          "E lembre-se: você não está sozinho. Conheça como a comunidade Habitat está fazendo a diferença — juntos.",
         icon: Award,
       },
-      {
-        target: '[data-tour="recent-observations"]',
-        title: "Suas Observacoes",
-        content:
-          "Suas fotos de vida selvagem aparecem aqui. Continue explorando!",
-        icon: Camera,
-      },
-      {
-        target: '[data-tour="wildlife-map"]',
-        title: "Mapa de Vida Selvagem",
-        content:
-          "Veja onde voce e outros avistaram vida selvagem ao redor do mundo.",
-        icon: MapPin,
-      },
+      // {
+      //   target: '[data-tour="community-stats"]',
+      //   title: "Impacto da Comunidade",
+      //   content:
+      //     "Veja como a comunidade Habitat esta fazendo a diferenca juntos.",
+      //   icon: Users,
+      // },
+      // {
+      //   target: '[data-tour="recent-observations"]',
+      //   title: "Suas Observacoes",
+      //   content:
+      //     "Suas fotos de vida selvagem aparecem aqui. Continue explorando!",
+      //   icon: Camera,
+      // },
+      // {
+      //   target: '[data-tour="wildlife-map"]',
+      //   title: "Mapa de Vida Selvagem",
+      //   content:
+      //     "Veja onde voce e outros avistaram vida selvagem ao redor do mundo.",
+      //   icon: MapPin,
+      // },
+      // {
+      //   target: '[data-tour="settings-link"]',
+      //   title: "Perfil e Configuracoes",
+      //   content: "Atualize seu nome e gerencie sua conta aqui.",
+      //   icon: Settings,
+      // },
     ],
     buttons: {
       next: "Proximo",

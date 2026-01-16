@@ -1,10 +1,14 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { MapPin, Crosshair, Search, X, Loader2 } from "lucide-react";
+import { MapPin, Crosshair, Search, X, Loader2, MapPinOff } from "lucide-react";
 
 // Mapbox GL JS needs to be loaded dynamically to avoid SSR issues
 let mapboxgl = null;
+
+// Default center: Brasilia, Brazil
+const DEFAULT_CENTER = [-47.8822, -15.7942];
+const DEFAULT_ZOOM = 4;
 
 export default function LocationPicker({
   onLocationSelect,
@@ -23,6 +27,9 @@ export default function LocationPicker({
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [gettingCurrentLocation, setGettingCurrentLocation] = useState(false);
+  const [locationPermission, setLocationPermission] = useState("prompt"); // 'prompt', 'granted', 'denied'
+  const [showLocationPrompt, setShowLocationPrompt] = useState(false);
+  const [initialLocationAttempted, setInitialLocationAttempted] = useState(false);
 
   // Load Mapbox GL JS dynamically
   useEffect(() => {
@@ -58,16 +65,16 @@ export default function LocationPicker({
     if (!mapLoaded || !mapContainer.current || map.current) return;
 
     try {
-      // Default center: Brazil
+      // Use initial location if provided, otherwise use default
       const defaultCenter = initialLocation
         ? [initialLocation.lng, initialLocation.lat]
-        : [-47.8822, -15.7942];
+        : DEFAULT_CENTER;
 
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/outdoors-v12", // Nature-focused style
         center: defaultCenter,
-        zoom: initialLocation ? 12 : 4,
+        zoom: initialLocation ? 12 : DEFAULT_ZOOM,
       });
 
       // Add navigation controls
@@ -91,6 +98,9 @@ export default function LocationPicker({
         // If initial location provided, add marker
         if (initialLocation) {
           addMarker(initialLocation.lat, initialLocation.lng);
+        } else {
+          // No initial location - try to get user's current location automatically
+          requestUserLocation();
         }
       });
 
@@ -202,6 +212,83 @@ export default function LocationPicker({
     },
     [addMarker, onLocationSelect]
   );
+
+  // Request user's location automatically when map loads
+  const requestUserLocation = useCallback(async () => {
+    // Don't request again if already attempted
+    if (initialLocationAttempted) return;
+    setInitialLocationAttempted(true);
+
+    // Check if geolocation is supported
+    if (!navigator.geolocation) {
+      console.log("Geolocation not supported");
+      setShowLocationPrompt(true);
+      return;
+    }
+
+    // Check permission status if available (modern browsers)
+    if (navigator.permissions) {
+      try {
+        const permissionStatus = await navigator.permissions.query({ name: "geolocation" });
+        setLocationPermission(permissionStatus.state);
+
+        // Listen for permission changes
+        permissionStatus.onchange = () => {
+          setLocationPermission(permissionStatus.state);
+        };
+
+        // If permission already denied, show prompt to enable manually
+        if (permissionStatus.state === "denied") {
+          setShowLocationPrompt(true);
+          return;
+        }
+      } catch (err) {
+        // Permission API not supported, continue with geolocation request
+        console.log("Permissions API not supported, trying geolocation directly");
+      }
+    }
+
+    // Try to get current location
+    setGettingCurrentLocation(true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocationPermission("granted");
+
+        // Fly to user's location
+        if (map.current) {
+          map.current.flyTo({
+            center: [longitude, latitude],
+            zoom: 14,
+            essential: true,
+          });
+        }
+
+        // Select this location
+        handleLocationSelect(latitude, longitude);
+        setGettingCurrentLocation(false);
+      },
+      (err) => {
+        console.log("Geolocation error:", err.code, err.message);
+        setGettingCurrentLocation(false);
+
+        if (err.code === 1) {
+          // Permission denied
+          setLocationPermission("denied");
+          setShowLocationPrompt(true);
+        } else {
+          // Other error (timeout, position unavailable)
+          setShowLocationPrompt(true);
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000, // Accept cached position up to 1 minute old
+      }
+    );
+  }, [initialLocationAttempted, handleLocationSelect]);
 
   // Get current location
   const getCurrentLocation = useCallback(() => {
@@ -327,7 +414,7 @@ export default function LocationPicker({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search for a location..."
-            className="w-full px-4 py-2 pl-10 pr-10 bg-white rounded-lg shadow-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
+            className="w-full px-4 py-2 pl-10 pr-10 bg-white text-gray-800 rounded-lg shadow-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
           />
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
           {searchQuery && (
@@ -384,6 +471,17 @@ export default function LocationPicker({
         </div>
       )}
 
+      {/* Getting location overlay */}
+      {!loading && gettingCurrentLocation && !selectedLocation && (
+        <div className="absolute inset-0 bg-white/80 rounded-lg flex items-center justify-center z-20">
+          <div className="text-center">
+            <Crosshair className="w-8 h-8 animate-pulse mx-auto text-green-600 mb-2" />
+            <p className="text-sm text-gray-700 font-medium">Detecting your location...</p>
+            <p className="text-xs text-gray-500 mt-1">Please allow location access when prompted</p>
+          </div>
+        </div>
+      )}
+
       {/* Controls */}
       <div className="absolute bottom-3 right-3 z-10 flex flex-col gap-2">
         {/* Get current location button */}
@@ -427,8 +525,33 @@ export default function LocationPicker({
         </div>
       )}
 
+      {/* Location Permission Prompt */}
+      {showLocationPrompt && !selectedLocation && !loading && (
+        <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+          <div className="flex items-start gap-2">
+            <MapPinOff className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-medium text-amber-800 mb-1">
+                Location access not available
+              </p>
+              <p className="text-sm text-amber-700">
+                {locationPermission === "denied"
+                  ? "You've denied location access. To use your current location, please enable it in your browser settings."
+                  : "We couldn't detect your location automatically. Please select a location manually on the map or use the search bar."}
+              </p>
+              <button
+                onClick={() => setShowLocationPrompt(false)}
+                className="mt-2 text-xs text-amber-600 hover:text-amber-800 underline"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Instructions */}
-      {!selectedLocation && !loading && (
+      {!selectedLocation && !loading && !showLocationPrompt && (
         <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-sm text-blue-700">
             <strong>Tip:</strong> Click on the map to select where you made your

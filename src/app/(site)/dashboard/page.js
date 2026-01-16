@@ -216,7 +216,6 @@ export default function DashboardPage() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* 2. Species Avatar Hero Section - Combined welcome + species status */}
         <motion.div
-          data-tour="species-avatar"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -232,7 +231,10 @@ export default function DashboardPage() {
               <div className="px-6 py-6 lg:py-3 text-white">
                 <div className="flex flex-col lg:flex-row lg:items-center gap-6">
                   {/* Avatar and Welcome */}
-                  <div className="flex items-center gap-4 flex-1">
+                  <div
+                    data-tour="species-avatar"
+                    className="flex items-center gap-4 flex-1"
+                  >
                     <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-3 border-white/50 shadow-lg">
                       {journey.species_avatar?.avatar_image_url ? (
                         <img
@@ -296,7 +298,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="mt-6">
+                <div data-tour="status-level" className="mt-6">
                   <div className="flex justify-between text-xs text-white/80 mb-2">
                     <span>Recovery Progress</span>
                     {journey.next_level_threshold && (
@@ -350,7 +352,13 @@ export default function DashboardPage() {
                           <div className="text-center mt-1">
                             {/* Mobile view - clickable code with tooltip */}
                             <button
-                              onClick={() => setActiveIucnTooltip(activeIucnTooltip === level.code ? null : level.code)}
+                              onClick={() =>
+                                setActiveIucnTooltip(
+                                  activeIucnTooltip === level.code
+                                    ? null
+                                    : level.code
+                                )
+                              }
                               className={`md:hidden text-[10px] font-medium ${
                                 isPast ? "text-white/50" : "text-white/90"
                               } hover:text-white transition-colors`}
@@ -364,7 +372,9 @@ export default function DashboardPage() {
                               }`}
                             >
                               {level.label.split(" ").map((word, wi) => (
-                                <span key={wi} className="block">{word}</span>
+                                <span key={wi} className="block">
+                                  {word}
+                                </span>
                               ))}
                             </span>
                           </div>
@@ -454,6 +464,7 @@ export default function DashboardPage() {
           className="grid grid-cols-2 gap-4 mb-8"
         >
           <Link
+            data-tour="eight-worlds"
             href="/worlds"
             className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-lg transition-all hover:scale-[1.02] flex items-center gap-4 group"
           >
@@ -470,6 +481,7 @@ export default function DashboardPage() {
             </div>
           </Link>
           <Link
+            data-tour="observations"
             href="/observations/create"
             className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-lg transition-all hover:scale-[1.02] flex items-center gap-4 group"
           >
@@ -490,6 +502,7 @@ export default function DashboardPage() {
         {/* 4. Active Bonus Challenges (when there is one) */}
         {unpredictableChallenges.length > 0 && (
           <motion.div
+            data-tour="special-challenges"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
@@ -585,7 +598,10 @@ export default function DashboardPage() {
         )}
 
         {/* Two-column layout for stats on desktop */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div
+          data-tour="community"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8"
+        >
           {/* 5. Community Stats */}
           <motion.div
             data-tour="community-stats"

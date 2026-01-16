@@ -22,8 +22,8 @@ import WordSnakeOnboarding from "./onboarding/WordSnakeOnboarding";
  */
 
 const GRID_SIZE = 20;
-const TILE = 25;
-const CANVAS = GRID_SIZE * TILE;
+const MAX_CANVAS = 500; // Maximum canvas size on large screens
+const MIN_CANVAS = 280; // Minimum playable canvas size
 const BASE_SPEED = 200; // Starting speed (higher = slower)
 const SPEED_DECREASE_PER_WORD = 15; // Speed increase per word completed
 
@@ -34,12 +34,37 @@ export default function WordSnakeLesson({
 }) {
   const canvasRef = useRef(null);
   const particlesRef = useRef(null);
+  const containerRef = useRef(null);
 
   // Touch tracking for swipe gestures
   const touchStartRef = useRef(null);
 
+  // Responsive canvas sizing
+  const [canvasSize, setCanvasSize] = useState(MAX_CANVAS);
+  const tileSize = canvasSize / GRID_SIZE;
+
   // Onboarding state
   const [showOnboarding, setShowOnboarding] = useState(false);
+
+  // Responsive canvas sizing - calculate based on screen width
+  useEffect(() => {
+    const calculateCanvasSize = () => {
+      // Get available width (screen width minus margins)
+      const margin = 32; // 16px margin on each side
+      const availableWidth = window.innerWidth - margin;
+
+      // Clamp between MIN_CANVAS and MAX_CANVAS
+      const newSize = Math.max(MIN_CANVAS, Math.min(MAX_CANVAS, availableWidth));
+      setCanvasSize(newSize);
+    };
+
+    // Calculate on mount
+    calculateCanvasSize();
+
+    // Recalculate on window resize
+    window.addEventListener("resize", calculateCanvasSize);
+    return () => window.removeEventListener("resize", calculateCanvasSize);
+  }, []);
 
   // Check if user has seen onboarding on component mount
   useEffect(() => {
@@ -527,16 +552,18 @@ export default function WordSnakeLesson({
   };
 
   // Confetti effect
-  const createConfetti = () => {
+  const createConfetti = useCallback(() => {
     const canvas = particlesRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
     const particles = [];
+    const currentCanvasSize = canvasSize;
+
     for (let i = 0; i < 50; i++) {
       particles.push({
-        x: CANVAS / 2,
-        y: CANVAS / 2,
+        x: currentCanvasSize / 2,
+        y: currentCanvasSize / 2,
         vx: (Math.random() - 0.5) * 10,
         vy: (Math.random() - 0.5) * 10,
         color: `hsl(${Math.random() * 360}, 70%, 60%)`,
@@ -545,7 +572,7 @@ export default function WordSnakeLesson({
     }
 
     const animate = () => {
-      ctx.clearRect(0, 0, CANVAS, CANVAS);
+      ctx.clearRect(0, 0, currentCanvasSize, currentCanvasSize);
       particles.forEach((p, i) => {
         p.x += p.vx;
         p.y += p.vy;
@@ -567,7 +594,7 @@ export default function WordSnakeLesson({
     };
 
     animate();
-  };
+  }, [canvasSize]);
 
   // Canvas rendering
   useEffect(() => {
@@ -575,98 +602,103 @@ export default function WordSnakeLesson({
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, CANVAS, CANVAS);
+    ctx.clearRect(0, 0, canvasSize, canvasSize);
+
+    // Calculate font sizes based on tile size (scale proportionally)
+    const letterFontSize = Math.max(10, Math.round(tileSize * 0.56));
+    const eraserFontSize = Math.max(12, Math.round(tileSize * 0.64));
+    const bodyFontSize = Math.max(8, Math.round(tileSize * 0.48));
+    const eyeSize = Math.max(2, Math.round(tileSize * 0.12));
+    const eyeOffset = Math.round(tileSize * 0.24);
 
     // Draw grid background (subtle)
     ctx.strokeStyle = "#e5e7eb20";
     for (let i = 0; i <= GRID_SIZE; i++) {
       ctx.beginPath();
-      ctx.moveTo(i * TILE, 0);
-      ctx.lineTo(i * TILE, CANVAS);
+      ctx.moveTo(i * tileSize, 0);
+      ctx.lineTo(i * tileSize, canvasSize);
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(0, i * TILE);
-      ctx.lineTo(CANVAS, i * TILE);
+      ctx.moveTo(0, i * tileSize);
+      ctx.lineTo(canvasSize, i * tileSize);
       ctx.stroke();
     }
 
     // Draw letters
     letters.forEach((letter) => {
-      const x = letter.x * TILE;
-      const y = letter.y * TILE;
+      const x = letter.x * tileSize;
+      const y = letter.y * tileSize;
 
       if (letter.isEraser) {
         // Eraser power-up (purple gradient)
         const gradient = ctx.createRadialGradient(
-          x + TILE / 2,
-          y + TILE / 2,
+          x + tileSize / 2,
+          y + tileSize / 2,
           2,
-          x + TILE / 2,
-          y + TILE / 2,
-          TILE / 2
+          x + tileSize / 2,
+          y + tileSize / 2,
+          tileSize / 2
         );
         gradient.addColorStop(0, "#a855f7");
         gradient.addColorStop(1, "#7c3aed");
         ctx.fillStyle = gradient;
-        ctx.fillRect(x + 2, y + 2, TILE - 4, TILE - 4);
+        ctx.fillRect(x + 2, y + 2, tileSize - 4, tileSize - 4);
 
         ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 16px Arial";
+        ctx.font = `bold ${eraserFontSize}px Arial`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(letter.letter, x + TILE / 2, y + TILE / 2);
+        ctx.fillText(letter.letter, x + tileSize / 2, y + tileSize / 2);
       } else {
         // Letter tile (wooden style)
-        const gradient = ctx.createLinearGradient(x, y, x, y + TILE);
+        const gradient = ctx.createLinearGradient(x, y, x, y + tileSize);
         gradient.addColorStop(0, letter.isCorrect ? "#d4a574" : "#999");
         gradient.addColorStop(1, letter.isCorrect ? "#b8885d" : "#666");
         ctx.fillStyle = gradient;
-        ctx.fillRect(x + 2, y + 2, TILE - 4, TILE - 4);
+        ctx.fillRect(x + 2, y + 2, tileSize - 4, tileSize - 4);
 
         // Letter shadow
         ctx.fillStyle = "#00000033";
-        ctx.font = "bold 14px monospace";
+        ctx.font = `bold ${letterFontSize}px monospace`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(letter.letter, x + TILE / 2 + 1, y + TILE / 2 + 1);
+        ctx.fillText(letter.letter, x + tileSize / 2 + 1, y + tileSize / 2 + 1);
 
         // Letter
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(letter.letter, x + TILE / 2, y + TILE / 2);
+        ctx.fillText(letter.letter, x + tileSize / 2, y + tileSize / 2);
       }
     });
 
     // Draw snake
     snake.forEach((segment, i) => {
-      const x = segment.x * TILE;
-      const y = segment.y * TILE;
+      const x = segment.x * tileSize;
+      const y = segment.y * tileSize;
 
       if (i === 0) {
         // Head (teal)
         ctx.fillStyle = "#14b8a6";
-        ctx.fillRect(x + 1, y + 1, TILE - 2, TILE - 2);
+        ctx.fillRect(x + 1, y + 1, tileSize - 2, tileSize - 2);
 
         // Eyes
         ctx.fillStyle = "#ffffff";
-        const eyeSize = 3;
-        const eyeOffset = 6;
 
         if (direction.x === 1) {
           // Right
-          ctx.fillRect(x + TILE - eyeOffset, y + 5, eyeSize, eyeSize);
-          ctx.fillRect(x + TILE - eyeOffset, y + TILE - 8, eyeSize, eyeSize);
+          ctx.fillRect(x + tileSize - eyeOffset, y + eyeOffset, eyeSize, eyeSize);
+          ctx.fillRect(x + tileSize - eyeOffset, y + tileSize - eyeOffset - eyeSize, eyeSize, eyeSize);
         } else if (direction.x === -1) {
           // Left
-          ctx.fillRect(x + eyeOffset - eyeSize, y + 5, eyeSize, eyeSize);
-          ctx.fillRect(x + eyeOffset - eyeSize, y + TILE - 8, eyeSize, eyeSize);
+          ctx.fillRect(x + eyeOffset - eyeSize, y + eyeOffset, eyeSize, eyeSize);
+          ctx.fillRect(x + eyeOffset - eyeSize, y + tileSize - eyeOffset - eyeSize, eyeSize, eyeSize);
         } else if (direction.y === 1) {
           // Down
-          ctx.fillRect(x + 5, y + TILE - eyeOffset, eyeSize, eyeSize);
-          ctx.fillRect(x + TILE - 8, y + TILE - eyeOffset, eyeSize, eyeSize);
+          ctx.fillRect(x + eyeOffset, y + tileSize - eyeOffset, eyeSize, eyeSize);
+          ctx.fillRect(x + tileSize - eyeOffset - eyeSize, y + tileSize - eyeOffset, eyeSize, eyeSize);
         } else {
           // Up or stationary
-          ctx.fillRect(x + 5, y + eyeOffset - eyeSize, eyeSize, eyeSize);
-          ctx.fillRect(x + TILE - 8, y + eyeOffset - eyeSize, eyeSize, eyeSize);
+          ctx.fillRect(x + eyeOffset, y + eyeOffset - eyeSize, eyeSize, eyeSize);
+          ctx.fillRect(x + tileSize - eyeOffset - eyeSize, y + eyeOffset - eyeSize, eyeSize, eyeSize);
         }
       } else {
         // Body segments showing collected letters
@@ -675,18 +707,18 @@ export default function WordSnakeLesson({
         const letter = displayWord[letterIndex] || "";
 
         ctx.fillStyle = "#0d9488";
-        ctx.fillRect(x + 2, y + 2, TILE - 4, TILE - 4);
+        ctx.fillRect(x + 2, y + 2, tileSize - 4, tileSize - 4);
 
         if (letter) {
           ctx.fillStyle = "#ffffff";
-          ctx.font = "bold 12px monospace";
+          ctx.font = `bold ${bodyFontSize}px monospace`;
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          ctx.fillText(letter, x + TILE / 2, y + TILE / 2);
+          ctx.fillText(letter, x + tileSize / 2, y + tileSize / 2);
         }
       }
     });
-  }, [snake, letters, direction, collectedWord]);
+  }, [snake, letters, direction, collectedWord, canvasSize, tileSize]);
 
   // Touch gesture handlers for swipe controls
   const handleTouchStart = (e) => {
@@ -908,13 +940,19 @@ export default function WordSnakeLesson({
 
         {/* Game Canvas */}
         <div
-          className="relative"
-          style={{ touchAction: "none", overscrollBehavior: "none" }}
+          ref={containerRef}
+          className="relative mx-auto"
+          style={{
+            touchAction: "none",
+            overscrollBehavior: "none",
+            width: canvasSize,
+            height: canvasSize,
+          }}
         >
           <canvas
             ref={canvasRef}
-            width={CANVAS}
-            height={CANVAS}
+            width={canvasSize}
+            height={canvasSize}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -928,8 +966,8 @@ export default function WordSnakeLesson({
           />
           <canvas
             ref={particlesRef}
-            width={CANVAS}
-            height={CANVAS}
+            width={canvasSize}
+            height={canvasSize}
             className="absolute top-0 left-0 pointer-events-none rounded-2xl"
           />
 

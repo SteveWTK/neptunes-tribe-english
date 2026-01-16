@@ -174,7 +174,7 @@ export default function ObservationMarkersMap({
         background: ${obs.isOwn ? "#8b5cf6" : "#22c55e"};
         border-radius: 50%;
         border: 2px solid white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        box-shadow: 0 2px 8px #0000004d;
         cursor: pointer;
         display: flex;
         align-items: center;

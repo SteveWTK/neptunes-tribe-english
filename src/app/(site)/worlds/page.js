@@ -111,14 +111,14 @@ function WorldsContent() {
             </p>
 
             {/* Level Indicator - Center */}
-            <div className="flex justify-center mt-4 mb-2">
+            {/* <div className="flex justify-center mt-4 mb-2">
               <LevelIndicator variant="badge" />
-            </div>
+            </div> */}
 
-            <RestartOnboardingButton
+            {/* <RestartOnboardingButton
               variant="icon"
               className="absolute bottom-0 right-0"
-            />
+            /> */}
 
             {/* Quick Stats */}
             {/* <div className="flex flex-wrap justify-center gap-6 mt-8">

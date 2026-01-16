@@ -164,7 +164,7 @@ export default function SeasonProgressBar({ lang = "en" }) {
                 <span
                   className={`text-sm ${seasonConfig.accentColor} truncate`}
                 >
-                  World {progress.currentWorldIndex + 1}: {worldName}
+                  Complete World {progress.currentWorldIndex + 1}: {worldName}
                 </span>
               </div>
             </div>
