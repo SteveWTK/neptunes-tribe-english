@@ -23,7 +23,7 @@ import WordSnakeOnboarding from "./onboarding/WordSnakeOnboarding";
 
 const GRID_SIZE = 20;
 const MAX_CANVAS = 500; // Maximum canvas size on large screens
-const MIN_CANVAS = 280; // Minimum playable canvas size
+const MIN_CANVAS = 260; // Minimum playable canvas size
 const BASE_SPEED = 200; // Starting speed (higher = slower)
 const SPEED_DECREASE_PER_WORD = 15; // Speed increase per word completed
 
@@ -49,12 +49,18 @@ export default function WordSnakeLesson({
   // Responsive canvas sizing - calculate based on screen width
   useEffect(() => {
     const calculateCanvasSize = () => {
-      // Get available width (screen width minus margins)
-      const margin = 32; // 16px margin on each side
-      const availableWidth = window.innerWidth - margin;
+      // Get available width accounting for:
+      // - Parent container padding: p-6 = 24px each side = 48px
+      // - Small buffer for visual margin: 8px each side = 16px
+      // Total: 64px
+      const totalMargin = 64;
+      const availableWidth = window.innerWidth - totalMargin;
 
       // Clamp between MIN_CANVAS and MAX_CANVAS
-      const newSize = Math.max(MIN_CANVAS, Math.min(MAX_CANVAS, availableWidth));
+      const newSize = Math.max(
+        MIN_CANVAS,
+        Math.min(MAX_CANVAS, availableWidth)
+      );
       setCanvasSize(newSize);
     };
 
@@ -685,20 +691,60 @@ export default function WordSnakeLesson({
 
         if (direction.x === 1) {
           // Right
-          ctx.fillRect(x + tileSize - eyeOffset, y + eyeOffset, eyeSize, eyeSize);
-          ctx.fillRect(x + tileSize - eyeOffset, y + tileSize - eyeOffset - eyeSize, eyeSize, eyeSize);
+          ctx.fillRect(
+            x + tileSize - eyeOffset,
+            y + eyeOffset,
+            eyeSize,
+            eyeSize
+          );
+          ctx.fillRect(
+            x + tileSize - eyeOffset,
+            y + tileSize - eyeOffset - eyeSize,
+            eyeSize,
+            eyeSize
+          );
         } else if (direction.x === -1) {
           // Left
-          ctx.fillRect(x + eyeOffset - eyeSize, y + eyeOffset, eyeSize, eyeSize);
-          ctx.fillRect(x + eyeOffset - eyeSize, y + tileSize - eyeOffset - eyeSize, eyeSize, eyeSize);
+          ctx.fillRect(
+            x + eyeOffset - eyeSize,
+            y + eyeOffset,
+            eyeSize,
+            eyeSize
+          );
+          ctx.fillRect(
+            x + eyeOffset - eyeSize,
+            y + tileSize - eyeOffset - eyeSize,
+            eyeSize,
+            eyeSize
+          );
         } else if (direction.y === 1) {
           // Down
-          ctx.fillRect(x + eyeOffset, y + tileSize - eyeOffset, eyeSize, eyeSize);
-          ctx.fillRect(x + tileSize - eyeOffset - eyeSize, y + tileSize - eyeOffset, eyeSize, eyeSize);
+          ctx.fillRect(
+            x + eyeOffset,
+            y + tileSize - eyeOffset,
+            eyeSize,
+            eyeSize
+          );
+          ctx.fillRect(
+            x + tileSize - eyeOffset - eyeSize,
+            y + tileSize - eyeOffset,
+            eyeSize,
+            eyeSize
+          );
         } else {
           // Up or stationary
-          ctx.fillRect(x + eyeOffset, y + eyeOffset - eyeSize, eyeSize, eyeSize);
-          ctx.fillRect(x + tileSize - eyeOffset - eyeSize, y + eyeOffset - eyeSize, eyeSize, eyeSize);
+          ctx.fillRect(
+            x + eyeOffset,
+            y + eyeOffset - eyeSize,
+            eyeSize,
+            eyeSize
+          );
+          ctx.fillRect(
+            x + tileSize - eyeOffset - eyeSize,
+            y + eyeOffset - eyeSize,
+            eyeSize,
+            eyeSize
+          );
         }
       } else {
         // Body segments showing collected letters
@@ -941,7 +987,7 @@ export default function WordSnakeLesson({
         {/* Game Canvas */}
         <div
           ref={containerRef}
-          className="relative mx-auto"
+          className="relative mx-auto justify-center"
           style={{
             touchAction: "none",
             overscrollBehavior: "none",
