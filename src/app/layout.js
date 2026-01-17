@@ -1,4 +1,3 @@
-// "use client";
 // app\layout.js
 
 import "@/app/styles/globals.css";
@@ -6,15 +5,12 @@ import "@/app/styles/globals.css";
 import { Orbitron } from "next/font/google";
 import { Roboto_Slab } from "next/font/google";
 import { Josefin_Sans } from "next/font/google";
-// import { useEffect, useState } from "react";
 
 import { StyledComponentsRegistry } from "@/lib/StyledComponentsRegistry";
 import { Toaster } from "sonner";
 import { LanguageProvider } from "@/lib/contexts/LanguageContext";
 import { DarkModeProvider } from "@/lib/contexts/DarkModeContext";
 import { SessionProvider } from "next-auth/react";
-import { OnboardingProvider as NewOnboardingProvider } from "@/components/onboarding/OnboardingProvider";
-import { OnboardingProvider as LegacyOnboardingProvider } from "@/lib/contexts/OnboardingContext";
 import { AuthProvider } from "@/components/AuthProvider";
 
 const orbitron = Orbitron({
@@ -35,8 +31,6 @@ const josefin = Josefin_Sans({
   variable: "--font-josefin-sans",
 });
 
-<meta name="apple-mobile-web-app-title" content="Habitat English" />;
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -46,9 +40,7 @@ export default function RootLayout({ children }) {
             <AuthProvider>
               <LanguageProvider>
                 <DarkModeProvider>
-                  <LegacyOnboardingProvider>
-                    <NewOnboardingProvider>{children}</NewOnboardingProvider>
-                  </LegacyOnboardingProvider>
+                  {children}
                 </DarkModeProvider>
               </LanguageProvider>
             </AuthProvider>

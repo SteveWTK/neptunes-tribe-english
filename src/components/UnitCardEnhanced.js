@@ -3,7 +3,6 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
-import { useOnboarding } from "@/lib/contexts/OnboardingContext";
 import {
   Crown,
   Lock,
@@ -22,7 +21,6 @@ const UnitCardEnhanced = ({
   index = 0,
 }) => {
   const { lang } = useLanguage();
-  const { completeStep } = useOnboarding();
 
   const t = {
     en: {
@@ -66,11 +64,6 @@ const UnitCardEnhanced = ({
   };
 
   const themeBgClass = getThemeBgClass(unit.theme);
-
-  // Handle unit click with onboarding tracking
-  const handleUnitClick = () => {
-    completeStep("hasTriedUnit");
-  };
 
   return (
     <motion.div
@@ -178,7 +171,6 @@ const UnitCardEnhanced = ({
           {hasAccess ? (
             <Link
               href={`/units/${unit.id}`}
-              onClick={handleUnitClick}
               className="block w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white text-center py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
             >
               <div className="flex items-center justify-center gap-2">
