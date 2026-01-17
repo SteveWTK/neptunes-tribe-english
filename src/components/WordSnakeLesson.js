@@ -39,21 +39,27 @@ export default function WordSnakeLesson({
   // Touch tracking for swipe gestures
   const touchStartRef = useRef(null);
 
+  // Calculate initial canvas size immediately (not in useEffect) to avoid flash
+  const getInitialCanvasSize = () => {
+    if (typeof window === "undefined") return MIN_CANVAS;
+    // Account for parent padding (p-6 = 48px) + lesson page padding + buffer
+    const totalMargin = 80;
+    const availableWidth = window.innerWidth - totalMargin;
+    return Math.max(MIN_CANVAS, Math.min(MAX_CANVAS, availableWidth));
+  };
+
   // Responsive canvas sizing
-  const [canvasSize, setCanvasSize] = useState(MAX_CANVAS);
+  const [canvasSize, setCanvasSize] = useState(getInitialCanvasSize);
   const tileSize = canvasSize / GRID_SIZE;
 
   // Onboarding state
   const [showOnboarding, setShowOnboarding] = useState(false);
 
-  // Responsive canvas sizing - calculate based on screen width
+  // Responsive canvas sizing - recalculate on resize
   useEffect(() => {
     const calculateCanvasSize = () => {
-      // Get available width accounting for:
-      // - Parent container padding: p-6 = 24px each side = 48px
-      // - Small buffer for visual margin: 8px each side = 16px
-      // Total: 64px
-      const totalMargin = 64;
+      // Account for parent padding (p-6 = 48px) + lesson page padding + buffer
+      const totalMargin = 80;
       const availableWidth = window.innerWidth - totalMargin;
 
       // Clamp between MIN_CANVAS and MAX_CANVAS
@@ -63,9 +69,6 @@ export default function WordSnakeLesson({
       );
       setCanvasSize(newSize);
     };
-
-    // Calculate on mount
-    calculateCanvasSize();
 
     // Recalculate on window resize
     window.addEventListener("resize", calculateCanvasSize);
@@ -987,12 +990,13 @@ export default function WordSnakeLesson({
         {/* Game Canvas */}
         <div
           ref={containerRef}
-          className="relative mx-auto justify-center"
+          className="relative mx-auto"
           style={{
             touchAction: "none",
             overscrollBehavior: "none",
             width: canvasSize,
             height: canvasSize,
+            maxWidth: "calc(100vw - 80px)", // Safety net to prevent overflow
           }}
         >
           <canvas
