@@ -378,7 +378,7 @@ function WorldDetailContent() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm">
               <button
-                onClick={() => router.push("/eco-map")}
+                onClick={() => router.push("/dashboard")}
                 className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
               >
                 <Home className="w-4 h-4" />

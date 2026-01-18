@@ -14,6 +14,7 @@ import {
   Binoculars,
   PawPrint,
   Camera,
+  ChevronLeft,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -293,6 +294,7 @@ export default function EcoMapClient({
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
+
         {/* <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
           {lang === "pt"
             ? "Explore observações de vida selvagem compartilhadas pela comunidade ao redor do mundo"

@@ -9,6 +9,7 @@ import {
   Waves,
   MapPin,
   ChevronRight,
+  ChevronLeft,
   Award,
   BookOpen,
   Sparkles,
@@ -19,8 +20,8 @@ import { getAllWorlds } from "@/data/worldsConfig";
 import { translateWorlds } from "@/utils/i18n";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
-import RestartOnboardingButton from "@/components/onboarding/RestartOnboardingButton";
 import LevelIndicator from "@/components/LevelIndicator";
+import Link from "next/link";
 
 // Icon mapping for Lucide icons
 const ICON_MAP = {
@@ -106,9 +107,14 @@ function WorldsContent() {
                 Explore Our Planet
               </h1>
             </div>
-            <p className="text-xl text-primary-950/90 dark:text-white/90 max-w-3xl mx-auto mb-2">
+            <p className="text-xl text-primary-950/90 dark:text-white/90 max-w-3xl mx-auto mb-4">
               Journey through 8 incredible Worlds.
             </p>
+
+            <Link href="/dashboard" className="inline-flex items-center gap-2">
+              <ChevronLeft className="w-4 h-4" />
+              Back to Home
+            </Link>
 
             {/* Level Indicator - Center */}
             {/* <div className="flex justify-center mt-4 mb-2">

@@ -72,16 +72,23 @@ const translations = {
         target: '[data-tour="community"]',
         title: "Community Impact",
         content:
-          "And remember: you're not alone. Discover how the Habitat community is making a difference — together.",
+          "And remember: you're not alone. Discover how the Habitat community is making a difference — together. Access statistics, recent observations, and the global map below.",
         icon: Award,
       },
-      // {
-      //   target: '[data-tour="community-stats"]',
-      //   title: "Community Impact",
-      //   content:
-      //     "See how the Habitat community is making a difference together.",
-      //   icon: Users,
-      // },
+      {
+        target: '[data-tour="settings-link"]',
+        title: "Profile & Settings",
+        content:
+          "Manage your account and restart this tour at anytime in your profile settings here",
+        icon: Settings,
+      },
+      {
+        target: '[data-tour="community-stats"]',
+        title: "Save Habitat to your Home Screen",
+        content:
+          "And, like any high-level explorer, be practical: save the platform to your home screen for easy access. Have a great journey! 🌍✈️",
+        icon: Users,
+      },
       // {
       //   target: '[data-tour="recent-observations"]',
       //   title: "Your Observations",
@@ -94,12 +101,6 @@ const translations = {
       //   content:
       //     "See where you and others have spotted wildlife around the world.",
       //   icon: MapPin,
-      // },
-      // {
-      //   target: '[data-tour="settings-link"]',
-      //   title: "Profile & Settings",
-      //   content: "Update your display name and manage your account here.",
-      //   icon: Settings,
       // },
     ],
     buttons: {
@@ -163,16 +164,23 @@ const translations = {
         target: '[data-tour="community"]',
         title: "Impacto da Comunidade",
         content:
-          "E lembre-se: você não está sozinho. Conheça como a comunidade Habitat está fazendo a diferença — juntos.",
+          "E lembre-se: você não está sozinho. Conheça como a comunidade Habitat está fazendo a diferença — juntos. Acesse abaixo estatísticas, observações recentes e o mapa global.",
         icon: Award,
       },
-      // {
-      //   target: '[data-tour="community-stats"]',
-      //   title: "Impacto da Comunidade",
-      //   content:
-      //     "Veja como a comunidade Habitat esta fazendo a diferenca juntos.",
-      //   icon: Users,
-      // },
+      {
+        target: '[data-tour="settings-link"]',
+        title: "Perfil e Configuracoes",
+        content:
+          "Gerencie sua conta e reinicie este tour a qualquer momento nas configurações do seu perfil aqui.",
+        icon: Settings,
+      },
+      {
+        target: '[data-tour="community-stats"]',
+        title: "Salve a Habitat na sua Tela de Início ",
+        content:
+          "E, como todo explorador de alto nível, seja prático: salve a plataforma na sua tela de início para facilitar o acesso. Boa viagem! 🌍✈️",
+        icon: Users,
+      },
       // {
       //   target: '[data-tour="recent-observations"]',
       //   title: "Suas Observacoes",
@@ -186,12 +194,6 @@ const translations = {
       //   content:
       //     "Veja onde voce e outros avistaram vida selvagem ao redor do mundo.",
       //   icon: MapPin,
-      // },
-      // {
-      //   target: '[data-tour="settings-link"]',
-      //   title: "Perfil e Configuracoes",
-      //   content: "Atualize seu nome e gerencie sua conta aqui.",
-      //   icon: Settings,
       // },
     ],
     buttons: {
