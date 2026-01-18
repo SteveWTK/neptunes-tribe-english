@@ -83,7 +83,7 @@ const translations = {
         icon: Settings,
       },
       {
-        target: '[data-tour="community-stats"]',
+        target: '[data-tour="user-dashboard"]',
         title: "Save Habitat to your Home Screen",
         content:
           "And, like any high-level explorer, be practical: save the platform to your home screen for easy access. Have a great journey! 🌍✈️",
@@ -169,13 +169,13 @@ const translations = {
       },
       {
         target: '[data-tour="settings-link"]',
-        title: "Perfil e Configuracoes",
+        title: "Perfil e Configurações",
         content:
           "Gerencie sua conta e reinicie este tour a qualquer momento nas configurações do seu perfil aqui.",
         icon: Settings,
       },
       {
-        target: '[data-tour="community-stats"]',
+        target: '[data-tour="user-dashboard"]',
         title: "Salve a Habitat na sua Tela de Início ",
         content:
           "E, como todo explorador de alto nível, seja prático: salve a plataforma na sua tela de início para facilitar o acesso. Boa viagem! 🌍✈️",

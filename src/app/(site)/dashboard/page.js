@@ -213,7 +213,7 @@ export default function DashboardPage() {
       {/* Dashboard Tour for new users */}
       {showTour && <DashboardTour onComplete={() => setShowTour(false)} />}
 
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div data-tour="user-dashboard" className="max-w-7xl mx-auto px-4 py-6">
         {/* 2. Species Avatar Hero Section - Combined welcome + species status */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

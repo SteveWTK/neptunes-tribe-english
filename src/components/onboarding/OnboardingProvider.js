@@ -5,19 +5,19 @@ import { useAuth } from "@/components/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
 import EducatorOnboarding from "./EducatorOnboarding";
 import StudentOnboarding from "./StudentOnboarding";
-import IndividualOnboarding from "./IndividualOnboarding";
+import IndividualOnboarding from "./IndividualOnboarding.disabled";
 
 // ============================================================
 // ONBOARDING CONFIGURATION
 // ============================================================
 // Set to false to disable onboarding for specific roles during development
 const ONBOARDING_ENABLED_BY_ROLE = {
-  Teacher: true,        // Educators see the 6-step educator onboarding
-  Coordinator: true,    // Coordinators see the 6-step educator onboarding
-  Admin: true,          // Admins see the 6-step educator onboarding
+  Teacher: true, // Educators see the 6-step educator onboarding
+  Coordinator: true, // Coordinators see the 6-step educator onboarding
+  Admin: true, // Admins see the 6-step educator onboarding
   Platform_admin: true, // Platform admins see the 6-step educator onboarding
-  User: true,           // Regular users see the 5-step student onboarding
-  Student: true,        // Students see the 5-step student onboarding
+  User: true, // Regular users see the 5-step student onboarding
+  Student: true, // Students see the 5-step student onboarding
 };
 
 // Set to false to completely disable all onboarding (overrides role settings)
