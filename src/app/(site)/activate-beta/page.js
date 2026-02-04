@@ -80,6 +80,34 @@ export default function ActivateBetaPage() {
       benefit3Desc: "Seu feedback molda o futuro do Habitat English",
       loading: "Carregando...",
     },
+    th: {
+      title: "เปิดใช้งานสิทธิ์ Beta Tester",
+      subtitle:
+        "กรอกรหัสเชิญของคุณเพื่อเป็น Beta Tester และรับสิทธิ์พรีเมียมฟรีบน Habitat English!",
+      codeLabel: "รหัสเชิญ",
+      codePlaceholder: "BETA-XXX-XXXXX",
+      validateButton: "ตรวจสอบรหัส",
+      activateButton: "เปิดใช้งานสิทธิ์ Beta",
+      validating: "กำลังตรวจสอบ...",
+      activating: "กำลังเปิดใช้งาน...",
+      codeValid: "รหัสถูกต้องสำหรับ",
+      codeInvalid: "รหัสไม่ถูกต้องหรือหมดอายุ",
+      alreadyBeta: "คุณเป็น Beta Tester อยู่แล้ว!",
+      signInPrompt: "กรุณาลงชื่อเข้าใช้เพื่อเปิดใช้งานสิทธิ์ Beta ของคุณ",
+      signInButton: "ลงชื่อเข้าใช้",
+      successTitle: "ยินดีต้อนรับ Beta Tester!",
+      successMessage:
+        "ตอนนี้คุณมีสิทธิ์พรีเมียมเต็มรูปแบบบน Habitat English ขอบคุณที่ช่วยเราปรับปรุงแพลตฟอร์ม!",
+      goToWorlds: "เริ่มสำรวจ",
+      benefitsTitle: "สิทธิประโยชน์ Beta Tester",
+      benefit1: "สิทธิ์พรีเมียมฟรี",
+      benefit1Desc: "เข้าถึงฟีเจอร์และเนื้อหาพรีเมียมทั้งหมดได้เต็มที่",
+      benefit2: "เข้าถึงก่อนใคร",
+      benefit2Desc: "ทดลองใช้ฟีเจอร์ใหม่ก่อนใครทั้งหมด",
+      benefit3: "ผลกระทบโดยตรง",
+      benefit3Desc: "ความคิดเห็นของคุณช่วยกำหนดอนาคตของ Habitat English",
+      loading: "กำลังโหลด...",
+    },
   };
 
   const copy = t[lang];

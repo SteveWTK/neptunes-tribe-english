@@ -104,6 +104,47 @@ const ContextualHints = () => {
       dismiss: "Entendi",
       dontShowAgain: "Não mostrar novamente",
     },
+    th: {
+      hints: {
+        firstVisitUnits: {
+          title: "เริ่มต้นเส้นทางการเรียนรู้ของคุณ",
+          message:
+            "คลิกที่การ์ดบทเรียนใดก็ได้เพื่อเริ่มเรียนรู้เกี่ยวกับสายพันธุ์และระบบนิเวศที่น่าทึ่งพร้อมกับฝึกภาษาอังกฤษ!",
+          action: "ลองบทเรียนแรกของคุณ",
+          icon: <BookOpen className="w-5 h-5" />,
+        },
+        premiumUpgrade: {
+          title: "ปลดล็อกคลาสสนทนาสด",
+          message:
+            "เข้าร่วมคลาสสนทนาประจำสัปดาห์กับผู้เรียนทั่วโลกและโหวตระบบนิเวศของสัปดาห์หน้า!",
+          action: "สำรวจพรีเมียม",
+          icon: <Crown className="w-5 h-5" />,
+        },
+        ecoMapProgress: {
+          title: "ติดตามผลกระทบระดับโลกของคุณ",
+          message:
+            "เรียนจบบทเรียนเพิ่มเติมเพื่อจุดสว่างประเทศและเขตทางทะเลบนแผนที่นิเวศแบบโต้ตอบของคุณ!",
+          action: "ดูแผนที่นิเวศ",
+          icon: <MapPin className="w-5 h-5" />,
+        },
+        weeklyTheme: {
+          title: "ร่วมการผจญภัยประจำสัปดาห์นี้",
+          message:
+            "เผ่ากำลังสำรวจระบบนิเวศใหม่ในสัปดาห์นี้ ลองดูบทเรียนแนะนำ!",
+          action: "สำรวจธีม",
+          icon: <TrendingUp className="w-5 h-5" />,
+        },
+        conversationClass: {
+          title: "ฝึกพูดภาษาอังกฤษสด",
+          message:
+            "เข้าร่วมกับผู้เรียนคนอื่น ๆ ในคลาสสนทนาประจำสัปดาห์ที่เน้นหัวข้อสิ่งแวดล้อม!",
+          action: "เข้าร่วมคลาส",
+          icon: <MessageCircle className="w-5 h-5" />,
+        },
+      },
+      dismiss: "เข้าใจแล้ว",
+      dontShowAgain: "ไม่ต้องแสดงอีก",
+    },
   };
 
   const copy = t[lang];

@@ -32,7 +32,7 @@ export function useLanguage(defaultLang = "en") {
   const languageOptions = {
     en: { label: "English", flag: "🇬🇧" },
     pt: { label: "Português", flag: "🇧🇷" },
-    es: { label: "ไทย", flag: "TH" },
+    th: { label: "ไทย", flag: "🇹🇭" },
     // Add more as needed
   };
 

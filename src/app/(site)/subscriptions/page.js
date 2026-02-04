@@ -61,6 +61,28 @@ export default function PricingPage() {
       statsSuccess: "Taxa de Sucesso",
       statsDonated: "Doado para ONGs",
     },
+    th: {
+      pageTitle: "เข้าร่วม Habitat English",
+      pageSubtitle:
+        "พัฒนาภาษาอังกฤษของคุณขณะสำรวจระบบนิเวศที่น่าทึ่งที่สุดในโลก",
+      pageMission: "35% ของสมาชิกทั้งหมดมอบให้ NGO ด้านสิ่งแวดล้อม",
+      impactTitle: "การสนับสนุนของคุณสร้างผลกระทบจริง",
+      impactSubtitle:
+        "สมาชิกทุกคนสนับสนุนทั้งการศึกษาและการอนุรักษ์สิ่งแวดล้อมโดยตรง",
+      oceanTitle: "การอนุรักษ์สิ่งแวดล้อม",
+      oceanSubtitle:
+        "10% ของรายได้ทั้งหมดมอบให้ NGO ด้านสิ่งแวดล้อมที่ได้รับการรับรองโดยตรง",
+      educationTitle: "การเข้าถึงการศึกษา",
+      educationSubtitle:
+        "สมาชิก Explorer ช่วยให้เราจัดหาการเข้าถึงฟรีสำหรับชุมชนด้อยโอกาสและพัฒนาเนื้อหาการเรียนรู้ที่ดีขึ้นอย่างต่อเนื่อง",
+      actionTitle: "พร้อมที่จะสร้างความแตกต่างหรือยัง?",
+      actionSubtitle:
+        "เริ่มต้นการเดินทางของคุณวันนี้ด้วยแผน Explorer ฟรี หรืออัปเกรดเป็น Explorer เพื่อปลดล็อกทุกอย่าง",
+      statsLearners: "ผู้เรียนที่กำลังเรียนอยู่",
+      statsCountries: "ประเทศที่ครอบคลุม",
+      statsSuccess: "อัตราความสำเร็จ",
+      statsDonated: "บริจาคให้ NGO แล้ว",
+    },
   };
 
   const copy = t[lang];

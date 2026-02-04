@@ -182,6 +182,21 @@ const authConfig = {
         session.user.stripe_customer_id = user.stripe_customer_id;
         session.user.stripe_subscription_status =
           user.stripe_subscription_status;
+
+        // Guest user: add guest-specific session fields
+        if (user.role === "guest") {
+          session.user.is_guest = true;
+          session.user.guest_expires_at =
+            token.guest_premium_until || user.premium_until || null;
+
+          // Check if guest premium has expired
+          if (
+            user.premium_until &&
+            new Date(user.premium_until) < new Date()
+          ) {
+            session.user.is_premium = false;
+          }
+        }
       }
       return session;
     },
@@ -190,6 +205,20 @@ const authConfig = {
       if (account) {
         token.provider = account.provider;
       }
+
+      // On initial sign-in, check if this is a guest user
+      if (account?.provider === "credentials" && user) {
+        try {
+          const guestUser = await fetchUser(user.email);
+          if (guestUser?.role === "guest") {
+            token.is_guest = true;
+            token.guest_premium_until = guestUser.premium_until || null;
+          }
+        } catch (err) {
+          console.error("Error checking guest status in jwt callback:", err);
+        }
+      }
+
       return token;
     },
 

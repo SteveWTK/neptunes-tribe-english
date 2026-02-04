@@ -31,6 +31,14 @@ export default function BankTransferForm() {
       sending: "Enviando...",
       paymentMade: "Pagamento Efetuado",
     },
+    th: {
+      name: "ชื่อ *",
+      email: "ที่อยู่อีเมล *",
+      amount: "จำนวนเงิน (ไม่บังคับ)",
+      receipt: "อัปโหลดใบเสร็จ (ไม่บังคับ)",
+      sending: "กำลังส่ง...",
+      paymentMade: "ชำระเงินแล้ว",
+    },
   };
 
   const copy = t[lang];

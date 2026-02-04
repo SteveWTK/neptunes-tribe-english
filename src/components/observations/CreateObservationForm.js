@@ -18,21 +18,8 @@ import {
   Leaf,
   Info,
 } from "lucide-react";
-import LocationPicker from "./LocationPicker";
-
-const VISIBILITY_OPTIONS = [
-  {
-    value: "public",
-    label: "Public",
-    description: "Everyone can see this observation",
-  },
-  {
-    value: "school",
-    label: "School Only",
-    description: "Only your school can see this",
-  },
-  { value: "private", label: "Private", description: "Only you can see this" },
-];
+import { LocationPicker } from "@inspire/shared";
+import { useLanguage } from "@/lib/contexts/LanguageContext";
 
 export default function CreateObservationForm({
   challengeId = null,
@@ -40,6 +27,200 @@ export default function CreateObservationForm({
 }) {
   const { data: session } = useSession();
   const router = useRouter();
+  const { lang } = useLanguage();
+
+  const t = {
+    en: {
+      // Visibility options
+      visPublicLabel: "Public",
+      visPublicDesc: "Everyone can see this observation",
+      visSchoolLabel: "School Only",
+      visSchoolDesc: "Only your school can see this",
+      visPrivateLabel: "Private",
+      visPrivateDesc: "Only you can see this",
+      // Step labels
+      stepPhoto: "Photo",
+      stepLocation: "Location",
+      stepIdentify: "Identify",
+      stepDetails: "Details",
+      // Success messages
+      observationCreated: "Observation Created!",
+      youEarned: "You earned",
+      points: "points",
+      speciesIdentified: "Species identified:",
+      // Form labels and buttons
+      takeOrUploadPhoto: "Take or upload a photo",
+      takePhoto: "Take Photo",
+      useYourCamera: "Use your camera",
+      uploadPhoto: "Upload Photo",
+      fromYourDevice: "From your device",
+      fileFormats: "JPEG, PNG, WebP or HEIC (max 10MB)",
+      uploading: "Uploading...",
+      continueToLocation: "Continue to Location",
+      whereDidYouSee: "Where did you see this?",
+      back: "Back",
+      identifySpecies: "Identify Species",
+      speciesIdentification: "Species Identification",
+      analyzingPhoto: "Analyzing your photo...",
+      aiIdentifying: "Our AI is identifying the species",
+      unknownSpecies: "Unknown Species",
+      confidence: "confidence",
+      family: "Family:",
+      didYouKnow: "Did you know?",
+      hide: "Hide",
+      show: "Show",
+      alternativeSuggestions: "alternative suggestions",
+      couldNotIdentify: "Could not identify species. Please continue and add details manually.",
+      continueToDetails: "Continue to Details",
+      finalDetails: "Final Details",
+      locationSet: "Location set",
+      titleLabel: "Title *",
+      whatDidYouObserve: "What did you observe?",
+      descriptionOptional: "Description (optional)",
+      addNotes: "Add any notes about your observation...",
+      observationDate: "Observation Date",
+      whoCanSee: "Who can see this?",
+      creating: "Creating...",
+      createObservation: "Create Observation",
+      preview: "Preview",
+      // Validation errors
+      invalidImageFile: "Please select a valid image file (JPEG, PNG, WebP, or HEIC)",
+      imageTooLarge: "Image must be less than 10MB",
+      selectPhotoFirst: "Please select a photo first",
+      selectLocation: "Please select a location",
+      enterTitle: "Please enter a title",
+    },
+    pt: {
+      visPublicLabel: "Público",
+      visPublicDesc: "Todos podem ver esta observação",
+      visSchoolLabel: "Somente Escola",
+      visSchoolDesc: "Somente sua escola pode ver",
+      visPrivateLabel: "Privado",
+      visPrivateDesc: "Somente você pode ver",
+      stepPhoto: "Foto",
+      stepLocation: "Localização",
+      stepIdentify: "Identificar",
+      stepDetails: "Detalhes",
+      observationCreated: "Observação Criada!",
+      youEarned: "Você ganhou",
+      points: "pontos",
+      speciesIdentified: "Espécie identificada:",
+      takeOrUploadPhoto: "Tire ou envie uma foto",
+      takePhoto: "Tirar Foto",
+      useYourCamera: "Use sua câmera",
+      uploadPhoto: "Enviar Foto",
+      fromYourDevice: "Do seu dispositivo",
+      fileFormats: "JPEG, PNG, WebP ou HEIC (máx 10MB)",
+      uploading: "Enviando...",
+      continueToLocation: "Continuar para Localização",
+      whereDidYouSee: "Onde você viu isso?",
+      back: "Voltar",
+      identifySpecies: "Identificar Espécie",
+      speciesIdentification: "Identificação de Espécie",
+      analyzingPhoto: "Analisando sua foto...",
+      aiIdentifying: "Nossa IA está identificando a espécie",
+      unknownSpecies: "Espécie Desconhecida",
+      confidence: "confiança",
+      family: "Família:",
+      didYouKnow: "Você sabia?",
+      hide: "Esconder",
+      show: "Mostrar",
+      alternativeSuggestions: "sugestões alternativas",
+      couldNotIdentify: "Não foi possível identificar a espécie. Continue e adicione os detalhes manualmente.",
+      continueToDetails: "Continuar para Detalhes",
+      finalDetails: "Detalhes Finais",
+      locationSet: "Localização definida",
+      titleLabel: "Título *",
+      whatDidYouObserve: "O que você observou?",
+      descriptionOptional: "Descrição (opcional)",
+      addNotes: "Adicione notas sobre sua observação...",
+      observationDate: "Data da Observação",
+      whoCanSee: "Quem pode ver isso?",
+      creating: "Criando...",
+      createObservation: "Criar Observação",
+      preview: "Prévia",
+      invalidImageFile: "Selecione um arquivo de imagem válido (JPEG, PNG, WebP ou HEIC)",
+      imageTooLarge: "A imagem deve ter menos de 10MB",
+      selectPhotoFirst: "Selecione uma foto primeiro",
+      selectLocation: "Selecione uma localização",
+      enterTitle: "Insira um título",
+    },
+    th: {
+      visPublicLabel: "สาธารณะ",
+      visPublicDesc: "ทุกคนสามารถดูการสังเกตนี้ได้",
+      visSchoolLabel: "เฉพาะโรงเรียน",
+      visSchoolDesc: "เฉพาะโรงเรียนของคุณเท่านั้นที่ดูได้",
+      visPrivateLabel: "ส่วนตัว",
+      visPrivateDesc: "เฉพาะคุณเท่านั้นที่ดูได้",
+      stepPhoto: "ภาพถ่าย",
+      stepLocation: "ตำแหน่ง",
+      stepIdentify: "ระบุชนิด",
+      stepDetails: "รายละเอียด",
+      observationCreated: "สร้างการสังเกตแล้ว!",
+      youEarned: "คุณได้รับ",
+      points: "คะแนน",
+      speciesIdentified: "ระบุชนิดได้:",
+      takeOrUploadPhoto: "ถ่ายหรืออัปโหลดรูปภาพ",
+      takePhoto: "ถ่ายรูป",
+      useYourCamera: "ใช้กล้องของคุณ",
+      uploadPhoto: "อัปโหลดรูป",
+      fromYourDevice: "จากอุปกรณ์ของคุณ",
+      fileFormats: "JPEG, PNG, WebP หรือ HEIC (สูงสุด 10MB)",
+      uploading: "กำลังอัปโหลด...",
+      continueToLocation: "ดำเนินต่อไปยังตำแหน่ง",
+      whereDidYouSee: "คุณเห็นสิ่งนี้ที่ไหน?",
+      back: "กลับ",
+      identifySpecies: "ระบุชนิดสิ่งมีชีวิต",
+      speciesIdentification: "การระบุชนิดสิ่งมีชีวิต",
+      analyzingPhoto: "กำลังวิเคราะห์รูปภาพของคุณ...",
+      aiIdentifying: "AI ของเรากำลังระบุชนิดสิ่งมีชีวิต",
+      unknownSpecies: "ไม่ทราบชนิด",
+      confidence: "ความมั่นใจ",
+      family: "วงศ์:",
+      didYouKnow: "คุณรู้ไหม?",
+      hide: "ซ่อน",
+      show: "แสดง",
+      alternativeSuggestions: "ข้อเสนอแนะทางเลือก",
+      couldNotIdentify: "ไม่สามารถระบุชนิดได้ กรุณาดำเนินต่อและเพิ่มรายละเอียดด้วยตนเอง",
+      continueToDetails: "ดำเนินต่อไปยังรายละเอียด",
+      finalDetails: "รายละเอียดสุดท้าย",
+      locationSet: "ตั้งค่าตำแหน่งแล้ว",
+      titleLabel: "ชื่อเรื่อง *",
+      whatDidYouObserve: "คุณสังเกตเห็นอะไร?",
+      descriptionOptional: "คำอธิบาย (ไม่บังคับ)",
+      addNotes: "เพิ่มบันทึกเกี่ยวกับการสังเกตของคุณ...",
+      observationDate: "วันที่สังเกต",
+      whoCanSee: "ใครดูได้?",
+      creating: "กำลังสร้าง...",
+      createObservation: "สร้างการสังเกต",
+      preview: "ตัวอย่าง",
+      invalidImageFile: "กรุณาเลือกไฟล์รูปภาพที่ถูกต้อง (JPEG, PNG, WebP หรือ HEIC)",
+      imageTooLarge: "รูปภาพต้องมีขนาดน้อยกว่า 10MB",
+      selectPhotoFirst: "กรุณาเลือกรูปภาพก่อน",
+      selectLocation: "กรุณาเลือกตำแหน่ง",
+      enterTitle: "กรุณาใส่ชื่อเรื่อง",
+    },
+  };
+
+  const copy = t[lang] || t.en;
+
+  const VISIBILITY_OPTIONS = [
+    {
+      value: "public",
+      label: copy.visPublicLabel,
+      description: copy.visPublicDesc,
+    },
+    {
+      value: "school",
+      label: copy.visSchoolLabel,
+      description: copy.visSchoolDesc,
+    },
+    {
+      value: "private",
+      label: copy.visPrivateLabel,
+      description: copy.visPrivateDesc,
+    },
+  ];
   const cameraInputRef = useRef(null);
   const uploadInputRef = useRef(null);
 
@@ -85,12 +266,12 @@ export default function CreateObservationForm({
       "image/heif",
     ];
     if (!allowedTypes.includes(file.type)) {
-      setError("Please select a valid image file (JPEG, PNG, WebP, or HEIC)");
+      setError(copy.invalidImageFile);
       return;
     }
 
     if (file.size > 10 * 1024 * 1024) {
-      setError("Image must be less than 10MB");
+      setError(copy.imageTooLarge);
       return;
     }
 
@@ -103,7 +284,7 @@ export default function CreateObservationForm({
       setPhotoPreview(e.target.result);
     };
     reader.readAsDataURL(file);
-  }, []);
+  }, [copy]);
 
   // Upload photo
   const uploadPhoto = useCallback(async () => {
@@ -186,7 +367,7 @@ export default function CreateObservationForm({
 
     if (step === 1) {
       if (!photoFile) {
-        setError("Please select a photo first");
+        setError(copy.selectPhotoFirst);
         return;
       }
 
@@ -197,7 +378,7 @@ export default function CreateObservationForm({
       }
     } else if (step === 2) {
       if (!location) {
-        setError("Please select a location");
+        setError(copy.selectLocation);
         return;
       }
 
@@ -214,12 +395,13 @@ export default function CreateObservationForm({
     uploadPhoto,
     uploadedPhotoUrl,
     runIdentification,
+    copy,
   ]);
 
   // Submit observation
   const handleSubmit = useCallback(async () => {
     if (!title.trim()) {
-      setError("Please enter a title");
+      setError(copy.enterTitle);
       return;
     }
 
@@ -287,6 +469,7 @@ export default function CreateObservationForm({
     identification,
     onSuccess,
     router,
+    copy,
   ]);
 
   // Success state
@@ -297,16 +480,15 @@ export default function CreateObservationForm({
           <Check className="w-8 h-8 text-accent-600 dark:text-accent-400" />
         </div>
         <h3 className="text-xl font-bold text-accent-800 dark:text-accent-200 mb-2">
-          Observation Created!
+          {copy.observationCreated}
         </h3>
         <p className="text-accent-700 dark:text-accent-300 mb-4">
-          You earned <strong>{success.pointsEarned} points</strong> for this
-          observation.
+          {copy.youEarned} <strong>{success.pointsEarned} {copy.points}</strong>
         </p>
         {identification?.species_name &&
           identification.species_name !== "Unknown" && (
             <p className="text-sm text-accent-600 dark:text-accent-400">
-              Species identified: {identification.species_name}
+              {copy.speciesIdentified} {identification.species_name}
             </p>
           )}
       </div>
@@ -319,10 +501,10 @@ export default function CreateObservationForm({
       <div className="bg-gradient-to-r from-accent-500 to-accent-700 px-6 py-4">
         <div className="flex items-center justify-between">
           {[
-            { num: 1, label: "Photo" },
-            { num: 2, label: "Location" },
-            { num: 3, label: "Identify" },
-            { num: 4, label: "Details" },
+            { num: 1, label: copy.stepPhoto },
+            { num: 2, label: copy.stepLocation },
+            { num: 3, label: copy.stepIdentify },
+            { num: 4, label: copy.stepDetails },
           ].map((s, i) => (
             <div key={s.num} className="flex items-center">
               <div
@@ -370,14 +552,14 @@ export default function CreateObservationForm({
         {step === 1 && (
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
-              Take or upload a photo
+              {copy.takeOrUploadPhoto}
             </h2>
 
             {photoPreview ? (
               <div className="relative">
                 <img
                   src={photoPreview}
-                  alt="Preview"
+                  alt={copy.preview}
                   className="w-full h-64 object-cover rounded-lg"
                 />
                 <button
@@ -400,10 +582,10 @@ export default function CreateObservationForm({
                 >
                   <Camera className="w-10 h-10 text-accent-500 dark:text-accent-400 mx-auto mb-2" />
                   <p className="text-gray-700 dark:text-gray-200 font-medium">
-                    Take Photo
+                    {copy.takePhoto}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    Use your camera
+                    {copy.useYourCamera}
                   </p>
                 </button>
 
@@ -414,17 +596,17 @@ export default function CreateObservationForm({
                 >
                   <Upload className="w-10 h-10 text-blue-500 dark:text-blue-400 mx-auto mb-2" />
                   <p className="text-gray-700 dark:text-gray-200 font-medium">
-                    Upload Photo
+                    {copy.uploadPhoto}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    From your device
+                    {copy.fromYourDevice}
                   </p>
                 </button>
               </div>
             )}
 
             <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-              JPEG, PNG, WebP or HEIC (max 10MB)
+              {copy.fileFormats}
             </p>
 
             {/* Camera input - opens camera on mobile */}
@@ -455,11 +637,11 @@ export default function CreateObservationForm({
                 {uploadingPhoto ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Uploading...
+                    {copy.uploading}
                   </>
                 ) : (
                   <>
-                    Continue to Location
+                    {copy.continueToLocation}
                     <MapPin className="w-5 h-5" />
                   </>
                 )}
@@ -472,7 +654,7 @@ export default function CreateObservationForm({
         {step === 2 && (
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
-              Where did you see this?
+              {copy.whereDidYouSee}
             </h2>
 
             <LocationPicker
@@ -485,14 +667,14 @@ export default function CreateObservationForm({
                 onClick={() => setStep(1)}
                 className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
               >
-                Back
+                {copy.back}
               </button>
               <button
                 onClick={goToNextStep}
                 disabled={!location}
                 className="flex-1 py-3 bg-accent-600 hover:bg-accent-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                Identify Species
+                {copy.identifySpecies}
                 <Sparkles className="w-5 h-5" />
               </button>
             </div>
@@ -503,17 +685,17 @@ export default function CreateObservationForm({
         {step === 3 && (
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
-              Species Identification
+              {copy.speciesIdentification}
             </h2>
 
             {identifying ? (
               <div className="text-center py-8">
                 <Loader2 className="w-12 h-12 animate-spin text-accent-600 dark:text-accent-400 mx-auto mb-4" />
                 <p className="text-gray-600 dark:text-gray-300 font-medium">
-                  Analyzing your photo...
+                  {copy.analyzingPhoto}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Our AI is identifying the species
+                  {copy.aiIdentifying}
                 </p>
               </div>
             ) : identification ? (
@@ -534,7 +716,7 @@ export default function CreateObservationForm({
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="font-bold text-accent-800 dark:text-accent-200 text-lg">
-                          {identification.species_name || "Unknown Species"}
+                          {identification.species_name || copy.unknownSpecies}
                         </h3>
                         {identification.confidence && (
                           <span
@@ -546,7 +728,7 @@ export default function CreateObservationForm({
                                 : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
                             }`}
                           >
-                            {identification.confidence} confidence
+                            {identification.confidence} {copy.confidence}
                           </span>
                         )}
                       </div>
@@ -557,7 +739,7 @@ export default function CreateObservationForm({
                       )}
                       {identification.family && (
                         <p className="text-sm text-accent-600 dark:text-accent-400">
-                          Family: {identification.family}
+                          {copy.family} {identification.family}
                         </p>
                       )}
                     </div>
@@ -571,7 +753,7 @@ export default function CreateObservationForm({
                       <Info className="w-5 h-5 text-blue-500 dark:text-blue-400 shrink-0 mt-0.5" />
                       <div>
                         <p className="font-medium text-blue-800 dark:text-blue-200 text-sm mb-1">
-                          Did you know?
+                          {copy.didYouKnow}
                         </p>
                         <p className="text-sm text-blue-700 dark:text-blue-300">
                           {identification.educational_note}
@@ -603,8 +785,8 @@ export default function CreateObservationForm({
                       ) : (
                         <ChevronDown className="w-4 h-4" />
                       )}
-                      {showAlternatives ? "Hide" : "Show"} alternative
-                      suggestions
+                      {showAlternatives ? copy.hide : copy.show}{" "}
+                      {copy.alternativeSuggestions}
                     </button>
 
                     {showAlternatives && (
@@ -640,8 +822,7 @@ export default function CreateObservationForm({
               <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                 <AlertCircle className="w-12 h-12 mx-auto mb-3 text-gray-400 dark:text-gray-500" />
                 <p>
-                  Could not identify species. Please continue and add details
-                  manually.
+                  {copy.couldNotIdentify}
                 </p>
               </div>
             )}
@@ -651,13 +832,13 @@ export default function CreateObservationForm({
                 onClick={() => setStep(2)}
                 className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
               >
-                Back
+                {copy.back}
               </button>
               <button
                 onClick={goToNextStep}
                 className="flex-1 py-3 bg-accent-600 hover:bg-accent-700 text-white font-medium rounded-lg transition-colors"
               >
-                Continue to Details
+                {copy.continueToDetails}
               </button>
             </div>
           </div>
@@ -667,23 +848,23 @@ export default function CreateObservationForm({
         {step === 4 && (
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
-              Final Details
+              {copy.finalDetails}
             </h2>
 
             {/* Preview row */}
             <div className="flex gap-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
               <img
                 src={uploadedPhotoUrl}
-                alt="Preview"
+                alt={copy.preview}
                 className="w-20 h-20 object-cover rounded"
               />
               <div className="flex-1">
                 <p className="font-medium text-gray-800 dark:text-white">
-                  {identification?.species_name || "Unknown Species"}
+                  {identification?.species_name || copy.unknownSpecies}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                   <MapPin className="w-3 h-3" />
-                  {location?.locationName || "Location set"}
+                  {location?.locationName || copy.locationSet}
                 </p>
               </div>
             </div>
@@ -691,13 +872,13 @@ export default function CreateObservationForm({
             {/* Title */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Title *
+                {copy.titleLabel}
               </label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="What did you observe?"
+                placeholder={copy.whatDidYouObserve}
                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 maxLength={100}
               />
@@ -706,12 +887,12 @@ export default function CreateObservationForm({
             {/* Description */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Description (optional)
+                {copy.descriptionOptional}
               </label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Add any notes about your observation..."
+                placeholder={copy.addNotes}
                 rows={3}
                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 maxLength={500}
@@ -721,7 +902,7 @@ export default function CreateObservationForm({
             {/* Date */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Observation Date
+                {copy.observationDate}
               </label>
               <input
                 type="date"
@@ -735,7 +916,7 @@ export default function CreateObservationForm({
             {/* Visibility */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Who can see this?
+                {copy.whoCanSee}
               </label>
               <div className="space-y-2">
                 {VISIBILITY_OPTIONS.map((option) => (
@@ -773,7 +954,7 @@ export default function CreateObservationForm({
                 onClick={() => setStep(3)}
                 className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
               >
-                Back
+                {copy.back}
               </button>
               <button
                 onClick={handleSubmit}
@@ -783,12 +964,12 @@ export default function CreateObservationForm({
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Creating...
+                    {copy.creating}
                   </>
                 ) : (
                   <>
                     <Check className="w-5 h-5" />
-                    Create Observation
+                    {copy.createObservation}
                   </>
                 )}
               </button>

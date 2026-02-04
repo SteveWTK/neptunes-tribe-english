@@ -249,6 +249,116 @@ export default function NGOPresentation() {
       slide9CTA:
         "Juntos podemos educar o mundo enquanto protegemos nosso planeta",
     },
+    th: {
+      title: "ข้อเสนอความร่วมมือ",
+      subtitle: "Neptune's Tribe x องค์กรด้านสิ่งแวดล้อม",
+
+      // Navigation
+      prevSlide: "ก่อนหน้า",
+      nextSlide: "ถัดไป",
+      downloadPDF: "ดาวน์โหลด PDF",
+      slide: "สไลด์",
+      of: "จาก",
+
+      // Slide 1: Title
+      slide1Title: "ข้อเสนอความร่วมมือ",
+      slide1Subtitle: "แพลตฟอร์มภาษาอังกฤษเพื่อสิ่งแวดล้อม Neptune's Tribe",
+      slide1Tagline: "เรียนภาษาอังกฤษ • ปกป้องโลกของเรา • สร้างชุมชน",
+
+      // Slide 2: What is Neptune's Tribe
+      slide2Title: "Neptune's Tribe คืออะไร?",
+      slide2Point1:
+        "แพลตฟอร์มเรียนภาษาอังกฤษออนไลน์ที่เน้นเรื่องสิ่งแวดล้อม",
+      slide2Point2:
+        "กิจกรรมรายสัปดาห์เพื่อพัฒนาคำศัพท์โดยเน้นหัวข้อด้านสิ่งแวดล้อม",
+      slide2Point3:
+        "คลาสสนทนาสดรายสัปดาห์พร้อมหลักสูตรที่ซิงค์กันทั่วโลก",
+      slide2Point4:
+        "แผนที่โลกแบบอินเทอร์แอคทีฟที่ติดตามความก้าวหน้าการเรียนรู้ข้ามระบบนิเวศ",
+      slide2Point5:
+        "การเรียนรู้ที่ขับเคลื่อนโดยชุมชน สมาชิกร่วมโหวตหัวข้อประจำสัปดาห์",
+
+      // Slide 3: Our Learning Model
+      slide3Title: "โมเดลการเรียนรู้ที่เป็นเอกลักษณ์ของเรา",
+      slide3Explorer: "ระดับ Explorer",
+      slide3ExplorerDesc:
+        "เข้าถึงบทเรียนทั้งหมดฟรี และสามารถฟังคลาสสดได้",
+      slide3Pro: "ระดับ Pro",
+      slide3ProDesc:
+        "เข้าร่วมคลาสสนทนาสดรายสัปดาห์ได้เต็มที่ (สูงสุด 8 คน)",
+      slide3Premium: "ระดับ Premium",
+      slide3PremiumDesc:
+        "โหวตหัวข้อประจำสัปดาห์ + พอดแคสต์แขกรับเชิญพิเศษ + เนื้อหาเอ็กซ์คลูซีฟ",
+      slide3Community:
+        "หัวข้อรายสัปดาห์ที่ซิงค์กันสร้างชุมชนการเรียนรู้ระดับโลก",
+
+      // Slide 4: Partnership Model
+      slide4Title: "โอกาสในการเป็นพันธมิตร",
+      slide4Event: "กิจกรรมพันธมิตร",
+      slide4EventDesc:
+        "Sea Shepherd จัดกิจกรรมสนทนา 1 ชั่วโมง (R$50 ต่อผู้เข้าร่วม สูงสุด 8 คน)",
+      slide4Revenue1: "การแบ่งรายได้จากกิจกรรม",
+      slide4Revenue1Desc: "50% ของรายได้จากกิจกรรมมอบให้ Sea Shepherd โดยตรง",
+      slide4Event2: "ความร่วมมือต่อเนื่อง",
+      slide4Event2Desc:
+        "ด้วยการสมัครสมาชิกรายเดือน ชนเผ่าของเรามีส่วนร่วมในการอนุรักษ์ที่สร้างผลกระทบ",
+      slide4Revenue2: "การแบ่งรายได้จากความร่วมมือ",
+      slide4Revenue2Desc:
+        "20% ของสมาชิกทั้งหมดจากการแนะนำของพันธมิตรมอบให้ Sea Shepherd",
+      slide4PartnershipGoal: "เป้าหมายความร่วมมือ",
+      slide4Experience:
+        "ผู้เข้าร่วมได้รับประสบการณ์จริงบนแพลตฟอร์มและเส้นทางสู่การเป็นสมาชิกเต็มรูปแบบ",
+
+      // Slide 5: Why Partner With Us
+      slide5Title: "ทำไมต้องเป็นพันธมิตรกับ Neptune's Tribe?",
+      slide5Aligned: "พันธกิจที่สอดคล้อง",
+      slide5AlignedDesc:
+        "การศึกษาด้านสิ่งแวดล้อมที่สนับสนุนการอนุรักษ์โดยตรง",
+      slide5Global: "การเข้าถึงทั่วโลก",
+      slide5GlobalDesc:
+        "เชื่อมต่อผู้สนับสนุนของคุณกับชุมชนสิ่งแวดล้อมระหว่างประเทศ",
+      slide5Impact: "ผลกระทบที่วัดผลได้",
+      slide5ImpactDesc:
+        "ติดตามการมีส่วนร่วมและเห็นการสนับสนุนทางการเงินโดยตรงสำหรับองค์กรของคุณ",
+      slide5Quality: "คุณภาพการศึกษา",
+      slide5QualityDesc:
+        "การสอนภาษาอังกฤษระดับมืออาชีพที่เน้นสิ่งแวดล้อมสร้างการมีส่วนร่วมที่ยั่งยืน",
+
+      // Slide 6: Our Impact
+      slide6Title: "ผลกระทบและตัวชี้วัดของแพลตฟอร์ม",
+      slide6Users: "ผู้เรียนที่กำลังเรียนอยู่ทั่วโลก",
+      slide6Content: "บทเรียนที่พร้อมใช้งาน",
+      slide6Countries: "ประเทศและเขตทะเลที่ครอบคลุม",
+      slide6Donated: "บริจาคเพื่อการอนุรักษ์แล้ว",
+      slide6Growth: "เติบโต 25% ต่อเดือนพร้อมอัตราการรักษาผู้ใช้ที่สูง",
+
+      // Slide 7: Our Team
+      slide7Title: "พบกับทีมของเรา",
+      slide7Subtitle:
+        "นักการศึกษาและนักอนุรักษ์สิ่งแวดล้อมที่มีความหลงใหลทำงานร่วมกัน",
+
+      // Slide 8: Partnership Benefits
+      slide8Title: "สรุปสิทธิประโยชน์ของพันธมิตร",
+      slide8ForNGO: "สำหรับองค์กรของคุณ",
+      slide8Benefit1: "รายได้โดยตรงจากกิจกรรมพันธมิตร (แบ่ง 50%)",
+      slide8Benefit2: "รายได้จากสมาชิกต่อเนื่อง (20% จากการแนะนำ)",
+      slide8Benefit3: "ขยายผลกระทบทางการศึกษาสำหรับผู้สนับสนุนของคุณ",
+      slide8Benefit4: "การเชื่อมต่อชุมชนระดับโลกและการเปิดเผยแบรนด์",
+      slide8ForUsers: "สำหรับผู้สนับสนุนของคุณ",
+      slide8UserBenefit1:
+        "การเรียนภาษาอังกฤษคุณภาพสูงที่เน้นสิ่งแวดล้อม",
+      slide8UserBenefit2: "เชื่อมต่อกับชุมชนอนุรักษ์ระดับโลก",
+      slide8UserBenefit3:
+        "ความมั่นใจว่าการเรียนรู้สนับสนุนการปกป้องสิ่งแวดล้อมโดยตรง",
+
+      // Slide 9: Next Steps
+      slide9Title: "พร้อมที่จะเป็นพันธมิตรกับเราหรือยัง?",
+      slide9Contact: "ข้อมูลติดต่อ",
+      slide9Email: "partnerships@habitatenglish.com",
+      slide9Schedule: "มานัดหมายเพื่อสาธิตกันเถอะ",
+      slide9CTA:
+        "ร่วมกันเราสามารถให้การศึกษาแก่โลกขณะปกป้องโลกของเรา",
+    },
   };
 
   const copy = t[language];
@@ -282,19 +392,37 @@ export default function NGOPresentation() {
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
                 <BookOpen className="w-8 h-8 text-blue-600" />
               </div>
-              <p className="text-sm font-medium">Learn English</p>
+              <p className="text-sm font-medium">
+                {language === "th"
+                  ? "เรียนภาษาอังกฤษ"
+                  : language === "pt"
+                    ? "Aprenda Inglês"
+                    : "Learn English"}
+              </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
                 <Leaf className="w-8 h-8 text-green-600" />
               </div>
-              <p className="text-sm font-medium">Environmental Focus</p>
+              <p className="text-sm font-medium">
+                {language === "th"
+                  ? "เน้นสิ่งแวดล้อม"
+                  : language === "pt"
+                    ? "Foco Ambiental"
+                    : "Environmental Focus"}
+              </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
                 <Users className="w-8 h-8 text-purple-600" />
               </div>
-              <p className="text-sm font-medium">Global Community</p>
+              <p className="text-sm font-medium">
+                {language === "th"
+                  ? "ชุมชนระดับโลก"
+                  : language === "pt"
+                    ? "Comunidade Global"
+                    : "Global Community"}
+              </p>
             </div>
           </div>
         </div>
@@ -339,7 +467,11 @@ export default function NGOPresentation() {
                 className="w-full h-64 object-cover rounded-lg shadow-lg"
               />
               <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-3">
-                Interactive Eco-Map Experience
+                {language === "th"
+                  ? "ประสบการณ์แผนที่เชิงนิเวศเชิงโต้ตอบ"
+                  : language === "pt"
+                    ? "Experiência Interativa do Mapa Ecológico"
+                    : "Interactive Eco-Map Experience"}
               </p>
             </div>
           </div>
@@ -620,22 +752,42 @@ export default function NGOPresentation() {
             {[
               {
                 name: "Dr. Michael Watkins",
-                title: "Content Director",
+                title:
+                  language === "th"
+                    ? "ผู้อำนวยการเนื้อหา"
+                    : language === "pt"
+                      ? "Diretor de Conteúdo"
+                      : "Content Director",
                 image: "/team/MAW-2.JPG",
               },
               {
                 name: "Stephen Watkins",
-                title: "Lead Developer",
+                title:
+                  language === "th"
+                    ? "หัวหน้านักพัฒนา"
+                    : language === "pt"
+                      ? "Desenvolvedor Líder"
+                      : "Lead Developer",
                 image: "/team/stephen-watkins.JPEG",
               },
               {
                 name: "Paul Watkins",
-                title: "Education Specialist",
+                title:
+                  language === "th"
+                    ? "ผู้เชี่ยวชาญด้านการศึกษา"
+                    : language === "pt"
+                      ? "Especialista em Educação"
+                      : "Education Specialist",
                 image: "/team/paul-watkins-lake.jpg",
               },
               {
                 name: "David Watkins",
-                title: "Strategic Director",
+                title:
+                  language === "th"
+                    ? "ผู้อำนวยการกลยุทธ์"
+                    : language === "pt"
+                      ? "Diretor Estratégico"
+                      : "Strategic Director",
                 image: "/team/David.jpg",
               },
             ].map((member, i) => (
@@ -662,8 +814,11 @@ export default function NGOPresentation() {
 
           <div className="text-center bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
             <p className="text-lg text-gray-700 dark:text-gray-300">
-              Combined 80+ years of experience in education, technology, and
-              environmental advocacy
+              {language === "th"
+                ? "ประสบการณ์รวมกันกว่า 80 ปีในด้านการศึกษา เทคโนโลยี และการสนับสนุนสิ่งแวดล้อม"
+                : language === "pt"
+                  ? "Mais de 80 anos combinados de experiência em educação, tecnologia e defesa ambiental"
+                  : "Combined 80+ years of experience in education, technology, and environmental advocacy"}
             </p>
           </div>
         </div>

@@ -43,23 +43,13 @@ import { useAuth } from "@/components/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useTranslation } from "@/hooks/useTranslation";
-import AIWritingExercise from "@/components/exercises/AIWritingExercise";
-import AIConversationPractice from "@/components/exercises/AIConversationPractice";
-import AIGapFillExercise from "@/components/exercises/AIGapFillExercise";
-import AIMultipleChoiceGapFill from "@/components/exercises/AIMultipleChoiceGapFill";
-import VocabularyItem from "@/components/VocabularyItem";
 import MultiGapFillExerciseNew from "@/components/MultiGapFillExerciseNew";
-import InteractivePitch from "@/components/exercises/InteractivePitch";
-import InteractiveGame from "@/components/exercises/InteractiveGame";
-import AIListeningChallenge from "@/components/exercises/AIListeningChallenge";
-import AISpeechPractice from "@/components/exercises/AISpeechPractice";
-import MemoryMatch from "@/components/exercises/MemoryMatch";
-import VideoPlayer from "@/components/exercises/VideoPlayer";
+// InteractivePitch and InteractiveGame now imported from @inspire/shared below
 import ConversationVote from "@/components/ConversationVote";
-import WordSnakeLesson from "@/components/WordSnakeLesson";
+import { WordSnakeLesson, MemoryMatchLesson, VocabularyItem, VideoPlayer, FloatingFacts, AIGapFillExercise, AIWritingExercise, AIListeningChallenge, AISpeechPractice, AIConversationPractice, AIMultipleChoiceGapFill, InteractivePitch, InteractiveGame } from "@inspire/shared";
 import UnitModal from "@/components/UnitModal";
 import UnitReferenceStep from "@/components/UnitReferenceStep";
-import FloatingFacts from "@/components/FloatingFacts";
+// FloatingFacts now imported from @inspire/shared above
 import SingleGapFillSeries from "@/components/gapfill/SingleGapFillSeries";
 import { fetchSingleGapChallenges } from "@/lib/data-service";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
@@ -950,7 +940,7 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {userLanguage !== "pt-BR" ? "Start Again" : "Comece de Novo"}
+                {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"}
               </button>
             </div>
           </div>
@@ -1000,7 +990,7 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {userLanguage !== "pt-BR" ? "Start Again" : "Comece de Novo"}
+                {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"}
               </button>
             </div>
           </div>
@@ -1052,7 +1042,7 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {/* {userLanguage !== "pt-BR" ? "Start Again" : "Comece de Novo"} */}
+                {/* {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"} */}
               </button>
             </div>
           </div>
@@ -1125,7 +1115,7 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {/* {userLanguage !== "pt-BR" ? "Start Again" : "Comece de Novo"} */}
+                {/* {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"} */}
               </button>
             </div>
           </div>
@@ -1195,7 +1185,7 @@ function DynamicLessonContent() {
         }));
 
         return (
-          <MemoryMatch
+          <MemoryMatchLesson
             vocabulary={translatedVocabulary}
             lessonId={lessonId}
             onComplete={(xp) => {
@@ -1488,7 +1478,7 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {userLanguage !== "pt-BR" ? "Start Again" : "Comece de Novo"}
+                {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"}
               </button>
             </div>
           </div>
@@ -1531,7 +1521,7 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {userLanguage !== "pt-BR" ? "Start Again" : "Comece de Novo"}
+                {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"}
               </button>
             </div>
           </div>
@@ -1709,7 +1699,7 @@ function DynamicLessonContent() {
                                 }`}
                                 disabled={showFeedback}
                               >
-                                <option value="">Choose...</option>
+                                <option value="">{userLanguage === "pt-BR" ? "Escolha..." : userLanguage === "th" ? "เลือก..." : "Choose..."}</option>
                                 {scenario.gaps[partIndex]?.options?.map(
                                   (option, optIndex) => (
                                     <option key={optIndex} value={option}>
@@ -1749,13 +1739,13 @@ function DynamicLessonContent() {
                                   )}
                                   <span className="font-medium">
                                     Gap {gapIndex + 1}:{" "}
-                                    {isGapCorrect ? "Correct!" : "Incorrect"}
+                                    {isGapCorrect ? (userLanguage === "pt-BR" ? "Correto!" : userLanguage === "th" ? "ถูกต้อง!" : "Correct!") : (userLanguage === "pt-BR" ? "Incorreto" : userLanguage === "th" ? "ไม่ถูกต้อง" : "Incorrect")}
                                   </span>
                                 </div>
                                 {!isGapCorrect && (
                                   <div className="mt-1 text-xs">
-                                    You chose: &quot;{userAnswer || "nothing"}
-                                    &quot; | Correct answer: &quot;
+                                    {userLanguage === "pt-BR" ? "Você escolheu:" : userLanguage === "th" ? "คุณเลือก:" : "You chose:"} &quot;{userAnswer || "nothing"}
+                                    &quot; | {userLanguage === "pt-BR" ? "Resposta correta:" : userLanguage === "th" ? "คำตอบที่ถูกต้อง:" : "Correct answer:"} &quot;
                                     {gap.correct_answer}&quot;
                                     {gap.explanation && (
                                       <div className="mt-1">
@@ -1771,7 +1761,7 @@ function DynamicLessonContent() {
                           {/* Overall scenario feedback */}
                           {scenario.feedback && (
                             <div className="mt-3 p-3 bg-primary-100 dark:bg-primary-900/20 text-primary-800 dark:text-primary-200 rounded text-sm">
-                              <strong>Feedback:</strong> {scenario.feedback}
+                              <strong>{userLanguage === "pt-BR" ? "Feedback:" : userLanguage === "th" ? "ข้อเสนอแนะ:" : "Feedback:"}</strong> {scenario.feedback}
                             </div>
                           )}
                         </div>
@@ -1823,7 +1813,7 @@ function DynamicLessonContent() {
                                   }`}
                                   disabled={showFeedback}
                                 >
-                                  <option value="">Choose...</option>
+                                  <option value="">{userLanguage === "pt-BR" ? "Escolha..." : userLanguage === "th" ? "เลือก..." : "Choose..."}</option>
                                   {currentStepData.gaps[
                                     partIndex
                                   ]?.options?.map((option, optIndex) => (
@@ -1863,13 +1853,13 @@ function DynamicLessonContent() {
                             )}
                             <span className="font-medium">
                               Gap {gapIndex + 1}:{" "}
-                              {isGapCorrect ? "Correct!" : "Incorrect"}
+                              {isGapCorrect ? (userLanguage === "pt-BR" ? "Correto!" : userLanguage === "th" ? "ถูกต้อง!" : "Correct!") : (userLanguage === "pt-BR" ? "Incorreto" : userLanguage === "th" ? "ไม่ถูกต้อง" : "Incorrect")}
                             </span>
                           </div>
                           {!isGapCorrect && (
                             <div className="mt-1 text-xs">
-                              You chose: &quot;{userAnswer || "nothing"}&quot; |
-                              Correct answer: &quot;{gap.correct_answer}&quot;
+                              {userLanguage === "pt-BR" ? "Você escolheu:" : userLanguage === "th" ? "คุณเลือก:" : "You chose:"} &quot;{userAnswer || "nothing"}&quot; |
+                              {userLanguage === "pt-BR" ? "Resposta correta:" : userLanguage === "th" ? "คำตอบที่ถูกต้อง:" : "Correct answer:"} &quot;{gap.correct_answer}&quot;
                               {gap.explanation && (
                                 <div className="mt-1">💡 {gap.explanation}</div>
                               )}
@@ -1882,7 +1872,7 @@ function DynamicLessonContent() {
                     {/* Overall feedback */}
                     {currentStepData.feedback && (
                       <div className="mt-3 p-3 bg-primary-100 dark:bg-primary-900/20 text-primary-800 dark:text-primary-200 rounded text-sm">
-                        <strong>Feedback:</strong> {currentStepData.feedback}
+                        <strong>{userLanguage === "pt-BR" ? "Feedback:" : userLanguage === "th" ? "ข้อเสนอแนะ:" : "Feedback:"}</strong> {currentStepData.feedback}
                       </div>
                     )}
                   </div>
@@ -1909,7 +1899,7 @@ function DynamicLessonContent() {
                 }
                 className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                Check Answers
+                {userLanguage === "pt-BR" ? "Verificar Respostas" : userLanguage === "th" ? "ตรวจคำตอบ" : "Check Answers"}
               </button>
             )}
 
@@ -2112,7 +2102,7 @@ function DynamicLessonContent() {
                     disabled={!selectedAnswer}
                     className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
-                    Submit Answer
+                    {userLanguage === "pt-BR" ? "Enviar Resposta" : userLanguage === "th" ? "ส่งคำตอบ" : "Submit Answer"}
                   </button>
                 )}
                 {showFeedback && (
@@ -2158,7 +2148,7 @@ function DynamicLessonContent() {
                 }
                 className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                Submit Answers
+                {userLanguage === "pt-BR" ? "Enviar Respostas" : userLanguage === "th" ? "ส่งคำตอบ" : "Submit Answers"}
               </button>
             )}
 
@@ -2897,7 +2887,7 @@ function DynamicLessonContent() {
           <button
             onClick={() => router.push(getWorldUrl())}
             className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
-            title="Back to World"
+            title={userLanguage === "pt-BR" ? "Voltar ao Mundo" : userLanguage === "th" ? "กลับไปที่โลก" : "Back to World"}
           >
             <Home className="w-5 h-5" />
           </button>
@@ -2991,7 +2981,7 @@ function DynamicLessonContent() {
             {completedSteps.size} of {steps.length - 1} activities completed
           </p>
           {completing && (
-            <p className="text-xs text-primary-600 mt-1">Saving progress...</p>
+            <p className="text-xs text-primary-600 mt-1">{userLanguage === "pt-BR" ? "Salvando progresso..." : userLanguage === "th" ? "กำลังบันทึกความก้าวหน้า..." : "Saving progress..."}</p>
           )}
         </div>
 
@@ -3009,7 +2999,7 @@ function DynamicLessonContent() {
           {completing ? (
             <>
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span>Completing...</span>
+              <span>{userLanguage === "pt-BR" ? "Concluindo..." : userLanguage === "th" ? "กำลังดำเนินการ..." : "Completing..."}</span>
             </>
           ) : (
             <>

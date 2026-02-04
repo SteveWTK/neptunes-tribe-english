@@ -549,6 +549,256 @@ export default function IndividualOnboarding({ onComplete }) {
         },
       ],
     },
+    th: {
+      next: "ถัดไป",
+      back: "ย้อนกลับ",
+      finish: "ไปกันเลย!",
+      skip: "ข้ามทัวร์",
+      stepOf: "ขั้นตอนที่ {current} จาก {total}",
+      steps: [
+        {
+          title: "ยินดีต้อนรับสู่ Habitat English!",
+          description: "เส้นทางสู่ความคล่องแคล่วของคุณเริ่มต้นที่นี่",
+          icon: Zap,
+          content: (
+            <div className="space-y-4 text-center">
+              <div className="text-6xl mb-4">🌍</div>
+              <p className="text-lg text-gray-600 dark:text-gray-300">
+                พัฒนาภาษาอังกฤษของคุณพร้อมกับสำรวจ{" "}
+                <span className="font-bold text-cyan-600 dark:text-cyan-400">
+                  8 ระบบนิเวศที่น่าทึ่ง
+                </span>
+                , เรียนรู้เกี่ยวกับฮีโร่ด้านสิ่งแวดล้อม และค้นพบสิ่งมหัศจรรย์ของโลกเรา!
+              </p>
+              <div className="bg-gradient-to-r from-cyan-50 to-emerald-50 dark:from-cyan-900/20 dark:to-emerald-900/20 p-6 rounded-xl">
+                <p className="text-gray-800 dark:text-gray-200 font-medium">
+                  ทุกสัปดาห์ เรานำเสนอโลกใหม่พร้อมเนื้อหาใหม่ เริ่มต้นที่อเมริกาใต้ จากนั้นปลดล็อกแอฟริกา ยูเรเชีย และอื่น ๆ อีกมากมาย!
+                </p>
+              </div>
+            </div>
+          ),
+        },
+        {
+          title: "สำรวจตามจังหวะของคุณ",
+          description: "ยืดหยุ่นเต็มที่ - เรียนรู้ตามที่คุณต้องการ!",
+          icon: Target,
+          content: (
+            <div className="space-y-4">
+              <div className="text-center">
+                <div className="text-5xl mb-4">🗺️✨</div>
+                <p className="text-gray-600 dark:text-gray-300">
+                  ไม่เหมือนคอร์สทั่วไป คุณเป็นผู้ควบคุม!
+                </p>
+              </div>
+              <div className="space-y-3">
+                <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-xl">
+                  <div className="flex items-start gap-3">
+                    <div className="text-2xl">🎯</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                        เลือกการผจญภัยของคุณ
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        ข้ามไปมาระหว่างการผจญภัยในลำดับใดก็ได้ ตามความอยากรู้ของคุณ!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-xl">
+                  <div className="flex items-start gap-3">
+                    <div className="text-2xl">🌟</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                        ลำดับกิจกรรม - เจาะลึก
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        ทำลำดับกิจกรรมทั้งหมดพร้อมเกม การฟัง และแบบฝึกหัด
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-cyan-50 dark:bg-cyan-900/20 p-4 rounded-xl">
+                  <div className="flex items-start gap-3">
+                    <div className="text-2xl">📚</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                        หน้าบทเรียน - นิตยสารของคุณ
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        สำรวจบทเรียนเหมือนนิตยสารออนไลน์ เหมาะสำหรับการอ่าน การฟัง และฝึกเติมคำอย่างรวดเร็ว!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ),
+        },
+        {
+          title: "ปรับแต่งระดับของคุณ",
+          description: "กรองเนื้อหาให้ตรงกับระดับภาษาอังกฤษของคุณ",
+          icon: TrendingUp,
+          content: (
+            <div className="space-y-4">
+              <div className="text-center">
+                <div className="text-5xl mb-4">📊🎓</div>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                  เรามี 3 ระดับความยาก คุณเลือกได้ว่าจะดูอะไร!
+                </p>
+              </div>
+              <div className="grid grid-cols-1 gap-3">
+                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl border-2 border-green-200 dark:border-green-800">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xl">🌱</span>
+                    <span className="font-bold text-green-700 dark:text-green-400">
+                      ระดับ 1: ค้นพบ
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    พื้นฐานและสิ่งจำเป็น
+                  </p>
+                </div>
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xl">🔍</span>
+                    <span className="font-bold text-blue-700 dark:text-blue-400">
+                      ระดับ 2: นักสำรวจ
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    ความท้าทายระดับกลาง
+                  </p>
+                </div>
+                <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-xl border-2 border-purple-200 dark:border-purple-800">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xl">🏔️</span>
+                    <span className="font-bold text-purple-700 dark:text-purple-400">
+                      ระดับ 3: ผู้เชี่ยวชาญ
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    ความเชี่ยวชาญขั้นสูง
+                  </p>
+                </div>
+              </div>
+              <div className="bg-gradient-to-r from-cyan-500 to-emerald-500 p-4 rounded-xl text-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <Globe className="w-5 h-5" />
+                  <span className="font-bold">เคล็ดลับ Pro:</span>
+                </div>
+                <p className="text-sm">
+                  คลิกที่ป้ายระดับด้านบนของหน้า Worlds เพื่อกรองตามระดับหรือดูทุกระดับพร้อมกัน!
+                </p>
+              </div>
+            </div>
+          ),
+        },
+        {
+          title: "โลกเด่น: อเมริกาใต้",
+          description: "ระบบนิเวศเด่นประจำเดือนนี้",
+          icon: MapPin,
+          content: (
+            <div className="space-y-4">
+              <div className="text-center">
+                <div className="text-5xl mb-4">🦜🌴🦎</div>
+                <p className="text-gray-600 dark:text-gray-300">
+                  เริ่มต้นการเดินทางของคุณใน{" "}
+                  <span className="font-bold text-cyan-600 dark:text-cyan-400">
+                    อเมริกาใต้
+                  </span>
+                  !
+                </p>
+              </div>
+              <div className="bg-gradient-to-br from-cyan-500 to-emerald-500 p-6 rounded-xl text-white">
+                <h3 className="text-xl font-bold mb-3">
+                  สำรวจระบบนิเวศที่น่าทึ่ง
+                </h3>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-start gap-2">
+                    <Sparkles className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <span>ป่าแอมะซอน - ปอดของโลก</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Sparkles className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <span>เทือกเขาแอนดีส - ความหลากหลายทางชีวภาพบนที่สูง</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Sparkles className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <span>หมู่เกาะกาลาปากอส - ห้องทดลองของดาร์วิน</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Sparkles className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <span>แพนทานัล - พื้นที่ชุ่มน้ำที่ใหญ่ที่สุดในโลก</span>
+                  </li>
+                </ul>
+              </div>
+              <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                โลกใหม่ปลดล็อกทุกสัปดาห์ โลกก่อนหน้ายังคงเข้าถึงได้ตลอดไป!
+              </p>
+            </div>
+          ),
+        },
+        {
+          title: "พร้อมที่จะเริ่มหรือยัง?",
+          description: "เริ่มสำรวจและพัฒนาภาษาอังกฤษของคุณวันนี้!",
+          icon: Award,
+          content: (
+            <div className="space-y-4 text-center">
+              <div className="text-6xl mb-4">🚀</div>
+              <p className="text-lg text-gray-600 dark:text-gray-300">
+                คุณพร้อมแล้ว! นี่คือสิ่งที่ต้องทำต่อไป:
+              </p>
+              <div className="space-y-3">
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-xl text-left">
+                  <div className="flex items-start gap-3">
+                    <div className="text-2xl">1️⃣</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                        เยี่ยมชมหน้า Worlds
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        เลือกการผจญภัยที่คุณสนใจ
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 p-4 rounded-xl text-left">
+                  <div className="flex items-start gap-3">
+                    <div className="text-2xl">2️⃣</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                        ลองหน้าบทเรียน
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        เลือกดูเหมือนนิตยสารสำหรับการอ่านอย่างรวดเร็ว
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-4 rounded-xl text-left">
+                  <div className="flex items-start gap-3">
+                    <div className="text-2xl">3️⃣</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                        ตั้งค่าระดับของคุณ
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        คลิกที่ป้ายระดับเพื่อปรับแต่งสิ่งที่คุณเห็น
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border-2 border-yellow-200 dark:border-yellow-800">
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <strong>จำไว้:</strong> ไม่มีวิธีเรียนที่ถูกหรือผิด สำรวจ สนุก แล้วภาษาอังกฤษของคุณจะพัฒนาอย่างเป็นธรรมชาติ!
+                </p>
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
   };
 
   const content = t[lang] || t.en;

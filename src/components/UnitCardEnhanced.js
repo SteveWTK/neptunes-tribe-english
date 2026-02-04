@@ -41,6 +41,15 @@ const UnitCardEnhanced = ({
       upgrade: "Fazer Upgrade",
       weeklyFeature: "Aventura Semanal",
     },
+    th: {
+      startUnit: "เริ่มบทเรียน",
+      thisWeek: "สัปดาห์นี้",
+      gaps: "ช่องว่าง",
+      region: "ภูมิภาค",
+      signIn: "เข้าสู่ระบบ",
+      upgrade: "อัปเกรด",
+      weeklyFeature: "การผจญภัยประจำสัปดาห์",
+    },
   };
 
   const copy = t[lang];

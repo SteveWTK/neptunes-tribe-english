@@ -60,6 +60,23 @@ export default function SupportNeptunesTribe({
       signInRequired: "Por favor, faça login para nos apoiar!",
       supportWithAmount: "Apoiar com R$",
     },
+    th: {
+      supportHeader: "สนับสนุน Neptune's Tribe!",
+      supportSub: `ช่วยเราให้บรรลุเป้าหมาย ${targetSupporters} ผู้สนับสนุน และสร้างเนื้อหาและฟีเจอร์ที่ยอดเยี่ยม!`,
+      supportBank: "โอนเงินไปยังคีย์ PIX (CPF) ของเรา:",
+      accountName: "ชื่อ: Michael Alan Watkins",
+      clickToCopy: "คลิกเพื่อคัดลอก",
+      supportStripe: "สนับสนุนเราผ่าน Stripe",
+      dialogHeader: "ขอบคุณที่สนับสนุน Neptune's Tribe!",
+      dialogMessage:
+        "กรุณากรอกแบบฟอร์มด้านล่างแล้วคลิก 'ชำระเงินแล้ว' หรือส่งหลักฐานการชำระเงินไปที่",
+      otherButton: "อื่นๆ",
+      enterAmount: "กรอกจำนวนเงิน (R$)",
+      close: "ปิด",
+      paymentMade: "ชำระเงินแล้ว",
+      signInRequired: "กรุณาเข้าสู่ระบบเพื่อสนับสนุนเรา!",
+      supportWithAmount: "สนับสนุน R$",
+    },
   };
 
   const copy = t[lang];

@@ -12,7 +12,13 @@
       "Bash(wc -l src/app/(site)/feedback/page.js)",
       "Bash(npm run build)",
       "Bash(find:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(node -e:*)",
+      "Bash(ls -la \"c:\\\\Developer\\\\INSPIRE\\\\neptunes-tribe-english\\\\src\\\\components\\\\feedback\"\" 2>/dev/null || echo \"Folder is empty or doesn 't exist \")",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(powershell -Command \"Remove-Item -Path ''c:\\\\Developer\\\\INSPIRE\\\\neptunes-tribe-english\\\\.next'' -Recurse -Force -ErrorAction SilentlyContinue\")"
     ],
     "deny": [],
     "ask": []

@@ -99,6 +99,28 @@ export default function ActivatePremiumPage() {
       loading: "Carregando...",
       alreadyPremium: "Você já tem acesso premium!",
     },
+    th: {
+      genericTitle: "เปิดใช้งานสิทธิ์ของคุณ",
+      genericSubtitle: "กรอกรหัสเชิญของคุณเพื่อเปิดใช้งานสิทธิ์พรีเมียมบน Habitat English",
+      codeLabel: "รหัสเชิญ",
+      codePlaceholder: "XXXX-XXX-XXXXX",
+      validateButton: "ตรวจสอบรหัส",
+      activateButton: "เปิดใช้งานสิทธิ์",
+      validating: "กำลังตรวจสอบ...",
+      activating: "กำลังเปิดใช้งาน...",
+      codeValid: "รหัสถูกต้อง",
+      codeInvalid: "รหัสไม่ถูกต้องหรือหมดอายุ",
+      signInPrompt: "กรุณาลงชื่อเข้าใช้เพื่อเปิดใช้งานสิทธิ์ของคุณ",
+      signInButton: "ลงชื่อเข้าใช้",
+      successTitle: "ยินดีต้อนรับสู่ Habitat English!",
+      successMessage: "สิทธิ์พรีเมียมของคุณได้รับการเปิดใช้งานแล้ว",
+      successMessageDuration: "ระยะเวลา",
+      successMessageLifetime: "สิทธิ์ตลอดชีพ",
+      successMessageMonths: "เดือน",
+      goToWorlds: "เริ่มสำรวจ",
+      loading: "กำลังโหลด...",
+      alreadyPremium: "คุณมีสิทธิ์พรีเมียมอยู่แล้ว!",
+    },
   };
 
   const copy = t[lang];

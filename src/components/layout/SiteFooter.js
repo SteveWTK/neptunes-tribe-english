@@ -17,6 +17,11 @@ export default function SiteFooter() {
       contactUs: "Entre em contato",
       feedback: "Dar Feedback",
     },
+    th: {
+      copyright: "สงวนลิขสิทธิ์",
+      contactUs: "ติดต่อเรา",
+      feedback: "ให้ความคิดเห็น",
+    },
   };
 
   const copy = t[lang];

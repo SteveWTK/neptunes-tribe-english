@@ -24,6 +24,12 @@ export default function PostLoginPage() {
       return;
     }
 
+    // Guest users skip avatar selection entirely
+    if (session.user?.is_guest) {
+      router.push("/dashboard");
+      return;
+    }
+
     // Check if user has an avatar
     const checkAndRedirect = async () => {
       try {

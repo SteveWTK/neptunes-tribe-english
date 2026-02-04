@@ -83,6 +83,33 @@ export default function LoginPage() {
         "Digite seu endereço de email para receber instruções de redefinição de senha.",
       cancel: "Cancelar",
     },
+    th: {
+      loginChoice: "หรือเข้าสู่ระบบด้วยอีเมลและรหัสผ่านของคุณ",
+      registerChoice: "หรือสมัครสมาชิกด้วยอีเมลและรหัสผ่าน",
+      login: "เข้าสู่ระบบ",
+      register: "สร้างบัญชี",
+      toggleToRegister: "ยังไม่มีบัญชี? สมัครสมาชิกที่นี่",
+      toggleToLogin: "มีบัญชีอยู่แล้ว? เข้าสู่ระบบที่นี่",
+      email: "อีเมล",
+      password: "รหัสผ่าน",
+      confirmPassword: "ยืนยันรหัสผ่าน",
+      google: "เข้าสู่ระบบด้วย Google",
+      submit: isRegister ? "สร้างบัญชี" : "เข้าสู่ระบบ",
+      processing: "กำลังดำเนินการ...",
+      passwordsMismatch: "รหัสผ่านไม่ตรงกัน",
+      invalidLogin: "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+      successTitle: "สร้างบัญชีสำเร็จแล้ว!",
+      successMessage: "กรุณาตรวจสอบอีเมลของคุณเพื่อดำเนินการต่อ",
+      ok: "ตกลง",
+      forgotPassword: "ลืมรหัสผ่าน?",
+      resetPassword: "รีเซ็ตรหัสผ่าน",
+      sendResetEmail: "ส่งอีเมลรีเซ็ตรหัสผ่าน",
+      backToLogin: "กลับไปหน้าเข้าสู่ระบบ",
+      resetEmailSent: "ส่งอีเมลรีเซ็ตรหัสผ่านแล้ว! กรุณาตรวจสอบกล่องจดหมายของคุณ",
+      enterEmailForReset:
+        "กรอกที่อยู่อีเมลของคุณเพื่อรับคำแนะนำในการรีเซ็ตรหัสผ่าน",
+      cancel: "ยกเลิก",
+    },
   };
 
   const copy = t[lang];

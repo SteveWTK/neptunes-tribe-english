@@ -114,6 +114,47 @@ export default function SiteHomeClient({
       helpingWith: "Você está ajudando com",
       urgentChallenge: "Desafio Ambiental Urgente",
     },
+    th: {
+      heroTitle: "ฝึกภาษาอังกฤษไปพร้อมกับสำรวจโลก",
+      heroSubtitle:
+        "Neptune's Tribe คือการเดินทางเรียนรู้ภาษาอังกฤษที่ได้รับแรงบันดาลใจจากการดูแลสิ่งแวดล้อม เรียนภาษาอังกฤษ ช่วยรักษาโลก",
+      allUnits: "บทเรียนทั้งหมด",
+      featuredWorld: "โลกแนะนำ",
+      viewingWorld: "คุณกำลังดูบทเรียนจาก",
+      adminViewingAll:
+        "มุมมองผู้ดูแลระบบ: แสดงบทเรียนทั้งหมดจากทุกโลก",
+      unitsFound: "บทเรียนที่พบ",
+      completed: "เสร็จสมบูรณ์",
+      premiumOnly: "สำหรับสมาชิกพรีเมียมเท่านั้น",
+      upgradeToUnlock: "อัปเกรดเพื่อปลดล็อก",
+      loginToAccess: "เข้าสู่ระบบเพื่อเข้าถึง",
+      clickHint: "เคล็ดลับ: ไปที่แผนที่นิเวศของคุณเพื่อสำรวจบทเรียนตามภูมิภาค",
+
+      // Filtering
+      filters: "ตัวกรอง",
+      sortBy: "เรียงตาม",
+      sortByRank: "ลำดับเริ่มต้น",
+      sortByLength: "ความยาว (สั้นที่สุดก่อน)",
+      sortByNewest: "ใหม่ล่าสุดก่อน",
+      showCompleted: "แสดงเฉพาะที่เสร็จแล้ว",
+      showIncomplete: "แสดงเฉพาะที่ยังไม่เสร็จ",
+      showAll: "แสดงทั้งหมด",
+      applyFilters: "ใช้ตัวกรอง",
+      clearFilters: "ล้างทั้งหมด",
+
+      // Premium messaging
+      premiumContent: "เนื้อหาพรีเมียม",
+      unlockPremium: "ปลดล็อกด้วยพรีเมียม",
+      premiumBenefit: "เข้าถึงบทเรียนและความท้าทายพรีเมียมกว่า 100 รายการ",
+      upgradeNow: "อัปเกรดเลย",
+
+      noUnitsFound: "ไม่พบบทเรียนสำหรับสถานที่นี้",
+      noUnitsSubtext: "ลองสำรวจพื้นที่อื่นบนแผนที่นิเวศของคุณ!",
+      backToEcoMap: "กลับไปที่แผนที่นิเวศ",
+      backToAllUnits: "ดูบทเรียนทั้งหมด",
+      helpingWith: "คุณกำลังช่วยเรื่อง",
+      urgentChallenge: "ความท้าทายด้านสิ่งแวดล้อมเร่งด่วน",
+    },
   };
 
   const copy = t[lang];

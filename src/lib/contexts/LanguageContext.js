@@ -8,7 +8,7 @@ export const LanguageContext = createContext();
 
 export function LanguageProvider({ children }) {
   const [lang, setLangState] = useState("en");
-  const supportedLanguages = ["en", "pt"]; // example
+  const supportedLanguages = ["en", "pt", "th"];
 
   // Load language from localStorage on mount
 

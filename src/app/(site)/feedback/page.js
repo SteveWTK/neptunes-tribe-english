@@ -145,6 +145,65 @@ export default function FeedbackPage() {
       error: "Algo deu errado. Por favor, tente novamente.",
       loading: "Carregando...",
     },
+    th: {
+      title: "เราให้ความสำคัญกับความคิดเห็นของคุณ",
+      subtitle:
+        "ช่วยเราปรับปรุง Habitat English! แบ่งปันประสบการณ์ของคุณเกี่ยวกับกิจกรรม เนื้อหา และแพลตฟอร์ม ไม่มีข้อบังคับ - แบ่งปันมากหรือน้อยตามที่คุณต้องการ!",
+
+      // Section titles
+      contentQuality: "คุณภาพเนื้อหา",
+      easeOfUse: "ความง่ายในการใช้งาน",
+      learningEffectiveness: "ประสิทธิภาพการเรียนรู้",
+      technicalPerformance: "ประสิทธิภาพทางเทคนิค",
+      tellUsMore: "บอกเราเพิ่มเติม",
+
+      // Rating labels
+      contentRatingLabel: "กิจกรรมน่าสนใจและเกี่ยวข้องหรือไม่?",
+      easeRatingLabel: "แพลตฟอร์มใช้งานง่ายหรือไม่?",
+      learningRatingLabel: "คุณรู้สึกว่าเรียนรู้ได้อย่างมีประสิทธิภาพหรือไม่?",
+      technicalRatingLabel: "ทุกอย่างทำงานได้ราบรื่นหรือไม่?",
+
+      // Comment labels
+      additionalThoughts: "ความคิดเห็นเพิ่มเติม (ไม่บังคับ)",
+      contentPlaceholder:
+        "แบ่งปันความคิดเห็นของคุณเกี่ยวกับบทเรียน คำศัพท์ เกม ฯลฯ",
+      easePlaceholder: "ประสบการณ์การใช้งานเว็บไซต์ของคุณเป็นอย่างไร?",
+      learningPlaceholder:
+        "กิจกรรมช่วยให้คุณเรียนรู้หรือไม่? มีข้อเสนอแนะอะไรไหม?",
+      technicalPlaceholder:
+        "มีข้อบกพร่อง การโหลดช้า หรือปัญหาทางเทคนิคใดๆ หรือไม่?",
+
+      // Open-ended questions
+      enjoyedLabel: "คุณชอบอะไรมากที่สุด? (ไม่บังคับ)",
+      enjoyedPlaceholder:
+        "ส่วนใดของ Habitat English ที่คุณพบว่ามีคุณค่าหรือสนุกมากที่สุด?",
+      improvedLabel: "อะไรที่ควรปรับปรุง? (ไม่บังคับ)",
+      improvedPlaceholder: "อะไรที่จะทำให้ประสบการณ์ของคุณดียิ่งขึ้น?",
+      featuresLabel:
+        "มีฟีเจอร์หรือเนื้อหาเฉพาะที่คุณอยากเห็นหรือไม่? (ไม่บังคับ)",
+      featuresPlaceholder:
+        "หัวข้อใหม่ กิจกรรม หรือฟีเจอร์ที่คุณคิดว่าจะเป็นประโยชน์",
+      generalLabel: "ความคิดเห็นทั่วไป (ไม่บังคับ)",
+      generalPlaceholder: "มีอะไรอื่นที่คุณอยากแบ่งปันหรือไม่?",
+
+      // Actions
+      submit: "ส่งความคิดเห็น",
+      submitting: "กำลังส่ง...",
+      back: "กลับ",
+      signInPrompt: "กรุณาเข้าสู่ระบบเพื่อส่งความคิดเห็น",
+      signInButton: "เข้าสู่ระบบ",
+      allOptional:
+        "ทุกช่องเป็นทางเลือก แบ่งปันมากหรือน้อยตามที่คุณต้องการ!",
+
+      // Toast messages
+      thankYou: "ขอบคุณสำหรับความคิดเห็นโดยละเอียดของคุณ!",
+      thankYouDesc:
+        "ข้อมูลเชิงลึกของคุณมีค่ามากในการปรับปรุง Habitat English",
+      provideRatingOrComment:
+        "กรุณาให้คะแนนหรือแสดงความคิดเห็นอย่างน้อยหนึ่งรายการ",
+      error: "เกิดข้อผิดพลาด กรุณาลองอีกครั้ง",
+      loading: "กำลังโหลด...",
+    },
   };
 
   const copy = t[lang];

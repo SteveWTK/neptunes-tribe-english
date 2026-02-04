@@ -26,6 +26,13 @@ export default function ChallengesHomeClient({
       premiumChallenges: "Desafios premium disponíveis",
       upgradeForMore: "Faça upgrade para acessar todos os desafios",
     },
+    th: {
+      heroTitle: "แบบฝึกหัดเติมคำในช่องว่าง",
+      heroSubtitle:
+        "ทดสอบทักษะภาษาอังกฤษของคุณด้วยแบบฝึกหัดเติมคำในช่องว่างแบบโต้ตอบ แต่ละชุดมี 10 ข้อเพื่อพัฒนาคำศัพท์และไวยากรณ์ของคุณ",
+      premiumChallenges: "แบบฝึกหัดพรีเมียมที่พร้อมใช้งาน",
+      upgradeForMore: "อัปเกรดเพื่อเข้าถึงแบบฝึกหัดทั้งหมด",
+    },
   };
 
   const copy = t[lang];

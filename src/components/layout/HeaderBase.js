@@ -40,8 +40,7 @@ export default function HeaderBase({
   const languageOptions = {
     en: { label: "English", flag: "🇬🇧" },
     pt: { label: "Português", flag: "🇧🇷" },
-    // es: { label: "Español", flag: "ES" },
-    // th: { label: "ไทย", flag: "TH" },
+    th: { label: "ไทย", flag: "🇹🇭" },
   };
 
   const localizedLinks = {
@@ -66,15 +65,11 @@ export default function HeaderBase({
         // { href: "/schools", label: "Para Escolas" },
         // { href: "/about-us", label: "Sobre Nós" },
       ],
-      es: [
-        { href: "/worlds", label: "Mundos" },
-        { href: "/observations", label: "Observaciones" },
-        { href: "/eco-news", label: "Eco News" },
-        { href: "/about-us", label: "Sobre Nosotros" },
-        // { href: "/subscriptions", label: "Suscripciones" },
-        // { href: "/explorers", label: "Para Exploradores Solo" },
-        // { href: "/schools", label: "Para Escolas" },
-        // { href: "/about-us", label: "Sobre Nós" },
+      th: [
+        { href: "/worlds", label: "โลก" },
+        { href: "/observations", label: "การสังเกต" },
+        { href: "/eco-news", label: "ข่าวสิ่งแวดล้อม" },
+        { href: "/about-us", label: "เกี่ยวกับเรา" },
       ],
     },
     site: {
@@ -92,15 +87,11 @@ export default function HeaderBase({
         { href: "/about-us", label: "Sobre Nós" },
         // { href: "/subscriptions", label: "Planos" },
       ],
-      es: [
-        { href: "/worlds", label: "Mundos" },
-        { href: "/observations", label: "Observaciones" },
-        { href: "/eco-news", label: "Eco News" },
-        { href: "/about-us", label: "Sobre Nosotros" },
-        // { href: "/subscriptions", label: "Suscripciones" },
-        // { href: "/explorers", label: "Para Exploradores Solo" },
-        // { href: "/schools", label: "Para Escolas" },
-        // { href: "/about-us", label: "Sobre Nós" },
+      th: [
+        { href: "/worlds", label: "โลก" },
+        { href: "/observations", label: "การสังเกต" },
+        { href: "/eco-news", label: "ข่าวสิ่งแวดล้อม" },
+        { href: "/about-us", label: "เกี่ยวกับเรา" },
       ],
     },
   };
@@ -118,10 +109,10 @@ export default function HeaderBase({
       signIn: "Entrar",
       signOut: "Sair",
     },
-    es: {
-      ecoMap: "Panel de control",
-      signIn: "Iniciar sesión",
-      signOut: "Cerrar sesión",
+    th: {
+      ecoMap: "แดชบอร์ด",
+      signIn: "เข้าสู่ระบบ",
+      signOut: "ออกจากระบบ",
     },
   };
 

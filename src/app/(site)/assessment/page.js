@@ -169,6 +169,68 @@ export default function AssessmentPage() {
       microphoneError:
         "Não foi possível acessar o microfone. Verifique suas permissões.",
     },
+    th: {
+      title: "ค้นหาระดับที่เหมาะกับคุณที่สุด",
+      subtitle:
+        "การประเมินภาษาอังกฤษอย่างรวดเร็วเพื่อแนะนำระดับการเรียนรู้ที่เหมาะสม",
+      introTitle: "มาหาระดับที่เหมาะกับคุณกันเถอะ",
+      introDesc:
+        "ชั้นเรียนสนทนาของเราจะได้ผลดีที่สุดเมื่อทุกคนมีระดับภาษาอังกฤษใกล้เคียงกัน การประเมินอย่างรวดเร็วนี้ช่วยให้เราแนะนำระดับที่เหมาะสมสำหรับคุณ",
+      introPrompt:
+        "คุณจะอ่านข้อความสั้นๆ เกี่ยวกับการอนุรักษ์สิ่งแวดล้อม ไม่ต้องกังวลเรื่องความสมบูรณ์แบบ - เราต้องการฟังระดับการพูดตามธรรมชาติของคุณ!",
+      emailLabel: "ที่อยู่อีเมลของคุณ",
+      emailPlaceholder: "กรอกอีเมลของคุณเพื่อเริ่มต้น",
+      startAssessment: "เริ่มการประเมิน",
+      recordingTitle: "บันทึกเสียงของคุณ",
+      recordingDesc:
+        "แนะนำตัวเองและพูดเกี่ยวกับความสนใจในสิ่งแวดล้อมของคุณ หรืออ่านข้อความนี้อย่างเป็นธรรมชาติตามจังหวะของคุณเอง ค่อยๆ ทำไม่ต้องรีบ!",
+      readingText:
+        "Marine protected areas are essential for ocean conservation. These underwater sanctuaries provide safe spaces where fish populations can recover and coral reefs can flourish. Scientists have discovered that well-managed marine reserves not only protect biodiversity but also benefit local fishing communities through improved fish stocks in surrounding waters.",
+      recordingInstructions: "เคล็ดลับเพื่อผลลัพธ์ที่ดีที่สุด:",
+      tip1: "หาสถานที่เงียบๆ",
+      tip2: "พูดชัดเจนและเป็นธรรมชาติ",
+      tip3: "ไม่ต้องรีบ - ค่อยๆ ทำ",
+      tip4: "หยุดพักระหว่างประโยคได้",
+      startRecording: "เริ่มบันทึกเสียง",
+      stopRecording: "หยุดบันทึกเสียง",
+      playRecording: "เล่นเสียงที่บันทึก",
+      pauseRecording: "หยุดชั่วคราว",
+      tryAgain: "ลองอีกครั้ง",
+      submitAssessment: "ส่งการประเมิน",
+      recording: "กำลังบันทึก",
+      seconds: "วินาที",
+      resultsTitle: "ผลการประเมินของคุณ",
+      analyzingTitle: "กำลังวิเคราะห์ภาษาอังกฤษของคุณ...",
+      analyzingDesc:
+        "AI ของเรากำลังประเมินการออกเสียง ความคล่องแคล่ว และความเข้าใจของคุณ ใช้เวลาประมาณ 30 วินาที",
+      recommendedTier: "ระดับที่แนะนำ",
+      overallScore: "คะแนนรวม",
+      pronunciation: "การออกเสียง",
+      fluency: "ความคล่องแคล่ว",
+      explorerResultTitle: "Explorer - เหมาะสำหรับคุณ!",
+      explorerResultDesc:
+        "เริ่มต้นการเดินทางของคุณด้วยการเข้าถึงบทเรียนทั้งหมดและฟังชั้นเรียนสนทนาสด เมื่อคุณพร้อม คุณสามารถอัปเกรดได้ตลอดเวลา!",
+      proResultTitle: "Pro - พร้อมสำหรับชั้นเรียนสด!",
+      proResultDesc:
+        "ระดับภาษาอังกฤษของคุณเหมาะสำหรับการเข้าร่วมชั้นเรียนสนทนาสดประจำสัปดาห์กับผู้เรียนคนอื่นๆ จากทั่วโลก",
+      premiumResultTitle: "Premium - กำหนดทิศทางการเดินทาง!",
+      premiumResultDesc:
+        "ทักษะภาษาอังกฤษที่ยอดเยี่ยมของคุณทำให้คุณมีสิทธิ์เข้าถึงระดับสูงสุดของเรา เข้าร่วมชั้นเรียนสดและโหวตจุดหมายปลายทางประจำสัปดาห์สำหรับทั้งกลุ่ม!",
+      signupTitle: "สร้างบัญชี Neptune's Tribe ของคุณ",
+      signupDesc:
+        "การประเมินของคุณเสร็จสมบูรณ์แล้ว! สร้างบัญชีเพื่อเริ่มต้นการเดินทางเชิงนิเวศของคุณ",
+      createAccount: "สร้างบัญชีและเข้าร่วมกลุ่ม",
+      orSignInGoogle: "หรือเข้าสู่ระบบด้วย Google",
+      alreadyHaveAccount: "มีบัญชีอยู่แล้ว?",
+      signIn: "เข้าสู่ระบบ",
+      strengths: "จุดแข็งของคุณ",
+      improvements: "ด้านที่ควรพัฒนา",
+      error: "เกิดข้อผิดพลาด กรุณาลองอีกครั้ง",
+      emailRequired: "กรุณากรอกที่อยู่อีเมลของคุณ",
+      invalidEmail: "กรุณากรอกที่อยู่อีเมลที่ถูกต้อง",
+      microphoneError:
+        "ไม่สามารถเข้าถึงไมโครโฟนได้ กรุณาตรวจสอบการอนุญาตของคุณ",
+    },
   };
 
   const copy = t[lang];
@@ -321,11 +383,21 @@ export default function AssessmentPage() {
         borderColor: "border-blue-300 dark:border-blue-600",
         gradientClasses: "from-blue-600 to-blue-700",
         features: [
-          lang === "en"
-            ? "Access all learning units"
-            : "Acesso a todas as unidades",
-          lang === "en" ? "Listen to live classes" : "Ouça aulas ao vivo",
-          lang === "en" ? "Track your progress" : "Acompanhe seu progresso",
+          lang === "th"
+            ? "เข้าถึงบทเรียนทั้งหมด"
+            : lang === "en"
+              ? "Access all learning units"
+              : "Acesso a todas as unidades",
+          lang === "th"
+            ? "ฟังคลาสสด"
+            : lang === "en"
+              ? "Listen to live classes"
+              : "Ouça aulas ao vivo",
+          lang === "th"
+            ? "ติดตามความก้าวหน้าของคุณ"
+            : lang === "en"
+              ? "Track your progress"
+              : "Acompanhe seu progresso",
         ],
       },
       pro: {
@@ -337,13 +409,21 @@ export default function AssessmentPage() {
         borderColor: "border-green-300 dark:border-green-600",
         gradientClasses: "from-green-600 to-green-700",
         features: [
-          lang === "en"
-            ? "Join live conversation classes"
-            : "Participe de aulas de conversação",
-          lang === "en"
-            ? "Advanced progress tracking"
-            : "Acompanhamento avançado",
-          lang === "en" ? "Priority support" : "Suporte prioritário",
+          lang === "th"
+            ? "เข้าร่วมคลาสสนทนาสด"
+            : lang === "en"
+              ? "Join live conversation classes"
+              : "Participe de aulas de conversação",
+          lang === "th"
+            ? "ติดตามความก้าวหน้าขั้นสูง"
+            : lang === "en"
+              ? "Advanced progress tracking"
+              : "Acompanhamento avançado",
+          lang === "th"
+            ? "การสนับสนุนแบบเร่งด่วน"
+            : lang === "en"
+              ? "Priority support"
+              : "Suporte prioritário",
         ],
       },
       premium: {
@@ -355,15 +435,21 @@ export default function AssessmentPage() {
         borderColor: "border-purple-300 dark:border-purple-600",
         gradientClasses: "from-purple-600 to-purple-700",
         features: [
-          lang === "en"
-            ? "Vote on weekly destinations"
-            : "Vote nos destinos semanais",
-          lang === "en"
-            ? "Join special podcasts"
-            : "Participe de podcasts especiais",
-          lang === "en"
-            ? "Premium content access"
-            : "Acesso a conteúdo premium",
+          lang === "th"
+            ? "โหวตเลือกจุดหมายประจำสัปดาห์"
+            : lang === "en"
+              ? "Vote on weekly destinations"
+              : "Vote nos destinos semanais",
+          lang === "th"
+            ? "เข้าร่วมพอดแคสต์พิเศษ"
+            : lang === "en"
+              ? "Join special podcasts"
+              : "Participe de podcasts especiais",
+          lang === "th"
+            ? "เข้าถึงเนื้อหา Premium"
+            : lang === "en"
+              ? "Premium content access"
+              : "Acesso a conteúdo premium",
         ],
       },
     };
@@ -466,7 +552,13 @@ export default function AssessmentPage() {
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Reading Text */}
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-semibold mb-4">Read This Text:</h3>
+              <h3 className="text-lg font-semibold mb-4">
+                {lang === "th"
+                  ? "อ่านข้อความนี้:"
+                  : lang === "pt"
+                    ? "Leia Este Texto:"
+                    : "Read This Text:"}
+              </h3>
               <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-blue-500">
                 <p className="text-lg leading-relaxed">{copy.readingText}</p>
               </div>
@@ -536,7 +628,11 @@ export default function AssessmentPage() {
                           ></div>
                         </div>
                         <p className="text-sm text-gray-500 mt-2">
-                          Maximum 60 seconds
+                          {lang === "th"
+                            ? "สูงสุด 60 วินาที"
+                            : lang === "pt"
+                              ? "Máximo 60 segundos"
+                              : "Maximum 60 seconds"}
                         </p>
                       </div>
                     )}

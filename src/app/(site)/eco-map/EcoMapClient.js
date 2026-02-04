@@ -1,7 +1,7 @@
 // app/eco-map/EcoMapClient.js - Updated to pass weekly theme data
 "use client";
 
-import ObservationMarkersMap from "@/components/observations/ObservationMarkersMap";
+import { ContentPinsMap } from "@inspire/shared";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -75,6 +75,21 @@ export default function EcoMapClient({
       impactSubtitle:
         "Explore mais ecossistemas e conclua desafios ambientais para expandir seu impacto!",
       continueLearning: "Veja todas as unidades",
+    },
+    th: {
+      title: "ยินดีต้อนรับสู่การเดินทางเชิงนิเวศเสมือนจริงรอบโลกของคุณ",
+      subTitle: "คลิกบนแผนที่เพื่อดูบทเรียนที่เกี่ยวข้องกับภูมิภาคนั้น",
+      weeklyThemeTitle: "การผจญภัยประจำสัปดาห์นี้",
+      exploreTheme: "เริ่มการผจญภัย",
+      exploreWorlds: "สำรวจโลก",
+      worldsSubtitle: "เริ่มต้นการผจญภัยของคุณ",
+      vocabularySubtitle: "คำศัพท์ของคุณ",
+      observationsSubtitle: "การสังเกต",
+      avatarSubtitle: "อวาตาร์",
+      impactTitle: "เพิ่มผลกระทบของคุณต่อไป",
+      impactSubtitle:
+        "สำรวจระบบนิเวศเพิ่มเติมและทำภารกิจด้านสิ่งแวดล้อมให้สำเร็จเพื่อขยายผลกระทบของคุณ!",
+      continueLearning: "ดูบทเรียนทั้งหมด",
     },
   };
 
@@ -300,11 +315,25 @@ export default function EcoMapClient({
             ? "Explore observações de vida selvagem compartilhadas pela comunidade ao redor do mundo"
             : "Explore wildlife observations shared by the community around the world"}
         </p> */}
-        <ObservationMarkersMap
+        {/* Using shared ContentPinsMap from @inspire/shared */}
+        <ContentPinsMap
+          apiEndpoint="/api/observations/map"
           showFilters={true}
           initialFilter="global"
-          maxMarkers={100}
+          maxPins={100}
           className="shadow-lg"
+          detailPagePath="/observations/{id}"
+          emptyState={{
+            title: lang === "pt" ? "Nenhuma observação ainda" : "No observations yet",
+            mineMessage: lang === "pt" ? "Crie sua primeira observação!" : "Create your first observation!",
+            globalMessage: lang === "pt" ? "Seja o primeiro a adicionar" : "Be the first to add one",
+            createLabel: lang === "pt" ? "Adicionar Observação" : "Add Observation",
+            createPath: "/observations/create",
+          }}
+          translations={{
+            pins: lang === "pt" ? "observações" : "observations",
+            loadingMap: lang === "pt" ? "Carregando mapa..." : "Loading map...",
+          }}
         />
       </div>
     </div>

@@ -144,6 +144,34 @@ export default function PricingTiers() {
         // },
       ],
     },
+    th: {
+      monthly: "รายเดือน",
+      yearly: "รายปี",
+      discount: "ลด 33%",
+      mostPopular: "ยอดนิยม",
+      basicSub: "ทดลองใช้ฟีเจอร์หลักของเรา",
+      explorerSub: "เพลิดเพลินกับเนื้อหาและฟีเจอร์ทั้งหมด",
+      enterpriseSub: "สำหรับทีมและองค์กร",
+      cardContentBasic: [
+        "เข้าถึงกิจกรรมการผจญภัยหนึ่งรายการ",
+        "เข้าถึงข่าวสิ่งแวดล้อม",
+      ],
+      cardContentExplorer: [
+        "เข้าถึงฟีเจอร์ทั้งหมด",
+        "เข้าถึงบทเรียนประจำสัปดาห์ กิจกรรม และแบบฝึกหัดทบทวนทั้งหมด",
+        "เข้าถึงแผนที่นิเวศของคุณ",
+        "การสนับสนุนแบบเร่งด่วน",
+      ],
+      cardContentEnterprise: [
+        "ฟีเจอร์ทั้งหมดของ Explorer",
+        "สูงสุด 25 บัญชี (จ่ายเพียง 10 บัญชี)",
+      ],
+      getStartedFree: "เริ่มต้นใช้งานฟรี",
+      chooseExplorer: "เลือก Premium",
+      chooseEnterprise: "เลือก Enterprise",
+      FAQHeader: "คำถามที่พบบ่อย",
+      FAQ: [],
+    },
   };
 
   const copy = t[lang];

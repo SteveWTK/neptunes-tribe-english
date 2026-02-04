@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import GlossaryTooltip from "./GlossaryTooltip";
+import { GlossaryTooltip } from "@inspire/shared";
 import { parseTextWithGlossary } from "@/lib/glossaryUtils";
 
 export default function TextWithGlossary({
@@ -45,6 +45,7 @@ export default function TextWithGlossary({
                 pt: segment.translation,
                 es: segment.translation_es,
                 fr: segment.translation_fr,
+                th: segment.translation_th,
               }}
               notes={segment.notes}
               onSave={handleSave}

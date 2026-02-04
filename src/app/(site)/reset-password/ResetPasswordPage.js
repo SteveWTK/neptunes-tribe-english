@@ -50,6 +50,21 @@ export default function ResetPasswordPage() {
         "Link de redefinição inválido ou expirado. Solicite um novo.",
       backToLogin: "Voltar ao Login",
     },
+    th: {
+      title: "รีเซ็ตรหัสผ่านของคุณ",
+      newPassword: "รหัสผ่านใหม่",
+      confirmPassword: "ยืนยันรหัสผ่านใหม่",
+      resetPassword: "รีเซ็ตรหัสผ่าน",
+      processing: "กำลังดำเนินการ...",
+      passwordsMismatch: "รหัสผ่านไม่ตรงกัน",
+      passwordTooShort: "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร",
+      successMessage:
+        "อัปเดตรหัสผ่านสำเร็จแล้ว! กำลังเปลี่ยนเส้นทางไปหน้าเข้าสู่ระบบ...",
+      errorMessage: "รีเซ็ตรหัสผ่านไม่สำเร็จ กรุณาลองอีกครั้ง",
+      invalidLink:
+        "ลิงก์รีเซ็ตไม่ถูกต้องหรือหมดอายุแล้ว กรุณาขอลิงก์ใหม่",
+      backToLogin: "กลับไปหน้าเข้าสู่ระบบ",
+    },
   };
 
   const copy = t[lang];

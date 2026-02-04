@@ -99,6 +99,20 @@ export default function MultiGapFillExerciseNew({
       hoverInstruction:
         "Passe o mouse sobre as lacunas para ver as respostas corretas e explicações",
     },
+    th: {
+      showFullTextButton: "แสดงข้อความเต็ม",
+      showGapFillButton: "แสดงแบบฝึกหัดเติมคำ",
+      translationButton: "คำแปล",
+      submitAnswersButton: "ส่งคำตอบ",
+      tryAgainButton: "ลองอีกครั้ง",
+      region: "ภูมิภาค",
+      playAudio: "ฟัง",
+      correctAnswer: "คำตอบที่ถูกต้อง:",
+      showExplanation: "แสดงคำอธิบาย",
+      hideExplanation: "ซ่อนคำอธิบาย",
+      hoverInstruction:
+        "เลื่อนเมาส์ไปเหนือช่องว่างเพื่อดูคำตอบที่ถูกต้องและคำอธิบาย",
+    },
   };
 
   const copy = t[lang];

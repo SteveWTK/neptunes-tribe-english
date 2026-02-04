@@ -422,6 +422,34 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
+          ) : session?.user?.is_guest ? (
+            /* Guest user without avatar - welcome with explore prompt */
+            <div className="bg-gradient-to-br from-teal-500 to-accent-600 rounded-2xl shadow-lg p-8 text-white text-center">
+              <Globe className="w-16 h-16 mx-auto mb-4 opacity-90" />
+              <h1 className="text-2xl lg:text-3xl font-bold mb-2">
+                Welcome, Guest Explorer!
+              </h1>
+              <p className="text-white/90 text-lg mb-6 max-w-md mx-auto">
+                Start exploring worlds, making observations, and earning points.
+                Create an account to choose your species avatar!
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Link
+                  href="/worlds"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-accent-600 font-bold rounded-xl hover:bg-white/90 transition-colors shadow-lg"
+                >
+                  Start Exploring
+                  <ChevronRight className="w-5 h-5" />
+                </Link>
+                <Link
+                  href="/claim-account"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white font-bold rounded-xl hover:bg-white/30 transition-colors"
+                >
+                  Create Account
+                  <ChevronRight className="w-5 h-5" />
+                </Link>
+              </div>
+            </div>
           ) : (
             /* No avatar yet - prompt to select */
             <div className="bg-gradient-to-br from-accent-500 to-blue-600 rounded-2xl shadow-lg p-8 text-white text-center">
