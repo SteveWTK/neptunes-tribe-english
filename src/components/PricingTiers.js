@@ -22,6 +22,7 @@ import {
   getCurrencySymbol,
   formatPrice,
 } from "@/lib/currency-utils";
+import { useAffiliateAttribution } from "@inspire/shared";
 
 export default function PricingTiers() {
   const [currency, setCurrency] = useState("BRL");
@@ -31,6 +32,7 @@ export default function PricingTiers() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { lang } = useLanguage();
+  const { stripeMetadata: affiliateMetadata } = useAffiliateAttribution();
   const t = {
     en: {
       monthly: "Monthly",
@@ -278,6 +280,7 @@ export default function PricingTiers() {
           subscriptionInterval: billingCycle,
           tierLevel: tier,
           currency: currency, // Pass detected currency
+          ...affiliateMetadata, // Include affiliate tracking data
         }),
       });
 
@@ -312,6 +315,7 @@ export default function PricingTiers() {
           priceType: "one_time",
           oneTimeAmount: amount,
           currency: currency,
+          ...affiliateMetadata, // Include affiliate tracking data
         }),
       });
 

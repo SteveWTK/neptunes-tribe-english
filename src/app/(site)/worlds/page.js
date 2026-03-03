@@ -104,11 +104,11 @@ function WorldsContent() {
             <div className="inline-flex items-center gap-3 mb-6">
               {/* <Globe className="w-12 h-12" /> */}
               <h1 className="text-4xl md:text-5xl font-bold">
-                Explore Our Planet
+                Explore our Planet
               </h1>
             </div>
             <p className="text-xl text-primary-950/90 dark:text-white/90 max-w-3xl mx-auto mb-4">
-              Journey through 8 incredible Worlds.
+              Learn inglês e save endangered species!
             </p>
 
             <Link href="/dashboard" className="inline-flex items-center gap-2">

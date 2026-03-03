@@ -121,6 +121,17 @@ function DynamicLessonContent() {
 
         setLesson(lessonData);
 
+        // Debug: Log lesson content structure
+        console.log("[Lesson] Loaded:", {
+          id: lessonData.id,
+          title: lessonData.title,
+          hasContent: !!lessonData.content,
+          contentType: typeof lessonData.content,
+          hasSteps: !!lessonData.content?.steps,
+          stepsLength: lessonData.content?.steps?.length || 0,
+          stepTypes: lessonData.content?.steps?.map(s => s.type) || [],
+        });
+
         // Fetch user's preferred language and English variant
         if (user?.id) {
           const preferredLang = await getPlayerPreferredLanguage(user.id);
@@ -619,24 +630,32 @@ function DynamicLessonContent() {
   };
 
   const handleNext = () => {
+    console.log("[handleNext] Called. currentStep:", currentStep, "steps.length:", steps.length);
     setSelectedAnswer("");
     setSelectedAnswers({});
     setShowFeedback(false);
     setShowTranslation(false); // Reset translation view
     setStepCompleted(false); // Reset step completion indicator
     if (currentStep < steps.length - 1) {
+      console.log("[handleNext] Advancing to step:", currentStep + 1);
       setCurrentStep((prev) => prev + 1);
+    } else {
+      console.log("[handleNext] Already at last step, not advancing");
     }
   };
 
   const handlePrevious = () => {
+    console.log("[handlePrevious] Called. currentStep:", currentStep);
     setSelectedAnswer("");
     setSelectedAnswers({});
     setShowFeedback(false);
     setShowTranslation(false); // Reset translation view
     setStepCompleted(false); // Reset step completion indicator
     if (currentStep > 0) {
+      console.log("[handlePrevious] Going back to step:", currentStep - 1);
       setCurrentStep((prev) => prev - 1);
+    } else {
+      console.log("[handlePrevious] Already at first step, not going back");
     }
   };
 
@@ -804,6 +823,37 @@ function DynamicLessonContent() {
   const renderStepContent = () => {
     if (!currentStepData) return <div>No content available</div>;
 
+    // Log step info for debugging
+    console.log("[renderStepContent] Rendering step:", {
+      stepIndex: currentStep,
+      stepType: currentStepData.type,
+      hasTitle: !!currentStepData.title,
+    });
+
+    try {
+      return renderStepContentInner();
+    } catch (error) {
+      console.error("[renderStepContent] Error rendering step:", error, currentStepData);
+      return (
+        <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-xl">
+          <p className="text-red-600 dark:text-red-400 font-bold mb-2">
+            Error rendering step content
+          </p>
+          <p className="text-red-500 dark:text-red-300 text-sm mb-4">
+            {error.message}
+          </p>
+          <details>
+            <summary className="cursor-pointer text-sm text-gray-500">View step data</summary>
+            <pre className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded mt-2 overflow-auto">
+              {JSON.stringify(currentStepData, null, 2)}
+            </pre>
+          </details>
+        </div>
+      );
+    }
+  };
+
+  const renderStepContentInner = () => {
     switch (currentStepData.type) {
       case "scenario":
         return (

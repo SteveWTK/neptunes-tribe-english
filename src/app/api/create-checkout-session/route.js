@@ -35,6 +35,10 @@ export async function POST(req) {
       tierLevel,
       oneTimeAmount,
       currency = "USD", // Default to USD
+      // Affiliate tracking metadata (from useAffiliateAttribution hook)
+      rewardful_referral,
+      affiliate_code,
+      affiliate_attributed_at,
     } = await req.json();
 
     let lineItems;
@@ -112,7 +116,20 @@ export async function POST(req) {
         }),
         ...(tierLevel && { tier_level: tierLevel }),
         ...(oneTimeAmount && { one_time_amount: oneTimeAmount.toString() }),
+        // Affiliate tracking for Rewardful
+        ...(rewardful_referral && { rewardful_referral }),
+        ...(affiliate_code && { affiliate_code }),
+        ...(affiliate_attributed_at && { affiliate_attributed_at }),
       },
+      // Pass referral to subscription for recurring commission tracking
+      ...(mode === "subscription" && rewardful_referral && {
+        subscription_data: {
+          metadata: {
+            rewardful_referral,
+            affiliate_code,
+          },
+        },
+      }),
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/thank-you?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/subscriptions?canceled=true`,
       allow_promotion_codes: true,

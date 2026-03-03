@@ -20,7 +20,8 @@
       "Bash(powershell -Command:*)",
       "Bash(powershell -Command \"Remove-Item -Path ''c:\\\\Developer\\\\INSPIRE\\\\neptunes-tribe-english\\\\.next'' -Recurse -Force -ErrorAction SilentlyContinue\")",
       "Bash(git remote add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(npx next build)"
     ],
     "deny": [],
     "ask": []

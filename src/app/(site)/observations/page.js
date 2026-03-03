@@ -132,7 +132,7 @@ export default function ObservationsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-600 via-green-700 to-green-600 dark:from-green-900 dark:via-green-900 dark:to-green-950 text-white">
+      <div className="bg-gradient-to-b from-green-600 via-green-700 to-green-600 dark:from-primary-950 dark:via-green-900 dark:to-primary-950 text-white">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
@@ -145,7 +145,7 @@ export default function ObservationsPage() {
             {session && (
               <Link
                 href="/observations/create"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-accent-700 font-semibold rounded-xl hover:bg-accent-50 transition-colors shadow-lg"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-colors shadow-lg"
               >
                 <Plus className="w-5 h-5" />
                 New Observation
@@ -159,8 +159,8 @@ export default function ObservationsPage() {
               onClick={() => setViewMode("public")}
               className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
                 viewMode === "public"
-                  ? "bg-white text-accent-700"
-                  : "bg-accent-500/30 text-white hover:bg-accent-500/50"
+                  ? "bg-white text-primary-700"
+                  : "bg-green-500/30 text-white hover:bg-green-500/50"
               }`}
             >
               <Globe className="w-4 h-4" />
@@ -172,8 +172,8 @@ export default function ObservationsPage() {
                   onClick={() => setViewMode("school")}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
                     viewMode === "school"
-                      ? "bg-white text-accent-700"
-                      : "bg-accent-500/30 text-white hover:bg-accent-500/50"
+                      ? "bg-white text-primary-700"
+                      : "bg-green-500/30 text-white hover:bg-green-500/50"
                   }`}
                 >
                   <Building className="w-4 h-4" />
@@ -183,8 +183,8 @@ export default function ObservationsPage() {
                   onClick={() => setViewMode("mine")}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
                     viewMode === "mine"
-                      ? "bg-white text-accent-700"
-                      : "bg-accent-500/30 text-white hover:bg-accent-500/50"
+                      ? "bg-white text-primary-700"
+                      : "bg-green-500/30 text-white hover:bg-green-500/50"
                   }`}
                 >
                   <Camera className="w-4 h-4" />

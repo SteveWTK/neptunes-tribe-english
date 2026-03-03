@@ -33,7 +33,7 @@ export default function LandingPageExplorers() {
 
   const t = {
     en: {
-      heroTitle: "An English learning journey through eight worlds.",
+      heroTitle: "An English learning journey around our planet.",
       heroSubtitle:
         "The first English learning platform with an environmental theme.",
       heroDescription:
@@ -111,7 +111,7 @@ export default function LandingPageExplorers() {
       viewAllTiers: "View all tiers and pricing",
 
       // Worlds Showcase
-      worldsTitle: "An unforgettable adventure through 8 worlds.",
+      worldsTitle: "An unforgettable adventure around our planet.",
       worldsSubtitle:
         "Journey through diverse ecosystems from tropical rainforests to the depths of the ocean, and even back through time to meet extinct species.",
 
@@ -179,7 +179,7 @@ export default function LandingPageExplorers() {
         "Premium members vote each Thursday on the following week's ecosystem destination. Democracy in action!",
     },
     pt: {
-      heroTitle: "Uma jornada de inglês por oito mundos",
+      heroTitle: "Uma jornada de inglês pelo nosso planeta",
       heroSubtitle:
         "A  primeira plataforma de ensino de inglês com o tema meio ambiente.",
       heroDescription:
@@ -256,7 +256,7 @@ export default function LandingPageExplorers() {
       viewAllTiers: "Ver todos os níveis e preços",
 
       // Worlds Showcase
-      worldsTitle: "Uma aventura inesquecível por 8 mundos ",
+      worldsTitle: "Uma aventura inesquecível pelo nosso planeta",
       worldsSubtitle:
         "Viaje por diversos ecossistemas, desde florestas tropicais até as profundezas do oceano, e até volte no tempo para conhecer espécies extintas.",
 
@@ -325,8 +325,7 @@ export default function LandingPageExplorers() {
     },
     th: {
       heroTitle: "การเดินทางเรียนรู้ภาษาอังกฤษผ่านแปดโลก",
-      heroSubtitle:
-        "แพลตฟอร์มการเรียนภาษาอังกฤษแห่งแรกที่มีธีมด้านสิ่งแวดล้อม",
+      heroSubtitle: "แพลตฟอร์มการเรียนภาษาอังกฤษแห่งแรกที่มีธีมด้านสิ่งแวดล้อม",
       heroDescription:
         "ทุกสัปดาห์ เผ่าของเราจะออกสำรวจระบบนิเวศใหม่ร่วมกัน ค้นพบสิ่งมีชีวิตที่น่าทึ่ง ซึ่งหลายชนิดกำลังใกล้สูญพันธุ์ ช่วยกันปกป้องสัตว์ป่าของโลกไปพร้อมกับพัฒนาทักษะภาษาอังกฤษของคุณ",
       startFree: "สร้างบัญชี",
@@ -631,8 +630,8 @@ export default function LandingPageExplorers() {
                       {lang === "th"
                         ? "การผจญภัย"
                         : lang === "pt"
-                          ? "Aventuras"
-                          : "Adventures"}
+                        ? "Aventuras"
+                        : "Adventures"}
                     </span>
                     <Globe
                       className="w-5 h-5"

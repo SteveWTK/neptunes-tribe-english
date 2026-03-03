@@ -3,7 +3,7 @@ import { useDarkMode, useLanguage } from "@/lib/hooks";
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import UserLevelSwitcher from "@/components/admin/UserLevelSwitcher";
-import { FeedbackWidget } from "@inspire/shared";
+import { FeedbackWidget, AffiliateTracker } from "@inspire/shared";
 import GuestBanner from "@/components/guest/GuestBanner";
 
 export default function LandingLayout({ children }) {
@@ -12,6 +12,8 @@ export default function LandingLayout({ children }) {
 
   return (
     <>
+      {/* Affiliate tracking - captures ?via=CODE from URLs */}
+      <AffiliateTracker attributionDays={90} />
       <SiteHeader
         darkMode={darkMode}
         setDarkMode={setDarkMode}

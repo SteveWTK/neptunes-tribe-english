@@ -172,7 +172,7 @@ export default function DashboardPage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
         <Loader2 className="w-8 h-8 animate-spin text-accent-600 dark:text-accent-400" />
       </div>
     );
@@ -196,11 +196,11 @@ export default function DashboardPage() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
+    <div className="min-h-screen bg-linear-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
       {/* 1. Season Progress Bar */}
-      <div data-tour="season-progress">
+      {/* <div data-tour="season-progress">
         <SeasonProgressBar />
-      </div>
+      </div> */}
 
       {/* Display Name Prompt (shown if user hasn't set their name) */}
       {needsDisplayName && !displayNameDismissed && (
@@ -223,12 +223,12 @@ export default function DashboardPage() {
         >
           {journey ? (
             <div
-              className="rounded-2xl overflow-hidden shadow-lg"
-              style={{
-                background: `linear-gradient(135deg, ${currentLevel?.color}dd 0%, ${currentLevel?.color}99 100%)`,
-              }}
+              className="rounded-2xl overflow-hidden shadow-lg bg-white dark:bg-gray-800"
+              // style={{
+              //   background: `linear-gradient(135deg, ${currentLevel?.color}dd 0%, ${currentLevel?.color}99 100%)`,
+              // }}
             >
-              <div className="px-6 py-6 lg:py-3 text-white">
+              <div className="px-6 py-6 lg:py-3">
                 <div className="flex flex-col lg:flex-row lg:items-center gap-6">
                   {/* Avatar and Welcome */}
                   <div
@@ -253,13 +253,13 @@ export default function DashboardPage() {
                           "Explorer"}
                         !
                       </h1>
-                      <p className="text-white/90 text-lg">
+                      <p className="text-gray-900 dark:text-white/90 text-lg">
                         Protecting the{" "}
                         <span className="font-semibold">
                           {journey.species_avatar?.common_name}
                         </span>
                       </p>
-                      <p className="text-white/70 text-sm italic">
+                      <p className="text-gray-800 dark:text-white/70 text-sm italic">
                         {journey.species_avatar?.scientific_name}
                       </p>
                     </div>
@@ -268,11 +268,16 @@ export default function DashboardPage() {
                   {/* Stats and Status */}
                   <div className="flex flex-col sm:flex-row lg:flex-col gap-4 lg:items-end">
                     {/* Current Status Badge */}
-                    <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2 text-center">
+                    <div
+                      className="backdrop-blur-sm rounded-xl px-4 py-2 text-center"
+                      style={{
+                        background: `linear-gradient(135deg, ${currentLevel?.color}dd 0%, ${currentLevel?.color}99 100%)`,
+                      }}
+                    >
                       <div className="text-xs text-white/80 mb-1">
                         Current Status
                       </div>
-                      <div className="font-bold text-lg">
+                      <div className="font-bold text-white text-lg">
                         {currentLevel?.label}
                       </div>
                     </div>
@@ -283,13 +288,15 @@ export default function DashboardPage() {
                         <div className="text-2xl font-bold">
                           {journey.total_points?.toLocaleString() || 0}
                         </div>
-                        <div className="text-xs text-white/80">Points</div>
+                        <div className="text-xs text-gray-800 dark:text-white/80">
+                          Points
+                        </div>
                       </div>
                       <div className="text-center">
                         <div className="text-2xl font-bold">
                           {journey.observations_count || 0}
                         </div>
-                        <div className="text-xs text-white/80">
+                        <div className="text-xs text-gray-800 dark:text-white/80">
                           Observations
                         </div>
                       </div>
@@ -299,7 +306,7 @@ export default function DashboardPage() {
 
                 {/* Progress Bar */}
                 <div data-tour="status-level" className="mt-6">
-                  <div className="flex justify-between text-xs text-white/80 mb-2">
+                  <div className="flex justify-between text-xs text-gray-800 dark:text-white/80 mb-2">
                     <span>Recovery Progress</span>
                     {journey.next_level_threshold && (
                       <span>
@@ -328,13 +335,15 @@ export default function DashboardPage() {
                         <div key={level.code} className="flex-1 relative">
                           <div
                             className={`h-3 rounded-full transition-all ${
-                              isCurrent ? "ring-2 ring-white ring-offset-1" : ""
+                              isCurrent
+                                ? "ring-2 ring-offset-1 ring-gray-400 dark:ring-white"
+                                : ""
                             }`}
                             style={{
                               backgroundColor:
                                 isComplete || isCurrent
-                                  ? "rgba(255,255,255,0.9)"
-                                  : "rgba(255,255,255,0.3)",
+                                  ? level.color
+                                  : `${level.color}40`,
                               opacity: isPast ? 0.4 : 1,
                             }}
                           >
@@ -360,15 +369,19 @@ export default function DashboardPage() {
                                 )
                               }
                               className={`md:hidden text-[10px] font-medium ${
-                                isPast ? "text-white/50" : "text-white/90"
-                              } hover:text-white transition-colors`}
+                                isPast
+                                  ? "text-gray-400 dark:text-white/50"
+                                  : "text-gray-700 dark:text-white/90"
+                              } hover:text-gray-900 dark:hover:text-white transition-colors`}
                             >
                               {level.code}
                             </button>
                             {/* Desktop view - full label */}
                             <span
                               className={`hidden md:inline text-[9px] font-medium leading-tight ${
-                                isPast ? "text-white/50" : "text-white/90"
+                                isPast
+                                  ? "text-gray-400 dark:text-white/50"
+                                  : "text-gray-700 dark:text-white/90"
                               }`}
                             >
                               {level.label.split(" ").map((word, wi) => (
@@ -400,13 +413,13 @@ export default function DashboardPage() {
                 <div className="mt-4 flex flex-wrap items-center gap-4">
                   <Link
                     href="/journey"
-                    className="text-sm text-white/90 hover:text-white font-medium flex items-center gap-1"
+                    className="text-sm text-accent-600 dark:text-white/90 hover:text-accent-700 dark:hover:text-white font-medium flex items-center gap-1"
                   >
                     View Full Journey <ChevronRight className="w-4 h-4" />
                   </Link>
                   <Link
                     href="/select-avatar"
-                    className="text-sm text-white/70 hover:text-white/90 flex items-center gap-1"
+                    className="text-sm text-gray-600 dark:text-white/70 hover:text-gray-800 dark:hover:text-white/90 flex items-center gap-1"
                   >
                     <RefreshCw className="w-3 h-3" />
                     Change Avatar
@@ -414,10 +427,10 @@ export default function DashboardPage() {
                   <Link
                     data-tour="settings-link"
                     href="/profile"
-                    className="ml-auto p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                    className="ml-auto p-2 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 transition-colors"
                     title="Profile & Settings"
                   >
-                    <Settings className="w-5 h-5 text-white" />
+                    <Settings className="w-5 h-5 text-gray-600 dark:text-white" />
                   </Link>
                 </div>
               </div>
