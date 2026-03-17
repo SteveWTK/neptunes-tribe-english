@@ -108,7 +108,7 @@ function WorldsContent() {
               </h1>
             </div>
             <p className="text-xl text-primary-950/90 dark:text-white/90 max-w-3xl mx-auto mb-4">
-              Learn inglês e save endangered species!
+              Learn inglês and save endangered species!
             </p>
 
             <Link href="/dashboard" className="inline-flex items-center gap-2">

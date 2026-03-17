@@ -1175,12 +1175,12 @@ export default function MultiGapFillExerciseNew({
                     : "🎉 Unit Completed! Check your eco-map to see your progress!"}
                 </p>
                 <div className="flex gap-2 justify-center mt-2">
-                  <button
+                  {/* <button
                     onClick={() => router.push("/eco-map")}
                     className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                   >
                     View Eco-Map
-                  </button>
+                  </button> */}
                   {challengeResults.length > 0 && (
                     <button
                       onClick={() => router.push("/eco-map?tab=progress")}
