@@ -27,6 +27,7 @@ import DisplayNamePrompt from "@/components/profile/DisplayNamePrompt";
 import DashboardTour, {
   shouldShowDashboardTour,
 } from "@/components/onboarding/DashboardTour";
+import SavedSpeciesCollection from "@/components/species/SavedSpeciesCollection";
 
 // IUCN Status configuration for species journey display
 const IUCN_LEVELS = [
@@ -521,7 +522,8 @@ export default function DashboardPage() {
               </span>
             </div>
           </Link>
-          <Link
+          {/* COMMENTED OUT: New Observation Quick Action - To be reintroduced later */}
+          {/* <Link
             data-tour="observations"
             href="/observations/create"
             className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-lg transition-all hover:scale-[1.02] flex items-center gap-4 group"
@@ -537,7 +539,7 @@ export default function DashboardPage() {
                 Log wildlife sightings
               </span>
             </div>
-          </Link>
+          </Link> */}
         </motion.div>
 
         {/* 4. Active Bonus Challenges (when there is one) */}
@@ -734,8 +736,18 @@ export default function DashboardPage() {
           </motion.div>
         </div>
 
-        {/* 7. Recent Observations */}
-        {recentObservations.length > 0 && (
+        {/* 7. Saved Species Collection */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mb-8"
+        >
+          <SavedSpeciesCollection compact={true} limit={10} />
+        </motion.div>
+
+        {/* COMMENTED OUT: Recent Observations - To be reintroduced later */}
+        {/* {recentObservations.length > 0 && (
           <motion.div
             data-tour="recent-observations"
             initial={{ opacity: 0, y: 20 }}
@@ -782,10 +794,10 @@ export default function DashboardPage() {
               ))}
             </div>
           </motion.div>
-        )}
+        )} */}
 
-        {/* 8. Wildlife Map Preview (Static to avoid MapBox reloads) */}
-        <motion.div
+        {/* COMMENTED OUT: Wildlife Map Preview - To be reintroduced later */}
+        {/* <motion.div
           data-tour="wildlife-map"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -805,7 +817,6 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          {/* Static map preview - links to full map page */}
           <Link
             href="/eco-map"
             className="block bg-gradient-to-br from-gray-50 to-gray-100 dark:from-primary-900/20 dark:to-primary-950/20 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all group"
@@ -816,11 +827,6 @@ export default function DashboardPage() {
                 <div className="w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform">
                   <Globe className="w-8 h-8 text-green-600 dark:text-green-400" />
                 </div>
-                {/* <img
-                  src="/maps/mapbox-globe.png"
-                  alt="Wildlife Map"
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform"
-                /> */}
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
                   Explore Wildlife Sightings
                 </h3>
@@ -834,7 +840,7 @@ export default function DashboardPage() {
               </div>
             </div>
           </Link>
-        </motion.div>
+        </motion.div> */}
 
         {/* 9. Eco News Section */}
         {ecoNews.length > 0 && (

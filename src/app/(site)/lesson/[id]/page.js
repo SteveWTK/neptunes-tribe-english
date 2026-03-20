@@ -46,7 +46,21 @@ import { useTranslation } from "@/hooks/useTranslation";
 import MultiGapFillExerciseNew from "@/components/MultiGapFillExerciseNew";
 // InteractivePitch and InteractiveGame now imported from @inspire/shared below
 import ConversationVote from "@/components/ConversationVote";
-import { WordSnakeLesson, MemoryMatchLesson, VocabularyItem, VideoPlayer, FloatingFacts, AIGapFillExercise, AIWritingExercise, AIListeningChallenge, AISpeechPractice, AIConversationPractice, AIMultipleChoiceGapFill, InteractivePitch, InteractiveGame } from "@inspire/shared";
+import {
+  WordSnakeLesson,
+  MemoryMatchLesson,
+  VocabularyItem,
+  VideoPlayer,
+  FloatingFacts,
+  AIGapFillExercise,
+  AIWritingExercise,
+  AIListeningChallenge,
+  AISpeechPractice,
+  AIConversationPractice,
+  AIMultipleChoiceGapFill,
+  InteractivePitch,
+  InteractiveGame,
+} from "@inspire/shared";
 import UnitModal from "@/components/UnitModal";
 import UnitReferenceStep from "@/components/UnitReferenceStep";
 // FloatingFacts now imported from @inspire/shared above
@@ -56,6 +70,8 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { WORLDS } from "@/data/worldsConfig";
 import Link from "next/link";
+import IUCNProgressBar from "@/components/progress/IUCNProgressBar";
+import { toast } from "sonner";
 
 function DynamicLessonContent() {
   const params = useParams();
@@ -75,6 +91,8 @@ function DynamicLessonContent() {
   const [completedSteps, setCompletedSteps] = useState(new Set());
   const [isPlaying, setIsPlaying] = useState(false);
   const [xpEarned, setXpEarned] = useState(0);
+  const [cumulativeXP, setCumulativeXP] = useState(0); // Track total XP across all steps
+  const [stepXP, setStepXP] = useState({}); // Track XP per step to prevent duplicate counting
   const [startTime] = useState(Date.now());
   const [completing, setCompleting] = useState(false);
   const [showTranslation, setShowTranslation] = useState(false);
@@ -90,6 +108,11 @@ function DynamicLessonContent() {
   const [unitShowFullText, setUnitShowFullText] = useState(false);
   const [challengeExercises, setChallengeExercises] = useState({});
 
+  // Adventure progress tracking
+  const [journey, setJourney] = useState(null);
+  const [progressUpdate, setProgressUpdate] = useState(null);
+  const [loadingProgress, setLoadingProgress] = useState(false);
+
   // Reset keys for each exercise type to force re-render
   const [aiWritingKey, setAiWritingKey] = useState(0);
   const [aiConversationKey, setAiConversationKey] = useState(0);
@@ -100,11 +123,26 @@ function DynamicLessonContent() {
 
   const audioRef = useRef(null);
 
-  // Helper function to get world URL from lesson
+  // Helper function to get world URL from lesson or journey
   const getWorldUrl = () => {
-    if (!lesson?.world) return "/worlds";
-    const world = WORLDS[lesson.world];
-    return world ? `/worlds/${world.slug}` : "/worlds";
+    // Try to get world from lesson first
+    if (lesson?.world) {
+      const world = WORLDS[lesson.world];
+      if (world?.slug) {
+        return `/worlds/${world.slug}`;
+      }
+    }
+
+    // Fallback to journey's world_id
+    if (journey?.current_world_id) {
+      const world = Object.values(WORLDS).find(w => w.id === journey.current_world_id);
+      if (world?.slug) {
+        return `/worlds/${world.slug}`;
+      }
+    }
+
+    // Final fallback
+    return "/worlds";
   };
 
   // Fetch lesson data and user preferences
@@ -129,7 +167,7 @@ function DynamicLessonContent() {
           contentType: typeof lessonData.content,
           hasSteps: !!lessonData.content?.steps,
           stepsLength: lessonData.content?.steps?.length || 0,
-          stepTypes: lessonData.content?.steps?.map(s => s.type) || [],
+          stepTypes: lessonData.content?.steps?.map((s) => s.type) || [],
         });
 
         // Fetch user's preferred language and English variant
@@ -422,6 +460,104 @@ function DynamicLessonContent() {
     }
   }, [currentStep, userPreferredLanguage, lesson]);
 
+  // Fetch user's journey data
+  useEffect(() => {
+    const fetchJourney = async () => {
+      if (!user) return;
+
+      try {
+        const response = await fetch("/api/user/journey");
+        if (response.ok) {
+          const data = await response.json();
+          setJourney(data.journey);
+        }
+      } catch (error) {
+        console.error("Error fetching journey:", error);
+      }
+    };
+
+    fetchJourney();
+  }, [user]);
+
+  // Handle lesson completion when reaching the completion step
+  useEffect(() => {
+    if (!lesson || !lesson.content?.steps) return;
+
+    const currentStepData = lesson.content.steps[currentStep];
+
+    // Only trigger on completion step and only once
+    if (currentStepData?.type === "completion" && journey && !progressUpdate && !loadingProgress) {
+      handleLessonCompletion();
+    }
+  }, [currentStep, lesson, journey]);
+
+  // Handle XP awards from step activities
+  const handleXPAward = (xp, stepIndex = currentStep) => {
+    // Only add XP if this step hasn't already awarded XP
+    const stepKey = `step-${stepIndex}`;
+    if (stepXP[stepKey]) {
+      console.log(`Step ${stepIndex} already awarded XP, skipping`);
+      return;
+    }
+
+    console.log(`Awarding ${xp} XP for step ${stepIndex}`);
+    setStepXP((prev) => ({ ...prev, [stepKey]: xp }));
+    setCumulativeXP((prev) => prev + xp);
+
+    // Show toast notification
+    toast.success(`+${xp} XP earned!`, {
+      duration: 2000,
+    });
+  };
+
+  // Handle lesson completion and IUCN progress
+  const handleLessonCompletion = async () => {
+    if (!lesson || !journey) return;
+
+    setLoadingProgress(true);
+
+    try {
+      // Call lesson completion API with total XP earned
+      const response = await fetch("/api/lessons/complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lessonId: lesson.id,
+          adventureId: journey.current_adventure_id,
+          worldId: journey.current_world_id,
+          xpEarned: cumulativeXP,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setProgressUpdate(data.progressUpdate);
+        setJourney(data.journey);
+
+        // Show success toast
+        toast.success(data.message, {
+          duration: 5000,
+        });
+
+        if (data.speciesSaved) {
+          // Confetti or special celebration for saving a species
+          toast.success(`🎉 ${data.speciesSaved.name} saved!`, {
+            description: "You completed the adventure!",
+            duration: 8000,
+          });
+        }
+      } else {
+        console.error("Lesson completion failed:", data.error);
+        // Don't show error to user, just log it
+      }
+    } catch (error) {
+      console.error("Error completing lesson:", error);
+    } finally {
+      setLoadingProgress(false);
+    }
+  };
+
   // FIXED: Better error boundaries and loading states
   if (loading) {
     return (
@@ -630,7 +766,12 @@ function DynamicLessonContent() {
   };
 
   const handleNext = () => {
-    console.log("[handleNext] Called. currentStep:", currentStep, "steps.length:", steps.length);
+    console.log(
+      "[handleNext] Called. currentStep:",
+      currentStep,
+      "steps.length:",
+      steps.length
+    );
     setSelectedAnswer("");
     setSelectedAnswers({});
     setShowFeedback(false);
@@ -833,7 +974,11 @@ function DynamicLessonContent() {
     try {
       return renderStepContentInner();
     } catch (error) {
-      console.error("[renderStepContent] Error rendering step:", error, currentStepData);
+      console.error(
+        "[renderStepContent] Error rendering step:",
+        error,
+        currentStepData
+      );
       return (
         <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-xl">
           <p className="text-red-600 dark:text-red-400 font-bold mb-2">
@@ -843,7 +988,9 @@ function DynamicLessonContent() {
             {error.message}
           </p>
           <details>
-            <summary className="cursor-pointer text-sm text-gray-500">View step data</summary>
+            <summary className="cursor-pointer text-sm text-gray-500">
+              View step data
+            </summary>
             <pre className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded mt-2 overflow-auto">
               {JSON.stringify(currentStepData, null, 2)}
             </pre>
@@ -990,7 +1137,11 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"}
+                {userLanguage === "pt-BR"
+                  ? "Comece de Novo"
+                  : userLanguage === "th"
+                  ? "เริ่มใหม่"
+                  : "Start Again"}
               </button>
             </div>
           </div>
@@ -1040,7 +1191,11 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"}
+                {userLanguage === "pt-BR"
+                  ? "Comece de Novo"
+                  : userLanguage === "th"
+                  ? "เริ่มใหม่"
+                  : "Start Again"}
               </button>
             </div>
           </div>
@@ -1234,12 +1389,19 @@ function DynamicLessonContent() {
             word.portuguese,
         }));
 
+        const memoryPairCount = translatedVocabulary.length;
+        const memoryMaxXP = memoryPairCount * 10 + 20; // 10 per pair + 20 bonus
+
         return (
           <MemoryMatchLesson
             vocabulary={translatedVocabulary}
             lessonId={lessonId}
-            onComplete={(xp) => {
-              setXpEarned((prev) => prev + xp);
+            onComplete={(result) => {
+              // Calculate XP: 10 per correct match + 20 bonus for all correct
+              const correctMatches = result?.correctMatches || memoryPairCount;
+              const xp = correctMatches * 10 + (correctMatches === memoryPairCount ? 20 : 0);
+
+              handleXPAward(xp);
               setCompletedSteps((prev) => new Set([...prev, currentStep]));
               setStepCompleted(true);
             }}
@@ -1270,6 +1432,9 @@ function DynamicLessonContent() {
         );
 
       case "word_snake":
+        const wordCount = (currentStepData.clues || []).length;
+        const wordSnakeMaxXP = wordCount * 10 + 20; // 10 per word + 20 bonus
+
         return (
           <div>
             {currentStepData.instructions && (
@@ -1284,6 +1449,12 @@ function DynamicLessonContent() {
               difficulty={currentStepData.difficulty || "easy"}
               onComplete={(result) => {
                 console.log("Word Snake completed:", result);
+
+                // Calculate XP: 10 per correct word + 20 bonus for all correct
+                const correctWords = result?.correctWords || wordCount;
+                const xp = correctWords * 10 + (correctWords === wordCount ? 20 : 0);
+
+                handleXPAward(xp);
                 setStepCompleted(true);
               }}
             />
@@ -1458,6 +1629,46 @@ function DynamicLessonContent() {
                       )}
                     </div>
                   )}
+
+                  {/* IUCN Progress Bar - Show species journey progress */}
+                  {journey && journey.current_adventure_id && (
+                    <div className="max-w-2xl mx-auto mb-6">
+                      <IUCNProgressBar
+                        currentStatus={progressUpdate?.newStatus || journey.current_iucn_status}
+                        startingStatus="CR"
+                        lessonsCompleted={progressUpdate?.lessonsCompleted || journey.lessons_completed_in_adventure}
+                        totalLessons={5}
+                        speciesInfo={{
+                          name: journey.species_avatar?.common_name || "Unknown Species",
+                          scientificName: journey.species_avatar?.scientific_name,
+                          imageUrl: journey.species_avatar?.avatar_image_url,
+                        }}
+                        nextLevelName={
+                          progressUpdate?.isAdventureComplete
+                            ? null
+                            : {
+                                CR: "Endangered",
+                                EN: "Vulnerable",
+                                VU: "Near Threatened",
+                                NT: "Least Concern",
+                              }[progressUpdate?.newStatus || journey.current_iucn_status]
+                        }
+                        showLabels={true}
+                        animated={true}
+                        size="lg"
+                        className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg"
+                      />
+
+                      {progressUpdate?.isAdventureComplete && (
+                        <div className="mt-4 text-center">
+                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-lg font-semibold">
+                            <Trophy className="w-5 h-5" />
+                            <span>Species Saved!</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </>
               )}
               <div className="flex flex-col gap-1">
@@ -1528,7 +1739,11 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"}
+                {userLanguage === "pt-BR"
+                  ? "Comece de Novo"
+                  : userLanguage === "th"
+                  ? "เริ่มใหม่"
+                  : "Start Again"}
               </button>
             </div>
           </div>
@@ -1571,7 +1786,11 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"}
+                {userLanguage === "pt-BR"
+                  ? "Comece de Novo"
+                  : userLanguage === "th"
+                  ? "เริ่มใหม่"
+                  : "Start Again"}
               </button>
             </div>
           </div>
@@ -1749,7 +1968,13 @@ function DynamicLessonContent() {
                                 }`}
                                 disabled={showFeedback}
                               >
-                                <option value="">{userLanguage === "pt-BR" ? "Escolha..." : userLanguage === "th" ? "เลือก..." : "Choose..."}</option>
+                                <option value="">
+                                  {userLanguage === "pt-BR"
+                                    ? "Escolha..."
+                                    : userLanguage === "th"
+                                    ? "เลือก..."
+                                    : "Choose..."}
+                                </option>
                                 {scenario.gaps[partIndex]?.options?.map(
                                   (option, optIndex) => (
                                     <option key={optIndex} value={option}>
@@ -1789,13 +2014,34 @@ function DynamicLessonContent() {
                                   )}
                                   <span className="font-medium">
                                     Gap {gapIndex + 1}:{" "}
-                                    {isGapCorrect ? (userLanguage === "pt-BR" ? "Correto!" : userLanguage === "th" ? "ถูกต้อง!" : "Correct!") : (userLanguage === "pt-BR" ? "Incorreto" : userLanguage === "th" ? "ไม่ถูกต้อง" : "Incorrect")}
+                                    {isGapCorrect
+                                      ? userLanguage === "pt-BR"
+                                        ? "Correto!"
+                                        : userLanguage === "th"
+                                        ? "ถูกต้อง!"
+                                        : "Correct!"
+                                      : userLanguage === "pt-BR"
+                                      ? "Incorreto"
+                                      : userLanguage === "th"
+                                      ? "ไม่ถูกต้อง"
+                                      : "Incorrect"}
                                   </span>
                                 </div>
                                 {!isGapCorrect && (
                                   <div className="mt-1 text-xs">
-                                    {userLanguage === "pt-BR" ? "Você escolheu:" : userLanguage === "th" ? "คุณเลือก:" : "You chose:"} &quot;{userAnswer || "nothing"}
-                                    &quot; | {userLanguage === "pt-BR" ? "Resposta correta:" : userLanguage === "th" ? "คำตอบที่ถูกต้อง:" : "Correct answer:"} &quot;
+                                    {userLanguage === "pt-BR"
+                                      ? "Você escolheu:"
+                                      : userLanguage === "th"
+                                      ? "คุณเลือก:"
+                                      : "You chose:"}{" "}
+                                    &quot;{userAnswer || "nothing"}
+                                    &quot; |{" "}
+                                    {userLanguage === "pt-BR"
+                                      ? "Resposta correta:"
+                                      : userLanguage === "th"
+                                      ? "คำตอบที่ถูกต้อง:"
+                                      : "Correct answer:"}{" "}
+                                    &quot;
                                     {gap.correct_answer}&quot;
                                     {gap.explanation && (
                                       <div className="mt-1">
@@ -1811,7 +2057,14 @@ function DynamicLessonContent() {
                           {/* Overall scenario feedback */}
                           {scenario.feedback && (
                             <div className="mt-3 p-3 bg-primary-100 dark:bg-primary-900/20 text-primary-800 dark:text-primary-200 rounded text-sm">
-                              <strong>{userLanguage === "pt-BR" ? "Feedback:" : userLanguage === "th" ? "ข้อเสนอแนะ:" : "Feedback:"}</strong> {scenario.feedback}
+                              <strong>
+                                {userLanguage === "pt-BR"
+                                  ? "Feedback:"
+                                  : userLanguage === "th"
+                                  ? "ข้อเสนอแนะ:"
+                                  : "Feedback:"}
+                              </strong>{" "}
+                              {scenario.feedback}
                             </div>
                           )}
                         </div>
@@ -1863,7 +2116,13 @@ function DynamicLessonContent() {
                                   }`}
                                   disabled={showFeedback}
                                 >
-                                  <option value="">{userLanguage === "pt-BR" ? "Escolha..." : userLanguage === "th" ? "เลือก..." : "Choose..."}</option>
+                                  <option value="">
+                                    {userLanguage === "pt-BR"
+                                      ? "Escolha..."
+                                      : userLanguage === "th"
+                                      ? "เลือก..."
+                                      : "Choose..."}
+                                  </option>
                                   {currentStepData.gaps[
                                     partIndex
                                   ]?.options?.map((option, optIndex) => (
@@ -1903,13 +2162,33 @@ function DynamicLessonContent() {
                             )}
                             <span className="font-medium">
                               Gap {gapIndex + 1}:{" "}
-                              {isGapCorrect ? (userLanguage === "pt-BR" ? "Correto!" : userLanguage === "th" ? "ถูกต้อง!" : "Correct!") : (userLanguage === "pt-BR" ? "Incorreto" : userLanguage === "th" ? "ไม่ถูกต้อง" : "Incorrect")}
+                              {isGapCorrect
+                                ? userLanguage === "pt-BR"
+                                  ? "Correto!"
+                                  : userLanguage === "th"
+                                  ? "ถูกต้อง!"
+                                  : "Correct!"
+                                : userLanguage === "pt-BR"
+                                ? "Incorreto"
+                                : userLanguage === "th"
+                                ? "ไม่ถูกต้อง"
+                                : "Incorrect"}
                             </span>
                           </div>
                           {!isGapCorrect && (
                             <div className="mt-1 text-xs">
-                              {userLanguage === "pt-BR" ? "Você escolheu:" : userLanguage === "th" ? "คุณเลือก:" : "You chose:"} &quot;{userAnswer || "nothing"}&quot; |
-                              {userLanguage === "pt-BR" ? "Resposta correta:" : userLanguage === "th" ? "คำตอบที่ถูกต้อง:" : "Correct answer:"} &quot;{gap.correct_answer}&quot;
+                              {userLanguage === "pt-BR"
+                                ? "Você escolheu:"
+                                : userLanguage === "th"
+                                ? "คุณเลือก:"
+                                : "You chose:"}{" "}
+                              &quot;{userAnswer || "nothing"}&quot; |
+                              {userLanguage === "pt-BR"
+                                ? "Resposta correta:"
+                                : userLanguage === "th"
+                                ? "คำตอบที่ถูกต้อง:"
+                                : "Correct answer:"}{" "}
+                              &quot;{gap.correct_answer}&quot;
                               {gap.explanation && (
                                 <div className="mt-1">💡 {gap.explanation}</div>
                               )}
@@ -1922,7 +2201,14 @@ function DynamicLessonContent() {
                     {/* Overall feedback */}
                     {currentStepData.feedback && (
                       <div className="mt-3 p-3 bg-primary-100 dark:bg-primary-900/20 text-primary-800 dark:text-primary-200 rounded text-sm">
-                        <strong>{userLanguage === "pt-BR" ? "Feedback:" : userLanguage === "th" ? "ข้อเสนอแนะ:" : "Feedback:"}</strong> {currentStepData.feedback}
+                        <strong>
+                          {userLanguage === "pt-BR"
+                            ? "Feedback:"
+                            : userLanguage === "th"
+                            ? "ข้อเสนอแนะ:"
+                            : "Feedback:"}
+                        </strong>{" "}
+                        {currentStepData.feedback}
                       </div>
                     )}
                   </div>
@@ -1949,7 +2235,11 @@ function DynamicLessonContent() {
                 }
                 className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {userLanguage === "pt-BR" ? "Verificar Respostas" : userLanguage === "th" ? "ตรวจคำตอบ" : "Check Answers"}
+                {userLanguage === "pt-BR"
+                  ? "Verificar Respostas"
+                  : userLanguage === "th"
+                  ? "ตรวจคำตอบ"
+                  : "Check Answers"}
               </button>
             )}
 
@@ -2152,7 +2442,11 @@ function DynamicLessonContent() {
                     disabled={!selectedAnswer}
                     className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
-                    {userLanguage === "pt-BR" ? "Enviar Resposta" : userLanguage === "th" ? "ส่งคำตอบ" : "Submit Answer"}
+                    {userLanguage === "pt-BR"
+                      ? "Enviar Resposta"
+                      : userLanguage === "th"
+                      ? "ส่งคำตอบ"
+                      : "Submit Answer"}
                   </button>
                 )}
                 {showFeedback && (
@@ -2198,7 +2492,11 @@ function DynamicLessonContent() {
                 }
                 className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {userLanguage === "pt-BR" ? "Enviar Respostas" : userLanguage === "th" ? "ส่งคำตอบ" : "Submit Answers"}
+                {userLanguage === "pt-BR"
+                  ? "Enviar Respostas"
+                  : userLanguage === "th"
+                  ? "ส่งคำตอบ"
+                  : "Submit Answers"}
               </button>
             )}
 
@@ -2937,7 +3235,13 @@ function DynamicLessonContent() {
           <button
             onClick={() => router.push(getWorldUrl())}
             className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
-            title={userLanguage === "pt-BR" ? "Voltar ao Mundo" : userLanguage === "th" ? "กลับไปที่โลก" : "Back to World"}
+            title={
+              userLanguage === "pt-BR"
+                ? "Voltar ao Mundo"
+                : userLanguage === "th"
+                ? "กลับไปที่โลก"
+                : "Back to World"
+            }
           >
             <Home className="w-5 h-5" />
           </button>
@@ -2981,6 +3285,34 @@ function DynamicLessonContent() {
           </span>
           <span>{Math.round(progress)}% Complete</span>
         </div>
+
+        {/* XP Progress Indicator */}
+        {journey && journey.current_adventure_id && (
+          <div className="mt-4 p-3 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-lg border border-amber-200 dark:border-amber-700">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Trophy className={`w-5 h-5 ${cumulativeXP >= 200 ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}`} />
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  Lesson XP: {cumulativeXP} / 200
+                </span>
+              </div>
+              <span className={`text-sm font-medium ${cumulativeXP >= 200 ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}`}>
+                {cumulativeXP >= 200 ? '✓ Threshold met!' : `${200 - cumulativeXP} XP needed`}
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div
+                className={`h-2 rounded-full transition-all duration-500 ${cumulativeXP >= 200 ? 'bg-green-600' : 'bg-amber-500'}`}
+                style={{ width: `${Math.min((cumulativeXP / 200) * 100, 100)}%` }}
+              ></div>
+            </div>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+              {cumulativeXP >= 200
+                ? 'Great! You\'ll advance the species when you complete the lesson.'
+                : 'Earn 200 XP to advance the species to the next IUCN level.'}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Step Content */}
@@ -3031,7 +3363,13 @@ function DynamicLessonContent() {
             {completedSteps.size} of {steps.length - 1} activities completed
           </p>
           {completing && (
-            <p className="text-xs text-primary-600 mt-1">{userLanguage === "pt-BR" ? "Salvando progresso..." : userLanguage === "th" ? "กำลังบันทึกความก้าวหน้า..." : "Saving progress..."}</p>
+            <p className="text-xs text-primary-600 mt-1">
+              {userLanguage === "pt-BR"
+                ? "Salvando progresso..."
+                : userLanguage === "th"
+                ? "กำลังบันทึกความก้าวหน้า..."
+                : "Saving progress..."}
+            </p>
           )}
         </div>
 
@@ -3049,7 +3387,13 @@ function DynamicLessonContent() {
           {completing ? (
             <>
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span>{userLanguage === "pt-BR" ? "Concluindo..." : userLanguage === "th" ? "กำลังดำเนินการ..." : "Completing..."}</span>
+              <span>
+                {userLanguage === "pt-BR"
+                  ? "Concluindo..."
+                  : userLanguage === "th"
+                  ? "กำลังดำเนินการ..."
+                  : "Completing..."}
+              </span>
             </>
           ) : (
             <>
@@ -3070,6 +3414,12 @@ function DynamicLessonContent() {
         onClose={() => setUnitModalOpen(false)}
         onComplete={(result) => {
           console.log("Unit completed:", result);
+
+          // Award XP from the unit exercise
+          if (result?.xp) {
+            handleXPAward(result.xp);
+          }
+
           setStepCompleted(true);
           setUnitModalOpen(false);
         }}

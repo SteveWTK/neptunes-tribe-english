@@ -34,6 +34,8 @@ import LevelIndicator from "@/components/LevelIndicator";
 import LessonLevelBadge from "@/components/LessonLevelBadge";
 import Image from "next/image";
 import Link from "next/link";
+import SpeciesSelectionModal from "@/components/species/SpeciesSelectionModal";
+import { toast } from "sonner";
 
 // Icon mapping
 const ICON_MAP = {
@@ -85,6 +87,12 @@ function WorldDetailContent() {
   const [hoveredHero, setHoveredHero] = useState(false);
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [isPremiumUser, setIsPremiumUser] = useState(false);
+
+  // Species selection modal state
+  const [showSpeciesModal, setShowSpeciesModal] = useState(false);
+  const [adventureSpecies, setAdventureSpecies] = useState([]);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
+  const [journey, setJourney] = useState(null);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -211,6 +219,25 @@ function WorldDetailContent() {
     }
   }, [adventureData, selectedAdventure]);
 
+  // Fetch user's current journey
+  useEffect(() => {
+    const fetchJourney = async () => {
+      if (!user) return;
+
+      try {
+        const response = await fetch("/api/user/journey");
+        if (response.ok) {
+          const data = await response.json();
+          setJourney(data.journey);
+        }
+      } catch (error) {
+        console.error("Error fetching journey:", error);
+      }
+    };
+
+    fetchJourney();
+  }, [user]);
+
   const loadAdventureContent = async (adventure) => {
     try {
       const supabase = createClient();
@@ -325,6 +352,101 @@ function WorldDetailContent() {
       console.log("✅ Completed lessons set:", Array.from(completedSet));
     } catch (error) {
       console.error("Error loading lesson completions:", error);
+    }
+  };
+
+  // Handle starting a lesson - check if species selection needed
+  const handleLessonStart = async (lessonId, adventure) => {
+    // Check if user has active journey for this adventure
+    if (!journey || journey.current_adventure_id !== adventure.id) {
+      // Need to start adventure first - fetch species options
+      await fetchAdventureSpecies(adventure);
+    } else {
+      // Journey already active, navigate directly
+      router.push(`/lesson/${lessonId}`);
+    }
+  };
+
+  // Handle starting an adventure - check if species selection needed
+  const handleAdventureStart = async (adventure) => {
+    // Check if user has active journey for this adventure
+    if (!journey || journey.current_adventure_id !== adventure.id) {
+      // Need to start adventure first - fetch species options
+      await fetchAdventureSpecies(adventure);
+    } else {
+      // Journey already active, navigate to first lesson
+      const firstLesson = currentData.lessons?.[0];
+      if (firstLesson && !firstLesson.under_construction) {
+        router.push(`/lesson/${firstLesson.id}`);
+      }
+    }
+  };
+
+  // Fetch species available for this adventure
+  const fetchAdventureSpecies = async (adventure) => {
+    try {
+      const supabase = createClient();
+
+      // Fetch species that match this adventure's ecosystem type
+      const { data: species, error } = await supabase
+        .from("species_avatars")
+        .select("*")
+        .eq("ecosystem_type", adventure.ecosystemType)
+        .limit(3);
+
+      if (error) {
+        console.error("Error fetching species:", error);
+        toast.error("Failed to load species options");
+        return;
+      }
+
+      if (!species || species.length === 0) {
+        toast.error("No species available for this adventure yet");
+        return;
+      }
+
+      setAdventureSpecies(species);
+      setPendingNavigation({ adventure, worldId: world.id });
+      setShowSpeciesModal(true);
+    } catch (error) {
+      console.error("Error fetching adventure species:", error);
+      toast.error("Failed to load species options");
+    }
+  };
+
+  // Handle species selection from modal
+  const handleSpeciesSelect = async (speciesId) => {
+    if (!pendingNavigation) return;
+
+    try {
+      const response = await fetch("/api/adventures/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          speciesAvatarId: speciesId,
+          adventureId: pendingNavigation.adventure.id,
+          worldId: pendingNavigation.worldId,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success(data.message || "Adventure started!");
+        setJourney(data.journey);
+        setShowSpeciesModal(false);
+
+        // Navigate to first lesson
+        const firstLesson = currentData.lessons?.[0];
+        if (firstLesson && !firstLesson.under_construction) {
+          router.push(`/lesson/${firstLesson.id}`);
+        }
+      } else {
+        toast.error(data.error || "Failed to start adventure");
+      }
+    } catch (error) {
+      console.error("Error starting adventure:", error);
+      toast.error("Failed to start adventure");
     }
   };
 
@@ -799,7 +921,7 @@ function WorldDetailContent() {
                                 if (!canAccessLesson) {
                                   router.push("/subscriptions");
                                 } else if (!lesson.under_construction) {
-                                  router.push(`/lesson/${lesson.id}`);
+                                  handleLessonStart(lesson.id, selectedAdventure);
                                 }
                               }}
                               className={`p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-all border border-gray-200 dark:border-gray-600 relative ${
@@ -913,18 +1035,7 @@ function WorldDetailContent() {
                     </Link>
                   ) : (
                     <button
-                      onClick={() => {
-                        // Navigate to first available unit or lesson
-                        if (currentData.units && currentData.units.length > 0) {
-                          router.push(`/units/${currentData.units[0].id}`);
-                        } else if (
-                          currentData.lessons &&
-                          currentData.lessons.length > 0 &&
-                          !currentData.lessons[0].under_construction
-                        ) {
-                          router.push(`/lesson/${currentData.lessons[0].id}`);
-                        }
-                      }}
+                      onClick={() => handleAdventureStart(selectedAdventure)}
                       className="w-full md:w-auto px-8 py-4 rounded-lg text-white font-bold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-3"
                       style={{ backgroundColor: world.color.primary }}
                       disabled={
@@ -944,6 +1055,18 @@ function WorldDetailContent() {
           </AnimatePresence>
         </div>
       </div>
+
+      {/* Species Selection Modal */}
+      <SpeciesSelectionModal
+        isOpen={showSpeciesModal}
+        onClose={() => setShowSpeciesModal(false)}
+        onSelect={handleSpeciesSelect}
+        species={adventureSpecies}
+        adventureName={pendingNavigation?.adventure?.name || ""}
+        adventureId={pendingNavigation?.adventure?.id || ""}
+        worldId={pendingNavigation?.worldId || ""}
+        worldName={world?.name || ""}
+      />
     </div>
   );
 }

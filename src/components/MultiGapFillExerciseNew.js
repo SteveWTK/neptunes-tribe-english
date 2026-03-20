@@ -21,6 +21,7 @@ import { toast } from "sonner";
 export default function MultiGapFillExerciseNew({
   unitId,
   initialShowFullText = false,
+  onComplete = null, // Optional callback when exercise is completed
 }) {
   const [unitData, setUnitData] = useState(null);
   const [textId, setTextId] = useState(null);
@@ -577,6 +578,18 @@ export default function MultiGapFillExerciseNew({
         challengeResults,
         speciesUnlocked
       );
+
+      // Call onComplete callback if provided (for lesson integration)
+      if (onComplete && passedThreshold) {
+        onComplete({
+          xp: earnedXP,
+          score: correctCount,
+          totalQuestions,
+          percentage,
+          passed: passedThreshold,
+          justCompleted,
+        });
+      }
     } catch (error) {
       console.error("Error submitting answers:", error);
       alert("There was an error saving your progress. Please try again.");

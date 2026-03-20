@@ -85,7 +85,6 @@ export default function UnitModal({
               <div className="max-w-full mx-auto">
                 <MultiGapFillExerciseNew
                   unitId={unitId}
-                  units={[]}
                   initialShowFullText={initialShowFullText}
                   onComplete={(result) => {
                     if (onComplete) {
