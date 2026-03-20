@@ -102,7 +102,17 @@ export default function SpeciesSelectionModal({
                   <div className="text-sm text-gray-700 dark:text-gray-300">
                     <p className="font-medium mb-1">Your Mission:</p>
                     <p>
-                      Select one endangered species from this habitat. As you complete each lesson in the adventure, you'll move the species up through IUCN conservation levels from <span className="font-semibold text-red-600 dark:text-red-400">Critically Endangered</span> to <span className="font-semibold text-green-600 dark:text-green-400">Least Concern</span>, symbolically saving them!
+                      Select one endangered species from this habitat. As you
+                      complete each lesson in the adventure, you&apos;ll move
+                      the species up through IUCN conservation levels from{" "}
+                      <span className="font-semibold text-red-600 dark:text-red-400">
+                        Critically Endangered
+                      </span>{" "}
+                      to{" "}
+                      <span className="font-semibold text-green-600 dark:text-green-400">
+                        Least Concern
+                      </span>
+                      , symbolically saving them!
                     </p>
                   </div>
                 </div>
@@ -210,7 +220,7 @@ export default function SpeciesSelectionModal({
                     />
                     <div>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        You'll be saving:
+                        You&apos;ll be saving:
                       </p>
                       <p className="font-bold text-gray-900 dark:text-white">
                         {selectedSpecies.common_name}
