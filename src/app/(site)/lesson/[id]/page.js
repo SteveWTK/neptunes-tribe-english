@@ -485,9 +485,22 @@ function DynamicLessonContent() {
 
     const currentStepData = lesson.content.steps[currentStep];
 
+    console.log("📍 Completion check:", {
+      stepType: currentStepData?.type,
+      currentStep,
+      hasProgressUpdate: !!progressUpdate,
+      loadingProgress,
+      hasJourney: !!journey,
+      journeyDetails: journey ? {
+        adventureId: journey.current_adventure_id,
+        worldId: journey.current_world_id,
+      } : null,
+    });
+
     // Only trigger on completion step and only once
     // Allow completion even without journey - will use simpler completion API
     if (currentStepData?.type === "completion" && !progressUpdate && !loadingProgress) {
+      console.log("🚀 Triggering handleLessonCompletion...");
       handleLessonCompletion();
     }
   }, [currentStep, lesson, journey]);
@@ -513,13 +526,30 @@ function DynamicLessonContent() {
 
   // Handle lesson completion and IUCN progress
   const handleLessonCompletion = async () => {
-    if (!lesson) return;
+    console.log("📝 handleLessonCompletion called", {
+      hasLesson: !!lesson,
+      lessonId: lesson?.id,
+      cumulativeXP,
+      hasJourney: !!journey,
+    });
+
+    if (!lesson) {
+      console.log("❌ No lesson, aborting completion");
+      return;
+    }
 
     setLoadingProgress(true);
 
     try {
       // If user has an active journey/adventure, use the adventure-based completion API
       if (journey && journey.current_adventure_id && journey.current_world_id) {
+        console.log("🎯 Using adventure completion API:", {
+          lessonId: lesson.id,
+          adventureId: journey.current_adventure_id,
+          worldId: journey.current_world_id,
+          xpEarned: cumulativeXP,
+        });
+
         const response = await fetch("/api/lessons/complete", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -532,8 +562,10 @@ function DynamicLessonContent() {
         });
 
         const data = await response.json();
+        console.log("📬 Adventure completion response:", { ok: response.ok, data });
 
         if (response.ok && data.success) {
+          console.log("✅ Adventure lesson completion successful!");
           setProgressUpdate(data.progressUpdate);
           setJourney(data.journey);
 
@@ -550,12 +582,15 @@ function DynamicLessonContent() {
             });
           }
         } else {
-          console.error("Adventure lesson completion failed:", data.error);
+          console.error("❌ Adventure lesson completion failed:", data.error);
         }
       } else {
         // No active journey - use simple lesson completion API
         // This ensures lessons are always marked as complete
-        console.log("No active journey, using simple completion API");
+        console.log("📝 No active journey, using simple completion API", {
+          lessonId: lesson.id,
+          xpEarned: cumulativeXP,
+        });
         const response = await fetch("/api/lesson-completion", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -566,8 +601,10 @@ function DynamicLessonContent() {
         });
 
         const data = await response.json();
+        console.log("📬 Simple completion response:", { ok: response.ok, data });
 
         if (response.ok) {
+          console.log("✅ Simple lesson completion successful!");
           toast.success("Lesson completed!", {
             duration: 3000,
           });
@@ -577,7 +614,7 @@ function DynamicLessonContent() {
             meetsXPThreshold: cumulativeXP >= 200,
           });
         } else {
-          console.error("Simple lesson completion failed:", data.error);
+          console.error("❌ Simple lesson completion failed:", data.error);
         }
       }
     } catch (error) {
