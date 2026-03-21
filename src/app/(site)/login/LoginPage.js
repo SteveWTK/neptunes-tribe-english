@@ -147,23 +147,24 @@ export default function LoginPage() {
     }
   }, [searchParams]);
 
-  // Check if user has selected an avatar and redirect accordingly
-  const redirectBasedOnAvatar = async () => {
+  // Check user's journey status and redirect accordingly
+  const redirectBasedOnJourney = async () => {
     try {
       const response = await fetch("/api/user/journey");
       const data = await response.json();
 
-      if (data.hasSelectedAvatar) {
-        // User has an avatar, go to worlds
-        router.push("/dashboard");
+      if (data.hasSelectedAvatar && data.journey) {
+        // Returning user with active journey - go to their current world
+        const worldId = data.journey.current_world_id || "forests";
+        router.push(`/worlds/${worldId}`);
       } else {
-        // No avatar selected, go to avatar selection
-        router.push("/select-avatar");
+        // New user - go to forests world with auto-open species modal
+        router.push("/worlds/forests?selectSpecies=true");
       }
     } catch (error) {
       console.error("Error checking journey:", error);
-      // Default to worlds if check fails
-      router.push("/dashboard");
+      // Default to forests with species selection if check fails
+      router.push("/worlds/forests?selectSpecies=true");
     }
   };
 
@@ -264,8 +265,8 @@ export default function LoginPage() {
         } else if (data.session) {
           // User is immediately signed in (email confirmation disabled)
           setMessage("Account created successfully! You are now signed in.");
-          // New users should go to avatar selection
-          router.push("/select-avatar");
+          // New users go to forests world with auto-open species modal
+          router.push("/worlds/forests?selectSpecies=true");
         }
       } else {
         // Login logic
@@ -307,8 +308,8 @@ export default function LoginPage() {
         }
 
         if (result?.ok) {
-          // Check if user has avatar and redirect accordingly
-          await redirectBasedOnAvatar();
+          // Check user's journey and redirect accordingly
+          await redirectBasedOnJourney();
         }
       }
     } catch (error) {

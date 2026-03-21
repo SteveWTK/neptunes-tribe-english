@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
   Globe,
   TreePine,
@@ -74,6 +74,7 @@ const ECOSYSTEM_ICONS = {
 function WorldDetailContent() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user } = useAuth();
   const { lang } = useLanguage(); // Get current language
   const [world, setWorld] = useState(null);
@@ -207,8 +208,15 @@ function WorldDetailContent() {
   }, [selectedAdventure, user]);
 
   useEffect(() => {
-    // Handle anchor scrolling after content loads
+    // Handle anchor scrolling after content loads and reload completions
     if (typeof window !== "undefined" && window.location.hash === "#content") {
+      // Reload lesson completions when navigating back with hash
+      if (adventureData[selectedAdventure?.id]?.lessons) {
+        console.log("📍 Hash navigation detected, reloading lesson completions");
+        const lessonIds = adventureData[selectedAdventure.id].lessons.map((l) => l.id);
+        loadLessonCompletions(lessonIds);
+      }
+
       // Wait for content to render, then scroll
       setTimeout(() => {
         const element = document.getElementById("content");
@@ -217,6 +225,20 @@ function WorldDetailContent() {
         }
       }, 500);
     }
+  }, [adventureData, selectedAdventure]);
+
+  // Reload lesson completions when page becomes visible (e.g., after returning from a lesson)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && adventureData[selectedAdventure?.id]?.lessons) {
+        console.log("📍 Page visible again, reloading lesson completions");
+        const lessonIds = adventureData[selectedAdventure.id].lessons.map((l) => l.id);
+        loadLessonCompletions(lessonIds);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [adventureData, selectedAdventure]);
 
   // Fetch user's current journey
@@ -237,6 +259,24 @@ function WorldDetailContent() {
 
     fetchJourney();
   }, [user]);
+
+  // Auto-open species selection modal when URL has ?selectSpecies=true
+  useEffect(() => {
+    const shouldSelectSpecies = searchParams.get("selectSpecies") === "true";
+
+    // Only auto-open if: URL param is set, no active journey, world is loaded, and first adventure available
+    if (shouldSelectSpecies && !journey && world && filteredAdventures.length > 0) {
+      const firstAdventure = filteredAdventures[0];
+
+      // Clear the URL parameter to prevent re-triggering
+      const url = new URL(window.location.href);
+      url.searchParams.delete("selectSpecies");
+      window.history.replaceState({}, "", url.toString());
+
+      // Trigger species selection for the first adventure
+      fetchAdventureSpecies(firstAdventure);
+    }
+  }, [searchParams, journey, world, filteredAdventures]);
 
   const loadAdventureContent = async (adventure) => {
     try {
@@ -324,34 +364,62 @@ function WorldDetailContent() {
   };
 
   const loadLessonCompletions = async (lessonIds) => {
+    if (!lessonIds || lessonIds.length === 0) {
+      console.log("⚠️ No lesson IDs provided to loadLessonCompletions");
+      return;
+    }
+
     try {
       const supabase = createClient();
-      const userId = user.userId || user.id;
+
+      // IMPORTANT: Look up user by email to get the actual database UUID
+      // This matches how lesson completions are saved in /api/lessons/complete
+      const { data: userData, error: userError } = await supabase
+        .from("users")
+        .select("id, email")
+        .eq("email", user.email)
+        .single();
+
+      if (userError || !userData) {
+        console.error("❌ Error fetching user data:", userError);
+        console.log("User object:", user);
+        return;
+      }
+
+      const userId = userData.id;
 
       console.log(
         "🔍 Loading completions for user:",
         userId,
-        "lessons:",
+        "(email:",
+        userData.email,
+        ") lessons:",
         lessonIds
       );
 
+      // Query for any lesson completions for this user
+      // Don't filter by adventure_id - show checkmark if completed in ANY adventure
       const { data, error } = await supabase
         .from("lesson_completions")
-        .select("lesson_id")
+        .select("lesson_id, adventure_id, xp_earned, completed_at")
         .eq("user_id", userId)
         .in("lesson_id", lessonIds);
 
       if (error) {
-        console.error("Error loading lesson completions:", error);
+        console.error("❌ Error loading lesson completions:", error);
+        console.error("Full error details:", JSON.stringify(error, null, 2));
         return;
       }
 
       console.log("✅ Completions data from DB:", data);
-      const completedSet = new Set(data.map((c) => c.lesson_id));
+      console.log(`Found ${data?.length || 0} completed lessons`);
+
+      const completedSet = new Set(data?.map((c) => c.lesson_id) || []);
+      console.log("✅ Setting completed lessons:", Array.from(completedSet));
+
       setCompletedLessons(completedSet);
-      console.log("✅ Completed lessons set:", Array.from(completedSet));
     } catch (error) {
-      console.error("Error loading lesson completions:", error);
+      console.error("❌ Exception in loadLessonCompletions:", error);
     }
   };
 

@@ -60,9 +60,15 @@ export default function DashboardPage() {
 
   // Fetch all dashboard data
   useEffect(() => {
-    if (!session) return;
+    if (!session?.user) return;
 
     const fetchData = async () => {
+      // Prevent re-fetching if we already have data loaded
+      // This prevents unnecessary re-renders on window focus/blur
+      if (journey !== null) {
+        console.log("Dashboard data already loaded, skipping fetch");
+        return;
+      }
       try {
         setLoading(true);
 
@@ -145,7 +151,7 @@ export default function DashboardPage() {
     };
 
     fetchData();
-  }, [session]);
+  }, [session?.user?.id, journey]); // Use user ID and journey state to prevent re-fetches
 
   // Get active unpredictable challenges (filter out expired ones)
   const unpredictableChallenges = userChallenges.filter((c) => {

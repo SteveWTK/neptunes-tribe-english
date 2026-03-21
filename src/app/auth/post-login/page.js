@@ -7,9 +7,10 @@ import { Loader2 } from "lucide-react";
 
 /**
  * Post-login redirect page
- * Checks if user has selected an avatar and redirects accordingly:
- * - No avatar → /select-avatar
- * - Has avatar → /worlds
+ * Checks if user has an active journey and redirects accordingly:
+ * - New user (no journey) → /worlds/forests?selectSpecies=true (auto-open species modal)
+ * - Returning user (has journey) → /worlds/{current_world_id} (their current adventure)
+ * - Guest users → /dashboard
  */
 export default function PostLoginPage() {
   const router = useRouter();
@@ -30,23 +31,24 @@ export default function PostLoginPage() {
       return;
     }
 
-    // Check if user has an avatar
+    // Check user's journey status and redirect appropriately
     const checkAndRedirect = async () => {
       try {
         const response = await fetch("/api/user/journey");
         const data = await response.json();
 
-        if (data.hasSelectedAvatar) {
-          // User has an avatar, go to dashboard
-          router.push("/dashboard");
+        if (data.hasSelectedAvatar && data.journey) {
+          // Returning user with active journey - go to their current world
+          const worldId = data.journey.current_world_id || "forests";
+          router.push(`/worlds/${worldId}`);
         } else {
-          // No avatar selected, go to avatar selection
-          router.push("/select-avatar");
+          // New user - go to forests world with auto-open species modal
+          router.push("/worlds/forests?selectSpecies=true");
         }
       } catch (error) {
         console.error("Error checking journey:", error);
-        // Default to dashboard if check fails
-        router.push("/dashboard");
+        // Default to forests with species selection if check fails
+        router.push("/worlds/forests?selectSpecies=true");
       }
     };
 

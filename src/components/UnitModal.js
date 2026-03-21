@@ -90,10 +90,8 @@ export default function UnitModal({
                     if (onComplete) {
                       onComplete(result);
                     }
-                    // Auto-close on completion after a short delay
-                    setTimeout(() => {
-                      onClose();
-                    }, 2000);
+                    // User manually closes modal after reviewing answers
+                    // Auto-close removed to give users time to review
                   }}
                 />
               </div>

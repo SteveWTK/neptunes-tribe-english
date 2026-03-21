@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
 
 export async function POST(request) {
   try {
@@ -10,7 +10,7 @@ export async function POST(request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { lessonId, xpEarned } = await request.json();
+    const { lessonId, xpEarned, adventureId, worldId } = await request.json();
 
     if (!lessonId) {
       return NextResponse.json(
@@ -19,20 +19,36 @@ export async function POST(request) {
       );
     }
 
-    const supabase = await createClient();
-    const userId = session.user.userId || session.user.id;
+    // Use admin client to bypass RLS policies (same as /api/lessons/complete)
+    const supabase = await getSupabaseAdmin();
 
-    // Check if already completed
+    // Look up the user by email to get the database UUID
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("id")
+      .eq("email", session.user.email)
+      .single();
+
+    if (userError || !userData) {
+      console.error("Error fetching user data:", userError);
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    const userId = userData.id;
+    console.log(`📝 Recording lesson completion for user ${userId}, lesson ${lessonId}`);
+
+    // Check if already completed (check for any completion of this lesson)
     const { data: existing } = await supabase
       .from("lesson_completions")
       .select("id")
       .eq("user_id", userId)
       .eq("lesson_id", lessonId)
-      .single();
+      .maybeSingle();
 
     if (existing) {
       console.log("Lesson already completed for user:", userId);
       return NextResponse.json({
+        success: true,
         message: "Lesson already completed",
         data: existing,
       });
@@ -51,9 +67,9 @@ export async function POST(request) {
       .single();
 
     if (error) {
-      console.error("Supabase error inserting lesson completion:", error);
+      console.error("❌ Supabase error inserting lesson completion:", error);
       return NextResponse.json(
-        { error: "Failed to save lesson completion", details: error },
+        { error: "Failed to save lesson completion", details: error.message },
         { status: 500 }
       );
     }
@@ -61,7 +77,7 @@ export async function POST(request) {
     console.log("✅ Lesson completion saved:", data);
     return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.error("Error in lesson completion API:", error);
+    console.error("❌ Error in lesson completion API:", error);
     return NextResponse.json(
       { error: "Internal server error", details: error.message },
       { status: 500 }

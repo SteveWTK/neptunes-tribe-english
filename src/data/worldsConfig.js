@@ -74,7 +74,7 @@ export const WORLDS = {
     adventures: [
       {
         id: "rainforests",
-        name: "Rain Forests",
+        name: "Rainforests",
         name_pt: "Florestas Tropicais",
         name_th: "ป่าฝน",
         week: 1,

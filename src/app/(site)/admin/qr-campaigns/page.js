@@ -557,19 +557,26 @@ export default function QRCampaignsAdminPage() {
                         {campaign.code}
                       </code>
                       <button
-                        onClick={() => copyToClipboard(qrUrl)}
-                        className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-                        title="Copy URL"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </button>
-                      <button
                         onClick={() => downloadQR(qrUrl, campaign.code)}
                         className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                         title="Download QR"
                       >
                         <Download className="w-4 h-4" />
                       </button>
+                    </div>
+
+                    {/* Copy Link Button - for sharing via WhatsApp, SMS, etc. */}
+                    <div className="flex items-center gap-2 mt-3">
+                      <button
+                        onClick={() => copyToClipboard(qrUrl)}
+                        className="flex items-center gap-2 px-3 py-1.5 bg-accent-50 hover:bg-accent-100 dark:bg-accent-900/30 dark:hover:bg-accent-900/50 text-accent-700 dark:text-accent-300 rounded-lg text-sm font-medium transition-colors"
+                      >
+                        <Copy className="w-4 h-4" />
+                        Copy Link
+                      </button>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        Share via WhatsApp, SMS, or email
+                      </span>
                     </div>
                   </div>
 
