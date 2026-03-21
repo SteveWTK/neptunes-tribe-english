@@ -18,12 +18,15 @@ export async function POST(request) {
   try {
     const session = await auth();
     if (!session?.user) {
+      console.log("❌ Unauthorized - no session");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { lessonId, adventureId, worldId, xpEarned = 0 } = await request.json();
+    console.log("📝 Lesson completion request:", { lessonId, adventureId, worldId, xpEarned, userEmail: session.user.email });
 
     if (!lessonId || !adventureId || !worldId) {
+      console.log("❌ Missing required fields:", { lessonId, adventureId, worldId });
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -40,8 +43,10 @@ export async function POST(request) {
       .single();
 
     if (userError || !userData) {
+      console.log("❌ User not found:", { email: session.user.email, error: userError });
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
+    console.log("✅ User found:", userData.id);
 
     // Get user's current journey
     const { data: journey, error: journeyError } = await supabase
@@ -51,14 +56,24 @@ export async function POST(request) {
       .single();
 
     if (journeyError || !journey) {
+      console.log("❌ No journey found:", { userId: userData.id, error: journeyError });
       return NextResponse.json(
         { error: "No active journey found. Please start an adventure first." },
         { status: 404 }
       );
     }
+    console.log("✅ Journey found:", {
+      journeyAdventureId: journey.current_adventure_id,
+      requestAdventureId: adventureId,
+      match: journey.current_adventure_id === adventureId
+    });
 
     // Check if journey matches the adventure
     if (journey.current_adventure_id !== adventureId) {
+      console.log("❌ Adventure mismatch:", {
+        journeyAdventureId: journey.current_adventure_id,
+        requestAdventureId: adventureId
+      });
       return NextResponse.json(
         { error: "This lesson is not part of your current adventure" },
         { status: 400 }
@@ -113,16 +128,20 @@ export async function POST(request) {
       xp_earned: xpEarned,
       completed_at: new Date().toISOString(),
     };
+    console.log("📝 Upserting lesson completion:", completionData);
 
-    const { error: lessonCompletionError } = await supabase
+    const { data: upsertResult, error: lessonCompletionError } = await supabase
       .from("lesson_completions")
       .upsert(completionData, {
         onConflict: "user_id,lesson_id,adventure_id",
         ignoreDuplicates: false, // Update if exists
-      });
+      })
+      .select();
 
     if (lessonCompletionError) {
-      console.error("Error recording lesson completion:", lessonCompletionError);
+      console.error("❌ Error recording lesson completion:", lessonCompletionError);
+    } else {
+      console.log("✅ Lesson completion saved:", upsertResult);
     }
 
     // Check if adventure is complete (5 unique lessons completed with XP threshold)
