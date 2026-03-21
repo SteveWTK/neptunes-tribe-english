@@ -4,6 +4,62 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Check, Info, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useLanguage } from "@/lib/contexts/LanguageContext";
+
+// Translations for the species selection modal
+const translations = {
+  en: {
+    title: "Choose a Species to Save",
+    missionTitle: "Your Mission:",
+    missionText:
+      "Select one endangered species from this habitat. As you complete each lesson in the adventure, you'll move the species up through IUCN conservation levels from",
+    criticallyEndangered: "Critically Endangered",
+    to: "to",
+    leastConcern: "Least Concern",
+    savingThem: ", symbolically saving them!",
+    noSpeciesTitle: "No species available for this adventure yet.",
+    noSpeciesText: "Check back soon or try another adventure!",
+    youllBeSaving: "You'll be saving:",
+    startAdventure: "Start Adventure",
+    startingAdventure: "Starting Adventure...",
+    pleaseSelect: "Please select a species to save",
+    failedToStart: "Failed to start adventure. Please try again.",
+  },
+  pt: {
+    title: "Escolha uma Espécie para Salvar",
+    missionTitle: "Sua Missão:",
+    missionText:
+      "Selecione uma espécie ameaçada deste habitat. Ao completar cada lição na aventura, você moverá a espécie através dos níveis de conservação da IUCN de",
+    criticallyEndangered: "Criticamente em Perigo",
+    to: "para",
+    leastConcern: "Pouco Preocupante",
+    savingThem: ", salvando-a simbolicamente!",
+    noSpeciesTitle: "Nenhuma espécie disponível para esta aventura ainda.",
+    noSpeciesText: "Volte em breve ou tente outra aventura!",
+    youllBeSaving: "Você vai salvar:",
+    startAdventure: "Iniciar Aventura",
+    startingAdventure: "Iniciando Aventura...",
+    pleaseSelect: "Por favor, selecione uma espécie para salvar",
+    failedToStart: "Falha ao iniciar aventura. Por favor, tente novamente.",
+  },
+  th: {
+    title: "เลือกสัตว์ที่จะช่วยเหลือ",
+    missionTitle: "ภารกิจของคุณ:",
+    missionText:
+      "เลือกสัตว์ใกล้สูญพันธุ์หนึ่งชนิดจากถิ่นที่อยู่นี้ เมื่อคุณทำบทเรียนแต่ละบทในการผจญภัยเสร็จสิ้น คุณจะย้ายสัตว์ผ่านระดับการอนุรักษ์ของ IUCN จาก",
+    criticallyEndangered: "ใกล้สูญพันธุ์อย่างยิ่ง",
+    to: "ไปสู่",
+    leastConcern: "ความกังวลน้อยที่สุด",
+    savingThem: " ช่วยเหลือพวกมันในเชิงสัญลักษณ์!",
+    noSpeciesTitle: "ยังไม่มีสัตว์สำหรับการผจญภัยนี้",
+    noSpeciesText: "กลับมาเร็วๆ นี้หรือลองการผจญภัยอื่น!",
+    youllBeSaving: "คุณจะช่วยเหลือ:",
+    startAdventure: "เริ่มการผจญภัย",
+    startingAdventure: "กำลังเริ่มการผจญภัย...",
+    pleaseSelect: "กรุณาเลือกสัตว์ที่จะช่วยเหลือ",
+    failedToStart: "ไม่สามารถเริ่มการผจญภัยได้ กรุณาลองอีกครั้ง",
+  },
+};
 
 /**
  * Species Selection Modal
@@ -31,10 +87,12 @@ export default function SpeciesSelectionModal({
 }) {
   const [selectedSpeciesId, setSelectedSpeciesId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { lang } = useLanguage();
+  const t = translations[lang] || translations.en;
 
   const handleSelect = async () => {
     if (!selectedSpeciesId) {
-      toast.error("Please select a species to save");
+      toast.error(t.pleaseSelect);
       return;
     }
 
@@ -45,7 +103,7 @@ export default function SpeciesSelectionModal({
       // Modal will be closed by parent component after successful selection
     } catch (error) {
       console.error("Error selecting species:", error);
-      toast.error("Failed to start adventure. Please try again.");
+      toast.error(t.failedToStart);
       setIsSubmitting(false);
     }
   };
@@ -78,7 +136,7 @@ export default function SpeciesSelectionModal({
             <div className="bg-gradient-to-r from-primary-600 to-accent-600 px-6 py-4 flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-white mb-1">
-                  Choose a Species to Save
+                  {t.title}
                 </h2>
                 <p className="text-white/90 text-sm">
                   {adventureName} • {worldName}
@@ -100,19 +158,17 @@ export default function SpeciesSelectionModal({
                 <div className="flex items-start gap-3">
                   <Info className="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
                   <div className="text-sm text-gray-700 dark:text-gray-300">
-                    <p className="font-medium mb-1">Your Mission:</p>
+                    <p className="font-medium mb-1">{t.missionTitle}</p>
                     <p>
-                      Select one endangered species from this habitat. As you
-                      complete each lesson in the adventure, you&apos;ll move
-                      the species up through IUCN conservation levels from{" "}
+                      {t.missionText}{" "}
                       <span className="font-semibold text-red-600 dark:text-red-400">
-                        Critically Endangered
+                        {t.criticallyEndangered}
                       </span>{" "}
-                      to{" "}
+                      {t.to}{" "}
                       <span className="font-semibold text-green-600 dark:text-green-400">
-                        Least Concern
+                        {t.leastConcern}
                       </span>
-                      , symbolically saving them!
+                      {t.savingThem}
                     </p>
                   </div>
                 </div>
@@ -195,10 +251,10 @@ export default function SpeciesSelectionModal({
               {species.length === 0 && (
                 <div className="text-center py-12">
                   <p className="text-gray-600 dark:text-gray-400 mb-2">
-                    No species available for this adventure yet.
+                    {t.noSpeciesTitle}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-500">
-                    Check back soon or try another adventure!
+                    {t.noSpeciesText}
                   </p>
                 </div>
               )}
@@ -220,7 +276,7 @@ export default function SpeciesSelectionModal({
                     />
                     <div>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        You&apos;ll be saving:
+                        {t.youllBeSaving}
                       </p>
                       <p className="font-bold text-gray-900 dark:text-white">
                         {selectedSpecies.common_name}
@@ -236,11 +292,11 @@ export default function SpeciesSelectionModal({
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-5 h-5 animate-spin" />
-                        <span>Starting Adventure...</span>
+                        <span>{t.startingAdventure}</span>
                       </>
                     ) : (
                       <>
-                        <span>Start Adventure</span>
+                        <span>{t.startAdventure}</span>
                         <Check className="w-5 h-5" />
                       </>
                     )}

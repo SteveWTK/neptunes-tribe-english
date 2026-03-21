@@ -107,6 +107,7 @@ function DynamicLessonContent() {
   const [currentUnitId, setCurrentUnitId] = useState(null);
   const [unitShowFullText, setUnitShowFullText] = useState(false);
   const [challengeExercises, setChallengeExercises] = useState({});
+  const [completedUnits, setCompletedUnits] = useState(new Set()); // Track completed unit exercises
 
   // Adventure progress tracking
   const [journey, setJourney] = useState(null);
@@ -1468,6 +1469,7 @@ function DynamicLessonContent() {
           <UnitReferenceStep
             unitId={currentStepData.unit_id}
             instructions={currentStepData.instructions}
+            isCompleted={completedUnits.has(currentStepData.unit_id)}
             onStartExercise={() => {
               setCurrentUnitId(currentStepData.unit_id);
               setUnitShowFullText(
@@ -3465,6 +3467,11 @@ function DynamicLessonContent() {
           // Award XP from the unit exercise
           if (result?.xp) {
             handleXPAward(result.xp);
+          }
+
+          // Track this unit as completed for showing checkmark
+          if (currentUnitId) {
+            setCompletedUnits((prev) => new Set([...prev, currentUnitId]));
           }
 
           setStepCompleted(true);

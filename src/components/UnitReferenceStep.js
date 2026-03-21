@@ -2,16 +2,18 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Image from "next/image";
-import { BookOpen, Play } from "lucide-react";
+import { BookOpen, Play, CheckCircle } from "lucide-react";
 
 /**
  * UnitReferenceStep - Displays unit preview before opening modal
  * Fetches unit data from Supabase and shows title, description, and image
+ * Shows a checkmark when the exercise has been completed at least once
  */
 export default function UnitReferenceStep({
   unitId,
   instructions,
   onStartExercise,
+  isCompleted = false,
 }) {
   const [unit, setUnit] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -78,7 +80,15 @@ export default function UnitReferenceStep({
       )}
 
       <div className="max-w-3xl mx-auto">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+        <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border-2 ${isCompleted ? 'border-green-500 dark:border-green-400' : 'border-gray-200 dark:border-gray-700'}`}>
+          {/* Completed Badge */}
+          {isCompleted && (
+            <div className="bg-green-500 dark:bg-green-600 px-4 py-2 flex items-center justify-center gap-2">
+              <CheckCircle className="w-5 h-5 text-white" />
+              <span className="text-white font-medium text-sm">Exercise Completed</span>
+            </div>
+          )}
+
           {/* Unit Image */}
           {unit.image && (
             <div className="relative w-full h-64 md:h-80 bg-gradient-to-br from-primary-100 to-accent-100 dark:from-primary-900/20 dark:to-accent-900/20">
@@ -129,15 +139,26 @@ export default function UnitReferenceStep({
             {/* Start button */}
             <button
               onClick={onStartExercise}
-              className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3 group"
+              className={`w-full md:w-auto px-8 py-4 ${isCompleted ? 'bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600' : 'bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700'} text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3 group`}
             >
-              <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              Start Exercise
+              {isCompleted ? (
+                <>
+                  <CheckCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  Review Exercise
+                </>
+              ) : (
+                <>
+                  <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  Start Exercise
+                </>
+              )}
             </button>
 
             {/* Helper text */}
             <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-              Listen to the audio and complete this gap-fill exercise
+              {isCompleted
+                ? "Great job! You can review this exercise anytime."
+                : "Listen to the audio and complete this gap-fill exercise"}
             </p>
           </div>
         </div>
