@@ -1,0 +1,129 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Info, X } from "lucide-react";
+
+/**
+ * FloatingFacts Component
+ * Displays tasteful hovering modals with key facts that rotate/cycle automatically
+ *
+ * @param {Object} props
+ * @param {string[]} props.facts - Array of fact strings to display
+ * @param {number} props.interval - Time between fact changes in ms (default: 6000)
+ * @param {boolean} props.showClose - Whether to show close button (default: false)
+ * @param {string} props.defaultLabel - Default label when no label in fact (default: "Did You Know?")
+ * @param {string} props.className - Additional CSS classes
+ * @param {boolean} props.animated - Whether to use animations (default: false for performance)
+ */
+export default function FloatingFacts({
+  facts = [],
+  interval = 6000,
+  showClose = false,
+  defaultLabel = "Did You Know?",
+  className = "",
+  animated = false,
+}) {
+  const [currentFactIndex, setCurrentFactIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+
+  // Cycle through facts
+  useEffect(() => {
+    if (!facts || facts.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setCurrentFactIndex((prev) => (prev + 1) % facts.length);
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, [facts, facts.length, interval]);
+
+  // If no facts, don't render anything
+  if (!facts || facts.length === 0 || !isVisible) return null;
+
+  const currentFact = facts[currentFactIndex];
+
+  // Parse fact to check if it has a label (e.g., "Habitat: ...")
+  const parseFactLabel = (fact) => {
+    const colonIndex = fact.indexOf(":");
+    if (colonIndex > 0 && colonIndex < 20) {
+      return {
+        label: fact.substring(0, colonIndex).trim(),
+        value: fact.substring(colonIndex + 1).trim(),
+      };
+    }
+    return { label: null, value: fact };
+  };
+
+  const { label, value } = parseFactLabel(currentFact);
+
+  const content = (
+    <div className={`relative mx-auto pointer-events-auto ${className}`}>
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border-2 border-primary-200 dark:border-primary-700 overflow-hidden">
+        {/* Header */}
+        <div className="bg-primary-500 px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-white">
+            <Info className="w-4 h-4" />
+            <span className="font-semibold text-sm">
+              {label || defaultLabel}
+            </span>
+          </div>
+          {showClose && (
+            <button
+              onClick={() => setIsVisible(false)}
+              className="text-white hover:text-gray-200 transition-colors"
+              aria-label="Close"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="p-4">
+          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+            {value}
+          </p>
+        </div>
+
+        {/* Progress indicator (if multiple facts) */}
+        {facts.length > 1 && (
+          <div className="px-4 pb-3 flex gap-1 justify-center">
+            {facts.map((_, index) => (
+              <div
+                key={index}
+                className={`h-1 rounded-full transition-all duration-300 ${
+                  index === currentFactIndex
+                    ? "bg-primary-500 w-6"
+                    : "bg-gray-300 dark:bg-gray-600 w-2"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Subtle pulsing glow effect - pointer-events-none ensures it doesn't block clicks */}
+      <div className="absolute inset-0 bg-primary-400/20 dark:bg-primary-600/20 rounded-xl blur-xl -z-10 animate-pulse pointer-events-none" />
+    </div>
+  );
+
+  if (animated) {
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentFactIndex}
+          initial={{ opacity: 0, y: 20, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -20, scale: 0.9 }}
+          transition={{ duration: 0.5 }}
+          className="z-40 max-w-xs"
+        >
+          {content}
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
+  return content;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@inspire/shared",
+  "version": "1.0.0",
+  "description": "Shared components and utilities for INSPIRE English learning apps",
+  "main": "index.js",
+  "module": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./components/*": "./components/*",
+    "./lib/*": "./lib/*",
+    "./config": "./config/index.js",
+    "./styles/*": "./styles/*"
+  },
+  "keywords": [
+    "inspire",
+    "english",
+    "learning",
+    "shared-components"
+  ],
+  "author": "INSPIRE Education",
+  "license": "UNLICENSED",
+  "private": true
+}
