@@ -140,9 +140,12 @@ export async function POST(request) {
 
     if (lessonCompletionError) {
       console.error("❌ Error recording lesson completion:", lessonCompletionError);
-    } else {
-      console.log("✅ Lesson completion saved:", upsertResult);
+      return NextResponse.json(
+        { error: "Failed to record lesson completion", details: lessonCompletionError.message },
+        { status: 500 }
+      );
     }
+    console.log("✅ Lesson completion saved:", upsertResult);
 
     // Check if adventure is complete (5 unique lessons completed with XP threshold)
     const { data: completedLessonsInAdventure, error: countError } = await supabase
