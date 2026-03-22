@@ -103,7 +103,8 @@ export async function POST(request) {
       Date.now() + result.duration_hours * 3600 * 1000
     );
 
-    // Create public.users record
+    // Create/update public.users record
+    // Using upsert because Supabase may auto-create the user via trigger
     const userRecord = {
       id: authData.user.id,
       email: guestEmail,
@@ -113,9 +114,11 @@ export async function POST(request) {
       premium_until: premiumUntil.toISOString(),
       premium_source: "guest_qr",
     };
-    console.log("📝 Inserting user record:", userRecord);
+    console.log("📝 Upserting user record:", userRecord);
 
-    const { error: userError } = await supabase.from("users").insert(userRecord);
+    const { error: userError } = await supabase
+      .from("users")
+      .upsert(userRecord, { onConflict: "id" });
 
     if (userError) {
       console.error("❌ Error creating guest user record:", {
