@@ -42,7 +42,7 @@ export default function QRCampaignsAdminPage() {
   const [formName, setFormName] = useState("");
   const [formCampaignName, setFormCampaignName] = useState("");
   const [formCampaignLocation, setFormCampaignLocation] = useState("");
-  const [formDestination, setFormDestination] = useState("/dashboard");
+  const [formDestination, setFormDestination] = useState("/worlds/forests?selectSpecies=true");
   const [formAccessTier, setFormAccessTier] = useState("premium");
   const [formDuration, setFormDuration] = useState(72);
   const [formMaxUses, setFormMaxUses] = useState("");
@@ -122,7 +122,7 @@ export default function QRCampaignsAdminPage() {
     setFormName("");
     setFormCampaignName("");
     setFormCampaignLocation("");
-    setFormDestination("/dashboard");
+    setFormDestination("/worlds/forests?selectSpecies=true");
     setFormAccessTier("premium");
     setFormDuration(72);
     setFormMaxUses("");
@@ -337,13 +337,51 @@ export default function QRCampaignsAdminPage() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Destination Path
                 </label>
+                <div className="flex gap-2 mb-2">
+                  <button
+                    type="button"
+                    onClick={() => setFormDestination("/worlds/forests?selectSpecies=true")}
+                    className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${
+                      formDestination === "/worlds/forests?selectSpecies=true"
+                        ? "bg-accent-100 dark:bg-accent-900 border-accent-500 text-accent-700 dark:text-accent-300"
+                        : "border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    🌳 Forests (New User)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormDestination("/worlds/oceans?selectSpecies=true")}
+                    className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${
+                      formDestination === "/worlds/oceans?selectSpecies=true"
+                        ? "bg-accent-100 dark:bg-accent-900 border-accent-500 text-accent-700 dark:text-accent-300"
+                        : "border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    🌊 Oceans (New User)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormDestination("/dashboard")}
+                    className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${
+                      formDestination === "/dashboard"
+                        ? "bg-accent-100 dark:bg-accent-900 border-accent-500 text-accent-700 dark:text-accent-300"
+                        : "border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    📊 Dashboard
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={formDestination}
                   onChange={(e) => setFormDestination(e.target.value)}
-                  placeholder="/dashboard"
+                  placeholder="/worlds/forests?selectSpecies=true"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Use <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">?selectSpecies=true</code> to auto-open the species selection modal
+                </p>
               </div>
 
               {/* Access tier */}

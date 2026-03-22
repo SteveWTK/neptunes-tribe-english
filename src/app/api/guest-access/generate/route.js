@@ -38,7 +38,7 @@ export async function POST(request) {
       name,
       campaignName,
       campaignLocation,
-      destinationPath = "/dashboard",
+      destinationPath = "/worlds/forests?selectSpecies=true",
       accessTier = "premium",
       durationHours = 72,
       maxUses = null,
