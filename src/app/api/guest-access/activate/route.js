@@ -71,6 +71,7 @@ export async function POST(request) {
     const guestPassword = crypto.randomBytes(20).toString("base64url");
 
     // Create Supabase Auth user
+    console.log("👤 Creating guest auth user:", guestEmail);
     const { data: authData, error: authError } =
       await supabase.auth.admin.createUser({
         email: guestEmail,
@@ -83,12 +84,17 @@ export async function POST(request) {
       });
 
     if (authError) {
-      console.error("Error creating guest auth user:", authError);
+      console.error("❌ Error creating guest auth user:", {
+        message: authError.message,
+        status: authError.status,
+      });
       return NextResponse.json(
-        { error: "Failed to create guest account" },
+        { error: "Failed to create guest account", details: authError.message },
         { status: 500 }
       );
     }
+
+    console.log("✅ Auth user created:", authData.user.id);
 
     // Calculate premium expiry
     const isPremium =
@@ -98,7 +104,7 @@ export async function POST(request) {
     );
 
     // Create public.users record
-    const { error: userError } = await supabase.from("users").insert({
+    const userRecord = {
       id: authData.user.id,
       email: guestEmail,
       name: "Guest Explorer",
@@ -106,7 +112,10 @@ export async function POST(request) {
       is_premium: isPremium,
       premium_until: premiumUntil.toISOString(),
       premium_source: "guest_qr",
-    });
+    };
+    console.log("📝 Inserting user record:", userRecord);
+
+    const { error: userError } = await supabase.from("users").insert(userRecord);
 
     if (userError) {
       console.error("❌ Error creating guest user record:", {
@@ -122,6 +131,8 @@ export async function POST(request) {
         { status: 500 }
       );
     }
+
+    console.log("✅ User record created successfully");
 
     // Create guest session record
     const forwardedFor = request.headers.get("x-forwarded-for");
