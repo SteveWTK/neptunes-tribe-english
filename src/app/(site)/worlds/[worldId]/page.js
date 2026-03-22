@@ -370,51 +370,23 @@ function WorldDetailContent() {
     }
 
     try {
-      const supabase = createClient();
+      console.log("🔍 Loading completions via API for lessons:", lessonIds);
 
-      // IMPORTANT: Look up user by email to get the actual database UUID
-      // This matches how lesson completions are saved in /api/lessons/complete
-      const { data: userData, error: userError } = await supabase
-        .from("users")
-        .select("id, email")
-        .eq("email", user.email)
-        .single();
-
-      if (userError || !userData) {
-        console.error("❌ Error fetching user data:", userError);
-        console.log("User object:", user);
-        return;
-      }
-
-      const userId = userData.id;
-
-      console.log(
-        "🔍 Loading completions for user:",
-        userId,
-        "(email:",
-        userData.email,
-        ") lessons:",
-        lessonIds
+      // Use API route which bypasses RLS with admin client
+      const response = await fetch(
+        `/api/lessons/completions?lessonIds=${lessonIds.join(",")}`
       );
+      const data = await response.json();
 
-      // Query for any lesson completions for this user
-      // Don't filter by adventure_id - show checkmark if completed in ANY adventure
-      const { data, error } = await supabase
-        .from("lesson_completions")
-        .select("lesson_id, adventure_id, xp_earned, completed_at")
-        .eq("user_id", userId)
-        .in("lesson_id", lessonIds);
-
-      if (error) {
-        console.error("❌ Error loading lesson completions:", error);
-        console.error("Full error details:", JSON.stringify(error, null, 2));
+      if (!response.ok) {
+        console.error("❌ Error loading lesson completions:", data.error);
         return;
       }
 
-      console.log("✅ Completions data from DB:", data);
-      console.log(`Found ${data?.length || 0} completed lessons`);
+      console.log("✅ Completions data from API:", data);
+      console.log(`Found ${data.completedLessonIds?.length || 0} completed lessons`);
 
-      const completedSet = new Set(data?.map((c) => c.lesson_id) || []);
+      const completedSet = new Set(data.completedLessonIds || []);
       console.log("✅ Setting completed lessons:", Array.from(completedSet));
 
       setCompletedLessons(completedSet);
