@@ -39,16 +39,24 @@ export async function POST(request) {
     }
 
     // Validate and activate the code atomically via RPC
+    console.log("🎫 Activating guest code:", code.trim().toUpperCase());
     const { data: result, error: rpcError } = await supabase
       .rpc("activate_guest_code", { p_code: code.trim().toUpperCase() });
 
     if (rpcError) {
-      console.error("RPC error activating guest code:", rpcError);
+      console.error("❌ RPC error activating guest code:", {
+        message: rpcError.message,
+        code: rpcError.code,
+        details: rpcError.details,
+        hint: rpcError.hint,
+      });
       return NextResponse.json(
-        { error: "Failed to validate code" },
+        { error: "Failed to validate code", details: rpcError.message },
         { status: 500 }
       );
     }
+
+    console.log("✅ RPC result:", result);
 
     if (!result?.success) {
       return NextResponse.json(
@@ -101,11 +109,16 @@ export async function POST(request) {
     });
 
     if (userError) {
-      console.error("Error creating guest user record:", userError);
+      console.error("❌ Error creating guest user record:", {
+        message: userError.message,
+        code: userError.code,
+        details: userError.details,
+        hint: userError.hint,
+      });
       // Clean up the Supabase Auth user
       await supabase.auth.admin.deleteUser(authData.user.id);
       return NextResponse.json(
-        { error: "Failed to create guest profile" },
+        { error: "Failed to create guest profile", details: userError.message },
         { status: 500 }
       );
     }
