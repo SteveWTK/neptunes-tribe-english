@@ -464,16 +464,31 @@ function DynamicLessonContent() {
   // Fetch user's journey data
   useEffect(() => {
     const fetchJourney = async () => {
-      if (!user) return;
+      if (!user) {
+        console.log("🗺️ No user, skipping journey fetch");
+        return;
+      }
 
       try {
+        console.log("🗺️ Fetching journey for user...");
         const response = await fetch("/api/user/journey");
-        if (response.ok) {
-          const data = await response.json();
+        const data = await response.json();
+
+        console.log("🗺️ Journey API response:", {
+          ok: response.ok,
+          hasJourney: !!data.journey,
+          adventureId: data.journey?.current_adventure_id,
+          worldId: data.journey?.current_world_id,
+          fullJourney: data.journey,
+        });
+
+        if (response.ok && data.journey) {
           setJourney(data.journey);
+        } else {
+          console.log("🗺️ No journey found or response not ok:", data);
         }
       } catch (error) {
-        console.error("Error fetching journey:", error);
+        console.error("❌ Error fetching journey:", error);
       }
     };
 

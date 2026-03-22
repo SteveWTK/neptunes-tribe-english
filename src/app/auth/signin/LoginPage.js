@@ -232,7 +232,7 @@ export default function LoginPage() {
         } else if (data.session) {
           // User is immediately signed in (email confirmation disabled)
           setMessage("Account created successfully! You are now signed in.");
-          router.push("/dashboard");
+          router.push("/auth/post-login");
         }
       } else {
         // Login logic
@@ -274,7 +274,7 @@ export default function LoginPage() {
         }
 
         if (result?.ok) {
-          router.push("/dashboard");
+          router.push("/auth/post-login");
         }
       }
     } catch (error) {

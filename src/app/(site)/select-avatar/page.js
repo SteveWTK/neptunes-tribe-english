@@ -87,7 +87,9 @@ export default function SelectAvatarPage() {
 
       <AvatarSelection
         onComplete={(data) => {
-          router.push("/dashboard");
+          // Redirect to the world for their new journey
+          const worldId = data?.journey?.current_world_id || "forests";
+          router.push(`/worlds/${worldId}`);
         }}
         isChangingAvatar={!!existingJourney}
       />

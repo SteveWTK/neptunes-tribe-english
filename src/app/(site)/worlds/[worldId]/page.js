@@ -486,6 +486,12 @@ function WorldDetailContent() {
   const handleSpeciesSelect = async (speciesId) => {
     if (!pendingNavigation) return;
 
+    console.log("🎯 handleSpeciesSelect - Starting adventure:", {
+      speciesId,
+      adventureId: pendingNavigation.adventure.id,
+      worldId: pendingNavigation.worldId,
+    });
+
     try {
       const response = await fetch("/api/adventures/start", {
         method: "POST",
@@ -499,6 +505,17 @@ function WorldDetailContent() {
 
       const data = await response.json();
 
+      console.log("🎯 handleSpeciesSelect - API response:", {
+        ok: response.ok,
+        status: response.status,
+        hasJourney: !!data.journey,
+        journeyId: data.journey?.id,
+        adventureId: data.journey?.current_adventure_id,
+        worldId: data.journey?.current_world_id,
+        message: data.message,
+        error: data.error,
+      });
+
       if (response.ok) {
         toast.success(data.message || "Adventure started!");
         setJourney(data.journey);
@@ -506,6 +523,7 @@ function WorldDetailContent() {
 
         // Navigate to first lesson
         const firstLesson = currentData.lessons?.[0];
+        console.log("🎯 handleSpeciesSelect - Navigating to:", firstLesson?.id);
         if (firstLesson && !firstLesson.under_construction) {
           router.push(`/lesson/${firstLesson.id}`);
         }

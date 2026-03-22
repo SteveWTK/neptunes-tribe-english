@@ -10,7 +10,7 @@ import { Loader2 } from "lucide-react";
  * Checks if user has an active journey and redirects accordingly:
  * - New user (no journey) → /worlds/forests?selectSpecies=true (auto-open species modal)
  * - Returning user (has journey) → /worlds/{current_world_id} (their current adventure)
- * - Guest users → /dashboard
+ * - Guest users → /worlds/forests (start their journey too)
  */
 export default function PostLoginPage() {
   const router = useRouter();
@@ -25,9 +25,9 @@ export default function PostLoginPage() {
       return;
     }
 
-    // Guest users skip avatar selection entirely
+    // Guest users also go to worlds to start their journey
     if (session.user?.is_guest) {
-      router.push("/dashboard");
+      router.push("/worlds/forests?selectSpecies=true");
       return;
     }
 

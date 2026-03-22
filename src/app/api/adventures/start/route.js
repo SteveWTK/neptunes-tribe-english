@@ -64,6 +64,14 @@ export async function POST(request) {
       .single();
 
     if (existingJourney) {
+      console.log("🎯 Adventure start - Updating existing journey:", {
+        userId: userData.id,
+        existingJourneyId: existingJourney.id,
+        speciesAvatarId,
+        adventureId,
+        worldId,
+      });
+
       // User already has a journey - update it for the new adventure
       const { data: journey, error: updateError } = await supabase
         .from("user_species_journey")
@@ -85,16 +93,20 @@ export async function POST(request) {
         .single();
 
       if (updateError) {
-        console.error("Error updating journey:", updateError);
+        console.error("❌ Error updating journey:", updateError);
         return NextResponse.json(
           { error: "Failed to start adventure", details: updateError.message },
           { status: 500 }
         );
       }
 
-      console.log(
-        `✅ User ${userData.id} started new adventure ${adventureId} with ${avatar.common_name}`
-      );
+      console.log("✅ Adventure start - Journey updated successfully:", {
+        journeyId: journey.id,
+        userId: userData.id,
+        adventureId: journey.current_adventure_id,
+        worldId: journey.current_world_id,
+        speciesName: avatar.common_name,
+      });
 
       return NextResponse.json({
         success: true,
@@ -102,6 +114,13 @@ export async function POST(request) {
         message: `Adventure started! You're now saving the ${avatar.common_name}.`,
       });
     } else {
+      console.log("🎯 Adventure start - Creating new journey:", {
+        userId: userData.id,
+        speciesAvatarId,
+        adventureId,
+        worldId,
+      });
+
       // Create initial journey
       const { data: journey, error: journeyError } = await supabase
         .from("user_species_journey")
@@ -127,16 +146,20 @@ export async function POST(request) {
         .single();
 
       if (journeyError) {
-        console.error("Error creating journey:", journeyError);
+        console.error("❌ Error creating journey:", journeyError);
         return NextResponse.json(
           { error: "Failed to create journey", details: journeyError.message },
           { status: 500 }
         );
       }
 
-      console.log(
-        `✅ User ${userData.id} started first adventure ${adventureId} with ${avatar.common_name}`
-      );
+      console.log("✅ Adventure start - New journey created:", {
+        journeyId: journey.id,
+        userId: userData.id,
+        adventureId: journey.current_adventure_id,
+        worldId: journey.current_world_id,
+        speciesName: avatar.common_name,
+      });
 
       return NextResponse.json({
         success: true,

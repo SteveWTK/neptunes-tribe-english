@@ -9,6 +9,11 @@ import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
 export async function GET(request) {
   try {
     const session = await auth();
+    console.log("🗺️ Journey GET - Session:", {
+      hasSession: !!session,
+      userEmail: session?.user?.email,
+    });
+
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -21,6 +26,12 @@ export async function GET(request) {
       .select("id")
       .eq("email", session.user.email)
       .single();
+
+    console.log("🗺️ Journey GET - User lookup:", {
+      email: session.user.email,
+      userId: userData?.id,
+      userError: userError?.message,
+    });
 
     if (userError || !userData) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -38,6 +49,16 @@ export async function GET(request) {
       .eq("user_id", userData.id)
       .single();
 
+    console.log("🗺️ Journey GET - Journey lookup:", {
+      userId: userData.id,
+      hasJourney: !!journey,
+      journeyId: journey?.id,
+      adventureId: journey?.current_adventure_id,
+      worldId: journey?.current_world_id,
+      journeyError: journeyError?.message,
+      journeyErrorCode: journeyError?.code,
+    });
+
     if (journeyError && journeyError.code !== "PGRST116") {
       // PGRST116 = no rows returned
       console.error("Error fetching journey:", journeyError);
@@ -49,6 +70,7 @@ export async function GET(request) {
 
     // If no journey exists, user hasn't selected an avatar yet
     if (!journey) {
+      console.log("🗺️ Journey GET - No journey found for user:", userData.id);
       return NextResponse.json({
         success: true,
         journey: null,
