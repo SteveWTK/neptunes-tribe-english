@@ -10,7 +10,7 @@ import { useLanguage } from "@/lib/contexts/LanguageContext";
 const translations = {
   en: {
     title:
-      "Select one endangered species from this habitat, and practice your English while helping it escape extinction.",
+      "Choose an endangered species and learn English while helping to protect it.",
     missionTitle: "Your Mission:",
     missionText:
       "Select one endangered species from this habitat. As you complete each lesson in the adventure, you'll move the species up through IUCN conservation levels from",
@@ -28,7 +28,7 @@ const translations = {
   },
   pt: {
     title:
-      "Selecione uma espécie ameaçada de extinção desse habitat e pratique seu inglês enquanto a ajuda a escapar da extinção.",
+      "Escolha uma espécie ameaçada e aprenda inglês ajudando a protegê-la.",
     missionTitle: "Sua Missão:",
     missionText:
       "Selecione uma espécie ameaçada deste habitat. Ao completar cada lição na aventura, você moverá a espécie através dos níveis de conservação da IUCN de",
@@ -46,7 +46,7 @@ const translations = {
   },
   th: {
     title:
-      "เลือกสัตว์ใกล้สูญพันธุ์หนึ่งชนิดจากแหล่งที่อยู่อาศัยนี้ และฝึกฝนภาษาอังกฤษของคุณไปพร้อมๆ กับการช่วยให้สัตว์ชนิดนั้นรอดพ้นจากการสูญพันธุ์",
+      "เลือกสัตว์ใกล้สูญพันธุ์สักชนิด แล้วเรียนภาษาอังกฤษไปพร้อมๆ กับการช่วยปกป้องสัตว์ชนิดนั้น",
     missionTitle: "ภารกิจของคุณ:",
     missionText:
       "เลือกสัตว์ใกล้สูญพันธุ์หนึ่งชนิดจากถิ่นที่อยู่นี้ เมื่อคุณทำบทเรียนแต่ละบทในการผจญภัยเสร็จสิ้น คุณจะย้ายสัตว์ผ่านระดับการอนุรักษ์ของ IUCN จาก",
