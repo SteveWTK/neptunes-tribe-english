@@ -51,7 +51,7 @@ export const WORLDS = {
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Caqueta%20titi%20with%20baby.webp",
     heroUrl:
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Caqueta%20titi%20with%20baby.webp",
-    mapUrl: "/maps/south-america.png",
+    mapUrl: "/maps/oceans.png",
     // Legacy single hero (kept for backward compatibility)
     ecoHeroUrl: "",
     ecoHeroName: "",
@@ -194,7 +194,7 @@ export const WORLDS = {
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/avatars/african-elephant.jpg",
     heroUrl:
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/avatars/african-elephant.jpg",
-    mapUrl: "/maps/africa.png",
+    mapUrl: "/maps/oceans.png",
     // Legacy single hero (kept for backward compatibility)
     ecoHeroUrl: "",
     ecoHeroName: "",
@@ -448,7 +448,7 @@ export const WORLDS = {
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/Sand%20cat%201.jpg",
     heroUrl:
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/Sand%20cat%201.jpg",
-    mapUrl: "/maps/eurasia.png",
+    mapUrl: "/maps/oceans.png",
     ecoHeroUrl: "",
     ecoHeroes: [
       // {
