@@ -887,13 +887,13 @@ export default function MultiGapFillExerciseNew({
               {copy.region}: {unitData?.region_name || "Loading region name..."}
             </h2>
 
-            {isAlreadyCompleted && (
+            {/* {isAlreadyCompleted && (
               <div className="mx-3 px-2 py-2 w-fit  bg-green-100 dark:bg-primary-800 rounded-xl">
                 <p className="text-green-800 dark:text-green-100 text-sm text-center">
                   ✅ Completed!
                 </p>
               </div>
-            )}
+            )} */}
 
             <div className="flex gap-6 lg:gap-12 justify-around lg:justify-start align-middle">
               {unitData?.audio && (
@@ -935,7 +935,7 @@ export default function MultiGapFillExerciseNew({
                     className={`flex items-center gap-2 text-[18px] rounded-lg px-2 transition-colors ${
                       isPlaying
                         ? "text-red-600 hover:text-red-700"
-                        : "hover:text-accent-600"
+                        : "text-accent-400 hover:text-accent-600"
                     } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
                   >
                     {isPlaying ? (
