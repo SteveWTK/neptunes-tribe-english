@@ -1144,7 +1144,7 @@ function DynamicLessonContent() {
                   (currentStep === steps.length - 1 &&
                     currentStepData?.type !== "completion")
                 }
-                className="flex items-center space-x-2 mx-auto bg-linear-to-br from-lime-700 to-lime-800 text-white px-12 py-0.5 mb-3 rounded-lg hover:bg-accent-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center space-x-2 mx-auto bg-linear-to-br from-accent-700 to-accent-800 text-white px-12 py-0.5 mb-3 rounded-lg hover:bg-accent-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Start
               </button>
