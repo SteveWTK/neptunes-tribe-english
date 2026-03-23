@@ -109,6 +109,7 @@ export const UI_TRANSLATIONS = {
     saving_progress: "Saving Progress...",
     activities_completed: "completed activities",
     percent_complete: "% complete",
+    continue_learning: "Continue Learning",
   },
   "pt-BR": {
     // Common UI Elements
@@ -240,6 +241,7 @@ export const UI_TRANSLATIONS = {
     saving_progress: "Salvando Progresso...",
     activities_completed: "atividades completadas",
     percent_complete: "% Completo",
+    continue_learning: "Continue aprendendo",
 
     // Error Messages
     lesson_not_found: "Lição Não Encontrada",
@@ -371,8 +373,7 @@ export const UI_TRANSLATIONS = {
     perfect_first_try: "สมบูรณ์แบบ! คุณทำถูกทั้งหมดในครั้งแรก! 🏆",
     great_work_hints:
       "ทำได้เยี่ยม! คุณใช้คำใบ้อย่างชาญฉลาดและเรียนรู้ได้อย่างมีประสิทธิภาพ! ⭐",
-    good_job_practicing:
-      "ทำได้ดี! ฝึกฝนต่อไปเพื่อเพิ่มความมั่นใจ! 💪",
+    good_job_practicing: "ทำได้ดี! ฝึกฝนต่อไปเพื่อเพิ่มความมั่นใจ! 💪",
     total_hints_used: "คำใบ้ที่ใช้ทั้งหมด:",
 
     // AI Writing Exercise
@@ -396,6 +397,7 @@ export const UI_TRANSLATIONS = {
     saving_progress: "กำลังบันทึกความก้าวหน้า...",
     activities_completed: "กิจกรรมที่เสร็จสิ้น",
     percent_complete: "% เสร็จสิ้น",
+    continue_learning: "เรียนรู้ต่อไป",
 
     // Error Messages
     lesson_not_found: "ไม่พบบทเรียน",
@@ -535,6 +537,8 @@ export const UI_TRANSLATIONS = {
       "¡Buen trabajo completando el ejercicio! ¡Sigue practicando para ganar confianza! 💪",
     total_hints_used: "Total de pistas usadas:",
 
+    continue_learning: "Continúa aprendiendo",
+
     // And continue with all other translations...
   },
 
@@ -567,6 +571,7 @@ export const UI_TRANSLATIONS = {
     explored: "Exploré",
     areas: "zones",
     no_content_available: "Aucun contenu disponible",
+    continue_learning: "Continuez à apprendre",
 
     // Continue with French translations...
     // (For brevity, I'll focus on the key ones)

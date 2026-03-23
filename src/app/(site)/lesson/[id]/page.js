@@ -1693,8 +1693,8 @@ function DynamicLessonContent() {
                 </div>
               ) : (
                 <>
-                  {/* Conditional messaging based on XP threshold */}
-                  {(progressUpdate?.meetsXPThreshold ?? cumulativeXP >= 200) ? (
+                  {/* Conditional messaging based on XP threshold - use cumulativeXP directly as source of truth */}
+                  {cumulativeXP >= 200 ? (
                     // Celebration - User reached XP threshold!
                     <div className="relative">
                       {/* Subtle animated background glow */}
@@ -1712,7 +1712,7 @@ function DynamicLessonContent() {
                           You&apos;ve helped your chosen species recover!
                         </p>
                         <p className="text-sm text-green-600 dark:text-green-400 text-center mt-2">
-                          +{progressUpdate?.xpEarned ?? cumulativeXP} XP earned
+                          +{cumulativeXP} XP earned
                         </p>
                       </div>
                     </div>
@@ -1721,23 +1721,32 @@ function DynamicLessonContent() {
                     <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl p-6 mb-6 border border-amber-200 dark:border-amber-700">
                       <div className="flex items-center justify-center gap-2 mb-3">
                         <span className="text-2xl">🌱</span>
-                        <h3 className="text-2xl font-bold text-amber-700 dark:text-amber-300">
+                        {/* <h3 className="text-2xl font-bold text-amber-700 dark:text-amber-300">
                           {t("lesson_complete")}
-                        </h3>
+                        </h3> */}
                       </div>
                       <p className="text-lg text-amber-700 dark:text-amber-300 text-center mb-3">
-                        Great effort! Keep practicing to help your species recover.
+                        Great effort! Keep practicing to help your species
+                        recover.
                       </p>
                       <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-3 text-center">
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                          XP earned: <span className="font-semibold text-amber-600 dark:text-amber-400">{progressUpdate?.xpEarned ?? cumulativeXP}</span> / 200
+                          XP earned:{" "}
+                          <span className="font-semibold text-amber-600 dark:text-amber-400">
+                            {cumulativeXP}
+                          </span>{" "}
+                          / 200
                         </p>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                          <span className="font-medium text-amber-600 dark:text-amber-400">{200 - (progressUpdate?.xpEarned ?? cumulativeXP)}</span> more XP needed to advance your species
+                          <span className="font-medium text-amber-600 dark:text-amber-400">
+                            {200 - cumulativeXP}
+                          </span>{" "}
+                          more XP needed to advance your species
                         </p>
                       </div>
                       <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-3 italic">
-                        Tip: Retry exercises to improve your score and earn more XP!
+                        Tip: Retry exercises to improve your score and earn more
+                        XP!
                       </p>
                     </div>
                   )}
@@ -1813,9 +1822,12 @@ function DynamicLessonContent() {
                               <div className="flex items-center justify-center gap-3">
                                 <span className="text-3xl">🏆</span>
                                 <div className="text-center">
-                                  <p className="text-white font-bold text-xl">Species Saved!</p>
+                                  <p className="text-white font-bold text-xl">
+                                    Species Saved!
+                                  </p>
                                   <p className="text-green-100 text-sm">
-                                    {journey.species_avatar?.common_name} has reached Least Concern status!
+                                    {journey.species_avatar?.common_name} has
+                                    reached Least Concern status!
                                   </p>
                                 </div>
                                 <span className="text-3xl">🌍</span>
@@ -1833,7 +1845,8 @@ function DynamicLessonContent() {
                                 IUCN Level Advanced!
                               </p>
                               <p className="text-green-600 dark:text-green-400 text-sm">
-                                {journey.species_avatar?.common_name} is now {
+                                {journey.species_avatar?.common_name} is now{" "}
+                                {
                                   {
                                     CR: "Critically Endangered",
                                     EN: "Endangered",
@@ -1846,11 +1859,14 @@ function DynamicLessonContent() {
                             </div>
                           </div>
                         </div>
-                      ) : (progressUpdate?.meetsXPThreshold ?? cumulativeXP >= 200) && !progressUpdate?.isFirstCompletion ? (
+                      ) : cumulativeXP >= 200 &&
+                        progressUpdate &&
+                        !progressUpdate.isFirstCompletion ? (
                         // Already completed this lesson
                         <div className="mt-4 text-center">
                           <p className="text-sm text-gray-500 dark:text-gray-400 italic">
-                            Great practice! You&apos;ve already advanced from this lesson.
+                            Great practice! You&apos;ve already advanced from
+                            this lesson.
                           </p>
                         </div>
                       ) : null}
@@ -1879,7 +1895,7 @@ function DynamicLessonContent() {
                       <span>{t("saving_progress")}</span>
                     </div>
                   ) : (
-                    t("Return to Lessons")
+                    t("continue_learning")
                   )}
                 </button>
               </div>
