@@ -9,7 +9,8 @@ import { useLanguage } from "@/lib/contexts/LanguageContext";
 // Translations for the species selection modal
 const translations = {
   en: {
-    title: "Choose a Species to Save",
+    title:
+      "Practice your English while helping an endangered species escape extinction.",
     missionTitle: "Your Mission:",
     missionText:
       "Select one endangered species from this habitat. As you complete each lesson in the adventure, you'll move the species up through IUCN conservation levels from",
@@ -26,7 +27,8 @@ const translations = {
     failedToStart: "Failed to start adventure. Please try again.",
   },
   pt: {
-    title: "Escolha uma Espécie para Salvar",
+    title:
+      "Pratique inglês enquanto ajuda uma espécie ameaçada a sair do risco de extinção.",
     missionTitle: "Sua Missão:",
     missionText:
       "Selecione uma espécie ameaçada deste habitat. Ao completar cada lição na aventura, você moverá a espécie através dos níveis de conservação da IUCN de",
@@ -43,7 +45,8 @@ const translations = {
     failedToStart: "Falha ao iniciar aventura. Por favor, tente novamente.",
   },
   th: {
-    title: "เลือกสัตว์ที่จะช่วยเหลือ",
+    title:
+      "ฝึกฝนภาษาอังกฤษของคุณไปพร้อมๆ กับการช่วยเหลือสัตว์ใกล้สูญพันธุ์ให้รอดพ้นจากการสูญพันธุ์",
     missionTitle: "ภารกิจของคุณ:",
     missionText:
       "เลือกสัตว์ใกล้สูญพันธุ์หนึ่งชนิดจากถิ่นที่อยู่นี้ เมื่อคุณทำบทเรียนแต่ละบทในการผจญภัยเสร็จสิ้น คุณจะย้ายสัตว์ผ่านระดับการอนุรักษ์ของ IUCN จาก",
@@ -155,7 +158,7 @@ export default function SpeciesSelectionModal({
             <div className="flex-1 overflow-y-auto p-6">
               {/* Intro Text */}
               <div className="bg-primary-50 dark:bg-primary-900/20 rounded-xl p-4 mb-6">
-                <div className="flex items-start gap-3">
+                {/* <div className="flex items-start gap-3">
                   <Info className="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
                   <div className="text-sm text-gray-700 dark:text-gray-300">
                     <p className="font-medium mb-1">{t.missionTitle}</p>
@@ -171,7 +174,7 @@ export default function SpeciesSelectionModal({
                       {t.savingThem}
                     </p>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               {/* Species Grid */}

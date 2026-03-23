@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import {
@@ -19,6 +19,8 @@ const translations = {
     title: "Create Your Account",
     subtitle:
       "Save your progress and continue exploring with your own account",
+    googleSignIn: "Continue with Google",
+    orDivider: "or create with email",
     emailLabel: "Email Address",
     emailPlaceholder: "your@email.com",
     passwordLabel: "Password",
@@ -43,6 +45,8 @@ const translations = {
     title: "Crie Sua Conta",
     subtitle:
       "Salve seu progresso e continue explorando com sua própria conta",
+    googleSignIn: "Continuar com Google",
+    orDivider: "ou criar com email",
     emailLabel: "Endereço de Email",
     emailPlaceholder: "seu@email.com",
     passwordLabel: "Senha",
@@ -67,6 +71,8 @@ const translations = {
     title: "สร้างบัญชีของคุณ",
     subtitle:
       "บันทึกความก้าวหน้าและสำรวจต่อด้วยบัญชีของคุณเอง",
+    googleSignIn: "ดำเนินการต่อด้วย Google",
+    orDivider: "หรือสร้างด้วยอีเมล",
     emailLabel: "ที่อยู่อีเมล",
     emailPlaceholder: "your@email.com",
     passwordLabel: "รหัสผ่าน",
@@ -101,6 +107,7 @@ export default function ClaimAccountPage() {
   const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
@@ -220,6 +227,35 @@ export default function ClaimAccountPage() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    setError(null);
+
+    try {
+      // Store the guest user ID so we can transfer data after Google sign-in
+      const prepRes = await fetch("/api/guest-access/prepare-claim", {
+        method: "POST",
+      });
+
+      if (!prepRes.ok) {
+        const data = await prepRes.json();
+        throw new Error(data.error || "Failed to prepare account claim");
+      }
+
+      // Sign out the guest user first, then sign in with Google
+      await signOut({ redirect: false });
+
+      // Redirect to Google OAuth with a special callback
+      await signIn("google", {
+        callbackUrl: "/auth/claim-callback",
+      });
+    } catch (err) {
+      console.error("Error starting Google sign-in:", err);
+      setError(err.message || "Something went wrong. Please try again.");
+      setIsGoogleLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 py-12">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 max-w-md w-full">
@@ -234,6 +270,40 @@ export default function ClaimAccountPage() {
           <p className="text-gray-600 dark:text-gray-300 mt-2">
             {copy.subtitle}
           </p>
+        </div>
+
+        {/* Google Sign-in Button */}
+        <button
+          type="button"
+          onClick={handleGoogleSignIn}
+          disabled={isGoogleLoading || isSubmitting}
+          className="w-full flex items-center justify-center gap-3 py-3 px-6 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {isGoogleLoading ? (
+            <Loader2 className="w-5 h-5 animate-spin text-gray-600 dark:text-gray-300" />
+          ) : (
+            <img
+              src="https://authjs.dev/img/providers/google.svg"
+              alt="Google"
+              width="20"
+              height="20"
+            />
+          )}
+          <span className="font-medium text-gray-700 dark:text-gray-200">
+            {copy.googleSignIn}
+          </span>
+        </button>
+
+        {/* Divider */}
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300 dark:border-gray-600" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+              {copy.orDivider}
+            </span>
+          </div>
         </div>
 
         {/* Form */}
