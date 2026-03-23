@@ -986,8 +986,8 @@ export default function MultiGapFillExerciseNew({
               </p>
 
               {/* FEATURE 1: Conditionally render button based on user_type */}
-              {/* Hide "Show Full Text" button for school users, show for all others */}
-              {userType !== "school" && (
+              {/* Hide "Show Full Text" button for school users, and only show after submission */}
+              {userType !== "school" && isSubmitted && (
                 <button
                   className="w-fit text-[16px] rounded-lg px-2 hover:text-accent-600 hover:border-b-1 hover:border-accent-600"
                   onClick={() => setShowFullText(!showFullText)}
@@ -1075,7 +1075,8 @@ export default function MultiGapFillExerciseNew({
           </div>
         </div>
 
-        {userType !== "school" && (
+        {/* Translation dropdown - only show after submission */}
+        {userType !== "school" && isSubmitted && (
           <div className="m-4 flex justify-center">
             <label
               htmlFor="languageSelect"
