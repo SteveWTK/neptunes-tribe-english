@@ -47,7 +47,7 @@ export default function HeaderBase({
     landing: {
       en: [
         { href: "/worlds", label: "Worlds" },
-        { href: "/observations", label: "Observations" },
+        // { href: "/observations", label: "Observations" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "About Us" },
         // { href: "/subscriptions", label: "Subscriptions" },
@@ -57,7 +57,7 @@ export default function HeaderBase({
       ],
       pt: [
         { href: "/worlds", label: "Mundos" },
-        { href: "/observations", label: "Observações" },
+        // { href: "/observations", label: "Observações" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
         // { href: "/subscriptions", label: "Planos" },
@@ -67,7 +67,7 @@ export default function HeaderBase({
       ],
       th: [
         { href: "/worlds", label: "โลก" },
-        { href: "/observations", label: "การสังเกต" },
+        // { href: "/observations", label: "การสังเกต" },
         { href: "/eco-news", label: "ข่าวสิ่งแวดล้อม" },
         { href: "/about-us", label: "เกี่ยวกับเรา" },
       ],
@@ -75,21 +75,21 @@ export default function HeaderBase({
     site: {
       en: [
         { href: "/worlds", label: "Worlds" },
-        { href: "/observations", label: "Observations" },
+        // { href: "/observations", label: "Observations" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "About Us" },
         // { href: "/subscriptions", label: "Subscriptions" },
       ],
       pt: [
         { href: "/worlds", label: "Mundos" },
-        { href: "/observations", label: "Observações" },
+        // { href: "/observations", label: "Observações" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
         // { href: "/subscriptions", label: "Planos" },
       ],
       th: [
         { href: "/worlds", label: "โลก" },
-        { href: "/observations", label: "การสังเกต" },
+        // { href: "/observations", label: "การสังเกต" },
         { href: "/eco-news", label: "ข่าวสิ่งแวดล้อม" },
         { href: "/about-us", label: "เกี่ยวกับเรา" },
       ],

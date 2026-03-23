@@ -53,17 +53,16 @@ export const WORLDS = {
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Caqueta%20titi%20with%20baby.webp",
     mapUrl: "/maps/south-america.png",
     // Legacy single hero (kept for backward compatibility)
-    ecoHeroUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/PATRICIA-MEDICI.png",
-    ecoHeroName: "Patricia Medici",
+    ecoHeroUrl: "",
+    ecoHeroName: "",
     // NEW: Multiple eco heroes carousel
     ecoHeroes: [
-      {
-        name: "Muriqui Instituto de Biodiversidade",
-        imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/mib.jpeg",
-        description: "Tapir conservationist", // Optional: for future use
-      },
+      // {
+      //   name: "Muriqui Instituto de Biodiversidade",
+      //   imageUrl:
+      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/mib.jpeg",
+      //   description: "Tapir conservationist", // Optional: for future use
+      // },
       // {
       //   name: "Instituto de Pesquisas Ecológicas",
       //   imageUrl:
@@ -197,17 +196,16 @@ export const WORLDS = {
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/avatars/african-elephant.jpg",
     mapUrl: "/maps/africa.png",
     // Legacy single hero (kept for backward compatibility)
-    ecoHeroUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/PATRICIA-MEDICI.png",
-    ecoHeroName: "Patricia Medici",
+    ecoHeroUrl: "",
+    ecoHeroName: "",
     // NEW: Multiple eco heroes carousel
     ecoHeroes: [
-      {
-        name: "Muriqui Instituto de Biodiversidade",
-        imageUrl:
-          "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/mib.jpeg",
-        description: "Tapir conservationist", // Optional: for future use
-      },
+      // {
+      //   name: "Muriqui Instituto de Biodiversidade",
+      //   imageUrl:
+      //     "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/hero/mib.jpeg",
+      //   description: "Tapir conservationist", // Optional: for future use
+      // },
       // {
       //   name: "Instituto de Pesquisas Ecológicas",
       //   imageUrl:
@@ -428,7 +426,7 @@ export const WORLDS = {
     description:
       "Discover how extraordinary plants and animals manage to survive and thrive in the driest environments on the planet.",
     description_pt:
-      "Viaje pela maior massa de terra do mundo, das florestas europeias às estepes asiáticas e florestas tropicais.",
+      "Descubra como plantas e animais extraordinários conseguem sobreviver e prosperar nos ambientes mais secos do planeta.",
     description_th:
       "ค้นพบวิธีที่พืชและสัตว์ที่น่าทึ่งสามารถเอาชีวิตรอดและเจริญเติบโตได้ในสภาพแวดล้อมที่แห้งแล้งที่สุดบนโลก",
     order: 4,
@@ -447,9 +445,9 @@ export const WORLDS = {
     },
     icon: "Globe",
     imageUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/Giant%20panda.jpg",
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/Sand%20cat%201.jpg",
     heroUrl:
-      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/Giant%20panda.jpg",
+      "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/Sand%20cat%201.jpg",
     mapUrl: "/maps/eurasia.png",
     ecoHeroUrl: "",
     ecoHeroes: [
@@ -711,7 +709,7 @@ export const WORLDS = {
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/amazon-rainforest-river.webp",
     heroUrl:
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/amazon-rainforest-river.webp",
-    mapUrl: "/maps/north-america.png",
+    mapUrl: "/maps/oceans.png",
     ecoHeroUrl: "",
     adventures: [
       {
@@ -832,7 +830,7 @@ export const WORLDS = {
     // be replaced with prehistoric image
     heroUrl:
       "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/woolly_mammoth_bbc.jpg", // Placeholder
-    mapUrl: "/maps/lost-worlds.png", // Will need to be created
+    mapUrl: "/maps/oceans.png", // Will need to be created
     ecoHeroUrl: "",
     adventures: [
       {
