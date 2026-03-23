@@ -136,7 +136,9 @@ function DynamicLessonContent() {
 
     // Fallback to journey's world_id
     if (journey?.current_world_id) {
-      const world = Object.values(WORLDS).find(w => w.id === journey.current_world_id);
+      const world = Object.values(WORLDS).find(
+        (w) => w.id === journey.current_world_id
+      );
       if (world?.slug) {
         return `/worlds/${world.slug}`;
       }
@@ -507,15 +509,21 @@ function DynamicLessonContent() {
       hasProgressUpdate: !!progressUpdate,
       loadingProgress,
       hasJourney: !!journey,
-      journeyDetails: journey ? {
-        adventureId: journey.current_adventure_id,
-        worldId: journey.current_world_id,
-      } : null,
+      journeyDetails: journey
+        ? {
+            adventureId: journey.current_adventure_id,
+            worldId: journey.current_world_id,
+          }
+        : null,
     });
 
     // Only trigger on completion step and only once
     // Allow completion even without journey - will use simpler completion API
-    if (currentStepData?.type === "completion" && !progressUpdate && !loadingProgress) {
+    if (
+      currentStepData?.type === "completion" &&
+      !progressUpdate &&
+      !loadingProgress
+    ) {
       console.log("🚀 Triggering handleLessonCompletion...");
       handleLessonCompletion();
     }
@@ -578,7 +586,10 @@ function DynamicLessonContent() {
         });
 
         const data = await response.json();
-        console.log("📬 Adventure completion response:", { ok: response.ok, data });
+        console.log("📬 Adventure completion response:", {
+          ok: response.ok,
+          data,
+        });
 
         if (response.ok && data.success) {
           console.log("✅ Adventure lesson completion successful!");
@@ -617,7 +628,10 @@ function DynamicLessonContent() {
         });
 
         const data = await response.json();
-        console.log("📬 Simple completion response:", { ok: response.ok, data });
+        console.log("📬 Simple completion response:", {
+          ok: response.ok,
+          data,
+        });
 
         if (response.ok) {
           console.log("✅ Simple lesson completion successful!");
@@ -1069,7 +1083,7 @@ function DynamicLessonContent() {
         return (
           <div className="text-center">
             <div className="bg-white dark:bg-primary-900/20 rounded-xl p-6 mb-2">
-              <button
+              {/* <button
                 onClick={toggleAudio}
                 className="flex items-center space-x-2 mx-auto bg-accent-600 text-white px-4 py-2 mb-3 rounded-lg hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={
@@ -1094,7 +1108,7 @@ function DynamicLessonContent() {
                   </>
                 )}
               </button>
-              <audio ref={audioRef} style={{ display: "none" }} />
+              <audio ref={audioRef} style={{ display: "none" }} /> */}
 
               {currentStepData.video_url ? (
                 <VideoPlayer
@@ -1123,7 +1137,17 @@ function DynamicLessonContent() {
                 {translations[`scenario-${currentStep}`] ||
                   currentStepData.content}
               </p>
-
+              <button
+                onClick={handleNext}
+                disabled={
+                  completing ||
+                  (currentStep === steps.length - 1 &&
+                    currentStepData?.type !== "completion")
+                }
+                className="flex items-center space-x-2 mx-auto bg-linear-to-br from-lime-700 to-lime-800 text-white px-12 py-0.5 mb-3 rounded-lg hover:bg-accent-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Start
+              </button>
               {currentStepData.cultural_context && (
                 <div className="bg-primary-50 dark:bg-primary-900/20 p-3 rounded-lg mt-4">
                   <p className="text-sm text-primary-800 dark:text-accent-200">
@@ -1462,7 +1486,9 @@ function DynamicLessonContent() {
             onComplete={(result) => {
               // Calculate XP: 10 per correct match + 20 bonus for all correct
               const correctMatches = result?.correctMatches || memoryPairCount;
-              const xp = correctMatches * 10 + (correctMatches === memoryPairCount ? 20 : 0);
+              const xp =
+                correctMatches * 10 +
+                (correctMatches === memoryPairCount ? 20 : 0);
 
               handleXPAward(xp);
               setCompletedSteps((prev) => new Set([...prev, currentStep]));
@@ -1516,7 +1542,8 @@ function DynamicLessonContent() {
 
                 // Calculate XP: 10 per correct word + 20 bonus for all correct
                 const correctWords = result?.correctWords || wordCount;
-                const xp = correctWords * 10 + (correctWords === wordCount ? 20 : 0);
+                const xp =
+                  correctWords * 10 + (correctWords === wordCount ? 20 : 0);
 
                 handleXPAward(xp);
                 setStepCompleted(true);
@@ -1698,13 +1725,22 @@ function DynamicLessonContent() {
                   {journey && journey.current_adventure_id && (
                     <div className="max-w-2xl mx-auto mb-6">
                       <IUCNProgressBar
-                        currentStatus={progressUpdate?.newStatus || journey.current_iucn_status}
+                        currentStatus={
+                          progressUpdate?.newStatus ||
+                          journey.current_iucn_status
+                        }
                         startingStatus="CR"
-                        lessonsCompleted={progressUpdate?.lessonsCompleted || journey.lessons_completed_in_adventure}
+                        lessonsCompleted={
+                          progressUpdate?.lessonsCompleted ||
+                          journey.lessons_completed_in_adventure
+                        }
                         totalLessons={5}
                         speciesInfo={{
-                          name: journey.species_avatar?.common_name || "Unknown Species",
-                          scientificName: journey.species_avatar?.scientific_name,
+                          name:
+                            journey.species_avatar?.common_name ||
+                            "Unknown Species",
+                          scientificName:
+                            journey.species_avatar?.scientific_name,
                           imageUrl: journey.species_avatar?.avatar_image_url,
                         }}
                         nextLevelName={
@@ -1715,7 +1751,10 @@ function DynamicLessonContent() {
                                 EN: "Vulnerable",
                                 VU: "Near Threatened",
                                 NT: "Least Concern",
-                              }[progressUpdate?.newStatus || journey.current_iucn_status]
+                              }[
+                                progressUpdate?.newStatus ||
+                                  journey.current_iucn_status
+                              ]
                         }
                         showLabels={true}
                         animated={true}
@@ -3352,28 +3391,46 @@ function DynamicLessonContent() {
 
         {/* XP Progress Indicator */}
         {journey && journey.current_adventure_id && (
-          <div className="mt-4 p-3 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-lg border border-amber-200 dark:border-amber-700">
+          <div className="mt-4 px-3 py-1 bg-linear-to-r from-accent-50 to-accent-100 dark:from-primary-700 dark:to-primary-800 rounded-lg border border-accent-200 dark:border-accent-700">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <Trophy className={`w-5 h-5 ${cumulativeXP >= 200 ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}`} />
+                <Trophy
+                  className={`w-5 h-5 ${
+                    cumulativeXP >= 200
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-amber-600 dark:text-amber-400"
+                  }`}
+                />
                 <span className="font-semibold text-gray-900 dark:text-white">
                   Lesson XP: {cumulativeXP} / 200
                 </span>
               </div>
-              <span className={`text-sm font-medium ${cumulativeXP >= 200 ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}`}>
-                {cumulativeXP >= 200 ? '✓ Threshold met!' : `${200 - cumulativeXP} XP needed`}
+              <span
+                className={`text-sm font-medium ${
+                  cumulativeXP >= 200
+                    ? "text-green-600 dark:text-green-400"
+                    : "text-amber-600 dark:text-amber-400"
+                }`}
+              >
+                {cumulativeXP >= 200
+                  ? "✓ Threshold met!"
+                  : `${200 - cumulativeXP} XP needed`}
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            {/* <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className={`h-2 rounded-full transition-all duration-500 ${cumulativeXP >= 200 ? 'bg-green-600' : 'bg-amber-500'}`}
-                style={{ width: `${Math.min((cumulativeXP / 200) * 100, 100)}%` }}
+                className={`h-2 rounded-full transition-all duration-500 ${
+                  cumulativeXP >= 200 ? "bg-green-600" : "bg-amber-500"
+                }`}
+                style={{
+                  width: `${Math.min((cumulativeXP / 200) * 100, 100)}%`,
+                }}
               ></div>
-            </div>
+            </div> */}
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
               {cumulativeXP >= 200
-                ? 'Great! You\'ll advance the species when you complete the lesson.'
-                : 'Earn 200 XP to advance the species to the next IUCN level.'}
+                ? "Great! You'll advance the species when you complete the lesson."
+                : "Earn 200 XP to advance the species to the next IUCN level."}
             </p>
           </div>
         )}

@@ -80,12 +80,20 @@ export default function UnitReferenceStep({
       )}
 
       <div className="max-w-3xl mx-auto">
-        <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border-2 ${isCompleted ? 'border-green-500 dark:border-green-400' : 'border-gray-200 dark:border-gray-700'}`}>
+        <div
+          className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border-2 ${
+            isCompleted
+              ? "border-green-500 dark:border-green-400"
+              : "border-gray-200 dark:border-gray-700"
+          }`}
+        >
           {/* Completed Badge */}
           {isCompleted && (
             <div className="bg-green-500 dark:bg-green-600 px-4 py-2 flex items-center justify-center gap-2">
               <CheckCircle className="w-5 h-5 text-white" />
-              <span className="text-white font-medium text-sm">Exercise Completed</span>
+              <span className="text-white font-medium text-sm">
+                Exercise Completed
+              </span>
             </div>
           )}
 
@@ -139,7 +147,11 @@ export default function UnitReferenceStep({
             {/* Start button */}
             <button
               onClick={onStartExercise}
-              className={`w-full md:w-auto px-8 py-4 ${isCompleted ? 'bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600' : 'bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700'} text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3 group`}
+              className={`w-full md:w-auto px-8 py-2 ${
+                isCompleted
+                  ? "bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600"
+                  : "bg-gradient-to-b from-accent-600 to-accent-700 hover:from-accent-700 hover:to-accent-800"
+              } text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3 group`}
             >
               {isCompleted ? (
                 <>
@@ -149,7 +161,7 @@ export default function UnitReferenceStep({
               ) : (
                 <>
                   <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  Start Exercise
+                  Start Mission
                 </>
               )}
             </button>

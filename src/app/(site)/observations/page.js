@@ -130,7 +130,7 @@ export default function ObservationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
+    <div className="min-h-screen bg-linear-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
       {/* Header */}
       <div className="bg-gradient-to-b from-green-600 via-green-700 to-green-600 dark:from-primary-950 dark:via-green-900 dark:to-primary-950 text-white">
         <div className="max-w-7xl mx-auto px-4 py-8">
