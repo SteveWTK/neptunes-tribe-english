@@ -47,6 +47,7 @@ export default function HeaderBase({
     landing: {
       en: [
         { href: "/worlds", label: "Worlds" },
+        { href: "/vocabulary", label: "Vocabulary" },
         // { href: "/observations", label: "Observations" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "About Us" },
@@ -57,6 +58,7 @@ export default function HeaderBase({
       ],
       pt: [
         { href: "/worlds", label: "Mundos" },
+        { href: "/vocabulary", label: "Vocabulário" },
         // { href: "/observations", label: "Observações" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
@@ -67,6 +69,7 @@ export default function HeaderBase({
       ],
       th: [
         { href: "/worlds", label: "โลก" },
+        { href: "/vocabulary", label: "คำศัพท์" },
         // { href: "/observations", label: "การสังเกต" },
         { href: "/eco-news", label: "ข่าวสิ่งแวดล้อม" },
         { href: "/about-us", label: "เกี่ยวกับเรา" },
@@ -75,6 +78,7 @@ export default function HeaderBase({
     site: {
       en: [
         { href: "/worlds", label: "Worlds" },
+        { href: "/vocabulary", label: "Vocabulary" },
         // { href: "/observations", label: "Observations" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "About Us" },
@@ -82,6 +86,7 @@ export default function HeaderBase({
       ],
       pt: [
         { href: "/worlds", label: "Mundos" },
+        { href: "/vocabulary", label: "Vocabulário" },
         // { href: "/observations", label: "Observações" },
         { href: "/eco-news", label: "Eco News" },
         { href: "/about-us", label: "Sobre Nós" },
@@ -89,6 +94,7 @@ export default function HeaderBase({
       ],
       th: [
         { href: "/worlds", label: "โลก" },
+        { href: "/vocabulary", label: "คำศัพท์" },
         // { href: "/observations", label: "การสังเกต" },
         { href: "/eco-news", label: "ข่าวสิ่งแวดล้อม" },
         { href: "/about-us", label: "เกี่ยวกับเรา" },
