@@ -115,7 +115,7 @@ export const WORLDS = {
         themeTag: "andes",
         adventureUrl:
           "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/Andes.jpg",
-        is_premium: true, // Premium content
+        is_premium: false, // Premium content
         levels: [
           "Level 1",
           "Level 2",
@@ -171,7 +171,7 @@ export const WORLDS = {
     description_th:
       "ออกผจญภัยไปในป่าทั่วโลกและค้นพบความหลากหลายทางชีวภาพอันน่าทึ่งที่เจริญเติบโตอยู่ใต้ร่มไม้เหล่าสำรวจที่ราบกว้างใหญ่และทุ่งหญ้าสะวันนา ซึ่งเป็นที่อยู่อาศัยและการอพยพของสัตว์ป่าที่เป็นสัญลักษณ์ของโลกหลายชนิด",
     order: 2,
-    coming_soon: false,
+    coming_soon: true,
     color: {
       primary: "#f59e0b", // amber-500
       secondary: "#d97706", // amber-600

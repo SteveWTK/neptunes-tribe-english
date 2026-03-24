@@ -36,6 +36,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SpeciesSelectionModal from "@/components/species/SpeciesSelectionModal";
 import { toast } from "sonner";
+import { usePremiumUpgrade } from "@/lib/contexts/PremiumUpgradeContext";
 
 // Icon mapping
 const ICON_MAP = {
@@ -77,6 +78,7 @@ function WorldDetailContent() {
   const searchParams = useSearchParams();
   const { user } = useAuth();
   const { lang } = useLanguage(); // Get current language
+  const { showPremiumModal } = usePremiumUpgrade();
   const [world, setWorld] = useState(null);
   const [filteredAdventures, setFilteredAdventures] = useState([]);
   const [selectedAdventure, setSelectedAdventure] = useState(null);
@@ -975,8 +977,10 @@ function WorldDetailContent() {
                           const isCompleted = completedLessons.has(lesson.id);
                           const isPremiumAdventure =
                             selectedAdventure?.is_premium;
+                          const isPremiumLesson = lesson.is_premium;
+                          // Lesson is locked if adventure is premium OR lesson itself is premium (and user is not premium)
                           const canAccessLesson =
-                            !isPremiumAdventure || isPremiumUser;
+                            (!isPremiumAdventure && !isPremiumLesson) || isPremiumUser;
                           console.log(
                             `Lesson ${lesson.id} (${lesson.title}):`,
                             {
@@ -991,7 +995,11 @@ function WorldDetailContent() {
                               key={lesson.id}
                               onClick={() => {
                                 if (!canAccessLesson) {
-                                  router.push("/subscriptions");
+                                  showPremiumModal({
+                                    type: "lesson",
+                                    title: lesson.title,
+                                    lessonId: lesson.id,
+                                  });
                                 } else if (!lesson.under_construction) {
                                   handleLessonStart(
                                     lesson.id,
@@ -1009,8 +1017,15 @@ function WorldDetailContent() {
                             >
                               <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1">
-                                  <div className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-3">
+                                  <div className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-3 flex-wrap">
                                     {lesson.title}
+                                    {/* Premium badge - shown for premium lessons */}
+                                    {isPremiumLesson && (
+                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-amber-400 to-amber-500 text-amber-900 text-xs font-bold rounded-full">
+                                        <Sparkles className="w-3 h-3" />
+                                        Premium
+                                      </span>
+                                    )}
                                     {!canAccessLesson && (
                                       <span className="text-xs text-accent-600 dark:text-accent-400 font-semibold flex items-center gap-1">
                                         <Lock className="w-3 h-3" />
@@ -1101,13 +1116,19 @@ function WorldDetailContent() {
                 {/* CTA Button */}
                 <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                   {selectedAdventure?.is_premium && !isPremiumUser ? (
-                    <Link
-                      href="/subscriptions"
+                    <button
+                      onClick={() =>
+                        showPremiumModal({
+                          type: "adventure",
+                          title: selectedAdventure.name,
+                          adventureId: selectedAdventure.id,
+                        })
+                      }
                       className="w-full md:w-auto px-8 py-4 rounded-lg text-accent-600 dark:text-accent-400 font-bold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-3"
                     >
                       <Lock className="w-6 h-6" />
                       Upgrade to Unlock This Adventure
-                    </Link>
+                    </button>
                   ) : (
                     <button
                       onClick={() => handleAdventureStart(selectedAdventure)}

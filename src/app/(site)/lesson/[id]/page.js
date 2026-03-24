@@ -554,22 +554,28 @@ function DynamicLessonContent() {
   }, [currentStep, lesson, journey]);
 
   // Handle XP awards from step activities
+  // Users can earn XP on repeated attempts to help reach the 200 XP threshold
   const handleXPAward = (xp, stepIndex = currentStep) => {
-    // Only add XP if this step hasn't already awarded XP
     const stepKey = `step-${stepIndex}`;
-    if (stepXP[stepKey]) {
-      console.log(`Step ${stepIndex} already awarded XP, skipping`);
-      return;
-    }
+    const previousXP = stepXP[stepKey] || 0;
+    const isRepeat = previousXP > 0;
 
-    console.log(`Awarding ${xp} XP for step ${stepIndex}`);
-    setStepXP((prev) => ({ ...prev, [stepKey]: xp }));
+    console.log(`Awarding ${xp} XP for step ${stepIndex}${isRepeat ? " (repeat attempt)" : ""}`);
+
+    // Track cumulative XP earned on this step (for reference)
+    setStepXP((prev) => ({ ...prev, [stepKey]: previousXP + xp }));
     setCumulativeXP((prev) => prev + xp);
 
-    // Show toast notification
-    toast.success(`+${xp} XP earned!`, {
-      duration: 2000,
-    });
+    // Show toast notification with different message for repeats
+    if (isRepeat) {
+      toast.success(`+${xp} XP earned! Keep practicing!`, {
+        duration: 2000,
+      });
+    } else {
+      toast.success(`+${xp} XP earned!`, {
+        duration: 2000,
+      });
+    }
   };
 
   // Handle lesson completion and IUCN progress

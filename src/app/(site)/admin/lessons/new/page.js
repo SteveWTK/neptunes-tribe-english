@@ -28,6 +28,7 @@ function NewLessonContent() {
     sort_order: 0,
     target_audience: "both",
     is_active: false,
+    is_premium: false,
     world: "",
     theme_tags: "",
     content: {
@@ -399,6 +400,19 @@ function NewLessonContent() {
                 />
                 <label className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                   Under Construction (shows as unclickable)
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={formData.is_premium || false}
+                  onChange={(e) =>
+                    updateField("is_premium", e.target.checked)
+                  }
+                  className="w-4 h-4 text-accent-600 border-gray-300 rounded focus:ring-accent-500"
+                />
+                <label className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Premium Content (requires subscription to access)
                 </label>
               </div>
             </div>
