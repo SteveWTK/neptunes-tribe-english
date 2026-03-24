@@ -5,6 +5,7 @@ import SiteFooter from "@/components/layout/SiteFooter";
 import UserLevelSwitcher from "@/components/admin/UserLevelSwitcher";
 import { FeedbackWidget, AffiliateTracker } from "@inspire/shared";
 import GuestBanner from "@/components/guest/GuestBanner";
+import GuestPrompts from "@/components/guest/GuestPrompts";
 
 export default function LandingLayout({ children }) {
   const { darkMode, setDarkMode } = useDarkMode();
@@ -24,6 +25,8 @@ export default function LandingLayout({ children }) {
       <GuestBanner />
       {children}
       <SiteFooter />
+      {/* Guest user CTAs - floating button, modals, exit intent, time warnings */}
+      <GuestPrompts />
       {/* Admin tool: only visible to platform_admin users */}
       {/* <UserLevelSwitcher /> */}
       {/* Floating feedback widget - always accessible (from @inspire/shared) */}

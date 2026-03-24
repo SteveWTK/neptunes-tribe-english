@@ -212,8 +212,12 @@ function WorldDetailContent() {
     if (typeof window !== "undefined" && window.location.hash === "#content") {
       // Reload lesson completions when navigating back with hash
       if (adventureData[selectedAdventure?.id]?.lessons) {
-        console.log("📍 Hash navigation detected, reloading lesson completions");
-        const lessonIds = adventureData[selectedAdventure.id].lessons.map((l) => l.id);
+        console.log(
+          "📍 Hash navigation detected, reloading lesson completions"
+        );
+        const lessonIds = adventureData[selectedAdventure.id].lessons.map(
+          (l) => l.id
+        );
         loadLessonCompletions(lessonIds);
       }
 
@@ -232,13 +236,16 @@ function WorldDetailContent() {
     const handleVisibilityChange = () => {
       if (!document.hidden && adventureData[selectedAdventure?.id]?.lessons) {
         console.log("📍 Page visible again, reloading lesson completions");
-        const lessonIds = adventureData[selectedAdventure.id].lessons.map((l) => l.id);
+        const lessonIds = adventureData[selectedAdventure.id].lessons.map(
+          (l) => l.id
+        );
         loadLessonCompletions(lessonIds);
       }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [adventureData, selectedAdventure]);
 
   // Fetch user's current journey
@@ -265,7 +272,12 @@ function WorldDetailContent() {
     const shouldSelectSpecies = searchParams.get("selectSpecies") === "true";
 
     // Only auto-open if: URL param is set, no active journey, world is loaded, and first adventure available
-    if (shouldSelectSpecies && !journey && world && filteredAdventures.length > 0) {
+    if (
+      shouldSelectSpecies &&
+      !journey &&
+      world &&
+      filteredAdventures.length > 0
+    ) {
       const firstAdventure = filteredAdventures[0];
 
       // Clear the URL parameter to prevent re-triggering
@@ -384,7 +396,9 @@ function WorldDetailContent() {
       }
 
       console.log("✅ Completions data from API:", data);
-      console.log(`Found ${data.completedLessonIds?.length || 0} completed lessons`);
+      console.log(
+        `Found ${data.completedLessonIds?.length || 0} completed lessons`
+      );
 
       const completedSet = new Set(data.completedLessonIds || []);
       console.log("✅ Setting completed lessons:", Array.from(completedSet));
@@ -979,7 +993,10 @@ function WorldDetailContent() {
                                 if (!canAccessLesson) {
                                   router.push("/subscriptions");
                                 } else if (!lesson.under_construction) {
-                                  handleLessonStart(lesson.id, selectedAdventure);
+                                  handleLessonStart(
+                                    lesson.id,
+                                    selectedAdventure
+                                  );
                                 }
                               }}
                               className={`p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-all border border-gray-200 dark:border-gray-600 relative ${
@@ -992,7 +1009,7 @@ function WorldDetailContent() {
                             >
                               <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1">
-                                  <div className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                                  <div className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center gap-3">
                                     {lesson.title}
                                     {!canAccessLesson && (
                                       <span className="text-xs text-accent-600 dark:text-accent-400 font-semibold flex items-center gap-1">
@@ -1005,7 +1022,7 @@ function WorldDetailContent() {
                                     )}
                                     {isCompleted && canAccessLesson && (
                                       <CheckCircle
-                                        className="w-4 h-4"
+                                        className="w-6 h-6"
                                         style={{ color: world.color.primary }}
                                         title="Completed"
                                       />
