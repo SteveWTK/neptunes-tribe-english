@@ -9,7 +9,8 @@ import { X, UserPlus } from "lucide-react";
 
 const translations = {
   en: {
-    message: "I don't want to forget you! Help me remember by creating an account.",
+    message:
+      "I don't want to forget you! Help me remember by creating an account.",
     createAccount: "Create Account",
     maybeLater: "Maybe later",
   },
@@ -49,9 +50,10 @@ export default function SpeciesCompanionReminder() {
   if (!shouldShowCompanion || !visible) return null;
 
   const avatar = journey?.species_avatar;
-  const speciesName = lang === "pt"
-    ? (avatar?.common_name_pt || avatar?.common_name)
-    : avatar?.common_name;
+  const speciesName =
+    lang === "pt"
+      ? avatar?.common_name_pt || avatar?.common_name
+      : avatar?.common_name;
 
   const handleDismiss = () => {
     setExiting(true);
@@ -121,10 +123,13 @@ export default function SpeciesCompanionReminder() {
           {/* Message content */}
           <div className="px-6 py-5">
             {/* Speech bubble tail effect */}
-            <div className="absolute left-1/2 -translate-x-1/2 -top-3 w-6 h-6 bg-primary-50 dark:bg-primary-900/50 transform rotate-45 rounded-sm" style={{ top: "calc(50% - 12px)" }} />
+            <div
+              className="absolute left-1/2 -translate-x-1/2 -top-3 w-6 h-6 bg-primary-50 dark:bg-primary-900/50 transform rotate-45 rounded-sm"
+              style={{ top: "calc(50% - 12px)" }}
+            />
 
             <p className="text-center text-gray-700 dark:text-gray-200 text-lg leading-relaxed">
-              "{copy.message}"
+              &quot;{copy.message}&quot;
             </p>
 
             {/* Action buttons */}
