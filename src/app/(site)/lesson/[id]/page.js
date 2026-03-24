@@ -149,8 +149,13 @@ function DynamicLessonContent() {
   };
 
   // Fetch lesson data and user preferences
+  // Use primitive userId to prevent re-renders on focus/blur
+  const userId = user?.id;
   useEffect(() => {
     async function fetchLesson() {
+      // Skip if lesson already loaded for this lessonId
+      if (lesson && lesson.id === lessonId) return;
+
       try {
         setLoading(true);
         const lessonData = await getLessonById(lessonId);
@@ -174,8 +179,8 @@ function DynamicLessonContent() {
         });
 
         // Fetch user's preferred language and English variant
-        if (user?.id) {
-          const preferredLang = await getPlayerPreferredLanguage(user.id);
+        if (userId) {
+          const preferredLang = await getPlayerPreferredLanguage(userId);
           setUserPreferredLanguage(preferredLang || "en");
 
           // Also fetch English variant and voice gender
@@ -183,7 +188,7 @@ function DynamicLessonContent() {
             const { data, error } = await createClient()
               .from("players")
               .select("english_variant, voice_gender")
-              .eq("id", user.id)
+              .eq("id", userId)
               .single();
 
             if (!error && data) {
@@ -205,7 +210,10 @@ function DynamicLessonContent() {
     if (lessonId) {
       fetchLesson();
     }
-  }, [lessonId, user]);
+  }, [lessonId, userId, lesson]);
+
+  // Track which challenges have been loaded to prevent duplicate fetches
+  const loadedChallengesRef = useRef(new Set());
 
   // Load challenge exercises for challenge_reference steps
   useEffect(() => {
@@ -217,8 +225,11 @@ function DynamicLessonContent() {
       if (
         currentStepData?.type === "challenge_reference" &&
         currentStepData.challenge_id &&
-        !challengeExercises[currentStepData.challenge_id]
+        !loadedChallengesRef.current.has(currentStepData.challenge_id)
       ) {
+        // Mark as loading to prevent duplicate requests
+        loadedChallengesRef.current.add(currentStepData.challenge_id);
+
         try {
           const exercises = await fetchSingleGapChallenges(
             currentStepData.challenge_id
@@ -229,12 +240,14 @@ function DynamicLessonContent() {
           }));
         } catch (error) {
           console.error("Failed to load challenge:", error);
+          // Remove from loaded set so it can be retried
+          loadedChallengesRef.current.delete(currentStepData.challenge_id);
         }
       }
     };
 
     loadChallengeExercises();
-  }, [currentStep, lesson?.content?.steps, challengeExercises]);
+  }, [currentStep, lesson?.content?.steps]);
 
   // Translation utility function
   const translateContent = async (content, key) => {
@@ -464,12 +477,16 @@ function DynamicLessonContent() {
   }, [currentStep, userPreferredLanguage, lesson]);
 
   // Fetch user's journey data
+  // Use userId primitive to prevent re-renders on focus/blur
   useEffect(() => {
     const fetchJourney = async () => {
-      if (!user) {
+      if (!userId) {
         console.log("🗺️ No user, skipping journey fetch");
         return;
       }
+
+      // Skip if journey already loaded
+      if (journey) return;
 
       try {
         console.log("🗺️ Fetching journey for user...");
@@ -495,7 +512,7 @@ function DynamicLessonContent() {
     };
 
     fetchJourney();
-  }, [user]);
+  }, [userId, journey]);
 
   // Handle lesson completion when reaching the completion step
   useEffect(() => {

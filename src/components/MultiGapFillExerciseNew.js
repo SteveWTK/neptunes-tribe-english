@@ -181,13 +181,17 @@ export default function MultiGapFillExerciseNew({
   }, [unitId, session?.user?.email]);
 
   // FEATURE 1: Fetch user type and level for conditional rendering
+  // Use primitive userId to prevent re-renders on focus/blur
+  const userId = user?.userId || user?.id;
   useEffect(() => {
     async function fetchUserData() {
-      if (!user?.id && !user?.userId) return;
+      if (!userId) return;
+
+      // Skip if already loaded
+      if (userType !== null && currentLevel !== null) return;
 
       try {
         const supabaseClient = createClient();
-        const userId = user.userId || user.id;
 
         const { data, error } = await supabaseClient
           .from("users")
@@ -208,7 +212,7 @@ export default function MultiGapFillExerciseNew({
     }
 
     fetchUserData();
-  }, [user]);
+  }, [userId, userType, currentLevel]);
 
   // GLOSSARY FEATURE: Fetch glossary terms based on user level
   useEffect(() => {
@@ -1118,7 +1122,7 @@ export default function MultiGapFillExerciseNew({
               {isLoading ? "Submitting..." : copy.submitAnswersButton}
             </button>
           )}
-
+          {/* 
           {!showFullText && isSubmitted && (
             <button
               className="text-[16px] rounded-lg bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 transition-colors duration-200 font-medium"
@@ -1126,7 +1130,7 @@ export default function MultiGapFillExerciseNew({
             >
               {copy.tryAgainButton}
             </button>
-          )}
+          )} */}
         </div>
 
         {isSubmitted && (
