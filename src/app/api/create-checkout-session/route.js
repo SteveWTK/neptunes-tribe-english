@@ -39,6 +39,8 @@ export async function POST(req) {
       rewardful_referral,
       affiliate_code,
       affiliate_attributed_at,
+      // Premium upgrade source tracking (for analytics)
+      upgrade_source = "subscription_page",
     } = await req.json();
 
     let lineItems;
@@ -120,6 +122,8 @@ export async function POST(req) {
         ...(rewardful_referral && { rewardful_referral }),
         ...(affiliate_code && { affiliate_code }),
         ...(affiliate_attributed_at && { affiliate_attributed_at }),
+        // Premium upgrade source tracking
+        upgrade_source,
       },
       // Pass referral to subscription for recurring commission tracking
       ...(mode === "subscription" && rewardful_referral && {

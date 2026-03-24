@@ -90,7 +90,8 @@ async function handleCheckoutCompleted(session, supabase) {
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription
     );
-    await updateUserSubscription(supabaseId, subscription, supabase);
+    // Pass metadata from checkout session for upgrade tracking
+    await updateUserSubscription(supabaseId, subscription, supabase, session.metadata);
   }
 }
 
@@ -188,8 +189,18 @@ async function handlePaymentFailed(invoice, supabase) {
   }
 }
 
-async function updateUserSubscription(userId, subscription, supabase) {
+async function updateUserSubscription(userId, subscription, supabase, metadata = {}) {
   const isActive = ["active", "trialing"].includes(subscription.status);
+
+  // Check if user was previously premium (for tracking new vs renewal)
+  const { data: currentUser } = await supabase
+    .from("users")
+    .select("is_premium, role")
+    .eq("id", userId)
+    .single();
+
+  const wasPremium = currentUser?.is_premium === true;
+  const wasGuest = currentUser?.role === "guest";
 
   const updateData = {
     is_premium: isActive,
@@ -209,6 +220,39 @@ async function updateUserSubscription(userId, subscription, supabase) {
   }
 
   console.log(`User ${userId} subscription updated:`, updateData);
+
+  // Record premium upgrade in audit table (only when becoming premium)
+  if (isActive && !wasPremium) {
+    try {
+      // Determine upgrade source from metadata
+      const upgradeSource = metadata.upgrade_source || "subscription_page";
+
+      // Determine plan type from subscription interval
+      const interval = subscription.items?.data?.[0]?.price?.recurring?.interval;
+      const planType = interval === "year" ? "premium_yearly" : "premium_monthly";
+
+      // Determine previous state
+      const previousState = wasGuest ? "guest" : "registered";
+
+      // Call the record_premium_upgrade function
+      const { error: upgradeError } = await supabase.rpc("record_premium_upgrade", {
+        p_user_id: userId,
+        p_source: upgradeSource,
+        p_plan_type: planType,
+        p_previous_state: previousState,
+      });
+
+      if (upgradeError) {
+        // Log but don't fail the webhook - upgrade tracking is not critical
+        console.error("Failed to record premium upgrade:", upgradeError.message);
+      } else {
+        console.log(`Premium upgrade recorded for user ${userId} (source: ${upgradeSource})`);
+      }
+    } catch (trackingError) {
+      // Log but don't fail - the table might not exist yet
+      console.error("Error recording premium upgrade (table may not exist):", trackingError.message);
+    }
+  }
 }
 
 // import { NextResponse } from "next/server";
