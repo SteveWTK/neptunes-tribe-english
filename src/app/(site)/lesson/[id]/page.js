@@ -150,7 +150,8 @@ function DynamicLessonContent() {
 
   // Fetch lesson data and user preferences
   // Use primitive userId to prevent re-renders on focus/blur
-  const userId = user?.id;
+  // Note: user?.userId is the database ID, user?.id might be OAuth provider ID
+  const userId = user?.userId || user?.id;
   useEffect(() => {
     async function fetchLesson() {
       // Skip if lesson already loaded for this lessonId
@@ -476,6 +477,9 @@ function DynamicLessonContent() {
     }
   }, [currentStep, userPreferredLanguage, lesson]);
 
+  // Track if journey has been fetched to prevent duplicate fetches
+  const journeyFetchedRef = useRef(false);
+
   // Fetch user's journey data
   // Use userId primitive to prevent re-renders on focus/blur
   useEffect(() => {
@@ -485,8 +489,9 @@ function DynamicLessonContent() {
         return;
       }
 
-      // Skip if journey already loaded
-      if (journey) return;
+      // Skip if already fetched
+      if (journeyFetchedRef.current) return;
+      journeyFetchedRef.current = true;
 
       try {
         console.log("🗺️ Fetching journey for user...");
@@ -508,11 +513,13 @@ function DynamicLessonContent() {
         }
       } catch (error) {
         console.error("❌ Error fetching journey:", error);
+        // Reset so it can be retried
+        journeyFetchedRef.current = false;
       }
     };
 
     fetchJourney();
-  }, [userId, journey]);
+  }, [userId]);
 
   // Handle lesson completion when reaching the completion step
   useEffect(() => {
