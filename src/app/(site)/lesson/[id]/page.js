@@ -3626,25 +3626,25 @@ function DynamicLessonContent() {
               <div className="flex items-center gap-2">
                 <Trophy
                   className={`w-5 h-5 ${
-                    cumulativeXP >= 200
+                    cumulativeXP >= 100
                       ? "text-green-600 dark:text-green-400"
                       : "text-amber-600 dark:text-amber-400"
                   }`}
                 />
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  Lesson XP: {cumulativeXP} / 200
+                  Lesson XP: {cumulativeXP} / 100
                 </span>
               </div>
               <span
                 className={`text-sm font-medium ${
-                  cumulativeXP >= 200
+                  cumulativeXP >= 100
                     ? "text-green-600 dark:text-green-400"
                     : "text-amber-600 dark:text-amber-400"
                 }`}
               >
-                {cumulativeXP >= 200
+                {cumulativeXP >= 100
                   ? "✓ Threshold met!"
-                  : `${200 - cumulativeXP} XP needed`}
+                  : `${100 - cumulativeXP} XP needed`}
               </span>
             </div>
             {/* <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
@@ -3658,7 +3658,7 @@ function DynamicLessonContent() {
               ></div>
             </div> */}
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
-              {cumulativeXP >= 200
+              {cumulativeXP >= 100
                 ? "Great! You'll advance the species when you complete the lesson."
                 : "Earn 200 XP to advance the species to the next IUCN level."}
             </p>
