@@ -1117,6 +1117,25 @@ function DynamicLessonContent() {
         return (
           <div className="text-center">
             <div className="bg-white dark:bg-primary-900/20 rounded-xl p-6 mb-2">
+              {currentStepData.video_url ? (
+                <VideoPlayer
+                  title={currentStepData.title}
+                  videoUrl={currentStepData.video_url}
+                  thumbnailUrl={currentStepData.thumbnail_url}
+                  description={currentStepData.video_description}
+                  className="mb-4"
+                />
+              ) : currentStepData.image_url ? (
+                <img
+                  src={currentStepData.image_url}
+                  alt="Scenario"
+                  className="w-full max-w-md mx-auto rounded-lg shadow-md mb-4"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
+              ) : null}
+
               <button
                 onClick={toggleAudio}
                 className="flex items-center space-x-2 mx-auto bg-accent-600 text-white px-4 py-2 mb-3 rounded-lg hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -1144,24 +1163,6 @@ function DynamicLessonContent() {
               </button>
               <audio ref={audioRef} style={{ display: "none" }} />
 
-              {currentStepData.video_url ? (
-                <VideoPlayer
-                  title={currentStepData.title}
-                  videoUrl={currentStepData.video_url}
-                  thumbnailUrl={currentStepData.thumbnail_url}
-                  description={currentStepData.video_description}
-                  className="mb-4"
-                />
-              ) : currentStepData.image_url ? (
-                <img
-                  src={currentStepData.image_url}
-                  alt="Scenario"
-                  className="w-full max-w-md mx-auto rounded-lg shadow-md mb-4"
-                  onError={(e) => {
-                    e.target.style.display = "none";
-                  }}
-                />
-              ) : null}
               {/* Floating Facts Modal */}
               {currentStepData.facts && currentStepData.facts.length > 0 && (
                 <FloatingFacts facts={currentStepData.facts} />
