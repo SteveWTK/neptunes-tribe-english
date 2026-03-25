@@ -56,6 +56,10 @@ function DashboardContent() {
     end: new Date(),
   });
   const [compareMode, setCompareMode] = useState("previous_period");
+  const [customCompareRange, setCustomCompareRange] = useState({
+    start: subDays(new Date(), 60),
+    end: subDays(new Date(), 31),
+  });
 
   // Filter state
   const [filters, setFilters] = useState({
@@ -91,6 +95,12 @@ function DashboardContent() {
       endDate: dateRange.end.toISOString(),
       compareMode,
     });
+
+    // Add custom comparison dates if using custom compare mode
+    if (compareMode === "custom" && customCompareRange.start && customCompareRange.end) {
+      params.append("compareStartDate", customCompareRange.start.toISOString());
+      params.append("compareEndDate", customCompareRange.end.toISOString());
+    }
 
     // Add filters to params
     if (filters.userType) params.append("userType", filters.userType);
@@ -139,7 +149,7 @@ function DashboardContent() {
     } finally {
       setLoading(false);
     }
-  }, [dateRange, compareMode, filters, router]);
+  }, [dateRange, compareMode, customCompareRange, filters, router]);
 
   // Initial fetch and polling
   useEffect(() => {
@@ -253,6 +263,8 @@ function DashboardContent() {
               onChange={setDateRange}
               compareMode={compareMode}
               onCompareModeChange={setCompareMode}
+              customCompareRange={customCompareRange}
+              onCustomCompareRangeChange={setCustomCompareRange}
             />
             <button
               onClick={fetchData}

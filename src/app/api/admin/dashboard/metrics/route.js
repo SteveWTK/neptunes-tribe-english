@@ -49,13 +49,25 @@ export async function GET(request) {
     const periodDuration = endDate.getTime() - startDate.getTime();
     let compareStartDate, compareEndDate;
 
-    if (compareMode === "same_period_last_year") {
+    if (compareMode === "custom") {
+      // Use custom comparison dates if provided
+      const customCompareStart = searchParams.get("compareStartDate");
+      const customCompareEnd = searchParams.get("compareEndDate");
+      if (customCompareStart && customCompareEnd) {
+        compareStartDate = startOfDay(parseISO(customCompareStart));
+        compareEndDate = endOfDay(parseISO(customCompareEnd));
+      } else {
+        // Fallback to previous period if custom dates not provided
+        compareEndDate = new Date(startDate.getTime() - 1);
+        compareStartDate = new Date(compareEndDate.getTime() - periodDuration);
+      }
+    } else if (compareMode === "same_period_last_year") {
       compareStartDate = new Date(startDate);
       compareStartDate.setFullYear(compareStartDate.getFullYear() - 1);
       compareEndDate = new Date(endDate);
       compareEndDate.setFullYear(compareEndDate.getFullYear() - 1);
     } else {
-      // previous_period
+      // previous_period (default)
       compareEndDate = new Date(startDate.getTime() - 1);
       compareStartDate = new Date(compareEndDate.getTime() - periodDuration);
     }

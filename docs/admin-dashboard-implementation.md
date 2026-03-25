@@ -398,13 +398,16 @@ Displays a single metric with comparison percentage.
 
 ### DateRangePicker
 
-Provides date presets and comparison mode selection.
+Provides date presets, custom date range selection, and comparison mode selection.
 
 ```jsx
 <DateRangePicker
   dateRange={{ start: Date, end: Date }}
+  onChange={(newDateRange) => {}}
   compareMode="previous_period"
-  onChange={({ dateRange, compareMode }) => {}}
+  onCompareModeChange={(mode) => {}}
+  customCompareRange={{ start: Date, end: Date }}
+  onCustomCompareRangeChange={(range) => {}}
 />
 ```
 
@@ -414,7 +417,13 @@ Provides date presets and comparison mode selection.
 - Last 30 days
 - This month
 - Last month
-- Custom range
+- This year
+- Custom range (with date inputs)
+
+**Compare Modes:**
+- Previous period (automatic calculation)
+- Same period last year
+- Custom period (manual date selection)
 
 ### FilterBar
 
