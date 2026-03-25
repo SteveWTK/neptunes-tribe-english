@@ -560,7 +560,11 @@ function DynamicLessonContent() {
     const previousXP = stepXP[stepKey] || 0;
     const isRepeat = previousXP > 0;
 
-    console.log(`Awarding ${xp} XP for step ${stepIndex}${isRepeat ? " (repeat attempt)" : ""}`);
+    console.log(
+      `Awarding ${xp} XP for step ${stepIndex}${
+        isRepeat ? " (repeat attempt)" : ""
+      }`
+    );
 
     // Track cumulative XP earned on this step (for reference)
     setStepXP((prev) => ({ ...prev, [stepKey]: previousXP + xp }));
@@ -1113,7 +1117,7 @@ function DynamicLessonContent() {
         return (
           <div className="text-center">
             <div className="bg-white dark:bg-primary-900/20 rounded-xl p-6 mb-2">
-              {/* <button
+              <button
                 onClick={toggleAudio}
                 className="flex items-center space-x-2 mx-auto bg-accent-600 text-white px-4 py-2 mb-3 rounded-lg hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={
@@ -1138,7 +1142,7 @@ function DynamicLessonContent() {
                   </>
                 )}
               </button>
-              <audio ref={audioRef} style={{ display: "none" }} /> */}
+              <audio ref={audioRef} style={{ display: "none" }} />
 
               {currentStepData.video_url ? (
                 <VideoPlayer
@@ -3599,74 +3603,76 @@ function DynamicLessonContent() {
 
       {/* Navigation - hide for challenge_reference steps (they have their own navigation) */}
       {currentStepData?.type !== "challenge_reference" && (
-      <div className="flex gap-4 justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700">
-        {currentStep === 0 ? (
-          <button
-            onClick={() => router.push(getWorldUrl())}
-            // disabled={currentStep === 0 || completing}
-            className="flex items-center space-x-2 px-4 py-2 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white border-2 border-accent-600 dark:border-accent-400 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            {/* <span>Voltar</span> */}
-          </button>
-        ) : (
-          <button
-            onClick={handlePrevious}
-            disabled={currentStep === 0 || completing}
-            className="flex items-center space-x-2 px-4 py-2 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white border-2 border-accent-600 dark:border-accent-400 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            {/* <span>Atividade anterior</span> */}
-          </button>
-        )}
-
-        <div className="text-center">
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            {completedSteps.size} of {steps.length - 1} activities completed
-          </p>
-          {completing && (
-            <p className="text-xs text-primary-600 mt-1">
-              {userLanguage === "pt-BR"
-                ? "Salvando progresso..."
-                : userLanguage === "th"
-                ? "กำลังบันทึกความก้าวหน้า..."
-                : "Saving progress..."}
-            </p>
-          )}
-        </div>
-
-        <button
-          onClick={
-            currentStep === steps.length - 1 ? handleLessonComplete : handleNext
-          }
-          disabled={
-            completing ||
-            (currentStep === steps.length - 1 &&
-              currentStepData?.type !== "completion")
-          }
-          className="flex items-center space-x-2 px-6 py-2 bg-accent-600 text-white rounded-lg hover:bg-accent-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {completing ? (
-            <>
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span>
-                {userLanguage === "pt-BR"
-                  ? "Concluindo..."
-                  : userLanguage === "th"
-                  ? "กำลังดำเนินการ..."
-                  : "Completing..."}
-              </span>
-            </>
+        <div className="flex gap-4 justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700">
+          {currentStep === 0 ? (
+            <button
+              onClick={() => router.push(getWorldUrl())}
+              // disabled={currentStep === 0 || completing}
+              className="flex items-center space-x-2 px-4 py-2 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white border-2 border-accent-600 dark:border-accent-400 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              {/* <span>Voltar</span> */}
+            </button>
           ) : (
-            <>
-              {/* <span>
+            <button
+              onClick={handlePrevious}
+              disabled={currentStep === 0 || completing}
+              className="flex items-center space-x-2 px-4 py-2 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white border-2 border-accent-600 dark:border-accent-400 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              {/* <span>Atividade anterior</span> */}
+            </button>
+          )}
+
+          <div className="text-center">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              {completedSteps.size} of {steps.length - 1} activities completed
+            </p>
+            {completing && (
+              <p className="text-xs text-primary-600 mt-1">
+                {userLanguage === "pt-BR"
+                  ? "Salvando progresso..."
+                  : userLanguage === "th"
+                  ? "กำลังบันทึกความก้าวหน้า..."
+                  : "Saving progress..."}
+              </p>
+            )}
+          </div>
+
+          <button
+            onClick={
+              currentStep === steps.length - 1
+                ? handleLessonComplete
+                : handleNext
+            }
+            disabled={
+              completing ||
+              (currentStep === steps.length - 1 &&
+                currentStepData?.type !== "completion")
+            }
+            className="flex items-center space-x-2 px-6 py-2 bg-accent-600 text-white rounded-lg hover:bg-accent-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {completing ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>
+                  {userLanguage === "pt-BR"
+                    ? "Concluindo..."
+                    : userLanguage === "th"
+                    ? "กำลังดำเนินการ..."
+                    : "Completing..."}
+                </span>
+              </>
+            ) : (
+              <>
+                {/* <span>
                 {currentStep === steps.length - 1 ? "Aula Completa" : ""}
               </span> */}
-              <ArrowRight className="w-4 h-4" />
-            </>
-          )}
-        </button>
-      </div>
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </button>
+        </div>
       )}
 
       {/* Unit Modal */}
