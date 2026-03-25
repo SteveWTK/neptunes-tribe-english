@@ -1824,7 +1824,7 @@ function DynamicLessonContent() {
               ) : (
                 <>
                   {/* Conditional messaging based on XP threshold - use cumulativeXP directly as source of truth */}
-                  {cumulativeXP >= 200 ? (
+                  {cumulativeXP >= 100 ? (
                     // Celebration - User reached XP threshold!
                     <div className="relative">
                       {/* Subtle animated background glow */}
@@ -1865,11 +1865,11 @@ function DynamicLessonContent() {
                           <span className="font-semibold text-amber-600 dark:text-amber-400">
                             {cumulativeXP}
                           </span>{" "}
-                          / 200
+                          / 100
                         </p>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
                           <span className="font-medium text-amber-600 dark:text-amber-400">
-                            {200 - cumulativeXP}
+                            {100 - cumulativeXP}
                           </span>{" "}
                           more XP needed to advance your species
                         </p>
