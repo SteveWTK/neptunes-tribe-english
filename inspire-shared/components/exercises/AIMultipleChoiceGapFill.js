@@ -21,6 +21,8 @@ import {
  * @param {Array} props.sentences - Array of { id, text, correct_answer or correct_answers[], options[]?, context? }
  * @param {string} props.lessonId - Lesson identifier
  * @param {Function} props.onComplete - Callback when exercise is complete (receives XP score)
+ * @param {Function} props.onXPAwarded - Callback when XP is awarded (receives XP amount) - for incremental XP tracking
+ * @param {string} props.mode - Display mode: "multiple_choice" (default) or "cloze" (text input)
  * @param {string} props.englishVariant - English accent variant for TTS (default: "british")
  * @param {string} props.voiceGender - Voice gender for TTS (default: "male")
  * @param {string} props.hintApiEndpoint - API endpoint for AI hints (default: "/api/ai-feedback")
@@ -32,6 +34,8 @@ export default function AIMultipleChoiceGapFill({
   sentences,
   lessonId,
   onComplete,
+  onXPAwarded,
+  mode = "multiple_choice",
   englishVariant = "british",
   voiceGender = "male",
   hintApiEndpoint = "/api/ai-feedback",
@@ -41,6 +45,7 @@ export default function AIMultipleChoiceGapFill({
 }) {
   const t = {
     choose_best_word: "Choose the best word",
+    type_the_word: "Type the missing word",
     listen_to_sentence: "Listen to sentence",
     hints_used: "hints used",
     check_answer: "Check",
@@ -50,14 +55,30 @@ export default function AIMultipleChoiceGapFill({
     another_hint: "Another Hint",
     no_more_hints: "No More Hints",
     view_all_hints: "View all hints",
-    final_hint_warning: "This was your final hint for this gap. Think carefully!",
-    excellent_work_completed: "Excellent work! You've completed all the sentences.",
+    final_hint_warning:
+      "This was your final hint for this gap. Think carefully!",
+    excellent_work_completed:
+      "Excellent work! You've completed all the sentences.",
     perfect_message: "Perfect! You got everything right on the first try!",
-    good_hints_message: "Great work! You used hints wisely and learned effectively!",
-    keep_practicing_message: "Good job completing the exercise! Keep practicing to build confidence!",
+    good_hints_message:
+      "Great work! You used hints wisely and learned effectively!",
+    keep_practicing_message:
+      "Good job completing the exercise! Keep practicing to build confidence!",
     total_hints_used: "Total hints used",
+    type_answer_placeholder: "Type your answer...",
     ...translations,
   };
+
+  // XP per correct answer
+  const XP_PER_CORRECT = 10;
+
+  // Debug: log the mode prop to help diagnose cloze mode issues
+  console.log(
+    "🔧 AIMultipleChoiceGapFill mode:",
+    mode,
+    "| isCloze:",
+    mode === "cloze"
+  );
 
   const STORAGE_KEY = `lesson-${lessonId}-aiGapFill-progress`;
 
@@ -96,6 +117,7 @@ export default function AIMultipleChoiceGapFill({
   const [attempts, setAttempts] = useState({});
   const [completed, setCompleted] = useState(false);
   const [playingAudio, setPlayingAudio] = useState({});
+  const [xpAwarded, setXpAwarded] = useState({}); // Track which sentences have awarded XP
   const [hintUsage, setHintUsage] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -163,7 +185,16 @@ export default function AIMultipleChoiceGapFill({
         }
       });
 
-      const genericOptions = ["play", "go", "make", "take", "good", "great", "big", "new"];
+      const genericOptions = [
+        "play",
+        "go",
+        "make",
+        "take",
+        "good",
+        "great",
+        "big",
+        "new",
+      ];
       genericOptions.forEach((opt) => {
         if (!options.includes(opt) && options.length < 4) {
           options.push(opt);
@@ -183,6 +214,13 @@ export default function AIMultipleChoiceGapFill({
     }
   };
 
+  const handleInputChange = (sentenceId, value) => {
+    setAnswers((prev) => ({ ...prev, [sentenceId]: value }));
+    if (showFeedback[sentenceId]) {
+      setShowFeedback((prev) => ({ ...prev, [sentenceId]: false }));
+    }
+  };
+
   const checkAnswer = (sentenceId, sentence) => {
     const userAnswer = answers[sentenceId]?.trim().toLowerCase() || "";
 
@@ -195,7 +233,9 @@ export default function AIMultipleChoiceGapFill({
       correctAnswers = [];
     }
 
-    const isCorrect = correctAnswers.some((answer) => answer.toLowerCase() === userAnswer);
+    const isCorrect = correctAnswers.some(
+      (answer) => answer.toLowerCase() === userAnswer
+    );
 
     setShowFeedback((prev) => ({
       ...prev,
@@ -207,19 +247,29 @@ export default function AIMultipleChoiceGapFill({
       [sentenceId]: (prev[sentenceId] || 0) + 1,
     }));
 
-    const allAnswered = sentences.every((s) => showFeedback[s.id]?.isCorrect || (s.id === sentenceId && isCorrect));
+    // Award XP immediately for correct answers (only once per sentence)
+    if (isCorrect && !xpAwarded[sentenceId]) {
+      setXpAwarded((prev) => ({ ...prev, [sentenceId]: true }));
+      if (onXPAwarded) {
+        onXPAwarded(XP_PER_CORRECT);
+      }
+    }
+
+    const allAnswered = sentences.every(
+      (s) => showFeedback[s.id]?.isCorrect || (s.id === sentenceId && isCorrect)
+    );
 
     if (allAnswered && !completed) {
       setCompleted(true);
-      const totalAttempts = Object.values(attempts).reduce((a, b) => a + b, 0);
+      // Calculate bonus XP (completion bonus minus penalties)
       const totalHints = Object.values(hintUsage).reduce((a, b) => a + b, 0);
-      const baseXP = 100;
-      const attemptPenalty = Math.min(totalAttempts * 5, 30);
-      const hintPenalty = Math.min(totalHints * 10, 40);
-      const finalXP = Math.max(baseXP - attemptPenalty - hintPenalty, 30);
+      const bonusXP = totalHints === 0 ? 20 : Math.max(20 - totalHints * 5, 0); // Bonus for low hint usage
+
+      // Total XP = already awarded per-answer XP + bonus
+      const totalXP = sentences.length * XP_PER_CORRECT + bonusXP;
 
       if (onComplete) {
-        setTimeout(() => onComplete(finalXP), 1000);
+        setTimeout(() => onComplete(totalXP), 1000);
       }
     }
 
@@ -261,7 +311,10 @@ export default function AIMultipleChoiceGapFill({
 
       if (data.success) {
         const newHint = data.feedback;
-        setHintUsage((prev) => ({ ...prev, [sentenceId]: currentHintCount + 1 }));
+        setHintUsage((prev) => ({
+          ...prev,
+          [sentenceId]: currentHintCount + 1,
+        }));
         setHintHistory((prev) => ({
           ...prev,
           [sentenceId]: [...(prev[sentenceId] || []), newHint],
@@ -336,7 +389,8 @@ export default function AIMultipleChoiceGapFill({
     return t.no_more_hints;
   };
 
-  const getTotalHintsUsed = () => Object.values(hintUsage).reduce((total, count) => total + count, 0);
+  const getTotalHintsUsed = () =>
+    Object.values(hintUsage).reduce((total, count) => total + count, 0);
 
   const getPerformanceMessage = () => {
     const totalHints = getTotalHintsUsed();
@@ -358,6 +412,7 @@ export default function AIMultipleChoiceGapFill({
     const hasUsedAllHints = usedHints >= maxHintsPerGap;
     const options = getOptions(sentence);
     const selectedOption = answers[sentenceId];
+    const isClozeMode = mode === "cloze";
 
     return (
       <div
@@ -368,13 +423,16 @@ export default function AIMultipleChoiceGapFill({
           <div className="flex items-center space-x-2">
             <Target className="w-4 h-4 text-green-500" />
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              {t.choose_best_word}
+              {isClozeMode ? t.type_the_word : t.choose_best_word}
             </span>
           </div>
 
           <button
             onClick={() =>
-              speakText(sentence.text.replace("___", selectedOption || "[blank]"), sentenceId)
+              speakText(
+                sentence.text.replace("___", selectedOption || "[blank]"),
+                sentenceId
+              )
             }
             className="p-2 bg-green-100 hover:bg-green-200 dark:bg-green-900/30 dark:hover:bg-green-900/50
                      rounded-lg transition-colors flex items-center space-x-1"
@@ -390,24 +448,43 @@ export default function AIMultipleChoiceGapFill({
 
         <div className="text-lg text-primary-900 dark:text-white leading-relaxed mb-4">
           {parts[0]}
-          <span
-            className={`mx-2 px-3 py-1 rounded-2xl border-r-2 border-b-2 transition-colors min-w-[120px] inline-block text-center
-            ${
-              feedback?.isCorrect
-                ? "border-accent-400 bg-accent-100 dark:border-accent-600 dark:bg-accent-200 text-accent-900"
-                : feedback?.isCorrect === false
-                ? "border-red-500 bg-red-100 text-red-700"
-                : selectedOption
-                ? "border-primary-500 bg-primary-50 text-primary-800"
-                : "border-gray-300 bg-gray-50 text-gray-400"
-            }`}
-          >
-            {selectedOption || "....."}
-          </span>
+          {isClozeMode && !feedback?.isCorrect ? (
+            <input
+              type="text"
+              value={selectedOption || ""}
+              onChange={(e) => handleInputChange(sentenceId, e.target.value)}
+              placeholder={t.type_answer_placeholder}
+              className={`mx-2 px-3 py-1 rounded-lg border-2 transition-colors min-w-[150px] text-center
+                ${
+                  feedback?.isCorrect === false
+                    ? "border-red-500 bg-red-50 text-red-700"
+                    : selectedOption
+                    ? "border-primary-500 bg-primary-50 text-primary-800 dark:bg-primary-900/20 dark:text-primary-200"
+                    : "border-gray-300 bg-gray-50 text-gray-700 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                }
+                focus:outline-none focus:ring-2 focus:ring-primary-400`}
+            />
+          ) : (
+            <span
+              className={`mx-2 px-3 py-1 rounded-2xl border-r-2 border-b-2 transition-colors min-w-[120px] inline-block text-center
+              ${
+                feedback?.isCorrect
+                  ? "border-green-400 bg-green-100 dark:border-green-600 dark:bg-green-200 text-green-900"
+                  : feedback?.isCorrect === false
+                  ? "border-red-500 bg-red-100 text-red-700"
+                  : selectedOption
+                  ? "border-primary-500 bg-primary-50 text-primary-800"
+                  : "border-gray-300 bg-gray-50 text-gray-400"
+              }`}
+            >
+              {selectedOption || "....."}
+            </span>
+          )}
           {parts[1]}
         </div>
 
-        {!feedback?.isCorrect && (
+        {/* Multiple choice options - only show in multiple_choice mode */}
+        {!isClozeMode && !feedback?.isCorrect && (
           <div className="grid grid-cols-2 gap-3 mb-4">
             {options.map((option, index) => (
               <button
@@ -456,7 +533,9 @@ export default function AIMultipleChoiceGapFill({
                 <>
                   <XCircle className="w-5 h-5 text-red-500" />
                   <div className="text-sm">
-                    <span className="text-red-600 dark:text-red-400">{t.incorrect}. </span>
+                    <span className="text-red-600 dark:text-red-400">
+                      {t.incorrect}.{" "}
+                    </span>
                     <span className="text-gray-600 dark:text-gray-400">
                       Correct answer: <strong>{feedback.answer}</strong>
                     </span>
@@ -484,7 +563,9 @@ export default function AIMultipleChoiceGapFill({
               <div className="flex-1">
                 <p
                   className={`text-sm ${
-                    usedHints === 1 ? "text-yellow-800 dark:text-yellow-300" : "text-orange-800 dark:text-orange-300"
+                    usedHints === 1
+                      ? "text-yellow-800 dark:text-yellow-300"
+                      : "text-orange-800 dark:text-orange-300"
                   }`}
                 >
                   <strong>Hint {usedHints}:</strong> {hints[sentenceId]}
@@ -506,7 +587,10 @@ export default function AIMultipleChoiceGapFill({
             </summary>
             <div className="mt-2 space-y-2 pl-4">
               {hintHistory[sentenceId].map((hint, index) => (
-                <div key={index} className="text-xs text-gray-600 dark:text-gray-400">
+                <div
+                  key={index}
+                  className="text-xs text-gray-600 dark:text-gray-400"
+                >
                   <strong>Hint {index + 1}:</strong> {hint}
                 </div>
               ))}
@@ -535,7 +619,9 @@ export default function AIMultipleChoiceGapFill({
               {t.excellent_work_completed}
             </p>
           </div>
-          <p className="text-sm text-green-700 dark:text-green-400">{getPerformanceMessage()}</p>
+          <p className="text-sm text-green-700 dark:text-green-400">
+            {getPerformanceMessage()}
+          </p>
           {getTotalHintsUsed() > 0 && (
             <p className="text-xs text-green-600 dark:text-green-500 mt-1">
               {t.total_hints_used}: {getTotalHintsUsed()}

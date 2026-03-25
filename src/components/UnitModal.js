@@ -13,7 +13,9 @@ export default function UnitModal({
   isOpen,
   onClose,
   onComplete,
+  onXPAwarded,
   initialShowFullText = false,
+  displayMode = "gap_fill", // "gap_fill", "cloze", or "full_text"
 }) {
   // Close on Escape key
   useEffect(() => {
@@ -85,7 +87,9 @@ export default function UnitModal({
               <div className="max-w-full mx-auto">
                 <MultiGapFillExerciseNew
                   unitId={unitId}
-                  initialShowFullText={initialShowFullText}
+                  initialShowFullText={initialShowFullText || displayMode === "full_text"}
+                  displayMode={displayMode}
+                  onXPAwarded={onXPAwarded}
                   onComplete={(result) => {
                     if (onComplete) {
                       onComplete(result);

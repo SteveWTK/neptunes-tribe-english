@@ -66,6 +66,29 @@ export default function AIGapFillStepForm({ step, onChange }) {
         />
       </div>
 
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Answer Mode
+        </label>
+        <select
+          value={step.mode || "multiple_choice"}
+          onChange={(e) => updateField("mode", e.target.value)}
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+        >
+          <option value="multiple_choice">
+            Multiple Choice (students select from 4 options)
+          </option>
+          <option value="cloze">
+            Open Cloze / Dictation (students type the answer)
+          </option>
+        </select>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <strong>Multiple Choice:</strong> Students select the correct word from 4 options. Best for beginner/intermediate levels.
+          <br />
+          <strong>Open Cloze:</strong> Students type the missing word (no options shown). Best for advanced/expert levels.
+        </p>
+      </div>
+
       <MediaUploader
         label="Theme Image (optional - displays discreetly at top of step)"
         value={step.image_url || ""}

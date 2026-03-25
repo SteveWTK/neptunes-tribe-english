@@ -21,7 +21,9 @@ import { toast } from "sonner";
 export default function MultiGapFillExerciseNew({
   unitId,
   initialShowFullText = false,
+  displayMode = "gap_fill", // "gap_fill" (dropdown), "cloze" (text input), or "full_text"
   onComplete = null, // Optional callback when exercise is completed
+  onXPAwarded = null, // Optional callback for incremental XP tracking
 }) {
   const [unitData, setUnitData] = useState(null);
   const [textId, setTextId] = useState(null);
@@ -29,7 +31,8 @@ export default function MultiGapFillExerciseNew({
   const [gapText, setGapText] = useState("");
   const [questions, setQuestions] = useState([]);
   const [userAnswers, setUserAnswers] = useState({});
-  const [showFullText, setShowFullText] = useState(initialShowFullText);
+  const [showFullText, setShowFullText] = useState(initialShowFullText || displayMode === "full_text");
+  const isClozeMode = displayMode === "cloze";
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [translations, setTranslations] = useState({});
@@ -367,7 +370,10 @@ export default function MultiGapFillExerciseNew({
   const renderGapWithHoverFeedback = (question, index) => {
     const questionId = `${unitId}-${question.gap_number}`;
     const userAnswer = userAnswers[questionId];
-    const isCorrect = userAnswer === question.correct_answer;
+    // For cloze mode, use case-insensitive comparison
+    const isCorrect = isClozeMode
+      ? userAnswer?.toLowerCase().trim() === question.correct_answer.toLowerCase().trim()
+      : userAnswer === question.correct_answer;
     const hasNotes = question.notes && question.notes.trim().length > 0;
     const isNoteExpanded = expandedNotes.has(question.gap_number);
 
@@ -407,27 +413,46 @@ export default function MultiGapFillExerciseNew({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <select
-          className={`font-josefin mx-2 my-1 border rounded px-2 transition-colors duration-200 ${
-            isSubmitted
-              ? isCorrect
-                ? "bg-teal-800 text-white"
-                : "bg-rose-800 text-white"
-              : userAnswer
-              ? "bg-primary-500 text-accent-50 hover:bg-accent-200 hover:text-accent-900"
-              : "bg-accent-100 hover:bg-accent-200 text-accent-900"
-          }`}
-          value={userAnswer || ""}
-          onChange={(e) => handleChange(questionId, e.target.value)}
-          disabled={isSubmitted}
-        >
-          <option value="">Select</option>
-          {question.options.map((option, idx) => (
-            <option key={`${uniqueKey}-opt-${idx}`} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        {isClozeMode ? (
+          <input
+            type="text"
+            className={`font-josefin mx-2 my-1 border rounded px-2 py-1 transition-colors duration-200 min-w-[100px] text-center ${
+              isSubmitted
+                ? isCorrect
+                  ? "bg-teal-800 text-white border-teal-600"
+                  : "bg-rose-800 text-white border-rose-600"
+                : userAnswer
+                ? "bg-primary-100 text-primary-900 border-primary-400 dark:bg-primary-800 dark:text-primary-100"
+                : "bg-accent-100 text-accent-900 border-accent-300 dark:bg-gray-700 dark:text-white dark:border-gray-500"
+            }`}
+            value={userAnswer || ""}
+            onChange={(e) => handleChange(questionId, e.target.value)}
+            disabled={isSubmitted}
+            placeholder="..."
+          />
+        ) : (
+          <select
+            className={`font-josefin mx-2 my-1 border rounded px-2 transition-colors duration-200 ${
+              isSubmitted
+                ? isCorrect
+                  ? "bg-teal-800 text-white"
+                  : "bg-rose-800 text-white"
+                : userAnswer
+                ? "bg-primary-500 text-accent-50 hover:bg-accent-200 hover:text-accent-900"
+                : "bg-accent-100 hover:bg-accent-200 text-accent-900"
+            }`}
+            value={userAnswer || ""}
+            onChange={(e) => handleChange(questionId, e.target.value)}
+            disabled={isSubmitted}
+          >
+            <option value="">Select</option>
+            {question.options.map((option, idx) => (
+              <option key={`${uniqueKey}-opt-${idx}`} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        )}
 
         {/* Debug info - remove this later */}
         {/* {isSubmitted && (
@@ -542,8 +567,12 @@ export default function MultiGapFillExerciseNew({
     try {
       let correctCount = 0;
       questions.forEach((q) => {
-        if (userAnswers[`${unitId}-${q.gap_number}`] === q.correct_answer)
-          correctCount++;
+        const userAnswer = userAnswers[`${unitId}-${q.gap_number}`];
+        // For cloze mode, use case-insensitive comparison
+        const isCorrect = isClozeMode
+          ? userAnswer?.toLowerCase().trim() === q.correct_answer.toLowerCase().trim()
+          : userAnswer === q.correct_answer;
+        if (isCorrect) correctCount++;
       });
 
       setScore(correctCount);
@@ -582,6 +611,11 @@ export default function MultiGapFillExerciseNew({
         challengeResults,
         speciesUnlocked
       );
+
+      // Award XP incrementally if callback provided
+      if (onXPAwarded) {
+        onXPAwarded(earnedXP);
+      }
 
       // Call onComplete callback if provided (for lesson integration)
       if (onComplete && passedThreshold) {

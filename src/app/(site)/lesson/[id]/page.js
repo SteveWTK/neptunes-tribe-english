@@ -106,6 +106,7 @@ function DynamicLessonContent() {
   const [unitModalOpen, setUnitModalOpen] = useState(false);
   const [currentUnitId, setCurrentUnitId] = useState(null);
   const [unitShowFullText, setUnitShowFullText] = useState(false);
+  const [unitDisplayMode, setUnitDisplayMode] = useState("gap_fill"); // "gap_fill", "cloze", "full_text"
   const [challengeExercises, setChallengeExercises] = useState({});
   const [completedUnits, setCompletedUnits] = useState(new Set()); // Track completed unit exercises
 
@@ -1326,6 +1327,12 @@ function DynamicLessonContent() {
         );
 
       case "ai_gap_fill":
+        // Debug: log step data to verify mode is being passed
+        console.log("🎯 ai_gap_fill step data:", {
+          mode: currentStepData.mode,
+          hasSentences: currentStepData.sentences?.length,
+          stepType: currentStepData.type,
+        });
         return (
           <div className="space-y-4">
             {/* Theme Image - discreet display */}
@@ -1348,8 +1355,12 @@ function DynamicLessonContent() {
               lessonId={lessonId}
               englishVariant={userEnglishVariant}
               voiceGender={userVoiceGender}
-              onComplete={(xp) => {
+              mode={currentStepData.mode || "multiple_choice"}
+              onXPAwarded={(xp) => {
                 setXpEarned((prev) => prev + xp);
+              }}
+              onComplete={(xp) => {
+                // XP already awarded incrementally via onXPAwarded
                 setCompletedSteps((prev) => new Set([...prev, currentStep]));
                 // Auto-advance to next step after a short delay
                 setTimeout(() => handleNext(), 1000);
@@ -1553,6 +1564,8 @@ function DynamicLessonContent() {
               setUnitShowFullText(
                 currentStepData.showFullTextByDefault || false
               );
+              // Set display mode from step data (supports cloze mode for advanced levels)
+              setUnitDisplayMode(currentStepData.displayMode || "gap_fill");
               setUnitModalOpen(true);
             }}
           />
@@ -3683,14 +3696,17 @@ function DynamicLessonContent() {
         unitId={currentUnitId}
         isOpen={unitModalOpen}
         initialShowFullText={unitShowFullText}
+        displayMode={unitDisplayMode}
         onClose={() => setUnitModalOpen(false)}
+        onXPAwarded={(xp) => {
+          // Award XP incrementally as answers are submitted
+          setXpEarned((prev) => prev + xp);
+        }}
         onComplete={(result) => {
           console.log("Unit completed:", result);
 
-          // Award XP from the unit exercise
-          if (result?.xp) {
-            handleXPAward(result.xp);
-          }
+          // Note: XP now awarded via onXPAwarded callback during exercise
+          // This callback is for tracking completion status
 
           // Track this unit as completed for showing checkmark
           if (currentUnitId) {
