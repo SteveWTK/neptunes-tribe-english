@@ -1625,7 +1625,17 @@ function DynamicLessonContent() {
                 </p>
               </div>
             )}
-            <SingleGapFillSeries exercises={exercises} />
+            <SingleGapFillSeries
+              exercises={exercises}
+              isEmbedded={true}
+              onComplete={() => {
+                // Award XP for completing the challenge series
+                const xpEarned = exercises.length * 10 + 20; // 10 per exercise + 20 bonus
+                handleXPAward(xpEarned);
+                // Advance to next lesson step
+                handleNext();
+              }}
+            />
           </div>
         );
 
@@ -3587,7 +3597,8 @@ function DynamicLessonContent() {
         {renderStepContent()}
       </div>
 
-      {/* Navigation */}
+      {/* Navigation - hide for challenge_reference steps (they have their own navigation) */}
+      {currentStepData?.type !== "challenge_reference" && (
       <div className="flex gap-4 justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700">
         {currentStep === 0 ? (
           <button
@@ -3656,6 +3667,7 @@ function DynamicLessonContent() {
           )}
         </button>
       </div>
+      )}
 
       {/* Unit Modal */}
       <UnitModal

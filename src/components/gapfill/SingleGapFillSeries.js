@@ -9,7 +9,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import supabase from "@/lib/supabase-browser";
 
-const SingleGapFillSeries = ({ exercises }) => {
+const SingleGapFillSeries = ({ exercises, onComplete, isEmbedded = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [isAnswered, setIsAnswered] = useState(false);
@@ -216,16 +216,25 @@ const SingleGapFillSeries = ({ exercises }) => {
         <div className="flex gap-4">
           <button
             onClick={handleTryAgain}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-3xl text-lg transition-colors shadow-lg hover:shadow-xl"
+            className="bg-accent-600 hover:bg-accent-700 text-white font-bold py-2 px-6 rounded-3xl text-lg transition-colors shadow-lg hover:shadow-xl"
           >
             Try Again
           </button>
-          <button
-            onClick={() => (window.location.href = "/challenges")}
-            className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 px-6 rounded-3xl text-lg transition-colors shadow-lg hover:shadow-xl"
-          >
-            Back to Challenges
-          </button>
+          {isEmbedded && onComplete ? (
+            <button
+              onClick={onComplete}
+              className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-3xl text-lg transition-colors shadow-lg hover:shadow-xl"
+            >
+              Continue Lesson →
+            </button>
+          ) : (
+            <button
+              onClick={() => (window.location.href = "/challenges")}
+              className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 px-6 rounded-3xl text-lg transition-colors shadow-lg hover:shadow-xl"
+            >
+              Back to Challenges
+            </button>
+          )}
         </div>
       </div>
     );
@@ -316,13 +325,15 @@ const SingleGapFillSeries = ({ exercises }) => {
     <div className="flex flex-col items-center justify-center mt-4 px-4">
       <Toaster position="top-center" richColors />
 
-      {/* XP Display */}
-      <div className="fixed top-4 right-4 bg-white shadow-md rounded-lg px-4 py-1 flex items-center gap-2">
-        <span className="font-bold text-green-900 text-lg">{xp} XP</span>
-        {!session?.user?.email && (
-          <span className="text-xs text-gray-500">(Login to save)</span>
-        )}
-      </div>
+      {/* XP Display - hide when embedded in lesson (lesson handles XP) */}
+      {!isEmbedded && (
+        <div className="fixed top-4 right-4 bg-white shadow-md rounded-lg px-4 py-1 flex items-center gap-2 z-50">
+          <span className="font-bold text-green-900 text-lg">{xp} XP</span>
+          {!session?.user?.email && (
+            <span className="text-xs text-gray-500">(Login to save)</span>
+          )}
+        </div>
+      )}
 
       {/* Progress indicator */}
       <div className="w-full max-w-2xl mb-6">
@@ -392,7 +403,7 @@ const SingleGapFillSeries = ({ exercises }) => {
 
       {!isAnswered ? (
         <button
-          className={`bg-primary-700 rounded-md hover:bg-primary-900 px-3 py-0.5 mb-8 text-accent-50 ${
+          className={`bg-primary-700 rounded-lg hover:bg-primary-900 px-3 py-1 mb-8 text-accent-50 ${
             isLoading ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={handleCheckAnswerWithAuth}
@@ -402,7 +413,7 @@ const SingleGapFillSeries = ({ exercises }) => {
         </button>
       ) : (
         <button
-          className="bg-primary-700 rounded-md hover:bg-primary-900 px-3 py-0.5 mb-8 text-accent-50"
+          className="bg-green-700 rounded-lg hover:bg-green-900 px-3 py-1 mb-8 min-w-28 text-accent-50"
           onClick={handleNext}
         >
           {currentIndex === exercises.length - 1 ? "See Results" : "Next"}
