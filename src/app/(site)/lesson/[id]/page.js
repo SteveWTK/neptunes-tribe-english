@@ -1172,7 +1172,7 @@ function DynamicLessonContent() {
                 {translations[`scenario-${currentStep}`] ||
                   currentStepData.content}
               </p>
-              <button
+              {/* <button
                 onClick={handleNext}
                 disabled={
                   completing ||
@@ -1182,7 +1182,7 @@ function DynamicLessonContent() {
                 className="flex items-center space-x-2 mx-auto bg-linear-to-br from-accent-700 to-accent-800 text-white px-12 py-0.5 mb-3 rounded-lg hover:bg-accent-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Start
-              </button>
+              </button> */}
               {currentStepData.cultural_context && (
                 <div className="bg-primary-50 dark:bg-primary-900/20 p-3 rounded-lg mt-4">
                   <p className="text-sm text-primary-800 dark:text-accent-200">
