@@ -677,7 +677,7 @@ function DynamicLessonContent() {
           // Set a basic progress update for display
           setProgressUpdate({
             xpEarned: cumulativeXP,
-            meetsXPThreshold: cumulativeXP >= 200,
+            meetsXPThreshold: cumulativeXP >= 100,
           });
         } else {
           console.error("❌ Simple lesson completion failed:", data.error);
@@ -1035,9 +1035,15 @@ function DynamicLessonContent() {
       const currentSrc = audioRef.current.src;
       const isBlobUrl = currentSrc && currentSrc.startsWith("blob:");
 
-      if (isBlobUrl && audioRef.current.paused && audioRef.current.currentTime > 0) {
+      if (
+        isBlobUrl &&
+        audioRef.current.paused &&
+        audioRef.current.currentTime > 0
+      ) {
         // Resume existing TTS audio
-        console.log("[toggleAudio] Resuming TTS audio from current position...");
+        console.log(
+          "[toggleAudio] Resuming TTS audio from current position..."
+        );
         await audioRef.current.play();
         setIsPlaying(true);
         return;
