@@ -161,7 +161,7 @@ export default function UnitReferenceStep({
               ) : (
                 <>
                   <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  Start Mission
+                  Let&apos;s Revise
                 </>
               )}
             </button>

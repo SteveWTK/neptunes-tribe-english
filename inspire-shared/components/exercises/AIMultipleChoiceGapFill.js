@@ -33,6 +33,7 @@ import {
 export default function AIMultipleChoiceGapFill({
   sentences,
   lessonId,
+  stepIndex = 0, // Step index within lesson to differentiate multiple ai_gap_fill steps
   onComplete,
   onXPAwarded,
   mode = "multiple_choice",
@@ -80,7 +81,7 @@ export default function AIMultipleChoiceGapFill({
     mode === "cloze"
   );
 
-  const STORAGE_KEY = `lesson-${lessonId}-aiGapFill-progress`;
+  const STORAGE_KEY = `lesson-${lessonId}-step-${stepIndex}-aiGapFill-progress`;
 
   const [answers, setAnswers] = useState(() => {
     if (typeof window !== "undefined") {
@@ -428,12 +429,18 @@ export default function AIMultipleChoiceGapFill({
           </div>
 
           <button
-            onClick={() =>
+            onClick={() => {
+              // Use the correct answer for TTS so users hear proper pronunciation
+              const correctAnswer =
+                sentence.correct_answer ||
+                sentence.correct_answers?.[0] ||
+                selectedOption ||
+                "";
               speakText(
-                sentence.text.replace("___", selectedOption || "[blank]"),
+                sentence.text.replace("___", correctAnswer),
                 sentenceId
-              )
-            }
+              );
+            }}
             className="p-2 bg-green-100 hover:bg-green-200 dark:bg-green-900/30 dark:hover:bg-green-900/50
                      rounded-lg transition-colors flex items-center space-x-1"
             title={t.listen_to_sentence}
@@ -619,9 +626,9 @@ export default function AIMultipleChoiceGapFill({
               {t.excellent_work_completed}
             </p>
           </div>
-          <p className="text-sm text-green-700 dark:text-green-400">
+          {/* <p className="text-sm text-green-700 dark:text-green-400">
             {getPerformanceMessage()}
-          </p>
+          </p> */}
           {getTotalHintsUsed() > 0 && (
             <p className="text-xs text-green-600 dark:text-green-500 mt-1">
               {t.total_hints_used}: {getTotalHintsUsed()}

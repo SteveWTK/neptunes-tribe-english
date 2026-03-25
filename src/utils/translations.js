@@ -44,6 +44,7 @@ export const UI_TRANSLATIONS = {
     listen_to_scenario: "Listen to Scenario",
     writing_task: "Writing Task",
     ai_feedback: "AI Feedback",
+    excellent_work_completed: "Excelent work!.",
     // Vocabulary Steps
     learn_essential_words: "Learn these essential words:",
     vocabulary: "Vocabulary",
@@ -211,8 +212,7 @@ export const UI_TRANSLATIONS = {
     complete_sentences_mc: "Complete as Frases - Múltipla Escolha",
     choose_best_word_instruction:
       "Escolha a melhor palavra para cada lacuna. Clique no botão de áudio para ouvir a frase. Use dicas se precisar de ajuda!",
-    excellent_work_completed:
-      "Excelente trabalho! Você completou todas as frases.",
+    excellent_work_completed: "Excelente trabalho!.",
     perfect_first_try: "Perfeito! Você acertou tudo na primeira tentativa! 🏆",
     great_work_hints:
       "Ótimo trabalho! Você usou as dicas com sabedoria e aprendeu efetivamente! ⭐",

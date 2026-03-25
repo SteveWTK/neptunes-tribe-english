@@ -109,6 +109,7 @@ function DynamicLessonContent() {
   const [unitDisplayMode, setUnitDisplayMode] = useState("gap_fill"); // "gap_fill", "cloze", "full_text"
   const [challengeExercises, setChallengeExercises] = useState({});
   const [completedUnits, setCompletedUnits] = useState(new Set()); // Track completed unit exercises
+  const [stepAttempted, setStepAttempted] = useState(false); // Track if user has attempted the current step
 
   // Adventure progress tracking
   const [journey, setJourney] = useState(null);
@@ -888,6 +889,7 @@ function DynamicLessonContent() {
       setCompletedSteps((prev) => new Set([...prev, currentStep]));
       setXpEarned((prev) => prev + xpAwarded);
       setStepCompleted(true);
+      setStepAttempted(true); // Mark step as attempted when step is completed
 
       // Show completion message briefly
       setTimeout(() => {
@@ -908,6 +910,7 @@ function DynamicLessonContent() {
     setShowFeedback(false);
     setShowTranslation(false); // Reset translation view
     setStepCompleted(false); // Reset step completion indicator
+    setStepAttempted(false); // Reset step attempted indicator
     if (currentStep < steps.length - 1) {
       console.log("[handleNext] Advancing to step:", currentStep + 1);
       setCurrentStep((prev) => prev + 1);
@@ -923,6 +926,7 @@ function DynamicLessonContent() {
     setShowFeedback(false);
     setShowTranslation(false); // Reset translation view
     setStepCompleted(false); // Reset step completion indicator
+    setStepAttempted(false); // Reset step attempted indicator
     if (currentStep > 0) {
       console.log("[handlePrevious] Going back to step:", currentStep - 1);
       setCurrentStep((prev) => prev - 1);
@@ -940,6 +944,30 @@ function DynamicLessonContent() {
     setTimeout(() => {
       router.push(getWorldUrl() + "#content");
     }, 300);
+  };
+
+  // Check if step type requires user interaction before allowing navigation
+  const stepRequiresInteraction = (stepType) => {
+    // Steps that require user interaction (audio, exercises, games)
+    const interactiveSteps = [
+      "scenario", // Must listen to audio
+      "ai_gap_fill",
+      "ai_writing",
+      "ai_conversation",
+      "ai_listening_challenge",
+      "ai_speech_practice",
+      "memory_match",
+      "conversation_vote",
+      "unit_reference",
+      "word_snake",
+      "challenge_reference",
+      // "video", // VideoPlayer doesn't have onPlay callback yet
+      "interactive_pitch",
+      "interactive_game",
+      // For the following step types, interaction tracking is handled via onComplete callbacks
+      // or they are informational and don't require mandatory interaction
+    ];
+    return interactiveSteps.includes(stepType);
   };
 
   const toggleAudio = async () => {
@@ -971,13 +999,18 @@ function DynamicLessonContent() {
           currentStepData.audio_url
         );
 
-        // Try to play the uploaded audio file directly
-        audioRef.current.src = currentStepData.audio_url;
-        console.log("[toggleAudio] Audio source set, attempting to play...");
+        // Only set the source if it's not already loaded (to allow resume from pause)
+        if (audioRef.current.src !== currentStepData.audio_url) {
+          audioRef.current.src = currentStepData.audio_url;
+          console.log("[toggleAudio] Audio source set, attempting to play...");
+        } else {
+          console.log("[toggleAudio] Resuming from current position...");
+        }
 
         await audioRef.current.play();
         console.log("[toggleAudio] Audio playing successfully");
         setIsPlaying(true);
+        setStepAttempted(true); // Mark step as attempted when audio starts
 
         // Clean up when audio ends
         audioRef.current.onended = () => {
@@ -997,6 +1030,19 @@ function DynamicLessonContent() {
         return;
       }
 
+      // Only generate TTS if we don't already have audio loaded
+      // Check if current src is a blob URL (TTS generated) and audio is paused
+      const currentSrc = audioRef.current.src;
+      const isBlobUrl = currentSrc && currentSrc.startsWith("blob:");
+
+      if (isBlobUrl && audioRef.current.paused && audioRef.current.currentTime > 0) {
+        // Resume existing TTS audio
+        console.log("[toggleAudio] Resuming TTS audio from current position...");
+        await audioRef.current.play();
+        setIsPlaying(true);
+        return;
+      }
+
       const response = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1013,6 +1059,7 @@ function DynamicLessonContent() {
         audioRef.current.src = audioUrl;
         await audioRef.current.play();
         setIsPlaying(true);
+        setStepAttempted(true); // Mark step as attempted when TTS audio starts
 
         // Clean up when audio ends
         audioRef.current.onended = () => {
@@ -1139,12 +1186,18 @@ function DynamicLessonContent() {
 
               <button
                 onClick={toggleAudio}
-                className="flex items-center space-x-2 mx-auto bg-accent-600 text-white px-4 py-2 mb-3 rounded-lg hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`flex items-center space-x-2 mx-auto px-4 py-2 mb-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                  isPlaying
+                    ? "bg-accent-500 hover:bg-accent-600 text-white"
+                    : "bg-accent-600 hover:bg-accent-700 text-white"
+                }`}
                 disabled={
                   !currentStepData.audio_url && !currentStepData.content
                 }
                 title={
-                  !currentStepData.audio_url && !currentStepData.content
+                  isPlaying
+                    ? "Pause audio"
+                    : !currentStepData.audio_url && !currentStepData.content
                     ? "No audio or content available"
                     : currentStepData.audio_url
                     ? "Listen to uploaded audio"
@@ -1153,12 +1206,13 @@ function DynamicLessonContent() {
               >
                 {isPlaying ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>{t("playing")}</span>
+                    <Pause className="w-4 h-4" />
+                    <span>{t("pause") || "Pause"}</span>
                   </>
                 ) : (
                   <>
                     <Volume2 className="w-4 h-4" />
+                    <span>{t("listen") || "Listen"}</span>
                   </>
                 )}
               </button>
@@ -1235,8 +1289,8 @@ function DynamicLessonContent() {
               onComplete={(xp) => {
                 setXpEarned((prev) => prev + xp);
                 setCompletedSteps((prev) => new Set([...prev, currentStep]));
-                // Auto-advance to next step after a short delay
-                setTimeout(() => handleNext(), 1000);
+                setStepAttempted(true); // Mark step as attempted when user submits writing
+                // User clicks next button when ready (no auto-advance to prevent double-skip)
               }}
               minWords={currentStepData.minWords || 50}
               maxWords={currentStepData.maxWords || 200}
@@ -1286,8 +1340,8 @@ function DynamicLessonContent() {
               onComplete={(xp) => {
                 setXpEarned((prev) => prev + xp);
                 setCompletedSteps((prev) => new Set([...prev, currentStep]));
-                // Auto-advance to next step after a short delay
-                setTimeout(() => handleNext(), 1000);
+                setStepAttempted(true); // Mark step as attempted when user completes conversation
+                // User clicks next button when ready (no auto-advance to prevent double-skip)
               }}
               maxTurns={currentStepData.maxTurns || 6}
             />
@@ -1350,20 +1404,22 @@ function DynamicLessonContent() {
             )}
 
             <AIMultipleChoiceGapFill
-              key={aiGapFillKey}
+              key={`${currentStep}-${aiGapFillKey}`}
               sentences={currentStepData.sentences}
               lessonId={lessonId}
+              stepIndex={currentStep}
               englishVariant={userEnglishVariant}
               voiceGender={userVoiceGender}
               mode={currentStepData.mode || "multiple_choice"}
               onXPAwarded={(xp) => {
                 setXpEarned((prev) => prev + xp);
+                setCumulativeXP((prev) => prev + xp); // Also update cumulative XP for progress bar
+                setStepAttempted(true); // Mark step as attempted when user submits an answer
               }}
               onComplete={(xp) => {
                 // XP already awarded incrementally via onXPAwarded
                 setCompletedSteps((prev) => new Set([...prev, currentStep]));
-                // Auto-advance to next step after a short delay
-                setTimeout(() => handleNext(), 1000);
+                // User clicks next button when ready (no auto-advance to prevent double-skip)
               }}
             />
             <div className="flex justify-center mt-4">
@@ -1371,9 +1427,9 @@ function DynamicLessonContent() {
                 onClick={() => {
                   // Clear localStorage for this gap fill exercise
                   if (typeof window !== "undefined") {
-                    // AIMultipleChoiceGapFill uses a single key with JSON data
+                    // AIMultipleChoiceGapFill uses step-specific key
                     localStorage.removeItem(
-                      `lesson-${lessonId}-aiGapFill-progress`
+                      `lesson-${lessonId}-step-${currentStep}-aiGapFill-progress`
                     );
                   }
                   // Force re-render by changing the key
@@ -1412,8 +1468,8 @@ function DynamicLessonContent() {
             onComplete={(xp) => {
               setXpEarned((prev) => prev + xp);
               setCompletedSteps((prev) => new Set([...prev, currentStep]));
-              // Auto-advance to next step after a short delay
-              setTimeout(() => handleNext(), 1000);
+              setStepAttempted(true); // Mark step as attempted when user completes listening
+              // User clicks next button when ready (no auto-advance to prevent double-skip)
             }}
           />
         );
@@ -1438,6 +1494,7 @@ function DynamicLessonContent() {
               onComplete={(xp) => {
                 setXpEarned((prev) => prev + xp);
                 setCompletedSteps((prev) => new Set([...prev, currentStep]));
+                setStepAttempted(true); // Mark step as attempted when user completes speech practice
                 // For speech practice, user manually advances after reviewing feedback
                 handleNext();
               }}
@@ -1541,6 +1598,7 @@ function DynamicLessonContent() {
               handleXPAward(xp);
               setCompletedSteps((prev) => new Set([...prev, currentStep]));
               setStepCompleted(true);
+              setStepAttempted(true); // Mark step as attempted when user completes memory match
             }}
           />
         );
@@ -1549,7 +1607,10 @@ function DynamicLessonContent() {
         return (
           <ConversationVote
             step={currentStepData}
-            onComplete={() => handleNext()}
+            onComplete={() => {
+              setStepAttempted(true); // Mark step as attempted when user votes
+              handleNext();
+            }}
           />
         );
 
@@ -1567,6 +1628,7 @@ function DynamicLessonContent() {
               // Set display mode from step data (supports cloze mode for advanced levels)
               setUnitDisplayMode(currentStepData.displayMode || "gap_fill");
               setUnitModalOpen(true);
+              setStepAttempted(true); // Mark step as attempted when user opens the exercise
             }}
           />
         );
@@ -1597,6 +1659,7 @@ function DynamicLessonContent() {
 
                 handleXPAward(xp);
                 setStepCompleted(true);
+                setStepAttempted(true); // Mark step as attempted when user completes word snake
               }}
             />
           </div>
@@ -1652,6 +1715,7 @@ function DynamicLessonContent() {
                 // Award XP for completing the challenge series
                 const xpEarned = exercises.length * 10 + 20; // 10 per exercise + 20 bonus
                 handleXPAward(xpEarned);
+                setStepAttempted(true); // Mark step as attempted when user completes challenge
                 // Advance to next lesson step
                 handleNext();
               }}
@@ -3664,7 +3728,10 @@ function DynamicLessonContent() {
             disabled={
               completing ||
               (currentStep === steps.length - 1 &&
-                currentStepData?.type !== "completion")
+                currentStepData?.type !== "completion") ||
+              (!stepAttempted &&
+                !completedSteps.has(currentStep) &&
+                stepRequiresInteraction(currentStepData?.type))
             }
             className="flex items-center space-x-2 px-6 py-2 bg-accent-600 text-white rounded-lg hover:bg-accent-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
@@ -3701,6 +3768,7 @@ function DynamicLessonContent() {
         onXPAwarded={(xp) => {
           // Award XP incrementally as answers are submitted
           setXpEarned((prev) => prev + xp);
+          setCumulativeXP((prev) => prev + xp); // Also update cumulative XP for progress bar
         }}
         onComplete={(result) => {
           console.log("Unit completed:", result);
