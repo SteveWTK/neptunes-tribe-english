@@ -1172,6 +1172,17 @@ function DynamicLessonContent() {
                 {translations[`scenario-${currentStep}`] ||
                   currentStepData.content}
               </p>
+
+              {currentStepData.cultural_context && (
+                <div className="bg-primary-50 dark:bg-primary-900/20 p-3 rounded-lg mt-4">
+                  <p className="text-sm text-primary-800 dark:text-accent-200">
+                    <strong>{t("cultural_context")}:</strong>{" "}
+                    {translations[`cultural-${currentStep}`] ||
+                      currentStepData.cultural_context}
+                  </p>
+                </div>
+              )}
+
               {/* <button
                 onClick={handleNext}
                 disabled={
@@ -1183,15 +1194,6 @@ function DynamicLessonContent() {
               >
                 Start
               </button> */}
-              {currentStepData.cultural_context && (
-                <div className="bg-primary-50 dark:bg-primary-900/20 p-3 rounded-lg mt-4">
-                  <p className="text-sm text-primary-800 dark:text-accent-200">
-                    <strong>{t("cultural_context")}:</strong>{" "}
-                    {translations[`cultural-${currentStep}`] ||
-                      currentStepData.cultural_context}
-                  </p>
-                </div>
-              )}
 
               {currentStepData.reflection_questions && (
                 <div className="mt-4 text-left text-gray-700 dark:text-gray-300 ">
