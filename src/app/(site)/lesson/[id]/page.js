@@ -69,6 +69,7 @@ import { fetchSingleGapChallenges } from "@/lib/data-service";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { WORLDS } from "@/data/worldsConfig";
+import { XP_THRESHOLD_FOR_IUCN_ADVANCE } from "@/lib/constants";
 import Link from "next/link";
 import IUCNProgressBar from "@/components/progress/IUCNProgressBar";
 import { toast } from "sonner";
@@ -556,7 +557,7 @@ function DynamicLessonContent() {
   }, [currentStep, lesson, journey]);
 
   // Handle XP awards from step activities
-  // Users can earn XP on repeated attempts to help reach the 200 XP threshold
+  // Users can earn XP on repeated attempts to help reach the XP threshold
   const handleXPAward = (xp, stepIndex = currentStep) => {
     const stepKey = `step-${stepIndex}`;
     const previousXP = stepXP[stepKey] || 0;
@@ -677,7 +678,7 @@ function DynamicLessonContent() {
           // Set a basic progress update for display
           setProgressUpdate({
             xpEarned: cumulativeXP,
-            meetsXPThreshold: cumulativeXP >= 100,
+            meetsXPThreshold: cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE,
           });
         } else {
           console.error("❌ Simple lesson completion failed:", data.error);
@@ -1824,7 +1825,7 @@ function DynamicLessonContent() {
               ) : (
                 <>
                   {/* Conditional messaging based on XP threshold - use cumulativeXP directly as source of truth */}
-                  {cumulativeXP >= 100 ? (
+                  {cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE ? (
                     // Celebration - User reached XP threshold!
                     <div className="relative">
                       {/* Subtle animated background glow */}
@@ -1865,11 +1866,11 @@ function DynamicLessonContent() {
                           <span className="font-semibold text-amber-600 dark:text-amber-400">
                             {cumulativeXP}
                           </span>{" "}
-                          / 100
+                          / {XP_THRESHOLD_FOR_IUCN_ADVANCE}
                         </p>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
                           <span className="font-medium text-amber-600 dark:text-amber-400">
-                            {100 - cumulativeXP}
+                            {XP_THRESHOLD_FOR_IUCN_ADVANCE - cumulativeXP}
                           </span>{" "}
                           more XP needed to advance your species
                         </p>
@@ -1989,7 +1990,7 @@ function DynamicLessonContent() {
                             </div>
                           </div>
                         </div>
-                      ) : cumulativeXP >= 200 &&
+                      ) : cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE &&
                         progressUpdate &&
                         !progressUpdate.isFirstCompletion ? (
                         // Already completed this lesson
@@ -3626,41 +3627,41 @@ function DynamicLessonContent() {
               <div className="flex items-center gap-2">
                 <Trophy
                   className={`w-5 h-5 ${
-                    cumulativeXP >= 100
+                    cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE
                       ? "text-green-600 dark:text-green-400"
                       : "text-amber-600 dark:text-amber-400"
                   }`}
                 />
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  Lesson XP: {cumulativeXP} / 100
+                  Lesson XP: {cumulativeXP} / {XP_THRESHOLD_FOR_IUCN_ADVANCE}
                 </span>
               </div>
               <span
                 className={`text-sm font-medium ${
-                  cumulativeXP >= 100
+                  cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE
                     ? "text-green-600 dark:text-green-400"
                     : "text-amber-600 dark:text-amber-400"
                 }`}
               >
-                {cumulativeXP >= 100
+                {cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE
                   ? "✓ Threshold met!"
-                  : `${100 - cumulativeXP} XP needed`}
+                  : `${XP_THRESHOLD_FOR_IUCN_ADVANCE - cumulativeXP} XP needed`}
               </span>
             </div>
             {/* <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className={`h-2 rounded-full transition-all duration-500 ${
-                  cumulativeXP >= 200 ? "bg-green-600" : "bg-amber-500"
+                  cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE ? "bg-green-600" : "bg-amber-500"
                 }`}
                 style={{
-                  width: `${Math.min((cumulativeXP / 200) * 100, 100)}%`,
+                  width: `${Math.min((cumulativeXP / XP_THRESHOLD_FOR_IUCN_ADVANCE) * 100, 100)}%`,
                 }}
               ></div>
             </div> */}
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
-              {cumulativeXP >= 100
+              {cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE
                 ? "Great! You'll advance the species when you complete the lesson."
-                : "Earn 100 XP to advance the species to the next IUCN level."}
+                : `Earn ${XP_THRESHOLD_FOR_IUCN_ADVANCE} XP to advance the species to the next IUCN level.`}
             </p>
           </div>
         )}

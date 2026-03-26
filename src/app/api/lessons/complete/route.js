@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
+import {
+  XP_THRESHOLD_FOR_IUCN_ADVANCE,
+  IUCN_PROGRESSION,
+  IUCN_STATUS_LABELS,
+} from "@/lib/constants";
 
 /**
  * POST /api/lessons/complete
@@ -94,12 +99,10 @@ export async function POST(request) {
     }
 
     const isFirstCompletion = !existingCompletion;
-    const XP_THRESHOLD = 100; // Minimum XP needed to advance IUCN level
-    const meetsXPThreshold = xpEarned >= XP_THRESHOLD;
+    const meetsXPThreshold = xpEarned >= XP_THRESHOLD_FOR_IUCN_ADVANCE;
 
     // IUCN progression: CR -> EN -> VU -> NT -> LC (5 levels, 5 lessons)
-    const iucnProgression = ["CR", "EN", "VU", "NT", "LC"];
-    const currentIndex = iucnProgression.indexOf(journey.current_iucn_status);
+    const currentIndex = IUCN_PROGRESSION.indexOf(journey.current_iucn_status);
 
     let updates = {
       total_points: journey.total_points + xpEarned,
@@ -115,8 +118,8 @@ export async function POST(request) {
       updates.lessons_completed_in_adventure = lessonsCompleted;
 
       // Move to next IUCN level
-      if (currentIndex < iucnProgression.length - 1) {
-        updates.current_iucn_status = iucnProgression[currentIndex + 1];
+      if (currentIndex < IUCN_PROGRESSION.length - 1) {
+        updates.current_iucn_status = IUCN_PROGRESSION[currentIndex + 1];
       }
     }
 
@@ -154,7 +157,7 @@ export async function POST(request) {
       .select("lesson_id")
       .eq("user_id", userData.id)
       .eq("adventure_id", adventureId)
-      .gte("xp_earned", XP_THRESHOLD);
+      .gte("xp_earned", XP_THRESHOLD_FOR_IUCN_ADVANCE);
 
     if (countError) {
       console.error("Error counting completed lessons:", countError);
@@ -233,18 +236,11 @@ export async function POST(request) {
         imageUrl: journey.species_avatar.avatar_image_url,
       };
     } else if (!meetsXPThreshold) {
-      response.message = `You need at least ${XP_THRESHOLD} XP to advance. You earned ${xpEarned} XP. Keep practicing to reach the threshold!`;
+      response.message = `You need at least ${XP_THRESHOLD_FOR_IUCN_ADVANCE} XP to advance. You earned ${xpEarned} XP. Keep practicing to reach the threshold!`;
     } else if (!isFirstCompletion) {
       response.message = `Great practice! You earned ${xpEarned} XP, but you've already completed this lesson for this adventure.`;
     } else {
-      const statusLabels = {
-        CR: "Critically Endangered",
-        EN: "Endangered",
-        VU: "Vulnerable",
-        NT: "Near Threatened",
-        LC: "Least Concern",
-      };
-      response.message = `Great job! The ${journey.species_avatar.common_name} is now ${statusLabels[updates.current_iucn_status || journey.current_iucn_status]}! (+${xpEarned} XP)`;
+      response.message = `Great job! The ${journey.species_avatar.common_name} is now ${IUCN_STATUS_LABELS[updates.current_iucn_status || journey.current_iucn_status]}! (+${xpEarned} XP)`;
     }
 
     console.log(
