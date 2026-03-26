@@ -3660,7 +3660,7 @@ function DynamicLessonContent() {
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
               {cumulativeXP >= 100
                 ? "Great! You'll advance the species when you complete the lesson."
-                : "Earn 200 XP to advance the species to the next IUCN level."}
+                : "Earn 100 XP to advance the species to the next IUCN level."}
             </p>
           </div>
         )}

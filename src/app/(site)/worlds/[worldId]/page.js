@@ -96,6 +96,7 @@ function WorldDetailContent() {
   const [adventureSpecies, setAdventureSpecies] = useState([]);
   const [pendingNavigation, setPendingNavigation] = useState(null);
   const [journey, setJourney] = useState(null);
+  const [journeyLoading, setJourneyLoading] = useState(true);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -253,16 +254,30 @@ function WorldDetailContent() {
   // Fetch user's current journey
   useEffect(() => {
     const fetchJourney = async () => {
-      if (!user) return;
+      if (!user) {
+        setJourneyLoading(false);
+        return;
+      }
 
+      setJourneyLoading(true);
       try {
         const response = await fetch("/api/user/journey");
         if (response.ok) {
           const data = await response.json();
+          console.log("🗺️ Journey fetched on worlds page:", {
+            hasJourney: !!data.journey,
+            adventureId: data.journey?.current_adventure_id,
+            worldId: data.journey?.current_world_id,
+            speciesName: data.journey?.species_avatar?.common_name,
+          });
           setJourney(data.journey);
+        } else {
+          console.error("🗺️ Journey fetch failed:", response.status);
         }
       } catch (error) {
         console.error("Error fetching journey:", error);
+      } finally {
+        setJourneyLoading(false);
       }
     };
 
@@ -272,6 +287,9 @@ function WorldDetailContent() {
   // Auto-open species selection modal when URL has ?selectSpecies=true
   useEffect(() => {
     const shouldSelectSpecies = searchParams.get("selectSpecies") === "true";
+
+    // Wait for journey loading to finish before checking
+    if (journeyLoading) return;
 
     // Only auto-open if: URL param is set, no active journey, world is loaded, and first adventure available
     if (
@@ -290,7 +308,7 @@ function WorldDetailContent() {
       // Trigger species selection for the first adventure
       fetchAdventureSpecies(firstAdventure);
     }
-  }, [searchParams, journey, world, filteredAdventures]);
+  }, [searchParams, journey, journeyLoading, world, filteredAdventures]);
 
   const loadAdventureContent = async (adventure) => {
     try {
@@ -413,24 +431,56 @@ function WorldDetailContent() {
 
   // Handle starting a lesson - check if species selection needed
   const handleLessonStart = async (lessonId, adventure) => {
+    // Wait for journey to finish loading
+    if (journeyLoading) {
+      console.log("🗺️ handleLessonStart - Journey still loading, waiting...");
+      return;
+    }
+
+    console.log("🗺️ handleLessonStart - Checking journey:", {
+      hasJourney: !!journey,
+      journeyAdventureId: journey?.current_adventure_id,
+      targetAdventureId: adventure.id,
+      match: journey?.current_adventure_id === adventure.id,
+    });
+
     // Check if user has active journey for this adventure
     if (!journey || journey.current_adventure_id !== adventure.id) {
+      console.log("🗺️ handleLessonStart - Need species selection:", {
+        reason: !journey ? "no journey" : "adventure mismatch",
+      });
       // Need to start adventure first - fetch species options
       await fetchAdventureSpecies(adventure);
     } else {
       // Journey already active, navigate directly
+      console.log("🗺️ handleLessonStart - Journey active, navigating to lesson");
       router.push(`/lesson/${lessonId}`);
     }
   };
 
   // Handle starting an adventure - check if species selection needed
   const handleAdventureStart = async (adventure) => {
+    // Wait for journey to finish loading
+    if (journeyLoading) {
+      console.log("🗺️ handleAdventureStart - Journey still loading, waiting...");
+      return;
+    }
+
+    console.log("🗺️ handleAdventureStart - Checking journey:", {
+      hasJourney: !!journey,
+      journeyAdventureId: journey?.current_adventure_id,
+      targetAdventureId: adventure.id,
+      match: journey?.current_adventure_id === adventure.id,
+    });
+
     // Check if user has active journey for this adventure
     if (!journey || journey.current_adventure_id !== adventure.id) {
+      console.log("🗺️ handleAdventureStart - Need species selection");
       // Need to start adventure first - fetch species options
       await fetchAdventureSpecies(adventure);
     } else {
       // Journey already active, navigate to first lesson
+      console.log("🗺️ handleAdventureStart - Journey active, navigating to first lesson");
       const firstLesson = currentData.lessons?.[0];
       if (firstLesson && !firstLesson.under_construction) {
         router.push(`/lesson/${firstLesson.id}`);
@@ -994,6 +1044,7 @@ function WorldDetailContent() {
                             <div
                               key={lesson.id}
                               onClick={() => {
+                                if (journeyLoading) return; // Wait for journey to load
                                 if (!canAccessLesson) {
                                   showPremiumModal({
                                     type: "lesson",
@@ -1008,7 +1059,9 @@ function WorldDetailContent() {
                                 }
                               }}
                               className={`p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-all border border-gray-200 dark:border-gray-600 relative ${
-                                lesson.under_construction
+                                journeyLoading
+                                  ? "opacity-70 cursor-wait"
+                                  : lesson.under_construction
                                   ? "opacity-60 cursor-not-allowed"
                                   : canAccessLesson
                                   ? "hover:shadow-md cursor-pointer"
@@ -1132,17 +1185,24 @@ function WorldDetailContent() {
                   ) : (
                     <button
                       onClick={() => handleAdventureStart(selectedAdventure)}
-                      className="w-full md:w-auto px-8 py-4 rounded-lg text-white font-bold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-3"
+                      className={`w-full md:w-auto px-8 py-4 rounded-lg text-white font-bold text-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 ${
+                        journeyLoading ? "opacity-70 cursor-wait" : ""
+                      }`}
                       style={{ backgroundColor: world.color.primary }}
                       disabled={
-                        (!currentData.units ||
+                        journeyLoading ||
+                        ((!currentData.units ||
                           currentData.units.length === 0) &&
                         (!currentData.lessons ||
-                          currentData.lessons.length === 0)
+                          currentData.lessons.length === 0))
                       }
                     >
-                      <Play className="w-6 h-6" />
-                      Start This Adventure
+                      {journeyLoading ? (
+                        <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent" />
+                      ) : (
+                        <Play className="w-6 h-6" />
+                      )}
+                      {journeyLoading ? "Loading..." : "Start This Adventure"}
                     </button>
                   )}
                 </div>

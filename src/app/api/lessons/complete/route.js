@@ -94,7 +94,8 @@ export async function POST(request) {
     }
 
     const isFirstCompletion = !existingCompletion;
-    const meetsXPThreshold = xpEarned >= 200;
+    const XP_THRESHOLD = 100; // Minimum XP needed to advance IUCN level
+    const meetsXPThreshold = xpEarned >= XP_THRESHOLD;
 
     // IUCN progression: CR -> EN -> VU -> NT -> LC (5 levels, 5 lessons)
     const iucnProgression = ["CR", "EN", "VU", "NT", "LC"];
@@ -106,7 +107,7 @@ export async function POST(request) {
 
     // Only advance IUCN level and increment lesson count if:
     // 1. This is the first time completing this lesson in this adventure
-    // 2. User earned at least 200 XP (met the threshold)
+    // 2. User earned at least the XP threshold
     let shouldAdvanceIUCN = isFirstCompletion && meetsXPThreshold;
 
     if (shouldAdvanceIUCN) {
@@ -153,7 +154,7 @@ export async function POST(request) {
       .select("lesson_id")
       .eq("user_id", userData.id)
       .eq("adventure_id", adventureId)
-      .gte("xp_earned", 200);
+      .gte("xp_earned", XP_THRESHOLD);
 
     if (countError) {
       console.error("Error counting completed lessons:", countError);
@@ -232,7 +233,7 @@ export async function POST(request) {
         imageUrl: journey.species_avatar.avatar_image_url,
       };
     } else if (!meetsXPThreshold) {
-      response.message = `You need at least 200 XP to advance. You earned ${xpEarned} XP. Keep practicing to reach the threshold!`;
+      response.message = `You need at least ${XP_THRESHOLD} XP to advance. You earned ${xpEarned} XP. Keep practicing to reach the threshold!`;
     } else if (!isFirstCompletion) {
       response.message = `Great practice! You earned ${xpEarned} XP, but you've already completed this lesson for this adventure.`;
     } else {
