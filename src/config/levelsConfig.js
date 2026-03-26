@@ -40,28 +40,28 @@ export const LEVELS = {
   // },
 
   // Level Kids: Kids & Beginners
-  Starter: {
-    id: "basic",
-    value: "Basic", // Must match lesson.difficulty in database
-    displayName: "Basic",
-    shortName: "Basic",
-    description: "Activities and games for kids and beginners",
-    order: 0,
-    icon: "", // Customize per project
-    color: {
-      primary: "#eab308", // emerald-500
-      light: "#fef9c3",
-      dark: "#a16207",
-    },
-    characteristics: [
-      "Basic vocabulary and grammar",
-      "Short readings (200-400 words)",
-      "Simple exercises",
-      "Clear explanations",
-    ],
-    estimatedDuration: "3-6 months",
-    recommendedGrade: "6th-8th grade",
-  },
+  // Starter: {
+  //   id: "basic",
+  //   value: "Basic", // Must match lesson.difficulty in database
+  //   displayName: "Basic",
+  //   shortName: "Basic",
+  //   description: "Activities and games for kids and beginners",
+  //   order: 0,
+  //   icon: "", // Customize per project
+  //   color: {
+  //     primary: "#eab308", // emerald-500
+  //     light: "#fef9c3",
+  //     dark: "#a16207",
+  //   },
+  //   characteristics: [
+  //     "Basic vocabulary and grammar",
+  //     "Short readings (200-400 words)",
+  //     "Simple exercises",
+  //     "Clear explanations",
+  //   ],
+  //   estimatedDuration: "3-6 months",
+  //   recommendedGrade: "6th-8th grade",
+  // },
 
   // Level 1: Discovery/Beginner
   beginner: {
@@ -136,28 +136,28 @@ export const LEVELS = {
   },
 
   // Individual users: free travellers
-  practice: {
-    id: "practice",
-    value: "Practice", // Must match lesson.difficulty in database
-    displayName: "Practice",
-    shortName: "Practice",
-    description: "Master complex environmental topics",
-    order: 4,
-    icon: "🌍", // Customize per project
-    color: {
-      primary: "#8b5cf6", // violet-500
-      light: "#ede9fe",
-      dark: "#4c1d95",
-    },
-    characteristics: [
-      "Advanced vocabulary and idioms",
-      "Long readings (800-1500 words)",
-      "Critical thinking exercises",
-      "Research and debate topics",
-    ],
-    estimatedDuration: "12+ months",
-    recommendedGrade: "11th-12th grade / College",
-  },
+  // practice: {
+  //   id: "practice",
+  //   value: "Practice", // Must match lesson.difficulty in database
+  //   displayName: "Practice",
+  //   shortName: "Practice",
+  //   description: "Master complex environmental topics",
+  //   order: 4,
+  //   icon: "🌍", // Customize per project
+  //   color: {
+  //     primary: "#8b5cf6", // violet-500
+  //     light: "#ede9fe",
+  //     dark: "#4c1d95",
+  //   },
+  //   characteristics: [
+  //     "Advanced vocabulary and idioms",
+  //     "Long readings (800-1500 words)",
+  //     "Critical thinking exercises",
+  //     "Research and debate topics",
+  //   ],
+  //   estimatedDuration: "12+ months",
+  //   recommendedGrade: "11th-12th grade / College",
+  // },
 
   // FUTURE LEVELS (Add as needed):
   // expert: {
