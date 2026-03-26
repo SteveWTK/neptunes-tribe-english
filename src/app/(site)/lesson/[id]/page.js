@@ -1529,12 +1529,14 @@ function DynamicLessonContent() {
         );
 
       case "vocabulary":
-        const vocabItems = currentStepData.vocabulary || currentStepData.words || [];
+        const vocabItems =
+          currentStepData.vocabulary || currentStepData.words || [];
         const totalVocabItems = vocabItems.length;
-        const listenedCount = vocabItems.filter(item =>
+        const listenedCount = vocabItems.filter((item) =>
           listenedVocabulary.has(item.word || item.english)
         ).length;
-        const allVocabListened = totalVocabItems > 0 && listenedCount === totalVocabItems;
+        const allVocabListened =
+          totalVocabItems > 0 && listenedCount === totalVocabItems;
 
         return (
           <div className="space-y-4">
@@ -1563,7 +1565,8 @@ function DynamicLessonContent() {
                     Excellent Work! 🎉
                   </p>
                   <p className="text-sm text-green-600 dark:text-green-400">
-                    You've listened to all {totalVocabItems} vocabulary words!
+                    You&apos;ve listened to all {totalVocabItems} vocabulary
+                    words!
                   </p>
                 </div>
               </div>
@@ -1573,38 +1576,39 @@ function DynamicLessonContent() {
             {totalVocabItems > 0 && !allVocabListened && (
               <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
                 <Volume2 className="w-4 h-4" />
-                <span>Listened: {listenedCount}/{totalVocabItems}</span>
+                <span>
+                  Listened: {listenedCount}/{totalVocabItems}
+                </span>
               </div>
             )}
 
             <div className="grid gap-4">
               {vocabItems.map((item, index) => {
-                  // Pass translated tips and notes to the component
-                  const translatedItem = {
-                    ...item,
-                    tip:
-                      translations[`vocab-tip-${currentStep}-${index}`] ||
-                      item.tip,
-                    cultural_note:
-                      translations[`vocab-note-${currentStep}-${index}`] ||
-                      item.cultural_note,
-                  };
-                  const wordKey = item.word || item.english;
-                  return (
-                    <VocabularyItem
-                      key={index}
-                      item={translatedItem}
-                      englishVariant={userEnglishVariant}
-                      voiceGender={userVoiceGender}
-                      userLanguage={userLanguage}
-                      audioPlayed={listenedVocabulary.has(wordKey)}
-                      onAudioPlayed={(word) => {
-                        setListenedVocabulary(prev => new Set([...prev, word]));
-                      }}
-                    />
-                  );
-                }
-              )}
+                // Pass translated tips and notes to the component
+                const translatedItem = {
+                  ...item,
+                  tip:
+                    translations[`vocab-tip-${currentStep}-${index}`] ||
+                    item.tip,
+                  cultural_note:
+                    translations[`vocab-note-${currentStep}-${index}`] ||
+                    item.cultural_note,
+                };
+                const wordKey = item.word || item.english;
+                return (
+                  <VocabularyItem
+                    key={index}
+                    item={translatedItem}
+                    englishVariant={userEnglishVariant}
+                    voiceGender={userVoiceGender}
+                    userLanguage={userLanguage}
+                    audioPlayed={listenedVocabulary.has(wordKey)}
+                    onAudioPlayed={(word) => {
+                      setListenedVocabulary((prev) => new Set([...prev, word]));
+                    }}
+                  />
+                );
+              })}
             </div>
           </div>
         );
