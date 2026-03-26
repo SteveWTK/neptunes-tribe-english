@@ -623,7 +623,7 @@ export default function AIMultipleChoiceGapFill({
           <div className="flex items-center space-x-2 mb-2">
             <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
             <p className="text-green-800 dark:text-green-300 font-medium">
-              {t.excellent_work_completed}
+              Excellent work!
             </p>
           </div>
           {/* <p className="text-sm text-green-700 dark:text-green-400">

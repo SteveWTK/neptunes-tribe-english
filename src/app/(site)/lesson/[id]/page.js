@@ -1430,7 +1430,7 @@ function DynamicLessonContent() {
               }}
             />
             <div className="flex justify-center mt-4">
-              <button
+              {/* <button
                 onClick={() => {
                   // Clear localStorage for this gap fill exercise
                   if (typeof window !== "undefined") {
@@ -1445,8 +1445,8 @@ function DynamicLessonContent() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-300 rounded-2xl hover:bg-primary-300 dark:hover:bg-primary-600 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {/* {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"} */}
-              </button>
+                {userLanguage === "pt-BR" ? "Comece de Novo" : userLanguage === "th" ? "เริ่มใหม่" : "Start Again"}
+              </button> */}
             </div>
           </div>
         );
@@ -3627,31 +3627,31 @@ function DynamicLessonContent() {
               <div className="flex items-center gap-2">
                 <Trophy
                   className={`w-5 h-5 ${
-                    cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE
+                    cumulativeXP >= 100
                       ? "text-green-600 dark:text-green-400"
                       : "text-amber-600 dark:text-amber-400"
                   }`}
                 />
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  Lesson XP: {cumulativeXP} / {XP_THRESHOLD_FOR_IUCN_ADVANCE}
+                  Lesson XP: {cumulativeXP} / 100
                 </span>
               </div>
               <span
                 className={`text-sm font-medium ${
-                  cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE
+                  cumulativeXP >= 100
                     ? "text-green-600 dark:text-green-400"
                     : "text-amber-600 dark:text-amber-400"
                 }`}
               >
-                {cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE
+                {cumulativeXP >= 100
                   ? "✓ Threshold met!"
-                  : `${XP_THRESHOLD_FOR_IUCN_ADVANCE - cumulativeXP} XP needed`}
+                  : `${100 - cumulativeXP} XP needed`}
               </span>
             </div>
             {/* <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className={`h-2 rounded-full transition-all duration-500 ${
-                  cumulativeXP >= XP_THRESHOLD_FOR_IUCN_ADVANCE ? "bg-green-600" : "bg-amber-500"
+                  cumulativeXP >= 200 ? "bg-green-600" : "bg-amber-500"
                 }`}
                 style={{
                   width: `${Math.min((cumulativeXP / XP_THRESHOLD_FOR_IUCN_ADVANCE) * 100, 100)}%`,
