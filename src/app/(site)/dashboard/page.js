@@ -28,6 +28,11 @@ import DashboardTour, {
   shouldShowDashboardTour,
 } from "@/components/onboarding/DashboardTour";
 import SavedSpeciesCollection from "@/components/species/SavedSpeciesCollection";
+import {
+  IUCN_PROGRESSION,
+  IUCN_STATUS_LABELS,
+  LESSONS_PER_ADVENTURE,
+} from "@/lib/constants";
 
 // IUCN Status configuration for species journey display
 const IUCN_LEVELS = [
@@ -315,21 +320,23 @@ export default function DashboardPage() {
                 <div data-tour="status-level" className="mt-6">
                   <div className="flex justify-between text-xs text-gray-800 dark:text-white/80 mb-2">
                     <span>Recovery Progress</span>
-                    {journey.next_level_threshold && (
-                      <span>
-                        {(
-                          journey.next_level_threshold.points_required -
-                          journey.total_points
-                        ).toLocaleString()}{" "}
-                        pts to{" "}
-                        {
-                          IUCN_LEVELS.find(
-                            (l) =>
-                              l.code === journey.next_level_threshold.to_status
-                          )?.label
-                        }
-                      </span>
-                    )}
+                    {(() => {
+                      const lessonsCompleted = journey.lessons_completed_in_adventure || 0;
+
+                      if (journey.current_iucn_status === "LC" && lessonsCompleted >= LESSONS_PER_ADVENTURE) {
+                        return (
+                          <span className="text-green-600 dark:text-green-400 font-semibold">
+                            Species Saved! 🎉
+                          </span>
+                        );
+                      }
+
+                      return (
+                        <span>
+                          {lessonsCompleted}/{LESSONS_PER_ADVENTURE} lessons completed
+                        </span>
+                      );
+                    })()}
                   </div>
                   <div className="flex items-center gap-1">
                     {IUCN_LEVELS.slice(startingStatusIndex).map((level, i) => {

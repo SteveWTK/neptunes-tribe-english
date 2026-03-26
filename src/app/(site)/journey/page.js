@@ -21,7 +21,9 @@ import {
   Zap,
   ArrowRight,
   Star,
+  BookOpen,
 } from "lucide-react";
+import { LESSONS_PER_ADVENTURE, IUCN_STATUS_LABELS } from "@/lib/constants";
 
 const IUCN_STATUS = {
   CR: {
@@ -307,39 +309,46 @@ export default function JourneyPage() {
             </div>
           </div>
 
-          {/* Next Level Info */}
-          {journey.next_level_threshold && (
-            <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-600 dark:text-gray-300">
-                  Points to next status
-                </span>
-                <span className="font-bold text-gray-800 dark:text-white">
-                  {(
-                    journey.next_level_threshold.points_required -
-                    journey.total_points
-                  ).toLocaleString()}{" "}
-                  more
-                </span>
-              </div>
-              <div className="h-3 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-accent-500 rounded-full transition-all"
-                  style={{
-                    width: `${Math.min(
-                      100,
-                      (journey.total_points /
-                        journey.next_level_threshold.points_required) *
-                        100
-                    )}%`,
-                  }}
-                />
-              </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                Next: {IUCN_STATUS[journey.next_level_threshold.to_status]?.label}
-              </p>
-            </div>
-          )}
+          {/* Lesson Progress Info */}
+          <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+            {(() => {
+              const lessonsCompleted = journey.lessons_completed_in_adventure || 0;
+              const isComplete = journey.current_iucn_status === "LC" && lessonsCompleted >= LESSONS_PER_ADVENTURE;
+
+              return (
+                <>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
+                      <BookOpen className="w-4 h-4" />
+                      Lesson Progress
+                    </span>
+                    <span className="font-bold text-gray-800 dark:text-white">
+                      {isComplete ? (
+                        <span className="text-green-600 dark:text-green-400">
+                          Species Saved! 🎉
+                        </span>
+                      ) : (
+                        `${lessonsCompleted}/${LESSONS_PER_ADVENTURE} completed`
+                      )}
+                    </span>
+                  </div>
+                  <div className="h-3 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-accent-500 rounded-full transition-all"
+                      style={{
+                        width: `${(lessonsCompleted / LESSONS_PER_ADVENTURE) * 100}%`,
+                      }}
+                    />
+                  </div>
+                  {!isComplete && (
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                      Complete {LESSONS_PER_ADVENTURE - lessonsCompleted} more lesson{LESSONS_PER_ADVENTURE - lessonsCompleted !== 1 ? "s" : ""} to save your species
+                    </p>
+                  )}
+                </>
+              );
+            })()}
+          </div>
         </motion.section>
 
         {/* Challenges Section */}

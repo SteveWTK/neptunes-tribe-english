@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Volume2 } from "lucide-react";
+import { Volume2, CheckCircle } from "lucide-react";
 
 /**
  * VocabularyItem - A vocabulary card with audio playback support
@@ -14,6 +14,8 @@ import { Volume2 } from "lucide-react";
  * @param {Function} props.t - Translation function for UI labels (optional)
  * @param {string} props.className - Additional CSS classes
  * @param {Object} props.translations - UI text translations
+ * @param {Function} props.onAudioPlayed - Callback when audio is played (optional)
+ * @param {boolean} props.audioPlayed - Whether audio has been played for this item (optional)
  */
 export default function VocabularyItem({
   item,
@@ -23,6 +25,8 @@ export default function VocabularyItem({
   t: customT,
   className = "",
   translations = {},
+  onAudioPlayed,
+  audioPlayed = false,
 }) {
   // Default translations with override support
   const defaultT = (key, fallback = "") => {
@@ -106,6 +110,10 @@ export default function VocabularyItem({
     } else {
       await generateAudio(wordText);
     }
+    // Notify parent that audio was played
+    if (onAudioPlayed) {
+      onAudioPlayed(item.word || item.english);
+    }
   };
 
   return (
@@ -121,18 +129,27 @@ export default function VocabularyItem({
             </span>
           )}
         </div>
-        <button
-          className="text-accent-600 hover:text-accent-700 hover:scale-105 disabled:opacity-50 transition-all"
-          onClick={handlePlayAudio}
-          disabled={audioLoading}
-          aria-label="Play pronunciation"
-        >
-          {audioLoading ? (
-            <div className="w-5 h-5 border-2 border-accent-600 border-t-transparent rounded-full animate-spin"></div>
-          ) : (
-            <Volume2 className="w-5 h-5" />
+        <div className="flex items-center gap-2">
+          {audioPlayed && (
+            <CheckCircle className="w-5 h-5 text-green-500" />
           )}
-        </button>
+          <button
+            className={`hover:scale-105 disabled:opacity-50 transition-all ${
+              audioPlayed
+                ? "text-green-500 hover:text-green-600"
+                : "text-accent-600 hover:text-accent-700"
+            }`}
+            onClick={handlePlayAudio}
+            disabled={audioLoading}
+            aria-label="Play pronunciation"
+          >
+            {audioLoading ? (
+              <div className="w-5 h-5 border-2 border-accent-600 border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <Volume2 className="w-5 h-5" />
+            )}
+          </button>
+        </div>
       </div>
       <p className="text-gray-600 dark:text-gray-300 mb-1">
         {item.translation}

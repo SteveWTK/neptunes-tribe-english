@@ -62,6 +62,9 @@ export default function MultiGapFillExerciseNew({
   // FEATURE 3: Show tooltip on audio button hover
   const [showAudioTooltip, setShowAudioTooltip] = useState(false);
 
+  // FEATURE 4: Track if audio has been fully played (for "Excellent Work" message)
+  const [audioFullyPlayed, setAudioFullyPlayed] = useState(false);
+
   const { data: session } = useSession();
   const { user } = useAuth();
   const router = useRouter();
@@ -863,6 +866,9 @@ export default function MultiGapFillExerciseNew({
         if (!isSubmitted) {
           setAudioPlayCount((prev) => prev + 1);
         }
+
+        // FEATURE 4: Mark audio as fully played for "Excellent Work" message
+        setAudioFullyPlayed(true);
       });
     }
 
@@ -1022,6 +1028,18 @@ export default function MultiGapFillExerciseNew({
                 Full plays remaining:{" "}
                 <strong>{maxAudioPlays - audioPlayCount}</strong>
               </p>
+
+              {/* FEATURE 4: Excellent Work message after audio fully played */}
+              {audioFullyPlayed && (
+                <div className="flex items-center gap-2 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg px-3 py-2">
+                  <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-sm font-semibold text-green-800 dark:text-green-200">
+                    Excellent Work! 🎉
+                  </span>
+                </div>
+              )}
 
               {/* FEATURE 1: Conditionally render button based on user_type */}
               {/* Hide "Show Full Text" button for school users, and only show after submission */}

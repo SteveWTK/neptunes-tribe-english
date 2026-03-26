@@ -39,7 +39,7 @@ export default function LessonLevelBadge({
   return (
     <span
       className={`inline-flex items-center ${sizeClasses[size]} rounded-full font-medium shadow-sm ${className}`}
-      // style={{ backgroundColor: levelConfig.color.dark }}
+      // style={{ backgroundColor: levelConfig.color.primary }}
       title={`Difficulty: ${levelConfig.displayName}`}
     >
       <span>{levelConfig.icon}</span>

@@ -15,8 +15,10 @@ import {
   X,
   Loader2,
   AlertTriangle,
+  BookOpen,
 } from "lucide-react";
 import Link from "next/link";
+import { LESSONS_PER_ADVENTURE } from "@/lib/constants";
 
 // IUCN Status configuration
 const IUCN_LEVELS = [
@@ -344,35 +346,23 @@ export default function SpeciesJourneyWidget({ compact = false }) {
             </div>
           </div>
 
-          {/* Next Level Info */}
-          {journey.next_level_threshold && (
-            <div className="bg-accent-50 dark:bg-accent-900/30 rounded-lg p-3">
-              <div className="flex items-center gap-2 text-sm text-accent-700 dark:text-accent-300">
-                <Target className="w-4 h-4" />
-                <span>
-                  {lang === "pt"
-                    ? `${(
-                        journey.next_level_threshold.points_required -
-                        journey.total_points
-                      ).toLocaleString()} pontos para ${
-                        IUCN_LEVELS.find(
-                          (l) =>
-                            l.code === journey.next_level_threshold.to_status
-                        )?.labelPt
-                      }`
-                    : `${(
-                        journey.next_level_threshold.points_required -
-                        journey.total_points
-                      ).toLocaleString()} points to ${
-                        IUCN_LEVELS.find(
-                          (l) =>
-                            l.code === journey.next_level_threshold.to_status
-                        )?.label
-                      }`}
-                </span>
-              </div>
+          {/* Lesson Progress Info */}
+          <div className="bg-accent-50 dark:bg-accent-900/30 rounded-lg p-3">
+            <div className="flex items-center gap-2 text-sm text-accent-700 dark:text-accent-300">
+              <BookOpen className="w-4 h-4" />
+              <span>
+                {(() => {
+                  const lessonsCompleted = journey.lessons_completed_in_adventure || 0;
+                  if (journey.current_iucn_status === "LC" && lessonsCompleted >= LESSONS_PER_ADVENTURE) {
+                    return lang === "pt" ? "Espécie Salva! 🎉" : "Species Saved! 🎉";
+                  }
+                  return lang === "pt"
+                    ? `${lessonsCompleted}/${LESSONS_PER_ADVENTURE} lições completas`
+                    : `${lessonsCompleted}/${LESSONS_PER_ADVENTURE} lessons completed`;
+                })()}
+              </span>
             </div>
-          )}
+          </div>
 
           {/* View Full Journey Link */}
           <Link

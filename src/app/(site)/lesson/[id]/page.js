@@ -125,6 +125,9 @@ function DynamicLessonContent() {
   const [interactivePitchKey, setInteractivePitchKey] = useState(0);
   const [interactiveGameKey, setInteractiveGameKey] = useState(0);
 
+  // Vocabulary audio tracking - tracks which words have been listened to
+  const [listenedVocabulary, setListenedVocabulary] = useState(new Set());
+
   const audioRef = useRef(null);
 
   // Helper function to get world URL from lesson or journey
@@ -1526,6 +1529,13 @@ function DynamicLessonContent() {
         );
 
       case "vocabulary":
+        const vocabItems = currentStepData.vocabulary || currentStepData.words || [];
+        const totalVocabItems = vocabItems.length;
+        const listenedCount = vocabItems.filter(item =>
+          listenedVocabulary.has(item.word || item.english)
+        ).length;
+        const allVocabListened = totalVocabItems > 0 && listenedCount === totalVocabItems;
+
         return (
           <div className="space-y-4">
             {/* Theme Image - discreet display */}
@@ -1542,14 +1552,33 @@ function DynamicLessonContent() {
               </div>
             )}
 
-            {/* <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-              {translations[`vocab-content-${currentStep}`] ||
-                currentStepData.content ||
-                t("learn_essential_words")}
-            </p> */}
+            {/* Excellent Work message when all vocabulary listened */}
+            {allVocabListened && (
+              <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-xl p-4 flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-100 dark:bg-green-800 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
+                </div>
+                <div>
+                  <p className="font-semibold text-green-800 dark:text-green-200">
+                    Excellent Work! 🎉
+                  </p>
+                  <p className="text-sm text-green-600 dark:text-green-400">
+                    You've listened to all {totalVocabItems} vocabulary words!
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Progress indicator */}
+            {totalVocabItems > 0 && !allVocabListened && (
+              <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                <Volume2 className="w-4 h-4" />
+                <span>Listened: {listenedCount}/{totalVocabItems}</span>
+              </div>
+            )}
+
             <div className="grid gap-4">
-              {(currentStepData.vocabulary || currentStepData.words || []).map(
-                (item, index) => {
+              {vocabItems.map((item, index) => {
                   // Pass translated tips and notes to the component
                   const translatedItem = {
                     ...item,
@@ -1560,6 +1589,7 @@ function DynamicLessonContent() {
                       translations[`vocab-note-${currentStep}-${index}`] ||
                       item.cultural_note,
                   };
+                  const wordKey = item.word || item.english;
                   return (
                     <VocabularyItem
                       key={index}
@@ -1567,6 +1597,10 @@ function DynamicLessonContent() {
                       englishVariant={userEnglishVariant}
                       voiceGender={userVoiceGender}
                       userLanguage={userLanguage}
+                      audioPlayed={listenedVocabulary.has(wordKey)}
+                      onAudioPlayed={(word) => {
+                        setListenedVocabulary(prev => new Set([...prev, word]));
+                      }}
                     />
                   );
                 }
