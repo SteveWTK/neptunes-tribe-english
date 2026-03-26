@@ -1554,24 +1554,6 @@ function DynamicLessonContent() {
               </div>
             )}
 
-            {/* Excellent Work message when all vocabulary listened */}
-            {allVocabListened && (
-              <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-xl p-4 flex items-center gap-3">
-                <div className="w-10 h-10 bg-green-100 dark:bg-green-800 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <p className="font-semibold text-green-800 dark:text-green-200">
-                    Excellent Work! 🎉
-                  </p>
-                  <p className="text-sm text-green-600 dark:text-green-400">
-                    You&apos;ve listened to all {totalVocabItems} vocabulary
-                    words!
-                  </p>
-                </div>
-              </div>
-            )}
-
             {/* Progress indicator */}
             {totalVocabItems > 0 && !allVocabListened && (
               <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
@@ -1610,6 +1592,23 @@ function DynamicLessonContent() {
                 );
               })}
             </div>
+            {/* Excellent Work message when all vocabulary listened */}
+            {allVocabListened && (
+              <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-xl p-4 flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-100 dark:bg-green-800 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
+                </div>
+                <div>
+                  <p className="font-semibold text-green-800 dark:text-green-200">
+                    Excellent Work! 🎉
+                  </p>
+                  <p className="text-sm text-green-600 dark:text-green-400">
+                    You&apos;ve listened to all {totalVocabItems} vocabulary
+                    words!
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         );
 
