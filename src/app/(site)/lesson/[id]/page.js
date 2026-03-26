@@ -3809,6 +3809,11 @@ function DynamicLessonContent() {
         initialShowFullText={unitShowFullText}
         displayMode={unitDisplayMode}
         onClose={() => setUnitModalOpen(false)}
+        onNext={() => {
+          // Close modal and advance to next step
+          setUnitModalOpen(false);
+          handleNext();
+        }}
         onXPAwarded={(xp) => {
           // Award XP incrementally as answers are submitted
           setXpEarned((prev) => prev + xp);

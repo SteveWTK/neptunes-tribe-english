@@ -12,6 +12,7 @@ export default function UnitModal({
   unitId,
   isOpen,
   onClose,
+  onNext,
   onComplete,
   onXPAwarded,
   initialShowFullText = false,
@@ -112,10 +113,19 @@ export default function UnitModal({
                   to close
                 </p>
                 <button
-                  onClick={onClose}
-                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg font-medium transition-colors"
+                  onClick={() => {
+                    if (onNext) {
+                      onNext();
+                    } else {
+                      onClose();
+                    }
+                  }}
+                  className="px-4 py-2 bg-accent-600 hover:bg-accent-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
                 >
-                  Next
+                  Next Step
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </button>
               </div>
             </div>
