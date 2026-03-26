@@ -68,7 +68,7 @@ export const LEVELS = {
     id: "level_1",
     value: "Level 1", // Must match lesson.difficulty in database
     displayName: "Level 1: Discovery",
-    shortName: "Level 1",
+    shortName: "Level 1: Discovery",
     description: "Start your environmental English journey",
     order: 1,
     icon: "", // Customize per project
@@ -92,7 +92,7 @@ export const LEVELS = {
     id: "level_2",
     value: "Level 2", // Must match lesson.difficulty in database
     displayName: "Level 2: Explorer",
-    shortName: "Level 2",
+    shortName: "Level 2: Explorer",
     description: "Deepen your understanding and skills",
     order: 2,
     icon: "", // Customize per project
@@ -116,7 +116,7 @@ export const LEVELS = {
     id: "level_3",
     value: "Level 3", // Must match lesson.difficulty in database
     displayName: "Level 3: Expert",
-    shortName: "Level 3",
+    shortName: "Level 3: Expert",
     description: "Master complex environmental topics",
     order: 3,
     icon: "", // Customize per project
