@@ -105,14 +105,14 @@ export const WORLDS = {
         name_pt: "Florestas Temperadas",
         name_th: "ป่าเขตอบอุ่น",
         week: 2,
-        ecosystemType: "mountain",
+        ecosystemType: "rainforest",
         description:
           "Learn English while exploring temperate forests and discovering endangered animals that inhabit these seasonal ecosystems.",
         description_pt:
           "Aprenda inglês enquanto explora florestas temperadas e descobre animais ameaçados que habitam esses ecossistemas sazonais.",
         description_th:
           "เรียนภาษาอังกฤษไปพร้อมกับการสำรวจป่าเขตอบอุ่นและค้นพบสัตว์ใกล้สูญพันธุ์ที่อาศัยอยู่ในระบบนิเวศตามฤดูกาลเหล่านี้",
-        themeTag: "andes",
+        themeTag: "temperate_forests",
         adventureUrl:
           "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/worlds/Andes.jpg",
         is_premium: false, // Premium content
@@ -133,14 +133,14 @@ export const WORLDS = {
         name_pt: "Florestas Boreais",
         name_th: "ป่าเขตหนาว",
         week: 3,
-        ecosystemType: "wetlands",
+        ecosystemType: "rainforest",
         description:
           "Learn English while exploring boreal forests and meeting endangered species that live in the largest forests on the planet.",
         description_pt:
           "Aprenda inglês enquanto explora florestas boreais e conhece espécies ameaçadas que vivem nas maiores florestas do planeta.",
         description_th:
           "เรียนภาษาอังกฤษไปพร้อมกับการสำรวจป่าสนเขตหนาวและพบกับสัตว์ป่าใกล้สูญพันธุ์ที่อาศัยอยู่ในป่าที่ใหญ่ที่สุดในโลก",
-        themeTag: "pantanal",
+        themeTag: "boreal_forests",
         adventureUrl:
           "https://pqlrhabwbajghxjukgea.supabase.co/storage/v1/object/public/unit-images/eco/Jaguar%20underwater.jpg",
         is_premium: true, // Premium content

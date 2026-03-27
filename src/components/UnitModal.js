@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import MultiGapFillExerciseNew from "@/components/MultiGapFillExerciseNew";
@@ -18,6 +18,21 @@ export default function UnitModal({
   initialShowFullText = false,
   displayMode = "gap_fill", // "gap_fill", "cloze", or "full_text"
 }) {
+  // Track if user has submitted answers (for gap_fill/cloze modes)
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  // Reset submission state when modal opens with a new unit
+  useEffect(() => {
+    if (isOpen) {
+      setHasSubmitted(false);
+    }
+  }, [isOpen, unitId]);
+
+  // Determine if Next button should be disabled
+  // Only disable for gap_fill and cloze modes until answers are submitted
+  const requiresSubmission = displayMode === "gap_fill" || displayMode === "cloze";
+  const isNextDisabled = requiresSubmission && !hasSubmitted;
+
   // Close on Escape key
   useEffect(() => {
     const handleEscape = (e) => {
@@ -91,6 +106,10 @@ export default function UnitModal({
                   initialShowFullText={initialShowFullText || displayMode === "full_text"}
                   displayMode={displayMode}
                   onXPAwarded={onXPAwarded}
+                  onSubmit={() => {
+                    // Enable Next button when user submits answers
+                    setHasSubmitted(true);
+                  }}
                   onComplete={(result) => {
                     if (onComplete) {
                       onComplete(result);
@@ -120,7 +139,13 @@ export default function UnitModal({
                       onClose();
                     }
                   }}
-                  className="px-4 py-2 bg-accent-600 hover:bg-accent-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+                  disabled={isNextDisabled}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+                    isNextDisabled
+                      ? "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                      : "bg-accent-600 hover:bg-accent-700 text-white"
+                  }`}
+                  title={isNextDisabled ? "Submit your answers first" : ""}
                 >
                   Next Step
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

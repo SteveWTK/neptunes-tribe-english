@@ -37,6 +37,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SpeciesSelectionModal from "@/components/species/SpeciesSelectionModal";
 import LevelSelectionModal from "@/components/LevelSelectionModal";
+import AddToHomeScreenCTA from "@/components/AddToHomeScreenCTA";
 import { toast } from "sonner";
 import { usePremiumUpgrade } from "@/lib/contexts/PremiumUpgradeContext";
 
@@ -1316,6 +1317,9 @@ function WorldDetailContent() {
 
       {/* Floating Level Indicator - shows when scrolling */}
       <FloatingLevelIndicator showAfterScroll={300} />
+
+      {/* Add to Home Screen CTA - for mobile users */}
+      <AddToHomeScreenCTA />
     </div>
   );
 }

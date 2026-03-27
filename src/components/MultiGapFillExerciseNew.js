@@ -24,6 +24,7 @@ export default function MultiGapFillExerciseNew({
   displayMode = "gap_fill", // "gap_fill" (dropdown), "cloze" (text input), or "full_text"
   onComplete = null, // Optional callback when exercise is completed
   onXPAwarded = null, // Optional callback for incremental XP tracking
+  onSubmit = null, // Optional callback when answers are submitted (fires before completion check)
 }) {
   const [unitData, setUnitData] = useState(null);
   const [textId, setTextId] = useState(null);
@@ -566,6 +567,11 @@ export default function MultiGapFillExerciseNew({
     if (!session?.user?.email) {
       alert("Please log in to save your progress!");
       return;
+    }
+
+    // Notify parent that answers have been submitted (for UnitModal Next button)
+    if (onSubmit) {
+      onSubmit();
     }
 
     setIsLoading(true);
