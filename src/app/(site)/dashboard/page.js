@@ -321,9 +321,13 @@ export default function DashboardPage() {
                   <div className="flex justify-between text-xs text-gray-800 dark:text-white/80 mb-2">
                     <span>Recovery Progress</span>
                     {(() => {
-                      const lessonsCompleted = journey.lessons_completed_in_adventure || 0;
+                      const lessonsCompleted =
+                        journey.lessons_completed_in_adventure || 0;
 
-                      if (journey.current_iucn_status === "LC" && lessonsCompleted >= LESSONS_PER_ADVENTURE) {
+                      if (
+                        journey.current_iucn_status === "LC" &&
+                        lessonsCompleted >= LESSONS_PER_ADVENTURE
+                      ) {
                         return (
                           <span className="text-green-600 dark:text-green-400 font-semibold">
                             Species Saved! 🎉
@@ -333,7 +337,8 @@ export default function DashboardPage() {
 
                       return (
                         <span>
-                          {lessonsCompleted}/{LESSONS_PER_ADVENTURE} lessons completed
+                          {lessonsCompleted}/{LESSONS_PER_ADVENTURE} lessons
+                          completed
                         </span>
                       );
                     })()}
@@ -528,7 +533,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <span className="text-lg font-semibold text-gray-800 dark:text-white block">
-                Worlds & Adventures
+                Worlds
               </span>
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 Learn and earn points
@@ -671,14 +676,14 @@ export default function DashboardPage() {
               Community Stats
             </h3>
             <div className="grid grid-cols-3 gap-4">
-              <div className="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+              {/* <div className="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <div className="text-2xl font-bold text-gray-800 dark:text-white">
                   {communityStats?.totalObservations?.toLocaleString() || "--"}
                 </div>
                 <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Observations
                 </div>
-              </div>
+              </div> */}
               <div className="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <div className="text-2xl font-bold text-gray-800 dark:text-white">
                   {communityStats?.speciesIdentified?.toLocaleString() || "--"}

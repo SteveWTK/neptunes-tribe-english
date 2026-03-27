@@ -586,7 +586,7 @@ function WorldDetailContent() {
 
   // Handle level selection from modal
   const handleLevelSelect = async (levelId, levelValue) => {
-    if (!pendingJourneyData) return;
+    if (!pendingJourneyData || !pendingNavigation) return;
 
     setIsLevelSubmitting(true);
 
@@ -595,13 +595,13 @@ function WorldDetailContent() {
       const userId = user?.userId || user?.id;
 
       // Update user's current_level in the database
-      const { error } = await supabase
+      const { error: updateError } = await supabase
         .from("users")
         .update({ current_level: levelValue })
         .eq("id", userId);
 
-      if (error) {
-        console.error("Error updating user level:", error);
+      if (updateError) {
+        console.error("Error updating user level:", updateError);
         toast.error("Failed to save level preference");
         setIsLevelSubmitting(false);
         return;
@@ -612,14 +612,41 @@ function WorldDetailContent() {
 
       console.log("🎯 handleLevelSelect - Level saved:", levelValue);
 
+      // Fetch the first lesson for the selected level in this adventure's theme
+      const adventure = pendingNavigation.adventure;
+      const { data: lessons, error: lessonsError } = await supabase
+        .from("lessons")
+        .select("id, title, under_construction, difficulty, sort_order")
+        .eq("world_id", world.id)
+        .contains("theme_tags", [adventure.themeTag])
+        .eq("difficulty", levelValue)
+        .order("sort_order", { ascending: true })
+        .limit(1);
+
+      if (lessonsError) {
+        console.error("Error fetching lessons for level:", lessonsError);
+      }
+
+      console.log("🎯 handleLevelSelect - Fetched lessons for level:", {
+        levelValue,
+        themeTag: adventure.themeTag,
+        worldId: world.id,
+        lessonsFound: lessons?.length || 0,
+        firstLesson: lessons?.[0],
+      });
+
       setShowLevelModal(false);
       setIsLevelSubmitting(false);
 
-      // Navigate to first lesson
-      const firstLesson = currentData.lessons?.[0];
-      console.log("🎯 handleLevelSelect - Navigating to:", firstLesson?.id);
+      // Navigate to first lesson at the selected level
+      const firstLesson = lessons?.[0];
       if (firstLesson && !firstLesson.under_construction) {
+        console.log("🎯 handleLevelSelect - Navigating to:", firstLesson.id);
         router.push(`/lesson/${firstLesson.id}`);
+      } else {
+        // Fallback: if no lesson at this level, show a message and stay on the page
+        console.log("🎯 handleLevelSelect - No lessons found at this level");
+        toast.info(`No lessons available at ${levelValue} yet. Try another level.`);
       }
     } catch (error) {
       console.error("Error saving level:", error);
