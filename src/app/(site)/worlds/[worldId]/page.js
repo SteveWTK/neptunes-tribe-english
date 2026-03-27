@@ -647,7 +647,9 @@ function WorldDetailContent() {
       } else {
         // Fallback: if no lesson at this level, show a message and stay on the page
         console.log("🎯 handleLevelSelect - No lessons found at this level");
-        toast.info(`No lessons available at ${levelValue} yet. Try another level.`);
+        toast.info(
+          `No lessons available at ${levelValue} yet. Try another level.`
+        );
       }
     } catch (error) {
       console.error("Error saving level:", error);
@@ -1101,7 +1103,7 @@ function WorldDetailContent() {
                         className="w-5 h-5"
                         style={{ color: world.color.primary }}
                       />
-                      Learning Activities
+                      Your mission
                     </h3>
                     {currentData.lessons && currentData.lessons.length > 0 ? (
                       <div className="space-y-3">
