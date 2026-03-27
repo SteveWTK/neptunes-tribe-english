@@ -242,6 +242,41 @@ export function useOnboarding() {
     setShowFirstWorldSpotlight(true);
   }, []);
 
+  /**
+   * Reset all onboarding state (for testing purposes)
+   * Call this to re-enable all onboarding spotlights
+   */
+  const resetOnboarding = useCallback(() => {
+    if (typeof window === "undefined") return;
+
+    // Clear all localStorage flags
+    Object.values(STORAGE_KEYS).forEach((key) => {
+      localStorage.removeItem(key);
+      sessionStorage.removeItem(key);
+    });
+
+    // Reset state
+    setShowFirstLessonSpotlight(false);
+    setShowFirstAdventureSpotlight(false);
+    setShowFirstWorldSpotlight(false);
+    setShowAllCompleteSpotlight(false);
+
+    console.log("🔄 Onboarding state reset - all spotlights will show again");
+  }, []);
+
+  // Check for reset param in URL (for easy testing)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("reset_onboarding") === "true") {
+      resetOnboarding();
+      // Remove the param from URL without reload
+      const newUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, "", newUrl);
+    }
+  }, [resetOnboarding]);
+
   return {
     isInitialized,
 
@@ -279,6 +314,7 @@ export function useOnboarding() {
     setSessionFlag,
     getSessionFlag,
     clearSessionFlag,
+    resetOnboarding, // For testing
 
     // Storage keys (for direct access if needed)
     STORAGE_KEYS,

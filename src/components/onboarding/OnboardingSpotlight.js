@@ -67,7 +67,10 @@ export default function OnboardingSpotlight({
 
   // Calculate target position and tooltip placement
   const calculatePositions = useCallback(() => {
-    if (!targetSelector) return;
+    if (!targetSelector) {
+      console.log("OnboardingSpotlight: No targetSelector provided");
+      return;
+    }
 
     const targetElement = document.querySelector(targetSelector);
     if (!targetElement) {
@@ -75,14 +78,20 @@ export default function OnboardingSpotlight({
       return;
     }
 
+    // getBoundingClientRect returns viewport-relative coordinates
+    // Since we use position:fixed, we use these directly (no scroll offset needed)
     const rect = targetElement.getBoundingClientRect();
+
+    console.log("OnboardingSpotlight: Found target", {
+      selector: targetSelector,
+      rect: { top: rect.top, left: rect.left, width: rect.width, height: rect.height },
+    });
+
     setTargetRect({
-      top: rect.top + window.scrollY,
-      left: rect.left + window.scrollX,
+      top: rect.top,  // viewport-relative for fixed positioning
+      left: rect.left,
       width: rect.width,
       height: rect.height,
-      viewportTop: rect.top,
-      viewportLeft: rect.left,
     });
 
     // Calculate tooltip position based on available space
@@ -106,37 +115,38 @@ export default function OnboardingSpotlight({
       }
     }
 
+    // Calculate tooltip position (viewport-relative since we use position:fixed)
     let tooltipTop, tooltipLeft;
     switch (finalPosition) {
       case "top":
-        tooltipTop = rect.top + window.scrollY - tooltipHeight - padding;
-        tooltipLeft = rect.left + window.scrollX + rect.width / 2 - tooltipWidth / 2;
+        tooltipTop = rect.top - tooltipHeight - padding;
+        tooltipLeft = rect.left + rect.width / 2 - tooltipWidth / 2;
         setArrowDirection("down");
         break;
       case "bottom":
-        tooltipTop = rect.bottom + window.scrollY + padding;
-        tooltipLeft = rect.left + window.scrollX + rect.width / 2 - tooltipWidth / 2;
+        tooltipTop = rect.bottom + padding;
+        tooltipLeft = rect.left + rect.width / 2 - tooltipWidth / 2;
         setArrowDirection("up");
         break;
       case "left":
-        tooltipTop = rect.top + window.scrollY + rect.height / 2 - tooltipHeight / 2;
-        tooltipLeft = rect.left + window.scrollX - tooltipWidth - padding;
+        tooltipTop = rect.top + rect.height / 2 - tooltipHeight / 2;
+        tooltipLeft = rect.left - tooltipWidth - padding;
         setArrowDirection("right");
         break;
       case "right":
-        tooltipTop = rect.top + window.scrollY + rect.height / 2 - tooltipHeight / 2;
-        tooltipLeft = rect.right + window.scrollX + padding;
+        tooltipTop = rect.top + rect.height / 2 - tooltipHeight / 2;
+        tooltipLeft = rect.right + padding;
         setArrowDirection("left");
         break;
       default:
-        tooltipTop = rect.bottom + window.scrollY + padding;
-        tooltipLeft = rect.left + window.scrollX + rect.width / 2 - tooltipWidth / 2;
+        tooltipTop = rect.bottom + padding;
+        tooltipLeft = rect.left + rect.width / 2 - tooltipWidth / 2;
         setArrowDirection("up");
     }
 
     // Ensure tooltip stays within viewport
     tooltipLeft = Math.max(padding, Math.min(tooltipLeft, viewportWidth - tooltipWidth - padding));
-    tooltipTop = Math.max(padding, tooltipTop);
+    tooltipTop = Math.max(padding, Math.min(tooltipTop, viewportHeight - tooltipHeight - padding));
 
     setTooltipPosition({ top: tooltipTop, left: tooltipLeft });
 
