@@ -227,32 +227,27 @@ export default function OnboardingSpotlight({
   // Regular spotlight with target element
   return (
     <AnimatePresence>
+      {/* Click-to-dismiss overlay - full screen but under the spotlight */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-50"
-        style={{ pointerEvents: "none" }}
+        onClick={onDismiss}
+        style={{ cursor: "pointer" }}
       >
-        {/* Overlay with cutout */}
-        <div
-          className="absolute inset-0 bg-black/50"
-          style={{ pointerEvents: "auto" }}
-          onClick={onDismiss}
-        />
-
-        {/* Spotlight hole - renders above the overlay */}
-        {targetRect && (
+        {/* Spotlight element - creates the hole effect with massive box-shadow */}
+        {targetRect ? (
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="absolute rounded-xl"
+            className="absolute rounded-xl bg-transparent"
             style={{
               top: targetRect.top - 8,
               left: targetRect.left - 8,
               width: targetRect.width + 16,
               height: targetRect.height + 16,
-              boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.5)",
+              boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.6)",
               pointerEvents: "none",
             }}
           >
@@ -269,59 +264,69 @@ export default function OnboardingSpotlight({
                 ease: "easeInOut",
               }}
             />
+            {/* Glow effect */}
+            <div
+              className="absolute inset-0 rounded-xl"
+              style={{
+                boxShadow: "0 0 20px 4px rgba(16, 185, 129, 0.4)",
+              }}
+            />
           </motion.div>
-        )}
-
-        {/* Tooltip */}
-        {targetRect && (
-          <motion.div
-            ref={tooltipRef}
-            initial={{ opacity: 0, y: arrowDirection === "up" ? -10 : 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="absolute w-[280px]"
-            style={{
-              top: tooltipPosition.top,
-              left: tooltipPosition.left,
-              pointerEvents: "auto",
-            }}
-          >
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-              {/* Arrow */}
-              <div
-                className={`absolute w-4 h-4 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 transform rotate-45 ${
-                  arrowDirection === "up"
-                    ? "-top-2 left-1/2 -translate-x-1/2 border-t border-l"
-                    : arrowDirection === "down"
-                    ? "-bottom-2 left-1/2 -translate-x-1/2 border-b border-r"
-                    : arrowDirection === "left"
-                    ? "-left-2 top-1/2 -translate-y-1/2 border-l border-b"
-                    : "-right-2 top-1/2 -translate-y-1/2 border-r border-t"
-                }`}
-              />
-
-              {/* Content */}
-              <div className="p-4">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="flex-shrink-0 w-10 h-10 bg-accent-100 dark:bg-accent-900/30 rounded-full flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-accent-600 dark:text-accent-400" />
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-200 font-medium leading-snug pt-1">
-                    {displayMessage}
-                  </p>
-                </div>
-
-                <button
-                  onClick={onDismiss}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-accent-500 hover:bg-accent-600 text-white font-semibold rounded-lg transition-colors"
-                >
-                  {t.gotIt}
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </motion.div>
+        ) : (
+          /* Fallback: just show overlay if no target found */
+          <div className="absolute inset-0 bg-black/60" />
         )}
       </motion.div>
+
+      {/* Tooltip - rendered separately so it's clickable */}
+      {targetRect && (
+        <motion.div
+          ref={tooltipRef}
+          initial={{ opacity: 0, y: arrowDirection === "up" ? -10 : 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          className="fixed w-[280px] z-[51]"
+          style={{
+            top: tooltipPosition.top,
+            left: tooltipPosition.left,
+          }}
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+            {/* Arrow */}
+            <div
+              className={`absolute w-4 h-4 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 transform rotate-45 ${
+                arrowDirection === "up"
+                  ? "-top-2 left-1/2 -translate-x-1/2 border-t border-l"
+                  : arrowDirection === "down"
+                  ? "-bottom-2 left-1/2 -translate-x-1/2 border-b border-r"
+                  : arrowDirection === "left"
+                  ? "-left-2 top-1/2 -translate-y-1/2 border-l border-b"
+                  : "-right-2 top-1/2 -translate-y-1/2 border-r border-t"
+              }`}
+            />
+
+            {/* Content */}
+            <div className="p-4">
+              <div className="flex items-start gap-3 mb-3">
+                <div className="flex-shrink-0 w-10 h-10 bg-accent-100 dark:bg-accent-900/30 rounded-full flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-accent-600 dark:text-accent-400" />
+                </div>
+                <p className="text-gray-700 dark:text-gray-200 font-medium leading-snug pt-1">
+                  {displayMessage}
+                </p>
+              </div>
+
+              <button
+                onClick={onDismiss}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-accent-500 hover:bg-accent-600 text-white font-semibold rounded-lg transition-colors"
+              >
+                {t.gotIt}
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 }
