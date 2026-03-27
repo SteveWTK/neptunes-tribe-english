@@ -22,6 +22,8 @@ import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import LevelIndicator from "@/components/LevelIndicator";
 import Link from "next/link";
+import OnboardingSpotlight from "@/components/onboarding/OnboardingSpotlight";
+import { useOnboarding } from "@/hooks/useOnboarding";
 
 // Icon mapping for Lucide icons
 const ICON_MAP = {
@@ -41,6 +43,18 @@ function WorldsContent() {
   const [hoveredHero, setHoveredHero] = useState(null);
   // Track current hero index for each world (worldId -> heroIndex)
   const [currentHeroIndexes, setCurrentHeroIndexes] = useState({});
+
+  // Onboarding spotlight state
+  const {
+    checkShowFirstWorldSpotlight,
+    activateFirstWorldSpotlight,
+    showFirstWorldSpotlight,
+    dismissFirstWorldSpotlight,
+    showAllCompleteSpotlight,
+    dismissAllCompleteSpotlight,
+    triggerAllContentComplete,
+  } = useOnboarding();
+  const [nextWorldSelector, setNextWorldSelector] = useState(null);
 
   useEffect(() => {
     // Load worlds from config and translate based on current language
@@ -79,6 +93,42 @@ function WorldsContent() {
 
     return () => clearInterval(interval);
   }, [worlds]);
+
+  // Check for world completion onboarding spotlight
+  useEffect(() => {
+    if (worlds.length === 0) return;
+
+    // Wait for DOM to settle
+    const timer = setTimeout(() => {
+      const worldResult = checkShowFirstWorldSpotlight();
+      if (worldResult.show) {
+        const completedWorldId = worldResult.completedWorldId;
+
+        // Find the index of the completed world
+        const completedWorldIndex = worlds.findIndex(
+          (w) => w.id === completedWorldId
+        );
+
+        // Find the next world (one after the completed world)
+        const nextWorld = worlds[completedWorldIndex + 1];
+
+        if (nextWorld) {
+          setNextWorldSelector(`[data-world-id="${nextWorld.id}"]`);
+          activateFirstWorldSpotlight();
+        } else {
+          // No more worlds - user has completed all content!
+          triggerAllContentComplete();
+        }
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [
+    worlds,
+    checkShowFirstWorldSpotlight,
+    activateFirstWorldSpotlight,
+    triggerAllContentComplete,
+  ]);
 
   const getIcon = (iconName) => {
     const IconComponent = ICON_MAP[iconName] || Globe;
@@ -155,6 +205,7 @@ function WorldsContent() {
             return (
               <motion.div
                 key={world.id}
+                data-world-id={world.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -375,6 +426,19 @@ function WorldsContent() {
           })}
         </div>
       </div>
+
+      {/* Onboarding Spotlights */}
+      <OnboardingSpotlight
+        targetSelector={nextWorldSelector}
+        type="firstWorld"
+        isVisible={showFirstWorldSpotlight && nextWorldSelector}
+        onDismiss={dismissFirstWorldSpotlight}
+      />
+      <OnboardingSpotlight
+        type="allComplete"
+        isVisible={showAllCompleteSpotlight}
+        onDismiss={dismissAllCompleteSpotlight}
+      />
     </div>
   );
 }

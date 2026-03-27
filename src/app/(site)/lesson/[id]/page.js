@@ -73,12 +73,14 @@ import { XP_THRESHOLD_FOR_IUCN_ADVANCE } from "@/lib/constants";
 import Link from "next/link";
 import IUCNProgressBar from "@/components/progress/IUCNProgressBar";
 import { toast } from "sonner";
+import { useOnboarding } from "@/hooks/useOnboarding";
 
 function DynamicLessonContent() {
   const params = useParams();
   const router = useRouter();
   const { user } = useAuth();
   const { t, userLanguage } = useTranslation(user);
+  const { triggerFromLessonCompletion } = useOnboarding();
   const lessonId = params.id;
 
   const [lesson, setLesson] = useState(null);
@@ -943,6 +945,9 @@ function DynamicLessonContent() {
     // Lesson completion is already handled by handleLessonCompletion() on the completion step
     // This function just navigates back to the world page
     console.log("🏁 Navigating back to world page...");
+
+    // Trigger onboarding spotlight for first lesson completion
+    triggerFromLessonCompletion();
 
     // Small delay for smooth transition
     setTimeout(() => {

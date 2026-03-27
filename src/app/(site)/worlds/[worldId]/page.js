@@ -38,6 +38,8 @@ import Link from "next/link";
 import SpeciesSelectionModal from "@/components/species/SpeciesSelectionModal";
 import LevelSelectionModal from "@/components/LevelSelectionModal";
 import AddToHomeScreenCTA from "@/components/AddToHomeScreenCTA";
+import OnboardingSpotlight from "@/components/onboarding/OnboardingSpotlight";
+import { useOnboarding } from "@/hooks/useOnboarding";
 import { toast } from "sonner";
 import { usePremiumUpgrade } from "@/lib/contexts/PremiumUpgradeContext";
 
@@ -105,6 +107,22 @@ function WorldDetailContent() {
   const [showLevelModal, setShowLevelModal] = useState(false);
   const [isLevelSubmitting, setIsLevelSubmitting] = useState(false);
   const [pendingJourneyData, setPendingJourneyData] = useState(null);
+
+  // Onboarding spotlight state
+  const {
+    checkShowFirstLessonSpotlight,
+    checkShowFirstAdventureSpotlight,
+    activateFirstLessonSpotlight,
+    activateFirstAdventureSpotlight,
+    showFirstLessonSpotlight,
+    showFirstAdventureSpotlight,
+    dismissFirstLessonSpotlight,
+    dismissFirstAdventureSpotlight,
+    triggerAdventureComplete,
+    triggerWorldComplete,
+  } = useOnboarding();
+  const [nextLessonSelector, setNextLessonSelector] = useState(null);
+  const [nextAdventureSelector, setNextAdventureSelector] = useState(null);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -258,6 +276,82 @@ function WorldDetailContent() {
     return () =>
       document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [adventureData, selectedAdventure]);
+
+  // Check for onboarding spotlights when returning from a lesson
+  useEffect(() => {
+    // Only check when we have loaded lessons and completed lessons data
+    const currentLessons = adventureData[selectedAdventure?.id]?.lessons;
+    if (!currentLessons || loading) return;
+
+    // Wait a moment for DOM to settle after navigation
+    const timer = setTimeout(() => {
+      // Check if we should show the "first lesson completed" spotlight
+      const shouldShowFirstLesson = checkShowFirstLessonSpotlight();
+
+      // Find the first incomplete lesson to highlight
+      const nextLesson = currentLessons.find(
+        (lesson) => !completedLessons.has(lesson.id) && !lesson.under_construction
+      );
+
+      // Check if ALL lessons in this adventure are complete
+      const allLessonsComplete = currentLessons.length > 0 && currentLessons.every(
+        (lesson) => completedLessons.has(lesson.id) || lesson.under_construction
+      );
+
+      if (shouldShowFirstLesson) {
+        if (nextLesson) {
+          // Show spotlight pointing to next lesson
+          setNextLessonSelector(`[data-lesson-id="${nextLesson.id}"]`);
+          activateFirstLessonSpotlight();
+        } else if (allLessonsComplete) {
+          // All lessons in this adventure are complete - trigger adventure completion
+          triggerAdventureComplete(selectedAdventure.id);
+        }
+      }
+
+      // Check for showing the adventure completion spotlight
+      const adventureResult = checkShowFirstAdventureSpotlight();
+      if (adventureResult.show && allLessonsComplete && filteredAdventures.length > 1) {
+        // Find the next adventure (one after the current selected adventure)
+        const currentAdventureIndex = filteredAdventures.findIndex(
+          (a) => a.id === selectedAdventure?.id
+        );
+
+        // Find the next adventure that has lessons and is not under construction
+        let nextAdventure = null;
+        for (let i = currentAdventureIndex + 1; i < filteredAdventures.length; i++) {
+          const candidate = filteredAdventures[i];
+          if (candidate.lessonCount > 0 && !candidate.underConstruction) {
+            nextAdventure = candidate;
+            break;
+          }
+        }
+
+        if (nextAdventure) {
+          setNextAdventureSelector(`[data-adventure-id="${nextAdventure.id}"]`);
+          activateFirstAdventureSpotlight();
+        } else {
+          // No more playable adventures in this world - trigger world completion
+          triggerWorldComplete(world?.id);
+        }
+      }
+    }, 800); // Wait for scroll and DOM updates
+
+    return () => clearTimeout(timer);
+  }, [
+    adventureData,
+    selectedAdventure,
+    completedLessons,
+    loading,
+    filteredAdventures,
+    world,
+    checkShowFirstLessonSpotlight,
+    checkShowFirstAdventureSpotlight,
+    activateFirstLessonSpotlight,
+    activateFirstAdventureSpotlight,
+    triggerAdventureComplete,
+    triggerWorldComplete,
+  ]);
 
   // Fetch user's current journey
   useEffect(() => {
@@ -962,6 +1056,7 @@ function WorldDetailContent() {
               return (
                 <motion.div
                   key={adventure.id}
+                  data-adventure-id={adventure.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -1128,6 +1223,8 @@ function WorldDetailContent() {
                           return (
                             <div
                               key={lesson.id}
+                              data-lesson-id={lesson.id}
+                              data-lesson-completed={isCompleted}
                               onClick={() => {
                                 if (journeyLoading) return; // Wait for journey to load
                                 if (!canAccessLesson) {
@@ -1322,6 +1419,20 @@ function WorldDetailContent() {
 
       {/* Add to Home Screen CTA - for mobile users */}
       <AddToHomeScreenCTA />
+
+      {/* Onboarding Spotlights */}
+      <OnboardingSpotlight
+        targetSelector={nextLessonSelector}
+        type="firstLesson"
+        isVisible={showFirstLessonSpotlight && nextLessonSelector}
+        onDismiss={dismissFirstLessonSpotlight}
+      />
+      <OnboardingSpotlight
+        targetSelector={nextAdventureSelector}
+        type="firstAdventure"
+        isVisible={showFirstAdventureSpotlight && nextAdventureSelector}
+        onDismiss={dismissFirstAdventureSpotlight}
+      />
     </div>
   );
 }
