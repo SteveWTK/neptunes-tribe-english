@@ -167,7 +167,7 @@ export default function LevelIndicator({
         <button
           onClick={() => isIndividual && setIsDropdownOpen(!isDropdownOpen)}
           disabled={!isIndividual}
-          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium bg-primary-800 text-white shadow-sm transition-all ${
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium bg-accent-700 text-white shadow-sm transition-all ${
             isIndividual
               ? "cursor-pointer hover:shadow-md hover:scale-105"
               : "cursor-default"

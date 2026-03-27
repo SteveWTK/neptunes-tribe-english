@@ -31,7 +31,9 @@ export default function MultiGapFillExerciseNew({
   const [gapText, setGapText] = useState("");
   const [questions, setQuestions] = useState([]);
   const [userAnswers, setUserAnswers] = useState({});
-  const [showFullText, setShowFullText] = useState(initialShowFullText || displayMode === "full_text");
+  const [showFullText, setShowFullText] = useState(
+    initialShowFullText || displayMode === "full_text"
+  );
   const isClozeMode = displayMode === "cloze";
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
@@ -375,7 +377,8 @@ export default function MultiGapFillExerciseNew({
     const userAnswer = userAnswers[questionId];
     // For cloze mode, use case-insensitive comparison
     const isCorrect = isClozeMode
-      ? userAnswer?.toLowerCase().trim() === question.correct_answer.toLowerCase().trim()
+      ? userAnswer?.toLowerCase().trim() ===
+        question.correct_answer.toLowerCase().trim()
       : userAnswer === question.correct_answer;
     const hasNotes = question.notes && question.notes.trim().length > 0;
     const isNoteExpanded = expandedNotes.has(question.gap_number);
@@ -573,7 +576,8 @@ export default function MultiGapFillExerciseNew({
         const userAnswer = userAnswers[`${unitId}-${q.gap_number}`];
         // For cloze mode, use case-insensitive comparison
         const isCorrect = isClozeMode
-          ? userAnswer?.toLowerCase().trim() === q.correct_answer.toLowerCase().trim()
+          ? userAnswer?.toLowerCase().trim() ===
+            q.correct_answer.toLowerCase().trim()
           : userAnswer === q.correct_answer;
         if (isCorrect) correctCount++;
       });
@@ -1029,11 +1033,19 @@ export default function MultiGapFillExerciseNew({
                 <strong>{maxAudioPlays - audioPlayCount}</strong>
               </p>
 
-              {/* FEATURE 4: Excellent Work message after audio fully played */}
+              {/* FEATURE 4: Excellent Work message after audio fully played - Desktop only */}
               {audioFullyPlayed && (
-                <div className="flex items-center gap-2 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg px-3 py-2">
-                  <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                <div className="hidden lg:flex items-center gap-2 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg px-3 py-2">
+                  <svg
+                    className="w-5 h-5 text-green-600 dark:text-green-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   <span className="text-sm font-semibold text-green-800 dark:text-green-200">
                     Excellent Work! 🎉
@@ -1126,6 +1138,26 @@ export default function MultiGapFillExerciseNew({
                     Loading...
                   </p>
                 )}
+              </div>
+            )}
+
+            {/* FEATURE 4: Excellent Work message after audio fully played - Mobile only */}
+            {audioFullyPlayed && (
+              <div className="flex lg:hidden items-center gap-2 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg px-3 py-2 mt-4">
+                <svg
+                  className="w-5 h-5 text-green-600 dark:text-green-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span className="text-sm font-semibold text-green-800 dark:text-green-200">
+                  Excellent Work! 🎉
+                </span>
               </div>
             )}
           </div>

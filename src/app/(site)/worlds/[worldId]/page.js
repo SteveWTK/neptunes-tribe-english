@@ -31,10 +31,12 @@ import {
   getAvailableAdventures,
 } from "@/lib/supabase/lesson-queries";
 import LevelIndicator from "@/components/LevelIndicator";
+import FloatingLevelIndicator from "@/components/FloatingLevelIndicator";
 import LessonLevelBadge from "@/components/LessonLevelBadge";
 import Image from "next/image";
 import Link from "next/link";
 import SpeciesSelectionModal from "@/components/species/SpeciesSelectionModal";
+import LevelSelectionModal from "@/components/LevelSelectionModal";
 import { toast } from "sonner";
 import { usePremiumUpgrade } from "@/lib/contexts/PremiumUpgradeContext";
 
@@ -97,6 +99,11 @@ function WorldDetailContent() {
   const [pendingNavigation, setPendingNavigation] = useState(null);
   const [journey, setJourney] = useState(null);
   const [journeyLoading, setJourneyLoading] = useState(true);
+
+  // Level selection modal state (shown after species selection for new users)
+  const [showLevelModal, setShowLevelModal] = useState(false);
+  const [isLevelSubmitting, setIsLevelSubmitting] = useState(false);
+  const [pendingJourneyData, setPendingJourneyData] = useState(null);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -453,7 +460,9 @@ function WorldDetailContent() {
       await fetchAdventureSpecies(adventure);
     } else {
       // Journey already active, navigate directly
-      console.log("🗺️ handleLessonStart - Journey active, navigating to lesson");
+      console.log(
+        "🗺️ handleLessonStart - Journey active, navigating to lesson"
+      );
       router.push(`/lesson/${lessonId}`);
     }
   };
@@ -462,7 +471,9 @@ function WorldDetailContent() {
   const handleAdventureStart = async (adventure) => {
     // Wait for journey to finish loading
     if (journeyLoading) {
-      console.log("🗺️ handleAdventureStart - Journey still loading, waiting...");
+      console.log(
+        "🗺️ handleAdventureStart - Journey still loading, waiting..."
+      );
       return;
     }
 
@@ -480,7 +491,9 @@ function WorldDetailContent() {
       await fetchAdventureSpecies(adventure);
     } else {
       // Journey already active, navigate to first lesson
-      console.log("🗺️ handleAdventureStart - Journey active, navigating to first lesson");
+      console.log(
+        "🗺️ handleAdventureStart - Journey active, navigating to first lesson"
+      );
       const firstLesson = currentData.lessons?.[0];
       if (firstLesson && !firstLesson.under_construction) {
         router.push(`/lesson/${firstLesson.id}`);
@@ -559,18 +572,59 @@ function WorldDetailContent() {
         setJourney(data.journey);
         setShowSpeciesModal(false);
 
-        // Navigate to first lesson
-        const firstLesson = currentData.lessons?.[0];
-        console.log("🎯 handleSpeciesSelect - Navigating to:", firstLesson?.id);
-        if (firstLesson && !firstLesson.under_construction) {
-          router.push(`/lesson/${firstLesson.id}`);
-        }
+        // Store journey data and show level selection modal
+        setPendingJourneyData(data.journey);
+        setShowLevelModal(true);
       } else {
         toast.error(data.error || "Failed to start adventure");
       }
     } catch (error) {
       console.error("Error starting adventure:", error);
       toast.error("Failed to start adventure");
+    }
+  };
+
+  // Handle level selection from modal
+  const handleLevelSelect = async (levelId, levelValue) => {
+    if (!pendingJourneyData) return;
+
+    setIsLevelSubmitting(true);
+
+    try {
+      const supabase = createClient();
+      const userId = user?.userId || user?.id;
+
+      // Update user's current_level in the database
+      const { error } = await supabase
+        .from("users")
+        .update({ current_level: levelValue })
+        .eq("id", userId);
+
+      if (error) {
+        console.error("Error updating user level:", error);
+        toast.error("Failed to save level preference");
+        setIsLevelSubmitting(false);
+        return;
+      }
+
+      // Save level filter to localStorage
+      localStorage.setItem("level_filter", levelValue);
+
+      console.log("🎯 handleLevelSelect - Level saved:", levelValue);
+
+      setShowLevelModal(false);
+      setIsLevelSubmitting(false);
+
+      // Navigate to first lesson
+      const firstLesson = currentData.lessons?.[0];
+      console.log("🎯 handleLevelSelect - Navigating to:", firstLesson?.id);
+      if (firstLesson && !firstLesson.under_construction) {
+        router.push(`/lesson/${firstLesson.id}`);
+      }
+    } catch (error) {
+      console.error("Error saving level:", error);
+      toast.error("Failed to save level preference");
+      setIsLevelSubmitting(false);
     }
   };
 
@@ -628,7 +682,7 @@ function WorldDetailContent() {
                 className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1"
               >
                 <Home className="w-4 h-4" />
-                Home
+                Dashboard
               </button>
               <ChevronRight className="w-4 h-4 text-gray-400" />
               <button
@@ -1030,7 +1084,8 @@ function WorldDetailContent() {
                           const isPremiumLesson = lesson.is_premium;
                           // Lesson is locked if adventure is premium OR lesson itself is premium (and user is not premium)
                           const canAccessLesson =
-                            (!isPremiumAdventure && !isPremiumLesson) || isPremiumUser;
+                            (!isPremiumAdventure && !isPremiumLesson) ||
+                            isPremiumUser;
                           console.log(
                             `Lesson ${lesson.id} (${lesson.title}):`,
                             {
@@ -1108,7 +1163,7 @@ function WorldDetailContent() {
                                     {!viewingAllLevels && (
                                       <div
                                         className="text-sm text-gray-600 dark:text-gray-400"
-                                        style={{ color: world.color.light }}
+                                        style={{ color: world.color.primary }}
                                       >
                                         {lesson.difficulty}
                                       </div>
@@ -1193,8 +1248,8 @@ function WorldDetailContent() {
                         journeyLoading ||
                         ((!currentData.units ||
                           currentData.units.length === 0) &&
-                        (!currentData.lessons ||
-                          currentData.lessons.length === 0))
+                          (!currentData.lessons ||
+                            currentData.lessons.length === 0))
                       }
                     >
                       {journeyLoading ? (
@@ -1223,6 +1278,17 @@ function WorldDetailContent() {
         worldId={pendingNavigation?.worldId || ""}
         worldName={world?.name || ""}
       />
+
+      {/* Level Selection Modal - shown after species selection for new users */}
+      <LevelSelectionModal
+        isOpen={showLevelModal}
+        onClose={() => setShowLevelModal(false)}
+        onSelect={handleLevelSelect}
+        isSubmitting={isLevelSubmitting}
+      />
+
+      {/* Floating Level Indicator - shows when scrolling */}
+      <FloatingLevelIndicator showAfterScroll={300} />
     </div>
   );
 }

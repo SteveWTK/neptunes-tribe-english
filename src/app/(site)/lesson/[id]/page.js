@@ -1421,10 +1421,13 @@ function DynamicLessonContent() {
               englishVariant={userEnglishVariant}
               voiceGender={userVoiceGender}
               mode={currentStepData.mode || "multiple_choice"}
+              onAnswerSubmitted={() => {
+                // Enable Next button after any answer submission (correct or incorrect)
+                setStepAttempted(true);
+              }}
               onXPAwarded={(xp) => {
                 setXpEarned((prev) => prev + xp);
                 setCumulativeXP((prev) => prev + xp); // Also update cumulative XP for progress bar
-                setStepAttempted(true); // Mark step as attempted when user submits an answer
               }}
               onComplete={(xp) => {
                 // XP already awarded incrementally via onXPAwarded

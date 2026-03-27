@@ -34,10 +34,7 @@ export default function LandingLayout({ children }) {
       {/* Admin tool: only visible to platform_admin users */}
       {/* <UserLevelSwitcher /> */}
       {/* Floating feedback widget - always accessible (from @inspire/shared) */}
-      <FeedbackWidget
-        appName="Neptune's Tribe English"
-        lang={lang}
-      />
+      {/* <FeedbackWidget appName="Neptune's Tribe English" lang={lang} /> */}
     </PremiumUpgradeProvider>
   );
 }

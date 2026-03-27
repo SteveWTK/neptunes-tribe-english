@@ -22,6 +22,7 @@ import {
  * @param {string} props.lessonId - Lesson identifier
  * @param {Function} props.onComplete - Callback when exercise is complete (receives XP score)
  * @param {Function} props.onXPAwarded - Callback when XP is awarded (receives XP amount) - for incremental XP tracking
+ * @param {Function} props.onAnswerSubmitted - Callback when any answer is submitted (correct or incorrect)
  * @param {string} props.mode - Display mode: "multiple_choice" (default) or "cloze" (text input)
  * @param {string} props.englishVariant - English accent variant for TTS (default: "british")
  * @param {string} props.voiceGender - Voice gender for TTS (default: "male")
@@ -36,6 +37,7 @@ export default function AIMultipleChoiceGapFill({
   stepIndex = 0, // Step index within lesson to differentiate multiple ai_gap_fill steps
   onComplete,
   onXPAwarded,
+  onAnswerSubmitted,
   mode = "multiple_choice",
   englishVariant = "british",
   voiceGender = "male",
@@ -247,6 +249,11 @@ export default function AIMultipleChoiceGapFill({
       ...prev,
       [sentenceId]: (prev[sentenceId] || 0) + 1,
     }));
+
+    // Notify parent that an answer was submitted (correct or incorrect)
+    if (onAnswerSubmitted) {
+      onAnswerSubmitted(sentenceId, isCorrect);
+    }
 
     // Award XP immediately for correct answers (only once per sentence)
     if (isCorrect && !xpAwarded[sentenceId]) {
