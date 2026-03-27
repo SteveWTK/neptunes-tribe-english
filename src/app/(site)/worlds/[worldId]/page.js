@@ -618,7 +618,7 @@ function WorldDetailContent() {
       const { data: lessons, error: lessonsError } = await supabase
         .from("lessons")
         .select("id, title, under_construction, difficulty, sort_order")
-        .eq("world_id", world.id)
+        .eq("world", world.id)
         .contains("theme_tags", [adventure.themeTag])
         .eq("difficulty", levelValue)
         .order("sort_order", { ascending: true })
