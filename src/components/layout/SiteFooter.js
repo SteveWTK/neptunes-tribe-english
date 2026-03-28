@@ -37,7 +37,7 @@ export default function SiteFooter() {
           © {new Date().getFullYear()} Habitat English. {copy.copyright}
         </span>
         <span className="hidden sm:inline text-gray-400">•</span>
-        <p className="font-stretch-125%">Email: info@habitatenglish.com</p>
+        <p>Email: info@habitatenglish.com</p>
         <span className="hidden sm:inline text-gray-400">•</span>
         <Link
           href="/feedback"

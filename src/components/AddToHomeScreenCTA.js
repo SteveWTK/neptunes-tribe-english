@@ -123,7 +123,7 @@ export default function AddToHomeScreenCTA() {
     // 2. Must not be in standalone mode (already installed)
     const isStandalone =
       window.matchMedia("(display-mode: standalone)").matches ||
-      (window.navigator, any).standalone === true;
+      window.navigator.standalone === true;
     if (isStandalone) return false;
 
     // 3. Must be logged in and not a guest
