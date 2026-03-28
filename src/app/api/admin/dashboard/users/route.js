@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import getSupabaseAdmin from "@/lib/supabase-admin-lazy";
-import { subDays, startOfDay, endOfDay, parseISO, format, eachDayOfInterval } from "date-fns";
+import { subDays, startOfDay, endOfDay, parseISO, format, eachDayOfInterval, addDays, differenceInDays } from "date-fns";
 
 /**
  * GET /api/admin/dashboard/users
@@ -141,6 +141,58 @@ export async function GET(request) {
       }));
     }
 
+    // =====================
+    // User Retention Calculation
+    // Users who signed up at least 7 days ago and completed at least one lesson
+    // at least 7 days after their signup date
+    // =====================
+
+    // Get all non-guest users who signed up at least 7 days before the end date
+    const retentionCutoff = subDays(endDate, 7);
+    const { data: eligibleUsers, error: eligibleError } = await supabase
+      .from("users")
+      .select("id, created_at")
+      .neq("role", "guest")
+      .gte("created_at", startDate.toISOString())
+      .lte("created_at", retentionCutoff.toISOString());
+
+    let retentionMetrics = {
+      eligibleUsers: 0,
+      retainedUsers: 0,
+      retentionRate: 0,
+    };
+
+    if (!eligibleError && eligibleUsers && eligibleUsers.length > 0) {
+      retentionMetrics.eligibleUsers = eligibleUsers.length;
+
+      // Get all lesson completions for these users
+      const eligibleUserIds = eligibleUsers.map(u => u.id);
+      const { data: retentionCompletions, error: retCompError } = await supabase
+        .from("lesson_completions")
+        .select("user_id, completed_at")
+        .in("user_id", eligibleUserIds);
+
+      if (!retCompError && retentionCompletions) {
+        // Build a map of user signup dates
+        const userSignupMap = new Map(eligibleUsers.map(u => [u.id, new Date(u.created_at)]));
+
+        // Count users who completed a lesson 7+ days after signup
+        const retainedUserIds = new Set();
+        retentionCompletions.forEach(c => {
+          const signupDate = userSignupMap.get(c.user_id);
+          const completionDate = new Date(c.completed_at);
+          if (signupDate && differenceInDays(completionDate, signupDate) >= 7) {
+            retainedUserIds.add(c.user_id);
+          }
+        });
+
+        retentionMetrics.retainedUsers = retainedUserIds.size;
+        retentionMetrics.retentionRate = retentionMetrics.eligibleUsers > 0
+          ? Math.round((retentionMetrics.retainedUsers / retentionMetrics.eligibleUsers) * 100)
+          : 0;
+      }
+    }
+
     return NextResponse.json({
       users: userActivity.length > 0 ? userActivity : recentUsers,
       totalInPeriod: users.length,
@@ -150,6 +202,7 @@ export async function GET(request) {
         premium: premiumCount.count || 0,
         total: (guestCount.count || 0) + (registeredCount.count || 0) + (premiumCount.count || 0),
       },
+      retention: retentionMetrics,
       dailySignups,
       period: {
         start: startDate.toISOString(),

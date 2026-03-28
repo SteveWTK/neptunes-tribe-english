@@ -252,6 +252,25 @@ export async function GET(request) {
         };
       });
 
+    // Get guest user IDs from sessions in this period
+    const guestUserIds = processedSessions.map(s => s.user_id).filter(Boolean);
+
+    // Count guests who completed at least one lesson
+    let guestsWithFirstLesson = 0;
+    if (guestUserIds.length > 0) {
+      // Get unique users who have lesson completions
+      const { data: completions, error: completionsError } = await supabase
+        .from("lesson_completions")
+        .select("user_id")
+        .in("user_id", guestUserIds);
+
+      if (!completionsError && completions) {
+        // Count unique users with completions
+        const uniqueUsersWithCompletions = new Set(completions.map(c => c.user_id));
+        guestsWithFirstLesson = uniqueUsersWithCompletions.size;
+      }
+    }
+
     // Campaign filter options with human-readable labels
     const campaignOptions = campaigns.map((c) => ({
       value: c.id,
@@ -265,6 +284,10 @@ export async function GET(request) {
         conversionRate,
         avgTimeToConvert,
         uniqueCampaigns: Object.keys(campaignMetrics).length,
+        guestsWithFirstLesson,
+        firstLessonRate: totalSessions > 0
+          ? Math.round((guestsWithFirstLesson / totalSessions) * 100)
+          : 0,
       },
       guestsByCampaign,
       deviceBreakdown,

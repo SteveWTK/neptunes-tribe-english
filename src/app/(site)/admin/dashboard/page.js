@@ -12,6 +12,8 @@ import {
   Smartphone,
   RefreshCw,
   BarChart3,
+  CheckCircle,
+  UserCheck,
 } from "lucide-react";
 import {
   LineChart,
@@ -483,7 +485,32 @@ function DashboardContent() {
               onReset={resetFilters}
             />
 
-            <div className="mt-6 flex justify-between items-center mb-4">
+            {/* Retention Metrics */}
+            {usersData.retention && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 mb-6">
+                <MetricCard
+                  label="Eligible for Retention"
+                  value={usersData.retention.eligibleUsers}
+                  icon={Users}
+                  color="blue"
+                />
+                <MetricCard
+                  label="Retained After 1 Week"
+                  value={usersData.retention.retainedUsers}
+                  icon={UserCheck}
+                  color="green"
+                />
+                <MetricCard
+                  label="Week-1 Retention Rate"
+                  value={usersData.retention.retentionRate}
+                  suffix="%"
+                  icon={TrendingUp}
+                  color="cyan"
+                />
+              </div>
+            )}
+
+            <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Recent Users ({usersData.totalInPeriod} in period)
               </h3>
@@ -604,7 +631,7 @@ function DashboardContent() {
             />
 
             {/* Guest Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 mb-4">
               <MetricCard
                 label="Total Sessions"
                 value={guestsData.overview.totalSessions}
@@ -620,6 +647,21 @@ function DashboardContent() {
                 value={guestsData.overview.conversionRate}
                 suffix="%"
                 icon={TrendingUp}
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <MetricCard
+                label="Completed First Lesson"
+                value={guestsData.overview.guestsWithFirstLesson || 0}
+                icon={CheckCircle}
+                color="green"
+              />
+              <MetricCard
+                label="First Lesson Rate"
+                value={guestsData.overview.firstLessonRate || 0}
+                suffix="%"
+                icon={BookOpen}
+                color="purple"
               />
               <MetricCard
                 label="Avg. Time to Convert"
