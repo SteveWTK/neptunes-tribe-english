@@ -1,10 +1,14 @@
 "use client";
 
 import { useLanguage } from "@/lib/contexts/LanguageContext";
+import { useSession } from "next-auth/react";
+import { Settings } from "lucide-react";
 import Link from "next/link";
 
 export default function SiteFooter() {
   const { lang, setLang } = useLanguage();
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "platform_admin";
 
   const t = {
     en: {
@@ -29,7 +33,9 @@ export default function SiteFooter() {
   return (
     <footer className="flex flex-col gap-1 sm:gap-2 sm:flex-row sm:justify-center sm:items-center bg-white sm:bg-gray-50 dark:bg-primary-950 py-3 md:py-4 lg:py-5 text-center text-primary-800 dark:text-white text-sm">
       <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
-        <span>© {new Date().getFullYear()} Habitat English. {copy.copyright}</span>
+        <span>
+          © {new Date().getFullYear()} Habitat English. {copy.copyright}
+        </span>
         <span className="hidden sm:inline text-gray-400">•</span>
         <p className="font-stretch-125%">Email: info@habitatenglish.com</p>
         <span className="hidden sm:inline text-gray-400">•</span>
@@ -39,6 +45,19 @@ export default function SiteFooter() {
         >
           {copy.feedback}
         </Link>
+        <span className="hidden sm:inline text-gray-400">•</span>
+        {isAdmin && (
+          <>
+            {/* <span className="text-gray-300 dark:text-gray-600">|</span> */}
+            <Link
+              href="/admin"
+              className="inline-flex items-center gap-1.5 text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+            >
+              <Settings className="w-4 h-4" />
+              <span>Admin</span>
+            </Link>
+          </>
+        )}
       </div>
     </footer>
   );
