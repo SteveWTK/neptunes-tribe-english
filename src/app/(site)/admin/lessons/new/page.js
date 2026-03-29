@@ -40,8 +40,10 @@ function NewLessonContent() {
   // Get worlds array for dropdown
   const worldsArray = Object.values(WORLDS);
 
-  // Get adventures for selected world
-  const selectedWorld = selectedWorldId ? WORLDS[selectedWorldId] : null;
+  // Get adventures for selected world (find by id property, not by object key)
+  const selectedWorld = selectedWorldId
+    ? Object.values(WORLDS).find(w => w.id === selectedWorldId)
+    : null;
   const adventures = selectedWorld ? selectedWorld.adventures : [];
 
   // Get levels for dropdown

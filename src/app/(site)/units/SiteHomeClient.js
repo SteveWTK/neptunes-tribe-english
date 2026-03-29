@@ -21,8 +21,23 @@ export default function SiteHomeClient({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
+  const [filterEcosystem, setFilterEcosystem] = useState("all");
+  const [filterTheme, setFilterTheme] = useState("all");
 
   const { isLoggedIn, isPremiumUser, isPlatformAdmin, email } = userInfo;
+
+  // Extract unique ecosystems and theme tags for filtering
+  const ecosystems = [...new Set(
+    featuredUnits.map(u => u.primary_ecosystem).filter(Boolean)
+  )].sort();
+  const themeTags = [...new Set(
+    featuredUnits.flatMap(u => {
+      const tags = u.theme_tags;
+      if (Array.isArray(tags)) return tags;
+      if (tags) return [tags];
+      return [];
+    }).filter(Boolean)
+  )].sort();
 
   // Get featured world info
   const featuredWorldId = brandConfig.contentStructure.featuredWorld;
@@ -121,8 +136,7 @@ export default function SiteHomeClient({
       allUnits: "บทเรียนทั้งหมด",
       featuredWorld: "โลกแนะนำ",
       viewingWorld: "คุณกำลังดูบทเรียนจาก",
-      adminViewingAll:
-        "มุมมองผู้ดูแลระบบ: แสดงบทเรียนทั้งหมดจากทุกโลก",
+      adminViewingAll: "มุมมองผู้ดูแลระบบ: แสดงบทเรียนทั้งหมดจากทุกโลก",
       unitsFound: "บทเรียนที่พบ",
       completed: "เสร็จสมบูรณ์",
       premiumOnly: "สำหรับสมาชิกพรีเมียมเท่านั้น",
@@ -177,8 +191,13 @@ export default function SiteHomeClient({
     router.push("/units");
   };
 
-  // Remove premium previews logic since we're showing all actual units now
-  const allDisplayUnits = featuredUnits;
+  // Filter units based on selected ecosystem and theme
+  const allDisplayUnits = featuredUnits.filter(unit => {
+    const matchesEcosystem = filterEcosystem === "all" || unit.primary_ecosystem === filterEcosystem;
+    const unitThemes = Array.isArray(unit.theme_tags) ? unit.theme_tags : (unit.theme_tags ? [unit.theme_tags] : []);
+    const matchesTheme = filterTheme === "all" || unitThemes.includes(filterTheme);
+    return matchesEcosystem && matchesTheme;
+  });
 
   const PremiumUpgradeCard = () => (
     <div className="bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900 dark:to-amber-900 border-2 border-yellow-200 dark:border-yellow-700 rounded-xl p-6 text-center">
@@ -201,7 +220,7 @@ export default function SiteHomeClient({
   );
 
   const FilterPanel = () => (
-    <div className=" bg-white dark:bg-primary-950 rounded-lg px-4 py-1 shadow-lg sm:w-1/2 self-center mb-2">
+    <div className="bg-white dark:bg-primary-950 rounded-lg px-4 py-3 shadow-lg max-w-4xl mx-auto mb-4">
       {/* <div className="flex flex-row-reverse items-center justify-between mb-2">
         <h3 className="font-bold text-gray-800 dark:text-white">
           {copy.filters}
@@ -214,7 +233,45 @@ export default function SiteHomeClient({
         </button>
       </div> */}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Ecosystem Filter */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Ecosystem
+          </label>
+          <select
+            value={filterEcosystem}
+            onChange={(e) => setFilterEcosystem(e.target.value)}
+            className="w-full px-2 py-1 border-b hover:border-b-2 border-accent-400 dark:border-accent-400 rounded-md bg-white dark:bg-primary-950 text-gray-900 dark:text-white"
+          >
+            <option value="all">All Ecosystems</option>
+            {ecosystems.map((eco) => (
+              <option key={eco} value={eco}>
+                {eco.charAt(0).toUpperCase() + eco.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Theme Filter */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Theme
+          </label>
+          <select
+            value={filterTheme}
+            onChange={(e) => setFilterTheme(e.target.value)}
+            className="w-full px-2 py-1 border-b hover:border-b-2 border-accent-400 dark:border-accent-400 rounded-md bg-white dark:bg-primary-950 text-gray-900 dark:text-white"
+          >
+            <option value="all">All Themes</option>
+            {themeTags.map((tag) => (
+              <option key={tag} value={tag}>
+                {tag.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Sort By */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -260,16 +317,6 @@ export default function SiteHomeClient({
             </select>
           </div>
         )}
-
-        {/* Premium Status (info only) */}
-        {/* <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Account Type
-          </label>
-          <div className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-sm">
-            {isPremiumUser ? "👑 Premium" : "Free"}
-          </div>
-        </div> */}
       </div>
     </div>
   );

@@ -27,6 +27,7 @@ function LessonsListContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterWorld, setFilterWorld] = useState("all");
   const [filterAdventure, setFilterAdventure] = useState("all");
+  const [filterLevel, setFilterLevel] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
 
   useEffect(() => {
@@ -56,6 +57,7 @@ function LessonsListContent() {
       return tags;
     }).filter(Boolean)
   )].sort();
+  const levels = [...new Set(lessons.map((l) => l.difficulty).filter(Boolean))].sort();
 
   async function handleDelete(lessonId) {
     if (
@@ -99,11 +101,13 @@ function LessonsListContent() {
       : lesson.theme_tags;
     const matchesAdventure =
       filterAdventure === "all" || lessonAdventure === filterAdventure;
+    const matchesLevel =
+      filterLevel === "all" || lesson.difficulty === filterLevel;
     const matchesStatus =
       filterStatus === "all" ||
       (filterStatus === "active" && lesson.is_active) ||
       (filterStatus === "inactive" && !lesson.is_active);
-    return matchesSearch && matchesWorld && matchesAdventure && matchesStatus;
+    return matchesSearch && matchesWorld && matchesAdventure && matchesLevel && matchesStatus;
   });
 
   if (loading) {
@@ -141,7 +145,7 @@ function LessonsListContent() {
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
             <div className="md:col-span-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -179,6 +183,18 @@ function LessonsListContent() {
               ))}
             </select>
             <select
+              value={filterLevel}
+              onChange={(e) => setFilterLevel(e.target.value)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            >
+              <option value="all">All Levels</option>
+              {levels.map((level) => (
+                <option key={level} value={level}>
+                  {level}
+                </option>
+              ))}
+            </select>
+            <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -198,13 +214,14 @@ function LessonsListContent() {
                 No lessons found
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                {searchTerm || filterWorld !== "all" || filterAdventure !== "all" || filterStatus !== "all"
+                {searchTerm || filterWorld !== "all" || filterAdventure !== "all" || filterLevel !== "all" || filterStatus !== "all"
                   ? "Try adjusting your filters"
                   : "Get started by creating your first lesson"}
               </p>
               {!searchTerm &&
                 filterWorld === "all" &&
                 filterAdventure === "all" &&
+                filterLevel === "all" &&
                 filterStatus === "all" && (
                   <button
                     onClick={() => router.push("/admin/lessons/new")}
