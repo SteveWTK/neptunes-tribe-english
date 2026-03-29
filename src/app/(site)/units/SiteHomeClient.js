@@ -27,17 +27,21 @@ export default function SiteHomeClient({
   const { isLoggedIn, isPremiumUser, isPlatformAdmin, email } = userInfo;
 
   // Extract unique ecosystems and theme tags for filtering
-  const ecosystems = [...new Set(
-    featuredUnits.map(u => u.primary_ecosystem).filter(Boolean)
-  )].sort();
-  const themeTags = [...new Set(
-    featuredUnits.flatMap(u => {
-      const tags = u.theme_tags;
-      if (Array.isArray(tags)) return tags;
-      if (tags) return [tags];
-      return [];
-    }).filter(Boolean)
-  )].sort();
+  const ecosystems = [
+    ...new Set(featuredUnits.map((u) => u.primary_ecosystem).filter(Boolean)),
+  ].sort();
+  const themeTags = [
+    ...new Set(
+      featuredUnits
+        .flatMap((u) => {
+          const tags = u.theme_tags;
+          if (Array.isArray(tags)) return tags;
+          if (tags) return [tags];
+          return [];
+        })
+        .filter(Boolean)
+    ),
+  ].sort();
 
   // Get featured world info
   const featuredWorldId = brandConfig.contentStructure.featuredWorld;
@@ -192,10 +196,16 @@ export default function SiteHomeClient({
   };
 
   // Filter units based on selected ecosystem and theme
-  const allDisplayUnits = featuredUnits.filter(unit => {
-    const matchesEcosystem = filterEcosystem === "all" || unit.primary_ecosystem === filterEcosystem;
-    const unitThemes = Array.isArray(unit.theme_tags) ? unit.theme_tags : (unit.theme_tags ? [unit.theme_tags] : []);
-    const matchesTheme = filterTheme === "all" || unitThemes.includes(filterTheme);
+  const allDisplayUnits = featuredUnits.filter((unit) => {
+    const matchesEcosystem =
+      filterEcosystem === "all" || unit.primary_ecosystem === filterEcosystem;
+    const unitThemes = Array.isArray(unit.theme_tags)
+      ? unit.theme_tags
+      : unit.theme_tags
+      ? [unit.theme_tags]
+      : [];
+    const matchesTheme =
+      filterTheme === "all" || unitThemes.includes(filterTheme);
     return matchesEcosystem && matchesTheme;
   });
 
@@ -266,7 +276,9 @@ export default function SiteHomeClient({
             <option value="all">All Themes</option>
             {themeTags.map((tag) => (
               <option key={tag} value={tag}>
-                {tag.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                {tag
+                  .replace(/_/g, " ")
+                  .replace(/\b\w/g, (c) => c.toUpperCase())}
               </option>
             ))}
           </select>
@@ -380,7 +392,7 @@ export default function SiteHomeClient({
         </h1>
 
         {/* Tip for non-filtered view  */}
-        {/* {!filterInfo.isFiltered && (
+        {!filterInfo.isFiltered && (
           <div className="mb-3">
             <Link
               href="/eco-map"
@@ -389,7 +401,7 @@ export default function SiteHomeClient({
               {copy.clickHint}
             </Link>
           </div>
-        )} */}
+        )}
 
         {/* User Status Bar */}
         {isLoggedIn && (
@@ -414,12 +426,12 @@ export default function SiteHomeClient({
           </div>
         )}
         {/* Filter Toggle */}
-        {/* <button
+        <button
           onClick={() => setShowFilters(!showFilters)}
           className="px-4 py-1 bg-premium-500 text-gray-800 dark:text-white rounded-xl hover:bg-premium-600 transition-colors"
         >
           {showFilters ? "Hide Filters" : "Show Filters"}
-        </button> */}
+        </button>
       </div>
 
       {/* Featured World Banner */}
