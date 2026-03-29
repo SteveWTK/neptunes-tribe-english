@@ -10,14 +10,11 @@ import {
   Trash2,
   Eye,
   BookOpen,
-  Filter,
-  Download,
 } from "lucide-react";
 import {
   getAllLessonsForCMS,
   deleteLesson,
   cloneLesson,
-  getAllPillarsForCMS,
 } from "@/lib/supabase/lesson-queries";
 import { useAuth } from "@/components/AuthProvider";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -26,10 +23,10 @@ function LessonsListContent() {
   const router = useRouter();
   const { user } = useAuth();
   const [lessons, setLessons] = useState([]);
-  const [pillars, setPillars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterPillar, setFilterPillar] = useState("all");
+  const [filterWorld, setFilterWorld] = useState("all");
+  const [filterAdventure, setFilterAdventure] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
 
   useEffect(() => {
@@ -39,12 +36,8 @@ function LessonsListContent() {
   async function loadData() {
     try {
       setLoading(true);
-      const [lessonsData, pillarsData] = await Promise.all([
-        getAllLessonsForCMS(),
-        getAllPillarsForCMS(),
-      ]);
+      const lessonsData = await getAllLessonsForCMS();
       setLessons(lessonsData);
-      setPillars(pillarsData);
     } catch (error) {
       console.error("Error loading data:", error);
       alert("Failed to load lessons. Please try again.");
@@ -52,6 +45,17 @@ function LessonsListContent() {
       setLoading(false);
     }
   }
+
+  // Extract unique worlds and adventures from lessons
+  const worlds = [...new Set(lessons.map((l) => l.world).filter(Boolean))].sort();
+  const adventures = [...new Set(
+    lessons.map((l) => {
+      // theme_tags can be an array or a string
+      const tags = l.theme_tags;
+      if (Array.isArray(tags)) return tags[0];
+      return tags;
+    }).filter(Boolean)
+  )].sort();
 
   async function handleDelete(lessonId) {
     if (
@@ -88,13 +92,18 @@ function LessonsListContent() {
       lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lesson.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lesson.world?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesPillar =
-      filterPillar === "all" || lesson.pillar_id === parseInt(filterPillar);
+    const matchesWorld =
+      filterWorld === "all" || lesson.world === filterWorld;
+    const lessonAdventure = Array.isArray(lesson.theme_tags)
+      ? lesson.theme_tags[0]
+      : lesson.theme_tags;
+    const matchesAdventure =
+      filterAdventure === "all" || lessonAdventure === filterAdventure;
     const matchesStatus =
       filterStatus === "all" ||
       (filterStatus === "active" && lesson.is_active) ||
       (filterStatus === "inactive" && !lesson.is_active);
-    return matchesSearch && matchesPillar && matchesStatus;
+    return matchesSearch && matchesWorld && matchesAdventure && matchesStatus;
   });
 
   if (loading) {
@@ -132,7 +141,7 @@ function LessonsListContent() {
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div className="md:col-span-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -146,14 +155,26 @@ function LessonsListContent() {
               </div>
             </div>
             <select
-              value={filterPillar}
-              onChange={(e) => setFilterPillar(e.target.value)}
+              value={filterWorld}
+              onChange={(e) => setFilterWorld(e.target.value)}
               className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
-              <option value="all">All Pillars</option>
-              {pillars.map((pillar) => (
-                <option key={pillar.id} value={pillar.id}>
-                  {pillar.name}
+              <option value="all">All Worlds</option>
+              {worlds.map((world) => (
+                <option key={world} value={world}>
+                  {world}
+                </option>
+              ))}
+            </select>
+            <select
+              value={filterAdventure}
+              onChange={(e) => setFilterAdventure(e.target.value)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            >
+              <option value="all">All Adventures</option>
+              {adventures.map((adventure) => (
+                <option key={adventure} value={adventure}>
+                  {adventure}
                 </option>
               ))}
             </select>
@@ -177,12 +198,13 @@ function LessonsListContent() {
                 No lessons found
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                {searchTerm || filterPillar !== "all" || filterStatus !== "all"
+                {searchTerm || filterWorld !== "all" || filterAdventure !== "all" || filterStatus !== "all"
                   ? "Try adjusting your filters"
                   : "Get started by creating your first lesson"}
               </p>
               {!searchTerm &&
-                filterPillar === "all" &&
+                filterWorld === "all" &&
+                filterAdventure === "all" &&
                 filterStatus === "all" && (
                   <button
                     onClick={() => router.push("/admin/lessons/new")}
