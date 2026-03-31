@@ -7,6 +7,7 @@ import { FeedbackWidget, AffiliateTracker } from "@inspire/shared";
 import GuestBanner from "@/components/guest/GuestBanner";
 import GuestPrompts from "@/components/guest/GuestPrompts";
 import PremiumPrompts from "@/components/premium/PremiumPrompts";
+import PremiumActivationBanner from "@/components/premium/PremiumActivationBanner";
 import { PremiumUpgradeProvider } from "@/lib/contexts/PremiumUpgradeContext";
 
 export default function LandingLayout({ children }) {
@@ -25,6 +26,7 @@ export default function LandingLayout({ children }) {
         languageOptions={languageOptions}
       />
       <GuestBanner />
+      <PremiumActivationBanner />
       {children}
       <SiteFooter />
       {/* Guest user CTAs - floating button, modals, exit intent, time warnings */}

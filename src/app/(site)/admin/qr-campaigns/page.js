@@ -50,6 +50,8 @@ export default function QRCampaignsAdminPage() {
   const [formWelcomePt, setFormWelcomePt] = useState("");
   const [formWelcomeTh, setFormWelcomeTh] = useState("");
   const [formExpires, setFormExpires] = useState("");
+  const [formIncludesPremiumCode, setFormIncludesPremiumCode] = useState(false);
+  const [formPremiumCode, setFormPremiumCode] = useState("");
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -96,6 +98,8 @@ export default function QRCampaignsAdminPage() {
           expiresAt: formExpires
             ? new Date(formExpires).toISOString()
             : null,
+          includesPremiumCode: formIncludesPremiumCode,
+          premiumCode: formPremiumCode || null,
         }),
       });
 
@@ -130,6 +134,8 @@ export default function QRCampaignsAdminPage() {
     setFormWelcomePt("");
     setFormWelcomeTh("");
     setFormExpires("");
+    setFormIncludesPremiumCode(false);
+    setFormPremiumCode("");
   };
 
   const toggleActive = async (campaignId, currentActive) => {
@@ -398,6 +404,44 @@ export default function QRCampaignsAdminPage() {
                   <option value="premium">Premium</option>
                   <option value="full">Full</option>
                 </select>
+              </div>
+
+              {/* Premium Code Option */}
+              <div className="md:col-span-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    id="includesPremiumCode"
+                    checked={formIncludesPremiumCode}
+                    onChange={(e) => setFormIncludesPremiumCode(e.target.checked)}
+                    className="mt-1 w-4 h-4 text-accent-600 border-gray-300 rounded focus:ring-accent-500"
+                  />
+                  <div className="flex-1">
+                    <label
+                      htmlFor="includesPremiumCode"
+                      className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer"
+                    >
+                      Include Premium Upgrade Code
+                    </label>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      Users who create an account from this campaign will see a banner reminding them to activate their premium code.
+                    </p>
+                    {formIncludesPremiumCode && (
+                      <div className="mt-3">
+                        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          Premium Code (optional - leave blank to use any valid code)
+                        </label>
+                        <input
+                          type="text"
+                          value={formPremiumCode}
+                          onChange={(e) => setFormPremiumCode(e.target.value.toUpperCase())}
+                          placeholder="e.g., RAYONG-PREMIUM-2026"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* Duration */}

@@ -102,15 +102,45 @@ export async function POST(request) {
       );
     }
 
-    // Mark guest session as converted
-    await supabase
+    // Mark guest session as converted and check for premium code campaign
+    const { data: guestSession } = await supabase
       .from("guest_sessions")
-      .update({
-        converted_at: new Date().toISOString(),
-        converted_to_email: email.toLowerCase().trim(),
-      })
+      .select("id, access_code_id")
       .eq("user_id", session.user.userId)
-      .is("converted_at", null);
+      .is("converted_at", null)
+      .single();
+
+    if (guestSession) {
+      // Update the session as converted
+      await supabase
+        .from("guest_sessions")
+        .update({
+          converted_at: new Date().toISOString(),
+          converted_to_email: email.toLowerCase().trim(),
+        })
+        .eq("id", guestSession.id);
+
+      // Check if this campaign includes a premium code
+      if (guestSession.access_code_id) {
+        const { data: accessCode } = await supabase
+          .from("guest_access_codes")
+          .select("includes_premium_code, premium_code")
+          .eq("id", guestSession.access_code_id)
+          .single();
+
+        if (accessCode?.includes_premium_code) {
+          // Set the pending premium activation flag on the user
+          await supabase
+            .from("users")
+            .update({
+              pending_premium_activation: true,
+            })
+            .eq("id", session.user.userId);
+
+          console.log("✅ Set pending_premium_activation for user from premium code campaign");
+        }
+      }
+    }
 
     return NextResponse.json({
       success: true,

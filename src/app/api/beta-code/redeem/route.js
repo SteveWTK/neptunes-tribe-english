@@ -52,6 +52,12 @@ export async function POST(request) {
       return NextResponse.json({ error: data.error }, { status: 400 });
     }
 
+    // Clear the pending_premium_activation flag after successful activation
+    await supabase
+      .from("users")
+      .update({ pending_premium_activation: false })
+      .eq("email", session.user.email);
+
     return NextResponse.json({
       success: true,
       message: data.message,

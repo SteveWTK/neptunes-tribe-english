@@ -48,6 +48,8 @@ export async function POST(request) {
       startsAt = null,
       expiresAt = null,
       metadata = {},
+      includesPremiumCode = false,
+      premiumCode = null,
     } = await request.json();
 
     if (!name) {
@@ -92,6 +94,8 @@ export async function POST(request) {
         starts_at: startsAt || new Date().toISOString(),
         expires_at: expiresAt || null,
         metadata,
+        includes_premium_code: includesPremiumCode,
+        premium_code: premiumCode,
       })
       .select()
       .single();

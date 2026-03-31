@@ -90,20 +90,49 @@ export async function POST() {
       console.log("✅ Transferred adventure_progress");
     }
 
-    // Update guest session to mark it as converted
-    const { error: sessionError } = await supabase
+    // Update guest session to mark it as converted and check for premium code campaign
+    const { data: guestSession } = await supabase
       .from("guest_sessions")
-      .update({
-        converted_at: new Date().toISOString(),
-        converted_to_email: session.user.email,
-      })
+      .select("id, access_code_id")
       .eq("user_id", guestUserId)
-      .is("converted_at", null);
+      .is("converted_at", null)
+      .single();
 
-    if (sessionError) {
-      console.error("Error updating guest session:", sessionError);
-    } else {
-      console.log("✅ Updated guest_sessions");
+    if (guestSession) {
+      const { error: sessionError } = await supabase
+        .from("guest_sessions")
+        .update({
+          converted_at: new Date().toISOString(),
+          converted_to_email: session.user.email,
+        })
+        .eq("id", guestSession.id);
+
+      if (sessionError) {
+        console.error("Error updating guest session:", sessionError);
+      } else {
+        console.log("✅ Updated guest_sessions");
+      }
+
+      // Check if this campaign includes a premium code
+      if (guestSession.access_code_id) {
+        const { data: accessCode } = await supabase
+          .from("guest_access_codes")
+          .select("includes_premium_code, premium_code")
+          .eq("id", guestSession.access_code_id)
+          .single();
+
+        if (accessCode?.includes_premium_code) {
+          // Set the pending premium activation flag on the new user
+          await supabase
+            .from("users")
+            .update({
+              pending_premium_activation: true,
+            })
+            .eq("id", newUserId);
+
+          console.log("✅ Set pending_premium_activation for user from premium code campaign");
+        }
+      }
     }
 
     // Copy premium status from guest to new user if applicable
