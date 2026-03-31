@@ -101,39 +101,50 @@ export default function PremiumActivationBanner() {
   }
 
   return (
-    <div className="sticky top-0 z-50 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-500 text-amber-950 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 py-3">
-        <div className="flex items-center justify-between gap-4">
-          {/* Left: Icon and message */}
-          <div className="flex items-center gap-3">
-            <div className="flex-shrink-0 w-10 h-10 bg-white/30 rounded-full flex items-center justify-center">
+    <div className="sticky top-0 z-50 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-500 text-amber-950 shadow-lg overflow-hidden">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
+        {/* Mobile: stacked layout, Desktop: horizontal */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+          {/* Top/Left: Icon and message */}
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+            <div className="hidden sm:flex shrink-0 w-10 h-10 bg-white/30 rounded-full items-center justify-center">
               <Gift className="w-5 h-5" />
             </div>
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <h3 className="font-bold text-sm sm:text-base truncate">
+            <Gift className="sm:hidden w-5 h-5 shrink-0" />
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <h3 className="font-bold text-xs sm:text-base truncate">
                   {copy.title}
                 </h3>
-                <Sparkles className="w-4 h-4 text-amber-700 flex-shrink-0 animate-pulse" />
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-amber-700 shrink-0 animate-pulse" />
               </div>
-              <p className="text-xs sm:text-sm text-amber-800 truncate">
+              <p className="text-xs text-amber-800 truncate hidden sm:block">
                 {copy.subtitle}
               </p>
             </div>
+            {/* Dismiss button on mobile - top right */}
+            <button
+              onClick={handleDismiss}
+              className="sm:hidden p-1.5 hover:bg-white/20 rounded-lg transition-colors shrink-0"
+              aria-label={copy.later}
+              title={copy.later}
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
 
-          {/* Right: Actions */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          {/* Bottom/Right: Actions */}
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={handleActivate}
-              className="px-4 py-2 bg-amber-900 hover:bg-amber-950 text-white rounded-lg font-semibold text-sm transition-colors flex items-center gap-2 shadow-sm"
+              className="flex-1 sm:flex-none px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-900 hover:bg-amber-950 text-white rounded-lg font-semibold text-xs sm:text-sm transition-colors flex items-center justify-center gap-1.5 sm:gap-2 shadow-sm"
             >
               {copy.activate}
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
             </button>
             <button
               onClick={handleDismiss}
-              className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+              className="hidden sm:block p-2 hover:bg-white/20 rounded-lg transition-colors"
               aria-label={copy.later}
               title={copy.later}
             >
