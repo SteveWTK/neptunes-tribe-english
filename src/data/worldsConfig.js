@@ -848,15 +848,7 @@ export const WORLDS = {
           "ดำดิ่งสู่มหาสมุทรดึกดำบรรพ์ของโลกเมื่อ 3,500 ล้านปีก่อน ค้นพบสิ่งมีชีวิตจุลทรรศน์กลุ่มแรก สโตรมาโตไลต์ และสิ่งมีชีวิตประหลาดจากการระเบิดแคมเบรียนที่เปลี่ยนแปลงชีวิตไปตลอดกาล",
         themeTag: "ancient_seas",
         is_premium: true, // Premium content
-        levels: [
-          "Level 1",
-          "Level 2",
-          "Level 3",
-          "Beginner",
-          "Intermediate",
-          "Advanced",
-          "Solo",
-        ],
+        levels: ["Level 1", "Level 2", "Level 3"],
         underConstruction: true,
       },
       {
