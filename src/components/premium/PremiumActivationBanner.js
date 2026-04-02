@@ -77,7 +77,9 @@ export default function PremiumActivationBanner() {
       const res = await fetch("/api/user/premium-status");
       if (res.ok) {
         const data = await res.json();
-        setShouldShow(data.pendingPremiumActivation === true);
+        // Only show if pending activation is true AND user is not already premium
+        // This handles the case where the session hasn't updated yet after activation
+        setShouldShow(data.pendingPremiumActivation === true && !data.isPremium);
       }
     } catch (err) {
       console.error("Error checking premium status:", err);
