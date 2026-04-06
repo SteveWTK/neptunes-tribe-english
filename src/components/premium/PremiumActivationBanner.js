@@ -45,11 +45,6 @@ export default function PremiumActivationBanner() {
   const [shouldShow, setShouldShow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Don't show banner on the activate-premium page itself
-  if (pathname === "/activate-premium") {
-    return null;
-  }
-
   // Check session storage for dismissal (persists only for this browser session)
   useEffect(() => {
     const wasDismissed = sessionStorage.getItem("premium_banner_dismissed");
@@ -103,8 +98,8 @@ export default function PremiumActivationBanner() {
     router.push("/activate-premium");
   }
 
-  // Don't render while loading or if shouldn't show
-  if (isLoading || !shouldShow || dismissed) {
+  // Don't render while loading, if shouldn't show, dismissed, or on activate-premium page
+  if (isLoading || !shouldShow || dismissed || pathname === "/activate-premium") {
     return null;
   }
 
