@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { Gift, Sparkles, X, ArrowRight } from "lucide-react";
 
@@ -37,12 +37,18 @@ const translations = {
 export default function PremiumActivationBanner() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
   const { lang } = useLanguage();
   const copy = translations[lang] || translations.en;
 
   const [dismissed, setDismissed] = useState(false);
   const [shouldShow, setShouldShow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Don't show banner on the activate-premium page itself
+  if (pathname === "/activate-premium") {
+    return null;
+  }
 
   // Check session storage for dismissal (persists only for this browser session)
   useEffect(() => {
