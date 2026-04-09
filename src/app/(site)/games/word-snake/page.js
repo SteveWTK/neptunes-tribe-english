@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import WordSnakeGame from "@/components/WordSnakeGame";
+// import WordSnakeWithEffects from "@/components/effects/WordSnakeWithEffects";
 import { Loader2, BookmarkCheck, Library, Zap } from "lucide-react";
 import Link from "next/link";
+import WordSnakeGame from "@/components/WordSnakeGame";
 
 export default function WordSnakePage() {
   const [vocabularySource, setVocabularySource] = useState("default"); // 'default' or 'personal'
@@ -61,7 +62,9 @@ export default function WordSnakePage() {
             <div className="flex items-center justify-center gap-3">
               <Zap className="w-6 h-6" />
               <span className="font-bold text-lg">Try Challenge Mode!</span>
-              <span className="text-sm opacity-90">Combine Memory Match & Word Snake</span>
+              <span className="text-sm opacity-90">
+                Combine Memory Match & Word Snake
+              </span>
             </div>
           </div>
         </Link>
@@ -110,11 +113,14 @@ export default function WordSnakePage() {
             {error}
           </div>
         )}
-        {vocabularySource === "personal" && personalClues.length === 0 && !loading && !error && (
-          <div className="mt-3 text-center text-sm text-yellow-600 dark:text-yellow-400">
-            Your practice list is empty. Save some words from lessons first!
-          </div>
-        )}
+        {vocabularySource === "personal" &&
+          personalClues.length === 0 &&
+          !loading &&
+          !error && (
+            <div className="mt-3 text-center text-sm text-yellow-600 dark:text-yellow-400">
+              Your practice list is empty. Save some words from lessons first!
+            </div>
+          )}
         {vocabularySource === "personal" && personalClues.length > 0 && (
           <div className="mt-3 text-center text-sm text-green-600 dark:text-green-400">
             Playing with {personalClues.length} words from your practice list
@@ -128,6 +134,7 @@ export default function WordSnakePage() {
           key={gameKey}
           customClues={vocabularySource === "personal" ? personalClues : null}
         />
+        // <WordSnakeWithEffects customClues={clues} />
       )}
 
       {loading && (

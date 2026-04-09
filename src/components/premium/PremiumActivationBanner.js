@@ -54,24 +54,34 @@ export default function PremiumActivationBanner() {
   }, []);
 
   // Check if user has pending premium activation
+  // Re-check when session, status, or pathname changes (navigation triggers re-check)
   useEffect(() => {
     if (status === "loading") return;
+
+    // Skip check on activate-premium page
+    if (pathname === "/activate-premium") {
+      setIsLoading(false);
+      setShouldShow(false);
+      return;
+    }
 
     // Only show for authenticated non-guest users
     if (!session?.user || session.user.is_guest || session.user.role === "guest") {
       setIsLoading(false);
+      setShouldShow(false);
       return;
     }
 
     // If user is already premium, don't show
     if (session.user.is_premium) {
       setIsLoading(false);
+      setShouldShow(false);
       return;
     }
 
     // Check the pending_premium_activation flag
     checkPendingActivation();
-  }, [session, status]);
+  }, [session, status, pathname]);
 
   async function checkPendingActivation() {
     try {
