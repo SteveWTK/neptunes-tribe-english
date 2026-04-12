@@ -42,14 +42,24 @@ import React, {
 // Lazy load Pixi to reduce initial bundle
 let Application, Container, Graphics;
 let pixiLoaded = false;
+let pixiLoadFailed = false;
 
 const loadPixi = async () => {
-  if (pixiLoaded) return;
-  const pixi = await import("pixi.js");
-  Application = pixi.Application;
-  Container = pixi.Container;
-  Graphics = pixi.Graphics;
-  pixiLoaded = true;
+  if (pixiLoaded) return true;
+  if (pixiLoadFailed) return false;
+
+  try {
+    const pixi = await import("pixi.js");
+    Application = pixi.Application;
+    Container = pixi.Container;
+    Graphics = pixi.Graphics;
+    pixiLoaded = true;
+    return true;
+  } catch (e) {
+    console.warn("Pixi.js not installed. To enable effects, run: npm install pixi.js");
+    pixiLoadFailed = true;
+    return false;
+  }
 };
 
 const PixiEffectsContext = createContext(null);
@@ -126,8 +136,14 @@ export function PixiEffectsProvider({
     let mounted = true;
 
     const init = async () => {
-      await loadPixi();
+      const loaded = await loadPixi();
       if (!mounted || !containerRef.current) return;
+
+      // If Pixi failed to load, just mark as ready (effects will be no-ops)
+      if (!loaded) {
+        setIsReady(true);
+        return;
+      }
 
       // Create Pixi application
       const app = new Application();
@@ -182,8 +198,10 @@ export function PixiEffectsProvider({
     };
   }, [width, height]);
 
-  // Effect triggers
+  // Effect triggers (no-op if Pixi not loaded)
   const triggerCelebration = useCallback((centerX, centerY) => {
+    if (!appRef.current) return; // Pixi not loaded
+
     const cx = centerX ?? width / 2;
     const cy = centerY ?? height / 2;
 
@@ -205,6 +223,8 @@ export function PixiEffectsProvider({
   }, [width, height]);
 
   const triggerCollect = useCallback((x, y, type = "correct") => {
+    if (!appRef.current) return; // Pixi not loaded
+
     const count = type === "correct" ? 12 : 6;
     const colors =
       type === "correct"
@@ -229,6 +249,8 @@ export function PixiEffectsProvider({
   }, []);
 
   const triggerTrail = useCallback((x, y, color = 0x3b82f6) => {
+    if (!appRef.current) return; // Pixi not loaded
+
     // Single particle for trail effect
     particlesRef.current.push(
       new Particle(x, y, {

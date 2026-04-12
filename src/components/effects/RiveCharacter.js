@@ -47,26 +47,17 @@ import React, {
   useImperativeHandle,
   useEffect,
   useState,
+  useRef,
+  useCallback,
 } from "react";
+import dynamic from "next/dynamic";
 
-// Lazy load Rive to avoid SSR issues and reduce initial bundle
-let useRive, useStateMachineInput;
-let riveLoaded = false;
-
-const loadRive = async () => {
-  if (riveLoaded) return true;
-  try {
-    const rive = await import("@rive-app/react-webgl2");
-    useRive = rive.useRive;
-    useStateMachineInput = rive.useStateMachineInput;
-    riveLoaded = true;
-    return true;
-  } catch (e) {
-    console.warn("Rive not installed. Run: npm install @rive-app/react-webgl2");
-    return false;
-  }
-};
-
+/**
+ * RiveCharacter - Main export
+ *
+ * This is a placeholder component that shows a fallback until Rive is installed.
+ * Once @rive-app/react-webgl2 is installed, it will dynamically load the real component.
+ */
 const RiveCharacter = forwardRef(function RiveCharacter(
   {
     src,
@@ -79,31 +70,37 @@ const RiveCharacter = forwardRef(function RiveCharacter(
   },
   ref
 ) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const [RiveComponent, setRiveComponent] = useState(null);
-  const [riveInstance, setRiveInstance] = useState(null);
-  const [inputs, setInputs] = useState({});
+  const [riveAvailable, setRiveAvailable] = useState(false);
+  const [checkComplete, setCheckComplete] = useState(false);
+  const inputsRef = useRef({});
+  const riveRef = useRef(null);
 
-  // Load Rive dynamically
+  // Check if Rive is installed
   useEffect(() => {
     let mounted = true;
 
-    const init = async () => {
-      const loaded = await loadRive();
-      if (!mounted) return;
-
-      if (!loaded) {
-        setHasError(true);
-        onError?.("Rive library not available");
-        return;
+    const checkRive = async () => {
+      try {
+        // Try to import Rive to check if it's installed
+        await import("@rive-app/react-webgl2");
+        if (mounted) {
+          setRiveAvailable(true);
+        }
+      } catch (e) {
+        console.warn(
+          "Rive not installed. To enable character animations, run: npm install @rive-app/react-webgl2"
+        );
+        if (mounted) {
+          onError?.("Rive library not available");
+        }
+      } finally {
+        if (mounted) {
+          setCheckComplete(true);
+        }
       }
-
-      // Now we can use the Rive hooks via a wrapper component
-      setIsLoaded(true);
     };
 
-    init();
+    checkRive();
     return () => {
       mounted = false;
     };
@@ -114,92 +111,69 @@ const RiveCharacter = forwardRef(function RiveCharacter(
     ref,
     () => ({
       triggerCorrect: () => {
-        inputs.correct?.fire();
+        inputsRef.current.correct?.fire?.();
       },
       triggerWrong: () => {
-        inputs.wrong?.fire();
+        inputsRef.current.wrong?.fire?.();
       },
       triggerCelebrate: () => {
-        inputs.celebrate?.fire();
+        inputsRef.current.celebrate?.fire?.();
       },
       setThinking: (value) => {
-        if (inputs.thinking) {
-          inputs.thinking.value = value;
+        if (inputsRef.current.thinking) {
+          inputsRef.current.thinking.value = value;
         }
       },
-      getRive: () => riveInstance,
+      getRive: () => riveRef.current,
     }),
-    [inputs, riveInstance]
+    []
   );
 
-  if (hasError) {
-    return fallback || <div className={className}>Animation unavailable</div>;
+  const handleInputsReady = useCallback((inputs) => {
+    inputsRef.current = inputs;
+  }, []);
+
+  const handleRiveReady = useCallback((rive) => {
+    riveRef.current = rive;
+  }, []);
+
+  // Still checking if Rive is available
+  if (!checkComplete) {
+    return fallback || <div className={className} />;
   }
 
-  if (!isLoaded) {
-    return fallback || <div className={className}>Loading...</div>;
+  // Rive not available - show fallback
+  if (!riveAvailable) {
+    return (
+      fallback || (
+        <div
+          className={`${className} flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-lg`}
+        >
+          <span className="text-xs text-gray-400">Animation</span>
+        </div>
+      )
+    );
   }
 
-  // Render the actual Rive component
+  // Rive is available - render the actual Rive component
+  // Using dynamic import to load the Rive-specific component
+  const RiveInner = dynamic(() => import("./RiveCharacterInner"), {
+    ssr: false,
+    loading: () => fallback || <div className={className} />,
+  });
+
   return (
-    <RiveWrapper
+    <RiveInner
       src={src}
       stateMachine={stateMachine}
       artboard={artboard}
       className={className}
       onLoad={onLoad}
-      onInputsReady={setInputs}
-      onRiveReady={setRiveInstance}
+      onInputsReady={handleInputsReady}
+      onRiveReady={handleRiveReady}
     />
   );
 });
-
-// Inner component that uses Rive hooks (only rendered after Rive is loaded)
-function RiveWrapper({
-  src,
-  stateMachine,
-  artboard,
-  className,
-  onLoad,
-  onInputsReady,
-  onRiveReady,
-}) {
-  // This will be null on first render before Rive loads
-  if (!useRive) {
-    return <div className={className}>Loading Rive...</div>;
-  }
-
-  const { rive, RiveComponent } = useRive({
-    src,
-    stateMachines: stateMachine,
-    artboard,
-    autoplay: true,
-    onLoad: () => {
-      onLoad?.();
-    },
-  });
-
-  // Get state machine inputs
-  const correctInput = useStateMachineInput(rive, stateMachine, "correct");
-  const wrongInput = useStateMachineInput(rive, stateMachine, "wrong");
-  const celebrateInput = useStateMachineInput(rive, stateMachine, "celebrate");
-  const thinkingInput = useStateMachineInput(rive, stateMachine, "thinking");
-
-  useEffect(() => {
-    onInputsReady({
-      correct: correctInput,
-      wrong: wrongInput,
-      celebrate: celebrateInput,
-      thinking: thinkingInput,
-    });
-  }, [correctInput, wrongInput, celebrateInput, thinkingInput, onInputsReady]);
-
-  useEffect(() => {
-    onRiveReady(rive);
-  }, [rive, onRiveReady]);
-
-  return <RiveComponent className={className} />;
-}
 
 export default RiveCharacter;
 
