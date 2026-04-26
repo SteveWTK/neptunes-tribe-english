@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -47,7 +47,7 @@ const IUCN_LEVELS = [
   { code: "LC", label: "Least Concern", color: "#22c55e" },
 ];
 
-export default function DashboardPage() {
+function DashboardPageContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -990,5 +990,20 @@ export default function DashboardPage() {
         )}
       </div>
     </div>
+  );
+}
+
+// Wrapper with Suspense boundary for useSearchParams
+export default function DashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
+          <Loader2 className="w-8 h-8 animate-spin text-accent-600 dark:text-accent-400" />
+        </div>
+      }
+    >
+      <DashboardPageContent />
+    </Suspense>
   );
 }
