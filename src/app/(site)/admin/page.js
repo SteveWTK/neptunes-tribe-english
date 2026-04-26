@@ -10,6 +10,7 @@ import {
   MessageSquare,
   ArrowRight,
   Settings,
+  GraduationCap,
 } from "lucide-react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
@@ -56,6 +57,13 @@ const adminPages = [
     icon: MessageSquare,
     color: "orange",
   },
+  {
+    title: "Schools",
+    description: "Manage partner schools, levels, and student enrollments",
+    href: "/admin/schools",
+    icon: GraduationCap,
+    color: "teal",
+  },
 ];
 
 // Color mappings for consistent styling
@@ -89,6 +97,11 @@ const colorClasses = {
     bg: "bg-orange-100 dark:bg-orange-900/30",
     text: "text-orange-600 dark:text-orange-400",
     hover: "hover:border-orange-300 dark:hover:border-orange-700",
+  },
+  teal: {
+    bg: "bg-teal-100 dark:bg-teal-900/30",
+    text: "text-teal-600 dark:text-teal-400",
+    hover: "hover:border-teal-300 dark:hover:border-teal-700",
   },
 };
 

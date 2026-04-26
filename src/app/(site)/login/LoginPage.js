@@ -125,9 +125,27 @@ export default function LoginPage() {
     const emailParam = searchParams.get("email");
     const confirmed = searchParams.get("confirmed");
     const error = searchParams.get("error");
+    const mode = searchParams.get("mode");
+    const school = searchParams.get("school");
 
     if (emailParam && typeof emailParam === "string") {
       setEmail(emailParam);
+    }
+
+    // If mode=signup is set, start in registration mode
+    if (mode === "signup") {
+      setIsRegister(true);
+    }
+
+    // Show school context if coming from school signup
+    if (school) {
+      const enrollmentData = sessionStorage.getItem("school_enrollment");
+      if (enrollmentData) {
+        const data = JSON.parse(enrollmentData);
+        if (data.full_name) {
+          setDisplayName(data.full_name);
+        }
+      }
     }
 
     if (confirmed === "true") {
@@ -147,13 +165,42 @@ export default function LoginPage() {
     }
   }, [searchParams]);
 
+  // Process school enrollment if data exists in sessionStorage
+  const processSchoolEnrollment = async () => {
+    try {
+      const enrollmentData = sessionStorage.getItem("school_enrollment");
+      if (!enrollmentData) return false;
+
+      const data = JSON.parse(enrollmentData);
+      const res = await fetch("/api/schools/enroll", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        sessionStorage.removeItem("school_enrollment");
+        return true;
+      }
+    } catch (err) {
+      console.error("Error processing school enrollment:", err);
+    }
+    return false;
+  };
+
   // Check user's journey status and redirect accordingly
   const redirectBasedOnJourney = async () => {
     try {
+      // First check for school enrollment
+      const enrolled = await processSchoolEnrollment();
+
       const response = await fetch("/api/user/journey");
       const data = await response.json();
 
-      if (data.hasSelectedAvatar && data.journey) {
+      if (enrolled) {
+        // Just enrolled in school - go to dashboard with enrolled message
+        router.push("/dashboard?enrolled=true");
+      } else if (data.hasSelectedAvatar && data.journey) {
         // Returning user with active journey - go to their current world
         const worldId = data.journey.current_world_id || "forests";
         router.push(`/worlds/${worldId}`);
@@ -265,8 +312,8 @@ export default function LoginPage() {
         } else if (data.session) {
           // User is immediately signed in (email confirmation disabled)
           setMessage("Account created successfully! You are now signed in.");
-          // New users go to forests world with auto-open species modal
-          router.push("/worlds/forests?selectSpecies=true");
+          // Check for school enrollment and redirect
+          await redirectBasedOnJourney();
         }
       } else {
         // Login logic

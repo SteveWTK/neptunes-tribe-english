@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -21,6 +21,8 @@ import {
   Award,
   Settings,
   RefreshCw,
+  GraduationCap,
+  X,
 } from "lucide-react";
 import SeasonProgressBar from "@/components/season/SeasonProgressBar";
 import DisplayNamePrompt from "@/components/profile/DisplayNamePrompt";
@@ -48,9 +50,12 @@ const IUCN_LEVELS = [
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Data states
   const [journey, setJourney] = useState(null);
+  const [schoolEnrollment, setSchoolEnrollment] = useState(null);
+  const [showEnrollmentBanner, setShowEnrollmentBanner] = useState(false);
   const [userChallenges, setUserChallenges] = useState([]);
   const [recentObservations, setRecentObservations] = useState([]);
   const [ecoNews, setEcoNews] = useState([]);
@@ -182,6 +187,33 @@ export default function DashboardPage() {
     }
   }, [loading, session]);
 
+  // Check for school enrollment success
+  useEffect(() => {
+    const enrolled = searchParams.get("enrolled");
+    if (enrolled === "true" && session?.user) {
+      // Fetch school enrollment status
+      const fetchEnrollment = async () => {
+        try {
+          const res = await fetch("/api/schools/enroll");
+          if (res.ok) {
+            const data = await res.json();
+            if (data.enrolled) {
+              setSchoolEnrollment(data);
+              setShowEnrollmentBanner(true);
+              // Clear the URL param
+              const url = new URL(window.location.href);
+              url.searchParams.delete("enrolled");
+              window.history.replaceState({}, "", url.toString());
+            }
+          }
+        } catch (err) {
+          console.error("Error fetching enrollment:", err);
+        }
+      };
+      fetchEnrollment();
+    }
+  }, [searchParams, session?.user]);
+
   if (status === "loading" || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-gray-50 to-white dark:from-primary-900 dark:to-primary-800">
@@ -220,6 +252,37 @@ export default function DashboardPage() {
           onComplete={() => setNeedsDisplayName(false)}
           onDismiss={() => setDisplayNameDismissed(true)}
         />
+      )}
+
+      {/* School Enrollment Success Banner */}
+      {showEnrollmentBanner && schoolEnrollment && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-7xl mx-auto px-4 py-3"
+        >
+          <div className="bg-teal-50 dark:bg-teal-900/30 border border-teal-200 dark:border-teal-700 rounded-xl p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-teal-100 dark:bg-teal-800 rounded-lg">
+                <GraduationCap className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+              </div>
+              <div>
+                <p className="text-teal-800 dark:text-teal-200 font-medium">
+                  Welcome to {schoolEnrollment.school?.name}!
+                </p>
+                <p className="text-teal-600 dark:text-teal-400 text-sm">
+                  You're now enrolled and have access to premium features.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowEnrollmentBanner(false)}
+              className="p-1 text-teal-500 hover:text-teal-700 dark:hover:text-teal-300"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </motion.div>
       )}
 
       {/* Dashboard Tour for new users */}
