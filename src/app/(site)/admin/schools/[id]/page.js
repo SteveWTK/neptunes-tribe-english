@@ -313,7 +313,9 @@ export default function SchoolDetailPage({ params }) {
               <input
                 type="text"
                 value={editForm.name || ""}
-                onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, name: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>
@@ -324,7 +326,9 @@ export default function SchoolDetailPage({ params }) {
               <input
                 type="text"
                 value={editForm.contact_name || ""}
-                onChange={(e) => setEditForm({ ...editForm, contact_name: e.target.value })}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, contact_name: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>
@@ -335,7 +339,9 @@ export default function SchoolDetailPage({ params }) {
               <input
                 type="email"
                 value={editForm.contact_email || ""}
-                onChange={(e) => setEditForm({ ...editForm, contact_email: e.target.value })}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, contact_email: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>
@@ -345,7 +351,9 @@ export default function SchoolDetailPage({ params }) {
               </label>
               <select
                 value={editForm.partnership_tier || "pilot"}
-                onChange={(e) => setEditForm({ ...editForm, partnership_tier: e.target.value })}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, partnership_tier: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               >
                 <option value="pilot">Pilot</option>
@@ -359,10 +367,15 @@ export default function SchoolDetailPage({ params }) {
                 type="checkbox"
                 id="editAutoPremium"
                 checked={editForm.auto_premium ?? true}
-                onChange={(e) => setEditForm({ ...editForm, auto_premium: e.target.checked })}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, auto_premium: e.target.checked })
+                }
                 className="w-4 h-4 text-teal-600 border-gray-300 rounded"
               />
-              <label htmlFor="editAutoPremium" className="text-sm text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="editAutoPremium"
+                className="text-sm text-gray-700 dark:text-gray-300"
+              >
                 Auto-grant Premium to students
               </label>
             </div>
@@ -373,7 +386,12 @@ export default function SchoolDetailPage({ params }) {
               <input
                 type="number"
                 value={editForm.premium_duration_days || 365}
-                onChange={(e) => setEditForm({ ...editForm, premium_duration_days: Number(e.target.value) })}
+                onChange={(e) =>
+                  setEditForm({
+                    ...editForm,
+                    premium_duration_days: Number(e.target.value),
+                  })
+                }
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>
@@ -392,7 +410,11 @@ export default function SchoolDetailPage({ params }) {
                 disabled={isSaving}
                 className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2 disabled:opacity-50"
               >
-                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                {isSaving ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
                 Save Changes
               </button>
             </div>
@@ -401,18 +423,25 @@ export default function SchoolDetailPage({ params }) {
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <span className="text-xs text-gray-500 dark:text-gray-400">School Code</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  School Code
+                </span>
                 <div className="flex items-center gap-2">
                   <code className="text-lg font-mono text-teal-700 dark:text-teal-300 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                     {school.code}
                   </code>
-                  <button onClick={() => copyToClipboard(school.code)} className="text-gray-400 hover:text-gray-600">
+                  <button
+                    onClick={() => copyToClipboard(school.code)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
                     <Copy className="w-4 h-4" />
                   </button>
                 </div>
               </div>
               <div className="md:col-span-2">
-                <span className="text-xs text-gray-500 dark:text-gray-400">Signup URL</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  Signup URL
+                </span>
                 <div className="flex items-center gap-2">
                   <a
                     href={signupUrl}
@@ -423,7 +452,10 @@ export default function SchoolDetailPage({ params }) {
                     {signupUrl}
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
-                  <button onClick={() => copyToClipboard(signupUrl)} className="text-gray-400 hover:text-gray-600">
+                  <button
+                    onClick={() => copyToClipboard(signupUrl)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
                     <Copy className="w-4 h-4" />
                   </button>
                 </div>
@@ -431,11 +463,15 @@ export default function SchoolDetailPage({ params }) {
             </div>
             {school.contact_name && (
               <div>
-                <span className="text-xs text-gray-500 dark:text-gray-400">Contact</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  Contact
+                </span>
                 <p className="text-gray-900 dark:text-white">
                   {school.contact_name}
                   {school.contact_email && (
-                    <span className="text-gray-500 ml-2">({school.contact_email})</span>
+                    <span className="text-gray-500 ml-2">
+                      ({school.contact_email})
+                    </span>
                   )}
                 </p>
               </div>
@@ -463,7 +499,10 @@ export default function SchoolDetailPage({ params }) {
           </div>
 
           {showLevelForm && (
-            <form onSubmit={handleAddLevel} className="mb-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+            <form
+              onSubmit={handleAddLevel}
+              className="mb-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg"
+            >
               <div className="grid grid-cols-1 gap-3">
                 <input
                   type="text"
@@ -504,7 +543,11 @@ export default function SchoolDetailPage({ params }) {
                     disabled={isAddingLevel || !levelName}
                     className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium disabled:opacity-50 flex items-center gap-1"
                   >
-                    {isAddingLevel ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
+                    {isAddingLevel ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Check className="w-3 h-3" />
+                    )}
                     Add
                   </button>
                 </div>
@@ -515,7 +558,7 @@ export default function SchoolDetailPage({ params }) {
           <div className="space-y-2">
             {levels.length === 0 ? (
               <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
-                No levels added yet. Add the school's course levels above.
+                No levels added yet. Add the school&apos;s course levels above.
               </p>
             ) : (
               levels
@@ -568,7 +611,10 @@ export default function SchoolDetailPage({ params }) {
           </div>
 
           {showTeacherForm && (
-            <form onSubmit={handleAddTeacher} className="mb-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+            <form
+              onSubmit={handleAddTeacher}
+              className="mb-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg"
+            >
               <div className="grid grid-cols-1 gap-3">
                 <input
                   type="text"
@@ -598,7 +644,11 @@ export default function SchoolDetailPage({ params }) {
                     disabled={isAddingTeacher || !teacherName}
                     className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium disabled:opacity-50 flex items-center gap-1"
                   >
-                    {isAddingTeacher ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
+                    {isAddingTeacher ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Check className="w-3 h-3" />
+                    )}
                     Add
                   </button>
                 </div>
@@ -655,24 +705,38 @@ export default function SchoolDetailPage({ params }) {
 
         {students.length === 0 ? (
           <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
-            No students enrolled yet. Share the signup URL with students to begin enrollment.
+            No students enrolled yet. Share the signup URL with students to
+            begin enrollment.
           </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">Name</th>
-                  <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">Email</th>
-                  <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">Level</th>
-                  <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">Enrolled</th>
+                  <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">
+                    Name
+                  </th>
+                  <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">
+                    Email
+                  </th>
+                  <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">
+                    Level
+                  </th>
+                  <th className="text-left py-2 px-2 text-gray-500 dark:text-gray-400 font-medium">
+                    Enrolled
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {students.map((student) => {
-                  const level = levels.find((l) => l.id === student.school_level_id);
+                  const level = levels.find(
+                    (l) => l.id === student.school_level_id
+                  );
                   return (
-                    <tr key={student.id} className="border-b border-gray-100 dark:border-gray-700/50">
+                    <tr
+                      key={student.id}
+                      className="border-b border-gray-100 dark:border-gray-700/50"
+                    >
                       <td className="py-2 px-2 text-gray-900 dark:text-white">
                         {student.full_name || "-"}
                       </td>
