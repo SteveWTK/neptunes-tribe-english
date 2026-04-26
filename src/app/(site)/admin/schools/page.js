@@ -428,7 +428,9 @@ export default function SchoolsAdminPage() {
                       Auto-grant Premium to Students
                     </label>
                     <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      Students who sign up with this school's code will automatically receive premium access for the specified duration.
+                      Students who sign up with this school&apos;s code will
+                      automatically receive premium access for the specified
+                      duration.
                     </p>
                   </div>
                 </div>
@@ -612,7 +614,9 @@ export default function SchoolsAdminPage() {
                   <div className="flex flex-col items-end gap-2">
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => toggleActive(school.id, school.is_active)}
+                        onClick={() =>
+                          toggleActive(school.id, school.is_active)
+                        }
                         className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                         title={school.is_active ? "Deactivate" : "Activate"}
                       >
@@ -716,7 +720,9 @@ export default function SchoolsAdminPage() {
                     <div className="mt-6">
                       <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
                         <Users className="w-4 h-4" />
-                        Recent Students ({details.stats?.total_students || 0} total)
+                        Recent Students ({details.stats?.total_students ||
+                          0}{" "}
+                        total)
                       </h4>
                       <div className="space-y-1 max-h-48 overflow-y-auto">
                         {details.students?.slice(0, 10).map((student) => (
@@ -736,7 +742,9 @@ export default function SchoolsAdminPage() {
                             </div>
                             <span className="text-xs text-gray-500">
                               {student.enrolled_at
-                                ? new Date(student.enrolled_at).toLocaleDateString()
+                                ? new Date(
+                                    student.enrolled_at
+                                  ).toLocaleDateString()
                                 : "Not enrolled"}
                             </span>
                           </div>
@@ -759,9 +767,13 @@ function StatCard({ label, value, icon }) {
     <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
       <div className="flex items-center gap-2 mb-1">
         {icon}
-        <span className="text-sm text-gray-600 dark:text-gray-400">{label}</span>
+        <span className="text-sm text-gray-600 dark:text-gray-400">
+          {label}
+        </span>
       </div>
-      <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
+      <p className="text-2xl font-bold text-gray-900 dark:text-white">
+        {value}
+      </p>
     </div>
   );
 }

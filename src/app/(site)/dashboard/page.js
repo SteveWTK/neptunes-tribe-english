@@ -271,7 +271,7 @@ export default function DashboardPage() {
                   Welcome to {schoolEnrollment.school?.name}!
                 </p>
                 <p className="text-teal-600 dark:text-teal-400 text-sm">
-                  You're now enrolled and have access to premium features.
+                  You&apos;re now enrolled and have access to premium features.
                 </p>
               </div>
             </div>
