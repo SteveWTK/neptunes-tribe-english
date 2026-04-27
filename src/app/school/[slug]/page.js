@@ -92,16 +92,26 @@ export default function SchoolEnrollmentPage({ params }) {
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedTeacher, setSelectedTeacher] = useState("");
 
-  // Language detection
-  const browserLang =
-    typeof navigator !== "undefined"
-      ? navigator.language?.startsWith("th")
-        ? "th"
-        : navigator.language?.startsWith("pt")
-          ? "pt"
-          : "en"
-      : "en";
-  const copy = t[browserLang] || t.en;
+  // Language detection - default to Portuguese for Brazil-based schools
+  const getBrowserLang = () => {
+    if (typeof navigator === "undefined") return "en";
+    if (navigator.language?.startsWith("th")) return "th";
+    if (navigator.language?.startsWith("pt")) return "pt";
+    return "en";
+  };
+
+  // Use school's country to determine default language
+  const getLanguage = () => {
+    // If school is from Brazil, default to Portuguese
+    if (school?.country === "Brazil") return "pt";
+    // If school is from Thailand, default to Thai
+    if (school?.country === "Thailand") return "th";
+    // Otherwise use browser language
+    return getBrowserLang();
+  };
+
+  const lang = school ? getLanguage() : getBrowserLang();
+  const copy = t[lang] || t.en;
 
   useEffect(() => {
     if (slug) {
@@ -190,9 +200,9 @@ export default function SchoolEnrollmentPage({ params }) {
   const getWelcomeMessage = () => {
     if (!school) return copy.welcomeDefault;
     const msg =
-      browserLang === "th"
+      lang === "th"
         ? school.welcome_message_th
-        : browserLang === "pt"
+        : lang === "pt"
           ? school.welcome_message_pt
           : school.welcome_message;
     return msg || copy.welcomeDefault;
@@ -203,8 +213,8 @@ export default function SchoolEnrollmentPage({ params }) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin text-teal-300 mx-auto mb-4" />
-          <p className="text-teal-200">{copy.loading}</p>
+          <Loader2 className="w-10 h-10 animate-spin text-blue-400 mx-auto mb-4" />
+          <p className="text-blue-200">{copy.loading}</p>
         </div>
       </div>
     );
@@ -222,7 +232,7 @@ export default function SchoolEnrollmentPage({ params }) {
           <p className="text-red-200 mb-6">{copy.notFoundDesc}</p>
           <button
             onClick={() => router.push("/")}
-            className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-medium transition-colors"
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-colors"
           >
             {copy.goHome}
           </button>
@@ -243,16 +253,16 @@ export default function SchoolEnrollmentPage({ params }) {
               className="h-16 mx-auto mb-4"
             />
           ) : (
-            <div className="w-16 h-16 rounded-full bg-teal-500/20 flex items-center justify-center mx-auto mb-4">
-              <GraduationCap className="w-8 h-8 text-teal-300" />
+            <div className="w-16 h-16 rounded-full bg-red-600/20 flex items-center justify-center mx-auto mb-4">
+              <GraduationCap className="w-8 h-8 text-red-400" />
             </div>
           )}
-          <span className="text-xs text-teal-300 uppercase tracking-wider font-medium">
+          <span className="text-xs text-red-400 uppercase tracking-wider font-medium">
             {copy.partnerSchool}
           </span>
           <h1 className="text-2xl font-bold text-white mt-1">{school.name}</h1>
           {school.city && (
-            <p className="text-teal-300 text-sm mt-1">
+            <p className="text-blue-300 text-sm mt-1">
               {school.city}, {school.state || school.country}
             </p>
           )}
@@ -267,7 +277,7 @@ export default function SchoolEnrollmentPage({ params }) {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Full name */}
             <div>
-              <label className="block text-sm font-medium text-teal-200 mb-1">
+              <label className="block text-sm font-medium text-blue-200 mb-1">
                 <User className="w-4 h-4 inline mr-1" />
                 {copy.yourName}
               </label>
@@ -277,14 +287,14 @@ export default function SchoolEnrollmentPage({ params }) {
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder={copy.yourNamePlaceholder}
                 required
-                className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             {/* Level selection */}
             {school.levels?.length > 0 && (
               <div>
-                <label className="block text-sm font-medium text-teal-200 mb-1">
+                <label className="block text-sm font-medium text-blue-200 mb-1">
                   <BookOpen className="w-4 h-4 inline mr-1" />
                   {copy.selectLevel}
                 </label>
@@ -292,7 +302,7 @@ export default function SchoolEnrollmentPage({ params }) {
                   value={selectedLevel}
                   onChange={(e) => setSelectedLevel(e.target.value)}
                   required
-                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent appearance-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
                   style={{ backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%23ffffff\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg%3e")', backgroundPosition: 'right 0.75rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5rem' }}
                 >
                   <option value="" className="bg-gray-800">
@@ -310,15 +320,15 @@ export default function SchoolEnrollmentPage({ params }) {
             {/* Teacher selection */}
             {school.teachers?.length > 0 && (
               <div>
-                <label className="block text-sm font-medium text-teal-200 mb-1">
+                <label className="block text-sm font-medium text-blue-200 mb-1">
                   <UserCheck className="w-4 h-4 inline mr-1" />
                   {copy.selectTeacher}{" "}
-                  <span className="text-teal-400 text-xs">{copy.optional}</span>
+                  <span className="text-blue-400 text-xs">{copy.optional}</span>
                 </label>
                 <select
                   value={selectedTeacher}
                   onChange={(e) => setSelectedTeacher(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent appearance-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
                   style={{ backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%23ffffff\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg%3e")', backgroundPosition: 'right 0.75rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5rem' }}
                 >
                   <option value="" className="bg-gray-800">
@@ -344,7 +354,7 @@ export default function SchoolEnrollmentPage({ params }) {
             <button
               type="submit"
               disabled={isSubmitting || !fullName.trim() || (school.levels?.length > 0 && !selectedLevel)}
-              className="w-full px-6 py-4 bg-teal-600 hover:bg-teal-500 disabled:bg-teal-800 disabled:cursor-not-allowed text-white rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
+              className="w-full px-6 py-4 bg-red-600 hover:bg-red-500 disabled:bg-red-900 disabled:cursor-not-allowed text-white rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -359,10 +369,10 @@ export default function SchoolEnrollmentPage({ params }) {
 
           {/* Sign in link */}
           <div className="mt-6 text-center">
-            <span className="text-teal-300 text-sm">{copy.alreadyHaveAccount}</span>{" "}
+            <span className="text-blue-300 text-sm">{copy.alreadyHaveAccount}</span>{" "}
             <button
               onClick={handleSignIn}
-              className="text-white hover:text-teal-200 font-medium text-sm underline"
+              className="text-white hover:text-blue-200 font-medium text-sm underline"
             >
               {copy.signIn}
             </button>
@@ -370,7 +380,7 @@ export default function SchoolEnrollmentPage({ params }) {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-teal-400 text-xs mt-6">
+        <p className="text-center text-blue-400 text-xs mt-6">
           Powered by Habitat English
         </p>
       </div>

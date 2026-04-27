@@ -45,11 +45,12 @@ export async function POST(request) {
       );
     }
 
-    // Verify level if provided
+    // Verify level if provided and get habitat_level for auto-setting
+    let habitatLevel = null;
     if (body.school_level_id) {
       const { data: level, error: levelError } = await supabase
         .from("school_levels")
-        .select("id, is_active")
+        .select("id, is_active, habitat_level")
         .eq("id", body.school_level_id)
         .eq("school_id", body.school_id)
         .single();
@@ -60,6 +61,9 @@ export async function POST(request) {
           { status: 400 }
         );
       }
+
+      // Store the habitat_level for auto-setting user's current_level
+      habitatLevel = level.habitat_level;
     }
 
     // Verify teacher if provided
@@ -103,6 +107,25 @@ export async function POST(request) {
         enrolled_at: new Date().toISOString(),
         user_type: "school", // School students
       };
+
+      // Auto-set current_level based on school level's habitat_level mapping
+      if (habitatLevel) {
+        updateData.current_level = habitatLevel;
+      }
+
+      // If user doesn't have a name set, use full_name
+      if (body.full_name?.trim()) {
+        const { data: currentUserData } = await supabase
+          .from("users")
+          .select("name, email")
+          .eq("id", userData.id)
+          .single();
+
+        // Set name if it's empty or just the email address
+        if (!currentUserData?.name || currentUserData.name.trim() === "" || currentUserData.name === currentUserData.email) {
+          updateData.name = body.full_name.trim();
+        }
+      }
 
       // If school has auto_premium and user isn't already premium, grant premium
       if (school.auto_premium) {

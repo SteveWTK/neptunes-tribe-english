@@ -95,6 +95,7 @@ function WorldDetailContent() {
   const [hoveredHero, setHoveredHero] = useState(false);
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [isPremiumUser, setIsPremiumUser] = useState(false);
+  const [userCurrentLevel, setUserCurrentLevel] = useState(null);
 
   // Species selection modal state
   const [showSpeciesModal, setShowSpeciesModal] = useState(false);
@@ -134,7 +135,7 @@ function WorldDetailContent() {
 
         const { data, error } = await supabaseClient
           .from("users")
-          .select("user_type, is_premium")
+          .select("user_type, is_premium, current_level")
           .eq("id", userId)
           .single();
 
@@ -145,8 +146,10 @@ function WorldDetailContent() {
 
         const type = data?.user_type || "individual";
         const premium = data?.is_premium || false;
+        const currentLevel = data?.current_level || null;
         setUserType(type);
         setIsPremiumUser(premium);
+        setUserCurrentLevel(currentLevel);
 
         // Check if viewing all levels (individual users only)
         if (type === "individual" && typeof window !== "undefined") {
@@ -667,9 +670,40 @@ function WorldDetailContent() {
         setJourney(data.journey);
         setShowSpeciesModal(false);
 
-        // Store journey data and show level selection modal
-        setPendingJourneyData(data.journey);
-        setShowLevelModal(true);
+        // If user already has a current_level set (e.g., school students), skip level selection
+        if (userCurrentLevel) {
+          console.log("🎯 handleSpeciesSelect - User has level, navigating:", userCurrentLevel);
+
+          // Save level filter to localStorage
+          localStorage.setItem("level_filter", userCurrentLevel);
+
+          // Fetch the first lesson for the user's level in this adventure's theme
+          const supabase = createClient();
+          const adventure = pendingNavigation.adventure;
+          const { data: lessons, error: lessonsError } = await supabase
+            .from("lessons")
+            .select("id, title, under_construction, difficulty, sort_order")
+            .eq("world", world.id)
+            .contains("theme_tags", [adventure.themeTag])
+            .eq("difficulty", userCurrentLevel)
+            .order("sort_order", { ascending: true })
+            .limit(1);
+
+          if (lessonsError) {
+            console.error("Error fetching lessons for level:", lessonsError);
+          }
+
+          const firstLesson = lessons?.[0];
+          if (firstLesson && !firstLesson.under_construction) {
+            router.push(`/lesson/${firstLesson.id}`);
+          } else {
+            toast.info(`No lessons available at ${userCurrentLevel} yet.`);
+          }
+        } else {
+          // Store journey data and show level selection modal for new users
+          setPendingJourneyData(data.journey);
+          setShowLevelModal(true);
+        }
       } else {
         toast.error(data.error || "Failed to start adventure");
       }

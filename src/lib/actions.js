@@ -21,26 +21,36 @@ export async function signInAction() {
   await signIn("google", { redirectTo: "/auth/post-login" });
 }
 
-export async function registerUser({ email, password }) {
+export async function registerUser({ email, password, isSchoolSignup = false }) {
   try {
     console.log("=== SERVER-SIDE REGISTRATION STARTED ===");
     console.log("Email:", email);
     console.log("Environment:", process.env.NODE_ENV);
+    console.log("Is school signup:", isSchoolSignup);
 
     const baseUrl = getBaseUrl();
     const redirectUrl = `${baseUrl}/auth/callback`;
 
     console.log("Using redirect URL:", redirectUrl);
 
-    // Create user in Supabase Auth with email confirmation required
+    // For school signups, auto-confirm the email (trusted enrollment flow)
+    // For regular signups, require email confirmation
+    const emailConfirmed = isSchoolSignup;
+
+    // Create user in Supabase Auth
     const { data, error } = await getSupabaseAdmin().auth.admin.createUser({
       email: email,
       password: password,
-      email_confirm: false,
+      email_confirm: emailConfirmed,
       options: {
         emailRedirectTo: redirectUrl,
       },
     });
+
+    if (error) {
+      console.error("Registration error:", error);
+      throw new Error(error.message);
+    }
 
     console.log(
       "User created with email_confirmed_at:",
@@ -49,34 +59,34 @@ export async function registerUser({ email, password }) {
     console.log("User email:", data.user.email);
     console.log("Redirect URL:", redirectUrl);
 
-    if (error) {
-      console.error("Registration error:", error);
-      throw new Error(error.message);
-    }
-
     console.log("Registration successful:", data.user.id);
 
-    // Generate confirmation link
-    const { data: linkData, error: linkError } =
-      await getSupabaseAdmin().auth.admin.generateLink({
-        type: "signup",
-        email: email,
-        options: {
-          redirectTo: redirectUrl,
-        },
-      });
+    // For non-school signups, try to generate confirmation link
+    // NOTE: This generates the link but Supabase SMTP must be configured to actually send emails
+    if (!isSchoolSignup) {
+      const { data: linkData, error: linkError } =
+        await getSupabaseAdmin().auth.admin.generateLink({
+          type: "signup",
+          email: email,
+          options: {
+            redirectTo: redirectUrl,
+          },
+        });
 
-    if (linkError) {
-      console.error("Failed to generate confirmation link:", linkError);
-    } else {
-      console.log("Confirmation link generated successfully");
+      if (linkError) {
+        console.error("Failed to generate confirmation link:", linkError);
+      } else {
+        console.log("Confirmation link generated (requires SMTP config to send)");
+      }
     }
 
     return {
       success: true,
-      message:
-        "Registration successful! Please check your email to confirm your account.",
+      message: isSchoolSignup
+        ? "Account created successfully! You can now sign in."
+        : "Registration successful! Please check your email to confirm your account.",
       userId: data.user.id,
+      autoConfirmed: emailConfirmed,
     };
   } catch (error) {
     console.error("Registration error:", error);

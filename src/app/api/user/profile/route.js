@@ -18,7 +18,7 @@ export async function GET(request) {
     const { data: user, error } = await supabase
       .from("users")
       .select(
-        "id, name, email, image, role, is_premium, is_supporter, stripe_customer_id, stripe_subscription_status, created_at"
+        "id, name, email, image, role, is_premium, is_supporter, stripe_customer_id, stripe_subscription_status, created_at, full_name, school_id, school_level_id, teacher_id, enrolled_at, user_type"
       )
       .eq("email", session.user.email)
       .single();
@@ -27,14 +27,55 @@ export async function GET(request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    // Fetch school info if enrolled
+    let schoolInfo = null;
+    if (user.school_id) {
+      const { data: school } = await supabase
+        .from("schools")
+        .select("id, name, slug, logo_url")
+        .eq("id", user.school_id)
+        .single();
+
+      let levelInfo = null;
+      if (user.school_level_id) {
+        const { data: level } = await supabase
+          .from("school_levels")
+          .select("id, name, habitat_level")
+          .eq("id", user.school_level_id)
+          .single();
+        levelInfo = level;
+      }
+
+      let teacherInfo = null;
+      if (user.teacher_id) {
+        const { data: teacher } = await supabase
+          .from("school_teachers")
+          .select("id, name")
+          .eq("id", user.teacher_id)
+          .single();
+        teacherInfo = teacher;
+      }
+
+      schoolInfo = {
+        school,
+        level: levelInfo,
+        teacher: teacherInfo,
+        enrolledAt: user.enrolled_at,
+      };
+    }
+
     // Check if user needs to set display name
-    const needsDisplayName = !user.name || user.name.trim() === "";
+    // For school students, use full_name; for others, use name
+    const displayName = user.full_name || user.name;
+    const needsDisplayName = !displayName || displayName.trim() === "";
 
     return NextResponse.json({
       success: true,
       user: {
         id: user.id,
         name: user.name,
+        fullName: user.full_name,
+        displayName, // The best name to show (full_name or name)
         email: user.email,
         image: user.image,
         role: user.role,
@@ -43,7 +84,9 @@ export async function GET(request) {
         hasStripeCustomer: !!user.stripe_customer_id,
         subscriptionStatus: user.stripe_subscription_status,
         createdAt: user.created_at,
+        userType: user.user_type,
       },
+      schoolInfo,
       needsDisplayName,
     });
   } catch (error) {

@@ -112,7 +112,8 @@ export default function LoginPage() {
       resetPassword: "รีเซ็ตรหัสผ่าน",
       sendResetEmail: "ส่งอีเมลรีเซ็ตรหัสผ่าน",
       backToLogin: "กลับไปหน้าเข้าสู่ระบบ",
-      resetEmailSent: "ส่งอีเมลรีเซ็ตรหัสผ่านแล้ว! กรุณาตรวจสอบกล่องจดหมายของคุณ",
+      resetEmailSent:
+        "ส่งอีเมลรีเซ็ตรหัสผ่านแล้ว! กรุณาตรวจสอบกล่องจดหมายของคุณ",
       enterEmailForReset:
         "กรอกที่อยู่อีเมลของคุณเพื่อรับคำแนะนำในการรีเซ็ตรหัสผ่าน",
       cancel: "ยกเลิก",
@@ -272,7 +273,41 @@ export default function LoginPage() {
         console.log("=== CLIENT-SIDE SIGNUP STARTED ===");
         console.log("Email:", email);
 
-        // Use Supabase client-side signup
+        // Check if this is a school signup (URL param or sessionStorage)
+        const schoolParam = searchParams.get("school");
+        const enrollmentData = sessionStorage.getItem("school_enrollment");
+        const isSchoolSignup = !!(schoolParam || enrollmentData);
+
+        if (isSchoolSignup) {
+          // Use server action for school signups - auto-confirms email
+          console.log("School signup detected - using server action with auto-confirm");
+          const result = await registerUser({
+            email,
+            password,
+            isSchoolSignup: true,
+          });
+
+          if (!result.success) {
+            throw new Error(result.error || "Registration failed");
+          }
+
+          // Sign in immediately since email is auto-confirmed
+          const signInResult = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+          });
+
+          if (signInResult?.error) {
+            throw new Error("Account created but sign-in failed. Please try signing in.");
+          }
+
+          // Process school enrollment and redirect
+          await redirectBasedOnJourney();
+          return;
+        }
+
+        // Regular signup - use Supabase client-side signup
         const { data, error } = await supabase.auth.signUp({
           email: email,
           password: password,
@@ -463,7 +498,7 @@ export default function LoginPage() {
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                     placeholder="e.g., NatureExplorer123"
-                    className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-primary-50 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   />
                   <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                     {copy.displayNameHint}

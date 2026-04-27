@@ -65,6 +65,7 @@ function DashboardPageContent() {
   const [needsDisplayName, setNeedsDisplayName] = useState(false);
   const [displayNameDismissed, setDisplayNameDismissed] = useState(false);
   const [userName, setUserName] = useState(null);
+  const [userSchoolInfo, setUserSchoolInfo] = useState(null);
   const [showTour, setShowTour] = useState(false);
   const [activeIucnTooltip, setActiveIucnTooltip] = useState(null);
 
@@ -148,9 +149,15 @@ function DashboardPageContent() {
         if (profileRes.ok) {
           const profileData = await profileRes.json();
           setNeedsDisplayName(profileData.needsDisplayName || false);
-          // Use name from database (more up-to-date than session)
-          if (profileData.user?.name) {
+          // Use displayName from database (full_name for school students, name for others)
+          if (profileData.user?.displayName) {
+            setUserName(profileData.user.displayName);
+          } else if (profileData.user?.name) {
             setUserName(profileData.user.name);
+          }
+          // Store school info if available
+          if (profileData.schoolInfo) {
+            setUserSchoolInfo(profileData.schoolInfo);
           }
         }
       } catch (err) {
@@ -287,6 +294,34 @@ function DashboardPageContent() {
 
       {/* Dashboard Tour for new users */}
       {showTour && <DashboardTour onComplete={() => setShowTour(false)} />}
+
+      {/* School Info Card - shown for enrolled students */}
+      {userSchoolInfo?.school && !showEnrollmentBanner && (
+        <div className="max-w-7xl mx-auto px-4 pt-4">
+          <div className="bg-gradient-to-r from-blue-50 to-red-50 dark:from-blue-900/20 dark:to-red-900/20 border border-blue-200 dark:border-blue-700/50 rounded-xl p-4 flex items-center gap-4">
+            <div className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+              <GraduationCap className="w-6 h-6 text-red-600 dark:text-red-400" />
+            </div>
+            <div className="flex-1">
+              <p className="text-gray-800 dark:text-white font-medium">
+                {userSchoolInfo.school.name}
+              </p>
+              <div className="flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-400">
+                {userSchoolInfo.level && (
+                  <span className="flex items-center gap-1">
+                    📚 {userSchoolInfo.level.name}
+                  </span>
+                )}
+                {userSchoolInfo.teacher && (
+                  <span className="flex items-center gap-1">
+                    👩‍🏫 {userSchoolInfo.teacher.name}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div data-tour="user-dashboard" className="max-w-7xl mx-auto px-4 py-6">
         {/* 2. Species Avatar Hero Section - Combined welcome + species status */}
