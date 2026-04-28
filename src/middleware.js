@@ -24,7 +24,10 @@ export default auth((req) => {
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   // Redirect logged-in users away from auth pages to their journey
-  if (isLoggedIn && isAuthRoute) {
+  // BUT: Don't redirect if user is coming from a school signup flow
+  const hasSchoolParam = nextUrl.searchParams.has("school");
+  const hasSignupMode = nextUrl.searchParams.get("mode") === "signup";
+  if (isLoggedIn && isAuthRoute && !hasSchoolParam && !hasSignupMode) {
     return NextResponse.redirect(new URL("/auth/post-login", nextUrl));
   }
 

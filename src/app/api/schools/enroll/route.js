@@ -111,6 +111,9 @@ export async function POST(request) {
       // Auto-set current_level based on school level's habitat_level mapping
       if (habitatLevel) {
         updateData.current_level = habitatLevel;
+        console.log("📚 Setting user current_level to:", habitatLevel);
+      } else {
+        console.log("⚠️ No habitat_level found for school_level_id:", body.school_level_id);
       }
 
       // If user doesn't have a name set, use full_name

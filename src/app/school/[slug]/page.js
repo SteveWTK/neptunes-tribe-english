@@ -154,8 +154,9 @@ export default function SchoolEnrollmentPage({ params }) {
       };
       sessionStorage.setItem("school_enrollment", JSON.stringify(enrollmentData));
 
-      // If user is already logged in, enroll them directly
-      if (session?.user) {
+      // If user is already logged in AND session is fully loaded, enroll them directly
+      // Note: We only try direct enrollment if session is confirmed (not loading)
+      if (sessionStatus === "authenticated" && session?.user) {
         const res = await fetch("/api/schools/enroll", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -169,6 +170,9 @@ export default function SchoolEnrollmentPage({ params }) {
           router.push("/dashboard?enrolled=true");
           return;
         }
+        // If enrollment failed (e.g., user not in DB despite having session),
+        // fall through to signup flow
+        console.log("Direct enrollment failed, redirecting to signup:", data.error);
       }
 
       // Redirect to signup with school context
